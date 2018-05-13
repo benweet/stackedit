@@ -19,54 +19,50 @@ export default {
       const workspaces = rootGetters['data/sanitizedWorkspaces'];
       return workspaces.main;
     },
-    currentWorkspace: (state, getters, rootState, rootGetters) => {
+    currentWorkspace: ({ currentWorkspaceId }, { mainWorkspace }, rootState, rootGetters) => {
       const workspaces = rootGetters['data/sanitizedWorkspaces'];
-      return workspaces[state.currentWorkspaceId] || getters.mainWorkspace;
+      return workspaces[currentWorkspaceId] || mainWorkspace;
     },
-    hasUniquePaths: (state, getters) => {
-      const workspace = getters.currentWorkspace;
-      return workspace.providerId === 'githubWorkspace';
-    },
-    lastSyncActivityKey: (state, getters) => `${getters.currentWorkspace.id}/lastSyncActivity`,
-    lastFocusKey: (state, getters) => `${getters.currentWorkspace.id}/lastWindowFocus`,
+    hasUniquePaths: (state, { currentWorkspace }) =>
+      currentWorkspace.providerId === 'githubWorkspace',
+    lastSyncActivityKey: (state, { currentWorkspace }) => `${currentWorkspace.id}/lastSyncActivity`,
+    lastFocusKey: (state, { currentWorkspace }) => `${currentWorkspace.id}/lastWindowFocus`,
     mainWorkspaceToken: (state, getters, rootState, rootGetters) => {
       const googleTokens = rootGetters['data/googleTokens'];
       const loginSubs = Object.keys(googleTokens)
         .filter(sub => googleTokens[sub].isLogin);
       return googleTokens[loginSubs[0]];
     },
-    syncToken: (state, getters, rootState, rootGetters) => {
-      const workspace = getters.currentWorkspace;
-      switch (workspace.providerId) {
+    syncToken: (state, { currentWorkspace, mainWorkspaceToken }, rootState, rootGetters) => {
+      switch (currentWorkspace.providerId) {
         case 'googleDriveWorkspace': {
           const googleTokens = rootGetters['data/googleTokens'];
-          return googleTokens[workspace.sub];
+          return googleTokens[currentWorkspace.sub];
         }
         case 'githubWorkspace': {
           const githubTokens = rootGetters['data/githubTokens'];
-          return githubTokens[workspace.sub];
+          return githubTokens[currentWorkspace.sub];
         }
         case 'couchdbWorkspace': {
           const couchdbTokens = rootGetters['data/couchdbTokens'];
-          return couchdbTokens[workspace.id];
+          return couchdbTokens[currentWorkspace.id];
         }
         default:
-          return getters.mainWorkspaceToken;
+          return mainWorkspaceToken;
       }
     },
-    loginToken: (state, getters, rootState, rootGetters) => {
-      const workspace = getters.currentWorkspace;
-      switch (workspace.providerId) {
+    loginToken: (state, { currentWorkspace, mainWorkspaceToken }, rootState, rootGetters) => {
+      switch (currentWorkspace.providerId) {
         case 'googleDriveWorkspace': {
           const googleTokens = rootGetters['data/googleTokens'];
-          return googleTokens[workspace.sub];
+          return googleTokens[currentWorkspace.sub];
         }
         case 'githubWorkspace': {
           const githubTokens = rootGetters['data/githubTokens'];
-          return githubTokens[workspace.sub];
+          return githubTokens[currentWorkspace.sub];
         }
         default:
-          return getters.mainWorkspaceToken;
+          return mainWorkspaceToken;
       }
     },
     userId: (state, { loginToken }, rootState, rootGetters) => {
@@ -82,7 +78,7 @@ export default {
       });
       return prefix ? `${prefix}:${loginToken.sub}` : loginToken.sub;
     },
-    sponsorToken: (state, getters) => getters.mainWorkspaceToken,
+    sponsorToken: (state, { mainWorkspaceToken }) => mainWorkspaceToken,
   },
   actions: {
     setCurrentWorkspaceId: ({ commit, getters }, value) => {

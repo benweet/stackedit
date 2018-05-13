@@ -6,8 +6,8 @@ export default {
     itemMap: {},
   },
   mutations: {
-    addItem: (state, item) => {
-      Vue.set(state.itemMap, item.id, item);
+    addItem: ({ itemMap }, item) => {
+      Vue.set(itemMap, item.id, item);
     },
   },
 };

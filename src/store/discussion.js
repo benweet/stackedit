@@ -59,8 +59,8 @@ export default {
     },
   },
   getters: {
-    newDiscussion: state =>
-      state.currentDiscussionId === state.newDiscussionId && state.newDiscussion,
+    newDiscussion: ({ currentDiscussionId, newDiscussionId, newDiscussion }) =>
+      currentDiscussionId === newDiscussionId && newDiscussion,
     currentFileDiscussionLastComments: (state, getters, rootState, rootGetters) => {
       const { discussions, comments } = rootGetters['content/current'];
       const discussionLastComments = {};
@@ -74,14 +74,18 @@ export default {
       });
       return discussionLastComments;
     },
-    currentFileDiscussions: (state, getters, rootState, rootGetters) => {
+    currentFileDiscussions: (
+      { newDiscussionId },
+      { newDiscussion, currentFileDiscussionLastComments },
+      rootState,
+      rootGetters,
+    ) => {
       const currentFileDiscussions = {};
-      const { newDiscussion } = getters;
       if (newDiscussion) {
-        currentFileDiscussions[state.newDiscussionId] = newDiscussion;
+        currentFileDiscussions[newDiscussionId] = newDiscussion;
       }
       const { discussions } = rootGetters['content/current'];
-      Object.entries(getters.currentFileDiscussionLastComments)
+      Object.entries(currentFileDiscussionLastComments)
         .sort(([, lastComment1], [, lastComment2]) =>
           lastComment1.created - lastComment2.created)
         .forEach(([discussionId]) => {
@@ -89,17 +93,22 @@ export default {
         });
       return currentFileDiscussions;
     },
-    currentDiscussion: (state, getters) =>
-      getters.currentFileDiscussions[state.currentDiscussionId],
+    currentDiscussion: ({ currentDiscussionId }, { currentFileDiscussions }) =>
+      currentFileDiscussions[currentDiscussionId],
     previousDiscussionId: idShifter(-1),
     nextDiscussionId: idShifter(1),
-    currentDiscussionComments: (state, getters, rootState, rootGetters) => {
+    currentDiscussionComments: (
+      { currentDiscussionId },
+      { currentDiscussion },
+      rootState,
+      rootGetters,
+    ) => {
       const comments = {};
-      if (getters.currentDiscussion) {
+      if (currentDiscussion) {
         const contentComments = rootGetters['content/current'].comments;
         Object.entries(contentComments)
           .filter(([, comment]) =>
-            comment.discussionId === state.currentDiscussionId)
+            comment.discussionId === currentDiscussionId)
           .sort(([, comment1], [, comment2]) =>
             comment1.created - comment2.created)
           .forEach(([commentId, comment]) => {
@@ -108,10 +117,12 @@ export default {
       }
       return comments;
     },
-    currentDiscussionLastCommentId: (state, getters) =>
-      Object.keys(getters.currentDiscussionComments).pop(),
-    currentDiscussionLastComment: (state, getters) =>
-      getters.currentDiscussionComments[getters.currentDiscussionLastCommentId],
+    currentDiscussionLastCommentId: (state, { currentDiscussionComments }) =>
+      Object.keys(currentDiscussionComments).pop(),
+    currentDiscussionLastComment: (
+      state,
+      { currentDiscussionComments, currentDiscussionLastCommentId },
+    ) => currentDiscussionComments[currentDiscussionLastCommentId],
   },
   actions: {
     cancelNewComment({ commit, getters }) {
@@ -120,15 +131,15 @@ export default {
         commit('setCurrentDiscussionId', getters.nextDiscussionId);
       }
     },
-    createNewDiscussion({ commit, dispatch, rootGetters }, selection) {
+    async createNewDiscussion({ commit, dispatch, rootGetters }, selection) {
       const loginToken = rootGetters['workspace/loginToken'];
       if (!loginToken) {
-        dispatch('modal/signInForComment', {
-          onResolve: () => googleHelper.signin()
-            .then(() => syncSvc.requestSync())
-            .then(() => dispatch('createNewDiscussion', selection)),
-        }, { root: true })
-          .catch(() => { /* Cancel */ });
+        try {
+          await dispatch('modal/signInForComment', null, { root: true });
+          await googleHelper.signin();
+          syncSvc.requestSync();
+          await dispatch('createNewDiscussion', selection);
+        } catch (e) { /* cancel */ }
       } else if (selection) {
         let text = rootGetters['content/current'].text.slice(selection.start, selection.end).trim();
         const maxLength = 80;

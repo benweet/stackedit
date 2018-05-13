@@ -104,16 +104,20 @@ export default {
     ...mapActions('data', {
       setPanel: 'setSideBarPanel',
     }),
-    signin() {
-      return googleHelper.signin()
-        .then(
-          () => syncSvc.requestSync(),
-          () => { /* Cancel */ },
-        );
+    async signin() {
+      try {
+        await googleHelper.signin();
+        syncSvc.requestSync();
+      } catch (e) {
+        // Cancel
+      }
     },
-    fileProperties() {
-      return this.$store.dispatch('modal/open', 'fileProperties')
-        .catch(() => { /* Cancel */ });
+    async fileProperties() {
+      try {
+        await this.$store.dispatch('modal/open', 'fileProperties');
+      } catch (e) {
+        // Cancel
+      }
     },
     print() {
       window.print();

@@ -13,39 +13,28 @@ export default {
     },
   },
   getters: {
-    config: state => !state.hidden && state.stack[0],
+    config: ({ hidden, stack }) => !hidden && stack[0],
   },
   actions: {
-    open({ commit, state }, param) {
-      return new Promise((resolve, reject) => {
-        const config = typeof param === 'object' ? { ...param } : { type: param };
-        const clean = () => commit('setStack', state.stack.filter((otherConfig => otherConfig !== config)));
-        config.resolve = (result) => {
-          clean();
-          if (config.onResolve) {
-            // Call onResolve immediately (mostly to prevent browsers from blocking popup windows)
-            config.onResolve(result)
-              .then(res => resolve(res));
-          } else {
-            resolve(result);
-          }
-        };
-        config.reject = (error) => {
-          clean();
-          reject(error);
-        };
-        commit('setStack', [config, ...state.stack]);
-      });
+    async open({ commit, state }, param) {
+      const config = typeof param === 'object' ? { ...param } : { type: param };
+      try {
+        return await new Promise((resolve, reject) => {
+          config.resolve = resolve;
+          config.reject = reject;
+          commit('setStack', [config, ...state.stack]);
+        });
+      } finally {
+        commit('setStack', state.stack.filter((otherConfig => otherConfig !== config)));
+      }
     },
-    hideUntil({ commit }, promise) {
-      commit('setHidden', true);
-      return promise.then((res) => {
+    async hideUntil({ commit }, promise) {
+      try {
+        commit('setHidden', true);
+        return await promise;
+      } finally {
         commit('setHidden', false);
-        return res;
-      }, (err) => {
-        commit('setHidden', false);
-        throw err;
-      });
+      }
     },
     folderDeletion: ({ dispatch }, item) => dispatch('open', {
       content: `<p>You are about to delete the folder <b>${item.name}</b>. Its files will be moved to Trash. Are you sure?</p>`,
@@ -105,39 +94,34 @@ export default {
       resolveText: 'Yes, clean',
       rejectText: 'No',
     }),
-    providerRedirection: ({ dispatch }, { providerName, onResolve }) => dispatch('open', {
+    providerRedirection: ({ dispatch }, { providerName }) => dispatch('open', {
       content: `<p>You are about to navigate to the <b>${providerName}</b> authorization page.</p>`,
       resolveText: 'Ok, go on',
       rejectText: 'Cancel',
-      onResolve,
     }),
-    workspaceGoogleRedirection: ({ dispatch }, { onResolve }) => dispatch('open', {
+    workspaceGoogleRedirection: ({ dispatch }) => dispatch('open', {
       content: '<p>StackEdit needs full Google Drive access to open this workspace.</p>',
       resolveText: 'Ok, grant',
       rejectText: 'Cancel',
-      onResolve,
     }),
-    signInForSponsorship: ({ dispatch }, { onResolve }) => dispatch('open', {
+    signInForSponsorship: ({ dispatch }) => dispatch('open', {
       type: 'signInForSponsorship',
       content: `<p>You have to sign in with Google to sponsor.</p>
       <div class="modal__info"><b>Note:</b> This will sync your main workspace.</div>`,
       resolveText: 'Ok, sign in',
       rejectText: 'Cancel',
-      onResolve,
     }),
-    signInForComment: ({ dispatch }, { onResolve }) => dispatch('open', {
+    signInForComment: ({ dispatch }) => dispatch('open', {
       content: `<p>You have to sign in with Google to start commenting.</p>
       <div class="modal__info"><b>Note:</b> This will sync your main workspace.</div>`,
       resolveText: 'Ok, sign in',
       rejectText: 'Cancel',
-      onResolve,
     }),
-    signInForHistory: ({ dispatch }, { onResolve }) => dispatch('open', {
+    signInForHistory: ({ dispatch }) => dispatch('open', {
       content: `<p>You have to sign in with Google to enable revision history.</p>
       <div class="modal__info"><b>Note:</b> This will sync your main workspace.</div>`,
       resolveText: 'Ok, sign in',
       rejectText: 'Cancel',
-      onResolve,
     }),
     sponsorOnly: ({ dispatch }) => dispatch('open', {
       content: '<p>This feature is restricted to sponsors as it relies on server resources.</p>',

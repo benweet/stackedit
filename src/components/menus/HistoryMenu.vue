@@ -96,12 +96,13 @@ export default {
     ...mapMutations('content', [
       'setRevisionContent',
     ]),
-    signin() {
-      return googleHelper.signin()
-        .then(
-          () => syncSvc.requestSync(),
-          () => { /* Cancel */ },
-        );
+    async signin() {
+      try {
+        await googleHelper.signin();
+        syncSvc.requestSync();
+      } catch (e) {
+        // Cancel
+      }
     },
     close() {
       this.$store.dispatch('data/setSideBarPanel', 'menu');
@@ -117,10 +118,15 @@ export default {
           const currentFile = this.$store.getters['file/current'];
           this.$store.dispatch(
             'queue/enqueue',
-            () => Promise.resolve()
-              .then(() => this.workspaceProvider
-                .getRevisionContent(syncToken, currentFile.id, revision.id))
-              .then(resolve, reject),
+            async () => {
+              try {
+                const content = await this.workspaceProvider
+                  .getRevisionContent(syncToken, currentFile.id, revision.id);
+                resolve(content);
+              } catch (e) {
+                reject(e);
+              }
+            },
           );
         });
         revisionContentPromises[revision.id] = revisionContentPromise;
@@ -181,9 +187,15 @@ export default {
             revisionsPromise = new Promise((resolve, reject) => {
               this.$store.dispatch(
                 'queue/enqueue',
-                () => Promise.resolve()
-                  .then(() => this.workspaceProvider.listRevisions(syncToken, currentFile.id))
-                  .then(resolve, reject),
+                async () => {
+                  try {
+                    const revisions = await this.workspaceProvider
+                      .listRevisions(syncToken, currentFile.id);
+                    resolve(revisions);
+                  } catch (e) {
+                    reject(e);
+                  }
+                },
               );
             })
               .catch(() => {

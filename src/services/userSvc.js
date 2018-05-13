@@ -16,7 +16,7 @@ export default {
     promised[id] = true;
     store.commit('userInfo/addItem', { id, name, imageUrl });
   },
-  getInfo(userId) {
+  async getInfo(userId) {
     if (!promised[userId]) {
       const [type, sub] = parseUserId(userId);
 
@@ -33,27 +33,26 @@ export default {
       if (!store.state.offline) {
         promised[userId] = true;
         switch (type) {
-          case 'github': {
-            return githubHelper.getUser(sub)
-              .catch((err) => {
-                if (err.status !== 404) {
-                  promised[userId] = false;
-                }
-              });
-          }
+          case 'github':
+            try {
+              await githubHelper.getUser(sub);
+            } catch (err) {
+              if (err.status !== 404) {
+                promised[userId] = false;
+              }
+            }
+            break;
           case 'google':
-          default: {
-            return googleHelper.getUser(sub)
-              .catch((err) => {
-                if (err.status !== 404) {
-                  promised[userId] = false;
-                }
-              });
-          }
+          default:
+            try {
+              await googleHelper.getUser(sub);
+            } catch (err) {
+              if (err.status !== 404) {
+                promised[userId] = false;
+              }
+            }
         }
       }
     }
-
-    return null;
   },
 };

@@ -7,6 +7,27 @@ const networkTimeout = 30 * 1000; // 30 sec
 let isConnectionDown = false;
 const userInactiveAfter = 2 * 60 * 1000; // 2 minutes
 
+
+function parseHeaders(xhr) {
+  const pairs = xhr.getAllResponseHeaders().trim().split('\n');
+  const headers = {};
+  pairs.forEach((header) => {
+    const split = header.trim().split(':');
+    const key = split.shift().trim().toLowerCase();
+    const value = split.join(':').trim();
+    headers[key] = value;
+  });
+  return headers;
+}
+
+function isRetriable(err) {
+  if (err.status === 403) {
+    const googleReason = ((((err.body || {}).error || {}).errors || [])[0] || {}).reason;
+    return googleReason === 'rateLimitExceeded' || googleReason === 'userRateLimitExceeded';
+  }
+  return err.status === 429 || (err.status >= 500 && err.status < 600);
+}
+
 export default {
   init() {
     // Keep track of the last user activity
@@ -31,37 +52,34 @@ export default {
     window.addEventListener('focus', setLastFocus);
 
     // Check browser is online periodically
-    const checkOffline = () => {
+    const checkOffline = async () => {
       const isBrowserOffline = window.navigator.onLine === false;
       if (!isBrowserOffline &&
         store.state.lastOfflineCheck + networkTimeout + 5000 < Date.now() &&
         this.isUserActive()
       ) {
         store.commit('updateLastOfflineCheck');
-        new Promise((resolve, reject) => {
-          const script = document.createElement('script');
-          let timeout;
-          let clean = (cb) => {
-            clearTimeout(timeout);
-            document.head.removeChild(script);
-            clean = () => {}; // Prevent from cleaning several times
-            cb();
-          };
-          script.onload = () => clean(resolve);
-          script.onerror = () => clean(reject);
-          script.src = `https://apis.google.com/js/api.js?${Date.now()}`;
-          try {
-            document.head.appendChild(script); // This can fail with bad network
-            timeout = setTimeout(() => clean(reject), networkTimeout);
-          } catch (e) {
-            reject(e);
-          }
-        })
-          .then(() => {
-            isConnectionDown = false;
-          }, () => {
-            isConnectionDown = true;
+        const script = document.createElement('script');
+        let timeout;
+        try {
+          await new Promise((resolve, reject) => {
+            script.onload = resolve;
+            script.onerror = reject;
+            script.src = `https://apis.google.com/js/api.js?${Date.now()}`;
+            try {
+              document.head.appendChild(script); // This can fail with bad network
+              timeout = setTimeout(reject, networkTimeout);
+            } catch (e) {
+              reject(e);
+            }
           });
+          isConnectionDown = false;
+        } catch (e) {
+          isConnectionDown = true;
+        } finally {
+          clearTimeout(timeout);
+          document.head.removeChild(script);
+        }
       }
       const offline = isBrowserOffline || isConnectionDown;
       if (store.state.offline !== offline) {
@@ -88,7 +106,7 @@ export default {
   isUserActive() {
     return this.lastActivity > Date.now() - userInactiveAfter && this.isWindowFocused();
   },
-  loadScript(url) {
+  async loadScript(url) {
     if (!scriptLoadingPromises[url]) {
       scriptLoadingPromises[url] = new Promise((resolve, reject) => {
         const script = document.createElement('script');
@@ -103,7 +121,7 @@ export default {
     }
     return scriptLoadingPromises[url];
   },
-  startOauth2(url, params = {}, silent = false) {
+  async startOauth2(url, params = {}, silent = false) {
     // Build the authorize URL
     const state = utils.uid();
     params.state = state;
@@ -125,69 +143,66 @@ export default {
       }
     }
 
-    return new Promise((resolve, reject) => {
-      let checkClosedInterval;
-      let closeTimeout;
-      let msgHandler;
-      let clean = () => {
-        clearInterval(checkClosedInterval);
-        if (!silent && !wnd.closed) {
-          wnd.close();
+    let checkClosedInterval;
+    let closeTimeout;
+    let msgHandler;
+    try {
+      return await new Promise((resolve, reject) => {
+        if (silent) {
+          iframeElt.onerror = () => {
+            reject(new Error('Unknown error.'));
+          };
+          closeTimeout = setTimeout(() => {
+            isConnectionDown = true;
+            store.commit('setOffline', true);
+            store.commit('updateLastOfflineCheck');
+            reject(new Error('You are offline.'));
+          }, networkTimeout);
+        } else {
+          closeTimeout = setTimeout(() => {
+            reject(new Error('Timeout.'));
+          }, oauth2AuthorizationTimeout);
         }
-        if (iframeElt) {
-          document.body.removeChild(iframeElt);
-        }
-        clearTimeout(closeTimeout);
-        window.removeEventListener('message', msgHandler);
-        clean = () => Promise.resolve(); // Prevent from cleaning several times
-        return Promise.resolve();
-      };
 
-      if (silent) {
-        iframeElt.onerror = () => clean()
-          .then(() => reject(new Error('Unknown error.')));
-        closeTimeout = setTimeout(
-          () => clean()
-            .then(() => {
-              isConnectionDown = true;
-              store.commit('setOffline', true);
-              store.commit('updateLastOfflineCheck');
-              reject(new Error('You are offline.'));
-            }),
-          networkTimeout,
-        );
-      } else {
-        closeTimeout = setTimeout(
-          () => clean()
-            .then(() => reject(new Error('Timeout.'))),
-          oauth2AuthorizationTimeout,
-        );
-      }
-
-      msgHandler = event => event.source === wnd && event.origin === utils.origin && clean()
-        .then(() => {
-          const data = utils.parseQueryParams(`${event.data}`.slice(1));
-          if (data.error || data.state !== state) {
-            console.error(data); // eslint-disable-line no-console
-            reject(new Error('Could not get required authorization.'));
-          } else {
-            resolve({
-              accessToken: data.access_token,
-              code: data.code,
-              idToken: data.id_token,
-              expiresIn: data.expires_in,
-            });
+        msgHandler = (event) => {
+          if (event.source === wnd && event.origin === utils.origin) {
+            const data = utils.parseQueryParams(`${event.data}`.slice(1));
+            if (data.error || data.state !== state) {
+              console.error(data); // eslint-disable-line no-console
+              reject(new Error('Could not get required authorization.'));
+            } else {
+              resolve({
+                accessToken: data.access_token,
+                code: data.code,
+                idToken: data.id_token,
+                expiresIn: data.expires_in,
+              });
+            }
           }
-        });
+        };
 
-      window.addEventListener('message', msgHandler);
-      if (!silent) {
-        checkClosedInterval = setInterval(() => wnd.closed && clean()
-          .then(() => reject(new Error('Authorize window was closed.'))), 250);
+        window.addEventListener('message', msgHandler);
+        if (!silent) {
+          checkClosedInterval = setInterval(() => {
+            if (wnd.closed) {
+              reject(new Error('Authorize window was closed.'));
+            }
+          }, 250);
+        }
+      });
+    } finally {
+      clearInterval(checkClosedInterval);
+      if (!silent && !wnd.closed) {
+        wnd.close();
       }
-    });
+      if (iframeElt) {
+        document.body.removeChild(iframeElt);
+      }
+      clearTimeout(closeTimeout);
+      window.removeEventListener('message', msgHandler);
+    }
   },
-  request(configParam, offlineCheck = false) {
+  async request(configParam, offlineCheck = false) {
     let retryAfter = 500; // 500 ms
     const maxRetryAfter = 10 * 1000; // 10 sec
     const config = Object.assign({}, configParam);
@@ -198,101 +213,84 @@ export default {
       config.headers['Content-Type'] = 'application/json';
     }
 
-    function parseHeaders(xhr) {
-      const pairs = xhr.getAllResponseHeaders().trim().split('\n');
-      return pairs.reduce((headers, header) => {
-        const split = header.trim().split(':');
-        const key = split.shift().trim().toLowerCase();
-        const value = split.join(':').trim();
-        headers[key] = value;
-        return headers;
-      }, {});
-    }
-
-    function isRetriable(err) {
-      if (err.status === 403) {
-        const googleReason = ((((err.body || {}).error || {}).errors || [])[0] || {}).reason;
-        return googleReason === 'rateLimitExceeded' || googleReason === 'userRateLimitExceeded';
-      }
-      return err.status === 429 || (err.status >= 500 && err.status < 600);
-    }
-
-    const attempt =
-      () => new Promise((resolve, reject) => {
-        if (offlineCheck) {
-          store.commit('updateLastOfflineCheck');
-        }
-        const xhr = new window.XMLHttpRequest();
-        xhr.withCredentials = config.withCredentials || false;
-        let timeoutId;
-
-        xhr.onload = () => {
+    const attempt = async () => {
+      try {
+        await new Promise((resolve, reject) => {
           if (offlineCheck) {
-            isConnectionDown = false;
+            store.commit('updateLastOfflineCheck');
           }
-          clearTimeout(timeoutId);
-          const result = {
-            status: xhr.status,
-            headers: parseHeaders(xhr),
-            body: config.blob ? xhr.response : xhr.responseText,
-          };
-          if (!config.raw && !config.blob) {
-            try {
-              result.body = JSON.parse(result.body);
-            } catch (e) {
-              // ignore
+          const xhr = new window.XMLHttpRequest();
+          xhr.withCredentials = config.withCredentials || false;
+          let timeoutId;
+
+          xhr.onload = () => {
+            if (offlineCheck) {
+              isConnectionDown = false;
             }
-          }
-          if (result.status >= 200 && result.status < 300) {
-            resolve(result);
-            return;
-          }
-          reject(result);
-        };
+            clearTimeout(timeoutId);
+            const result = {
+              status: xhr.status,
+              headers: parseHeaders(xhr),
+              body: config.blob ? xhr.response : xhr.responseText,
+            };
+            if (!config.raw && !config.blob) {
+              try {
+                result.body = JSON.parse(result.body);
+              } catch (e) {
+                // ignore
+              }
+            }
+            if (result.status >= 200 && result.status < 300) {
+              resolve(result);
+              return;
+            }
+            reject(result);
+          };
 
-        xhr.onerror = () => {
-          clearTimeout(timeoutId);
-          if (offlineCheck) {
-            isConnectionDown = true;
-            store.commit('setOffline', true);
-            reject(new Error('You are offline.'));
-          } else {
-            reject(new Error('Network request failed.'));
-          }
-        };
+          xhr.onerror = () => {
+            clearTimeout(timeoutId);
+            if (offlineCheck) {
+              isConnectionDown = true;
+              store.commit('setOffline', true);
+              reject(new Error('You are offline.'));
+            } else {
+              reject(new Error('Network request failed.'));
+            }
+          };
 
-        timeoutId = setTimeout(() => {
-          xhr.abort();
-          if (offlineCheck) {
-            isConnectionDown = true;
-            store.commit('setOffline', true);
-            reject(new Error('You are offline.'));
-          } else {
-            reject(new Error('Network request timeout.'));
-          }
-        }, config.timeout);
+          timeoutId = setTimeout(() => {
+            xhr.abort();
+            if (offlineCheck) {
+              isConnectionDown = true;
+              store.commit('setOffline', true);
+              reject(new Error('You are offline.'));
+            } else {
+              reject(new Error('Network request timeout.'));
+            }
+          }, config.timeout);
 
-        const url = utils.addQueryParams(config.url, config.params);
-        xhr.open(config.method || 'GET', url);
-        Object.entries(config.headers).forEach(([key, value]) =>
-          value && xhr.setRequestHeader(key, `${value}`));
-        if (config.blob) {
-          xhr.responseType = 'blob';
-        }
-        xhr.send(config.body || null);
-      })
-        .catch((err) => {
-          // Try again later in case of retriable error
-          if (isRetriable(err) && retryAfter < maxRetryAfter) {
-            return new Promise((resolve) => {
-              setTimeout(resolve, retryAfter);
-              // Exponential backoff
-              retryAfter *= 2;
-            })
-              .then(attempt);
+          const url = utils.addQueryParams(config.url, config.params);
+          xhr.open(config.method || 'GET', url);
+          Object.entries(config.headers).forEach(([key, value]) =>
+            value && xhr.setRequestHeader(key, `${value}`));
+          if (config.blob) {
+            xhr.responseType = 'blob';
           }
-          throw err;
+          xhr.send(config.body || null);
         });
+      } catch (err) {
+        // Try again later in case of retriable error
+        if (isRetriable(err) && retryAfter < maxRetryAfter) {
+          await new Promise((resolve) => {
+            setTimeout(resolve, retryAfter);
+            // Exponential backoff
+            retryAfter *= 2;
+          });
+          attempt();
+        }
+        throw err;
+      }
+    };
 
     return attempt();
   },

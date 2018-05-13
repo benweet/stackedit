@@ -29,20 +29,18 @@ export default {
     },
   },
   methods: {
-    sponsor() {
-      Promise.resolve()
-        .then(() => !this.$store.getters['workspace/sponsorToken'] &&
-          // If user has to sign in
-          this.$store.dispatch('modal/signInForSponsorship', {
-            onResolve: () => googleHelper.signin()
-              .then(() => syncSvc.requestSync()),
-          }))
-        .then(() => {
-          if (!this.$store.getters.isSponsor) {
-            this.$store.dispatch('modal/open', 'sponsor');
-          }
-        })
-        .catch(() => { /* Cancel */ });
+    async sponsor() {
+      try {
+        if (!this.$store.getters['workspace/sponsorToken']) {
+          // User has to sign in
+          await this.$store.dispatch('modal/signInForSponsorship');
+          await googleHelper.signin();
+          syncSvc.requestSync();
+        }
+        if (!this.$store.getters.isSponsor) {
+          await this.$store.dispatch('modal/open', 'sponsor');
+        }
+      } catch (e) { /* cancel */ }
     },
   },
 };

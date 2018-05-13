@@ -2,6 +2,7 @@ import providerRegistry from './providerRegistry';
 import emptyContent from '../../../data/emptyContent';
 import utils from '../../utils';
 import store from '../../../store';
+import fileSvc from '../../fileSvc';
 
 const dataExtractor = /<!--stackedit_data:([A-Za-z0-9+/=\s]+)-->$/;
 
@@ -66,6 +67,14 @@ export default class Provider {
     return utils.addItemHash(result);
   }
 
+  static getContentSyncData(fileId) {
+    const syncData = store.getters['data/syncDataByItemId'][`${fileId}/content`];
+    if (!syncData) {
+      throw new Error(); // No need for a proper error message.
+    }
+    return syncData;
+  }
+
   /**
    * Find and open a file with location that meets the criteria
    */
@@ -73,13 +82,13 @@ export default class Provider {
     const location = utils.search(allLocations, criteria);
     if (location) {
       // Found one, open it if it exists
-      const file = store.state.file.itemMap[location.fileId];
-      if (file) {
-        store.commit('file/setCurrentId', file.id);
+      const item = store.state.file.itemMap[location.fileId];
+      if (item) {
+        store.commit('file/setCurrentId', item.id);
         // If file is in the trash, restore it
-        if (file.parentId === 'trash') {
-          store.commit('file/patchItem', {
-            ...file,
+        if (item.parentId === 'trash') {
+          fileSvc.setOrPatchItem({
+            ...item,
             parentId: null,
           });
         }

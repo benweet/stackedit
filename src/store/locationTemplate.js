@@ -12,22 +12,22 @@ export default (empty) => {
 
   module.getters = {
     ...module.getters,
-    groupedByFileId: (state, getters) => {
+    groupedByFileId: (state, { items }) => {
       const groups = {};
-      getters.items.forEach(item => addToGroup(groups, item));
+      items.forEach(item => addToGroup(groups, item));
       return groups;
     },
-    filteredGroupedByFileId: (state, getters) => {
+    filteredGroupedByFileId: (state, { items }) => {
       const groups = {};
-      getters.items.filter((item) => {
+      items.filter((item) => {
         // Filter items that we can't use
         const provider = providerRegistry.providers[item.providerId];
         return provider && provider.getToken(item);
       }).forEach(item => addToGroup(groups, item));
       return groups;
     },
-    current: (state, getters, rootState, rootGetters) => {
-      const locations = getters.filteredGroupedByFileId[rootGetters['file/current'].id] || [];
+    current: (state, { filteredGroupedByFileId }, rootState, rootGetters) => {
+      const locations = filteredGroupedByFileId[rootGetters['file/current'].id] || [];
       return locations.map((location) => {
         const provider = providerRegistry.providers[location.providerId];
         return {

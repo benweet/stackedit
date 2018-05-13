@@ -101,8 +101,6 @@ const openSyncModal = (token, type) => store.dispatch('modal/open', {
   token,
 }).then(syncLocation => syncSvc.createSyncLocation(syncLocation));
 
-const onCancel = () => {};
-
 export default {
   components: {
     MenuEntry,
@@ -147,66 +145,79 @@ export default {
     manageSync() {
       return this.$store.dispatch('modal/open', 'syncManagement');
     },
-    addGoogleDriveAccount() {
-      return this.$store.dispatch('modal/open', {
-        type: 'googleDriveAccount',
-        onResolve: () => googleHelper.addDriveAccount(!store.getters['data/localSettings'].googleDriveRestrictedAccess),
-      })
-        .catch(onCancel);
+    async addGoogleDriveAccount() {
+      try {
+        await this.$store.dispatch('modal/open', { type: 'googleDriveAccount' });
+        await googleHelper.addDriveAccount(!store.getters['data/localSettings'].googleDriveRestrictedAccess);
+      } catch (e) { /* cancel */ }
     },
-    addDropboxAccount() {
-      return this.$store.dispatch('modal/open', {
-        type: 'dropboxAccount',
-        onResolve: () => dropboxHelper.addAccount(!store.getters['data/localSettings'].dropboxRestrictedAccess),
-      })
-        .catch(onCancel);
+    async addDropboxAccount() {
+      try {
+        await this.$store.dispatch('modal/open', { type: 'dropboxAccount' });
+        await dropboxHelper.addAccount(!store.getters['data/localSettings'].dropboxRestrictedAccess);
+      } catch (e) { /* cancel */ }
     },
-    addGithubAccount() {
-      return this.$store.dispatch('modal/open', {
-        type: 'githubAccount',
-        onResolve: () => githubHelper.addAccount(store.getters['data/localSettings'].githubRepoFullAccess),
-      })
-        .catch(onCancel);
+    async addGithubAccount() {
+      try {
+        await this.$store.dispatch('modal/open', { type: 'githubAccount' });
+        await githubHelper.addAccount(store.getters['data/localSettings'].githubRepoFullAccess);
+      } catch (e) { /* cancel */ }
     },
-    openGoogleDrive(token) {
-      return googleHelper.openPicker(token, 'doc')
-        .then(files => this.$store.dispatch(
-          'queue/enqueue',
-          () => googleDriveProvider.openFiles(token, files),
-        ));
+    async openGoogleDrive(token) {
+      const files = await googleHelper.openPicker(token, 'doc');
+      this.$store.dispatch(
+        'queue/enqueue',
+        () => googleDriveProvider.openFiles(token, files),
+      );
     },
-    openDropbox(token) {
-      return dropboxHelper.openChooser(token)
-        .then(paths => this.$store.dispatch(
-          'queue/enqueue',
-          () => dropboxProvider.openFiles(token, paths),
-        ));
+    async openDropbox(token) {
+      const paths = await dropboxHelper.openChooser(token);
+      this.$store.dispatch(
+        'queue/enqueue',
+        () => dropboxProvider.openFiles(token, paths),
+      );
     },
-    saveGoogleDrive(token) {
-      return openSyncModal(token, 'googleDriveSave')
-        .catch(onCancel);
+    async saveGoogleDrive(token) {
+      try {
+        await openSyncModal(token, 'googleDriveSave');
+      } catch (e) {
+        // Cancel
+      }
     },
-    saveDropbox(token) {
-      return openSyncModal(token, 'dropboxSave')
-        .catch(onCancel);
+    async saveDropbox(token) {
+      try {
+        await openSyncModal(token, 'dropboxSave');
+      } catch (e) {
+        // Cancel
+      }
     },
-    openGithub(token) {
-      return store.dispatch('modal/open', {
-        type: 'githubOpen',
-        token,
-      })
-        .then(syncLocation => this.$store.dispatch(
+    async openGithub(token) {
+      try {
+        const syncLocation = await store.dispatch('modal/open', {
+          type: 'githubOpen',
+          token,
+        });
+        this.$store.dispatch(
           'queue/enqueue',
           () => githubProvider.openFile(token, syncLocation),
-        ));
+        );
+      } catch (e) {
+        // Cancel
+      }
     },
-    saveGithub(token) {
-      return openSyncModal(token, 'githubSave')
-        .catch(onCancel);
+    async saveGithub(token) {
+      try {
+        await openSyncModal(token, 'githubSave');
+      } catch (e) {
+        // Cancel
+      }
     },
-    saveGist(token) {
-      return openSyncModal(token, 'gistSync')
-        .catch(onCancel);
+    async saveGist(token) {
+      try {
+        await openSyncModal(token, 'gistSync');
+      } catch (e) {
+        // Cancel
+      }
     },
   },
 };

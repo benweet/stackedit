@@ -10,11 +10,15 @@ const request = (token, options) => networkSvc.request({
     ...options.headers || {},
     Authorization: `Bearer ${token.accessToken}`,
   },
-});
+})
+  .then(res => res.body);
 
 export default {
-  startOauth2(sub = null, silent = false) {
-    return networkSvc.startOauth2(
+  /**
+   * https://developer.wordpress.com/docs/oauth2/
+   */
+  async startOauth2(sub = null, silent = false) {
+    const { accessToken, expiresIn } = await networkSvc.startOauth2(
       'https://public-api.wordpress.com/oauth2/authorize',
       {
         client_id: clientId,
@@ -22,49 +26,49 @@ export default {
         scope: 'global',
       },
       silent,
-    )
-      // Call the user info endpoint
-      .then(data => request({ accessToken: data.accessToken }, {
-        url: 'https://public-api.wordpress.com/rest/v1.1/me',
-      })
-        .then((res) => {
-          // Check the returned sub consistency
-          if (sub && `${res.body.ID}` !== sub) {
-            throw new Error('WordPress account ID not expected.');
-          }
-          // Build token object including scopes and sub
-          const token = {
-            accessToken: data.accessToken,
-            expiresOn: Date.now() + (data.expiresIn * 1000),
-            name: res.body.display_name,
-            sub: `${res.body.ID}`,
-          };
-          // Add token to wordpressTokens
-          store.dispatch('data/setWordpressToken', token);
-          return token;
-        }));
+    );
+
+    // Call the user info endpoint
+    const body = await request({ accessToken }, {
+      url: 'https://public-api.wordpress.com/rest/v1.1/me',
+    });
+
+    // Check the returned sub consistency
+    if (sub && `${body.ID}` !== sub) {
+      throw new Error('WordPress account ID not expected.');
+    }
+    // Build token object including scopes and sub
+    const token = {
+      accessToken,
+      expiresOn: Date.now() + (expiresIn * 1000),
+      name: body.display_name,
+      sub: `${body.ID}`,
+    };
+    // Add token to wordpressTokens
+    store.dispatch('data/setWordpressToken', token);
+    return token;
   },
-  refreshToken(token) {
+  async refreshToken(token) {
     const { sub } = token;
     const lastToken = store.getters['data/wordpressTokens'][sub];
 
-    return Promise.resolve()
-      .then(() => {
-        if (lastToken.expiresOn > Date.now() + tokenExpirationMargin) {
-          return lastToken;
-        }
-        // Existing token is going to expire.
-        // Try to get a new token in background
-        return store.dispatch('modal/providerRedirection', {
-          providerName: 'WordPress',
-          onResolve: () => this.startOauth2(sub),
-        });
-      });
+    if (lastToken.expiresOn > Date.now() + tokenExpirationMargin) {
+      return lastToken;
+    }
+    // Existing token is going to expire.
+    // Try to get a new token in background
+    await store.dispatch('modal/providerRedirection', { providerName: 'WordPress' });
+    return this.startOauth2(sub);
   },
   addAccount(fullAccess = false) {
     return this.startOauth2(fullAccess);
   },
-  uploadPost(
+
+  /**
+   * https://developer.wordpress.com/docs/api/1.2/post/sites/%24site/posts/new/
+   * https://developer.wordpress.com/docs/api/1.2/post/sites/%24site/posts/%24post_ID/
+   */
+  async uploadPost({
     token,
     domain,
     siteId,
@@ -78,23 +82,22 @@ export default {
     featuredImage,
     status,
     date,
-  ) {
-    return this.refreshToken(token)
-      .then(refreshedToken => request(refreshedToken, {
-        method: 'POST',
-        url: `https://public-api.wordpress.com/rest/v1.2/sites/${siteId || domain}/posts/${postId || 'new'}`,
-        body: {
-          content,
-          title,
-          tags,
-          categories,
-          excerpt,
-          author,
-          featured_image: featuredImage || '',
-          status,
-          date: date && date.toISOString(),
-        },
-      })
-        .then(res => res.body));
+  }) {
+    const refreshedToken = await this.refreshToken(token);
+    await request(refreshedToken, {
+      method: 'POST',
+      url: `https://public-api.wordpress.com/rest/v1.2/sites/${siteId || domain}/posts/${postId || 'new'}`,
+      body: {
+        content,
+        title,
+        tags,
+        categories,
+        excerpt,
+        author,
+        featured_image: featuredImage || '',
+        status,
+        date: date && date.toISOString(),
+      },
+    });
   },
 };

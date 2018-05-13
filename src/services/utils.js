@@ -224,6 +224,14 @@ export default {
     };
     return runWithNextValue();
   },
+  someResult(values, func) {
+    let result;
+    values.some((value) => {
+      result = func(value);
+      return result;
+    });
+    return result;
+  },
   parseQueryParams,
   addQueryParams(url = '', params = {}, hash = false) {
     const keys = Object.keys(params).filter(key => params[key] != null);

@@ -92,20 +92,19 @@ export default {
       return !!this.$store.getters['modal/config'];
     },
   },
-  created() {
-    syncSvc.init()
-      .then(() => {
-        networkSvc.init();
-        sponsorSvc.init();
-        this.ready = true;
-        tempFileSvc.setReady();
-      })
-      .catch((err) => {
-        if (err && err.message !== 'reload') {
-          console.error(err); // eslint-disable-line no-console
-          this.$store.dispatch('notification/error', err);
-        }
-      });
+  async created() {
+    try {
+      await syncSvc.init();
+      await networkSvc.init();
+      await sponsorSvc.init();
+      this.ready = true;
+      tempFileSvc.setReady();
+    } catch (err) {
+      if (err && err.message !== 'reload') {
+        console.error(err); // eslint-disable-line no-console
+        this.$store.dispatch('notification/error', err);
+      }
+    }
   },
 };
 </script>

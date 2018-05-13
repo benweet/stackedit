@@ -120,7 +120,7 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
   /**
    * Refresh the preview with the result of `convert()`
    */
-  refreshPreview() {
+  async refreshPreview() {
     const sectionDescList = [];
     let sectionPreviewElt;
     let sectionTocElt;
@@ -222,10 +222,10 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
       img.onerror = resolve;
       img.src = imgElt.src;
     }));
+    await Promise.all(loadedPromises);
 
-    Promise.all(loadedPromises)
-      // Debounce if sections have already been measured
-      .then(() => this.measureSectionDimensions(!!this.previewCtxMeasured));
+    // Debounce if sections have already been measured
+    this.measureSectionDimensions(!!this.previewCtxMeasured);
   },
 
   /**

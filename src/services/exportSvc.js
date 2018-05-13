@@ -42,86 +42,83 @@ export default {
   /**
    * Apply the template to the file content
    */
-  applyTemplate(fileId, template = {
+  async applyTemplate(fileId, template = {
     value: '{{{files.0.content.text}}}',
     helpers: '',
   }, pdf = false) {
     const file = store.state.file.itemMap[fileId];
-    return localDbSvc.loadItem(`${fileId}/content`)
-      .then((content) => {
-        const properties = utils.computeProperties(content.properties);
-        const options = extensionSvc.getOptions(properties);
-        const converter = markdownConversionSvc.createConverter(options, true);
-        const parsingCtx = markdownConversionSvc.parseSections(converter, content.text);
-        const conversionCtx = markdownConversionSvc.convert(parsingCtx);
-        const html = conversionCtx.htmlSectionList.map(htmlSanitizer.sanitizeHtml).join('');
-        containerElt.innerHTML = html;
-        extensionSvc.sectionPreview(containerElt, options);
+    const content = await localDbSvc.loadItem(`${fileId}/content`);
+    const properties = utils.computeProperties(content.properties);
+    const options = extensionSvc.getOptions(properties);
+    const converter = markdownConversionSvc.createConverter(options, true);
+    const parsingCtx = markdownConversionSvc.parseSections(converter, content.text);
+    const conversionCtx = markdownConversionSvc.convert(parsingCtx);
+    const html = conversionCtx.htmlSectionList.map(htmlSanitizer.sanitizeHtml).join('');
+    containerElt.innerHTML = html;
+    extensionSvc.sectionPreview(containerElt, options);
 
-        // Unwrap tables
-        containerElt.querySelectorAll('.table-wrapper').cl_each((wrapperElt) => {
-          while (wrapperElt.firstChild) {
-            wrapperElt.parentNode.insertBefore(wrapperElt.firstChild, wrapperElt.nextSibling);
-          }
-          wrapperElt.parentNode.removeChild(wrapperElt);
-        });
+    // Unwrap tables
+    containerElt.querySelectorAll('.table-wrapper').cl_each((wrapperElt) => {
+      while (wrapperElt.firstChild) {
+        wrapperElt.parentNode.insertBefore(wrapperElt.firstChild, wrapperElt.nextSibling);
+      }
+      wrapperElt.parentNode.removeChild(wrapperElt);
+    });
 
-        // Make TOC
-        const headings = containerElt.querySelectorAll('h1,h2,h3,h4,h5,h6').cl_map(headingElt => ({
-          title: headingElt.textContent,
-          anchor: headingElt.id,
-          level: parseInt(headingElt.tagName.slice(1), 10),
-          children: [],
-        }));
-        const toc = groupHeadings(headings);
-        const view = {
-          pdf,
-          files: [{
-            name: file.name,
-            content: {
-              text: content.text,
-              properties,
-              yamlProperties: content.properties,
-              html: containerElt.innerHTML,
-              toc,
-            },
-          }],
-        };
-        containerElt.innerHTML = '';
+    // Make TOC
+    const headings = containerElt.querySelectorAll('h1,h2,h3,h4,h5,h6').cl_map(headingElt => ({
+      title: headingElt.textContent,
+      anchor: headingElt.id,
+      level: parseInt(headingElt.tagName.slice(1), 10),
+      children: [],
+    }));
+    const toc = groupHeadings(headings);
+    const view = {
+      pdf,
+      files: [{
+        name: file.name,
+        content: {
+          text: content.text,
+          properties,
+          yamlProperties: content.properties,
+          html: containerElt.innerHTML,
+          toc,
+        },
+      }],
+    };
+    containerElt.innerHTML = '';
 
-        // Run template conversion in a Worker to prevent attacks from helpers
-        const worker = new TemplateWorker();
-        return new Promise((resolve, reject) => {
-          const timeoutId = setTimeout(() => {
-            worker.terminate();
-            reject(new Error('Template generation timeout.'));
-          }, 10000);
-          worker.addEventListener('message', (e) => {
-            clearTimeout(timeoutId);
-            worker.terminate();
-            // e.data can contain unsafe data if helpers attempts to call postMessage
-            const [err, result] = e.data;
-            if (err) {
-              reject(new Error(`${err}`));
-            } else {
-              resolve(`${result}`);
-            }
-          });
-          worker.postMessage([template.value, view, template.helpers]);
-        });
+    // Run template conversion in a Worker to prevent attacks from helpers
+    const worker = new TemplateWorker();
+    return new Promise((resolve, reject) => {
+      const timeoutId = setTimeout(() => {
+        worker.terminate();
+        reject(new Error('Template generation timeout.'));
+      }, 10000);
+      worker.addEventListener('message', (e) => {
+        clearTimeout(timeoutId);
+        worker.terminate();
+        // e.data can contain unsafe data if helpers attempts to call postMessage
+        const [err, result] = e.data;
+        if (err) {
+          reject(new Error(`${err}`));
+        } else {
+          resolve(`${result}`);
+        }
       });
+      worker.postMessage([template.value, view, template.helpers]);
+    });
   },
+
   /**
    * Export a file to disk.
    */
-  exportToDisk(fileId, type, template) {
+  async exportToDisk(fileId, type, template) {
     const file = store.state.file.itemMap[fileId];
-    return this.applyTemplate(fileId, template)
-      .then((html) => {
-        const blob = new Blob([html], {
-          type: 'text/plain;charset=utf-8',
-        });
-        FileSaver.saveAs(blob, `${file.name}.${type}`);
-      });
+    const html = await this.applyTemplate(fileId, template);
+    const blob = new Blob([html], {
+      type: 'text/plain;charset=utf-8',
+    });
+    FileSaver.saveAs(blob, `${file.name}.${type}`);
   },
 };

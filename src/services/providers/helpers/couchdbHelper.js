@@ -2,31 +2,37 @@ import networkSvc from '../../networkSvc';
 import utils from '../../utils';
 import store from '../../../store';
 
-const request = (token, options = {}) => {
+const request = async (token, options = {}) => {
   const baseUrl = `${token.dbUrl}/`;
   const getLastToken = () => store.getters['data/couchdbTokens'][token.sub];
 
-  const ifUnauthorized = cb => (err) => {
+  const assertUnauthorized = (err) => {
     if (err.status !== 401) {
       throw err;
     }
-    return cb(err);
   };
 
-  const onUnauthorized = () => networkSvc.request({
-    method: 'POST',
-    url: utils.resolveUrl(baseUrl, '../_session'),
-    withCredentials: true,
-    body: {
-      name: getLastToken().name,
-      password: getLastToken().password,
-    },
-  })
-    .catch(ifUnauthorized(() => store.dispatch('modal/open', {
-      type: 'couchdbCredentials',
-      token: getLastToken(),
-    })
-      .then(onUnauthorized)));
+  const onUnauthorized = async () => {
+    try {
+      const { name, password } = getLastToken();
+      await networkSvc.request({
+        method: 'POST',
+        url: utils.resolveUrl(baseUrl, '../_session'),
+        withCredentials: true,
+        body: {
+          name,
+          password,
+        },
+      });
+    } catch (err) {
+      assertUnauthorized(err);
+      await store.dispatch('modal/open', {
+        type: 'couchdbCredentials',
+        token: getLastToken(),
+      });
+      await onUnauthorized();
+    }
+  };
 
   const config = {
     ...options,
@@ -38,55 +44,75 @@ const request = (token, options = {}) => {
     withCredentials: true,
   };
 
-  return networkSvc.request(config)
-    .catch(ifUnauthorized(() => onUnauthorized()
-      .then(() => networkSvc.request(config))))
-    .then(res => res.body)
-    .catch((err) => {
-      if (err.status === 409) {
-        throw new Error('TOO_LATE');
-      }
-      throw err;
-    });
+  try {
+    let res;
+    try {
+      res = await networkSvc.request(config);
+    } catch (err) {
+      assertUnauthorized(err);
+      await onUnauthorized();
+      res = await networkSvc.request(config);
+    }
+    return res.body;
+  } catch (err) {
+    if (err.status === 409) {
+      throw new Error('TOO_LATE');
+    }
+    throw err;
+  }
 };
 
 export default {
+
+  /**
+   * http://docs.couchdb.org/en/2.1.1/api/database/common.html#db
+   */
   getDb(token) {
     return request(token);
   },
-  getChanges(token, lastSeq) {
+
+  /**
+   * http://docs.couchdb.org/en/2.1.1/api/database/changes.html#db-changes
+   */
+  async getChanges(token, lastSeq) {
     const result = {
       changes: [],
+      lastSeq,
     };
 
-    const getPage = (since = 0) => request(token, {
-      method: 'GET',
-      path: '_changes',
-      params: {
-        since,
-        include_docs: true,
-        limit: 1000,
-      },
-    })
-      .then((body) => {
-        result.changes = result.changes.concat(body.results);
-        if (body.pending) {
-          return getPage(body.last_seq);
-        }
-        result.lastSeq = body.last_seq;
-        return result;
+    const getPage = async () => {
+      const body = await request(token, {
+        method: 'GET',
+        path: '_changes',
+        params: {
+          since: result.lastSeq || 0,
+          include_docs: true,
+          limit: 1000,
+        },
       });
+      result.changes = [...result.changes, ...body.results];
+      result.lastSeq = body.last_seq;
+      if (body.pending) {
+        return getPage();
+      }
+      return result;
+    };
 
-    return getPage(lastSeq);
+    return getPage();
   },
-  uploadDocument(
+
+  /**
+   * http://docs.couchdb.org/en/2.1.1/api/database/common.html#post--db
+   * http://docs.couchdb.org/en/2.1.1/api/document/common.html#put--db-docid
+   */
+  async uploadDocument({
     token,
     item,
     data = null,
     dataType = null,
     documentId = null,
     rev = null,
-  ) {
+  }) {
     const options = {
       method: 'POST',
       body: { item, time: Date.now() },
@@ -110,34 +136,48 @@ export default {
     }
     return request(token, options);
   },
-  removeDocument(token, documentId, rev) {
+
+  /**
+   * http://docs.couchdb.org/en/2.1.1/api/document/common.html#delete--db-docid
+   */
+  async removeDocument(token, documentId, rev) {
     return request(token, {
       method: 'DELETE',
       path: documentId,
       params: { rev },
     });
   },
-  retrieveDocument(token, documentId, rev) {
+
+  /**
+   * http://docs.couchdb.org/en/2.1.1/api/document/common.html#get--db-docid
+   */
+  async retrieveDocument(token, documentId, rev) {
     return request(token, {
       path: documentId,
       params: { rev },
     });
   },
-  retrieveDocumentWithAttachments(token, documentId, rev) {
-    return request(token, {
+
+  /**
+   * http://docs.couchdb.org/en/2.1.1/api/document/common.html#get--db-docid
+   */
+  async retrieveDocumentWithAttachments(token, documentId, rev) {
+    const body = await request(token, {
       path: documentId,
       params: { attachments: true, rev },
-    })
-      .then((body) => {
-        body.attachments = {};
-        // eslint-disable-next-line no-underscore-dangle
-        Object.entries(body._attachments).forEach(([name, attachment]) => {
-          body.attachments[name] = utils.decodeBase64(attachment.data);
-        });
-        return body;
-      });
+    });
+    body.attachments = {};
+    // eslint-disable-next-line no-underscore-dangle
+    Object.entries(body._attachments).forEach(([name, attachment]) => {
+      body.attachments[name] = utils.decodeBase64(attachment.data);
+    });
+    return body;
   },
-  retrieveDocumentWithRevisions(token, documentId) {
+
+  /**
+   * http://docs.couchdb.org/en/2.1.1/api/document/common.html#get--db-docid
+   */
+  async retrieveDocumentWithRevisions(token, documentId) {
     return request(token, {
       path: documentId,
       params: {

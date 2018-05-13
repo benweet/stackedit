@@ -15,39 +15,38 @@ export default new Provider({
     const token = this.getToken(location);
     return `${location.filename} — ${location.gistId} — ${token.name}`;
   },
-  downloadContent(token, syncLocation) {
-    return githubHelper.downloadGist(token, syncLocation.gistId, syncLocation.filename)
-      .then(content => Provider.parseContent(content, `${syncLocation.fileId}/content`));
+  async downloadContent(token, syncLocation) {
+    const content = await githubHelper.downloadGist({
+      ...syncLocation,
+      token,
+    });
+    return Provider.parseContent(content, `${syncLocation.fileId}/content`);
   },
-  uploadContent(token, content, syncLocation) {
+  async uploadContent(token, content, syncLocation) {
     const file = store.state.file.itemMap[syncLocation.fileId];
     const description = utils.sanitizeName(file && file.name);
-    return githubHelper.uploadGist(
+    const gist = await githubHelper.uploadGist({
+      ...syncLocation,
       token,
       description,
-      syncLocation.filename,
-      Provider.serializeContent(content),
-      syncLocation.isPublic,
-      syncLocation.gistId,
-    )
-      .then(gist => ({
-        ...syncLocation,
-        gistId: gist.id,
-      }));
+      content: Provider.serializeContent(content),
+    });
+    return {
+      ...syncLocation,
+      gistId: gist.id,
+    };
   },
-  publish(token, html, metadata, publishLocation) {
-    return githubHelper.uploadGist(
+  async publish(token, html, metadata, publishLocation) {
+    const gist = await githubHelper.uploadGist({
+      ...publishLocation,
       token,
-      metadata.title,
-      publishLocation.filename,
-      html,
-      publishLocation.isPublic,
-      publishLocation.gistId,
-    )
-      .then(gist => ({
-        ...publishLocation,
-        gistId: gist.id,
-      }));
+      description: metadata.title,
+      content: html,
+    });
+    return {
+      ...publishLocation,
+      gistId: gist.id,
+    };
   },
   makeLocation(token, filename, isPublic, gistId) {
     return {

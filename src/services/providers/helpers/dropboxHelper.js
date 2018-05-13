@@ -1,8 +1,6 @@
 import networkSvc from '../../networkSvc';
 import store from '../../../store';
 
-let Dropbox;
-
 const getAppKey = (fullAccess) => {
   if (fullAccess) {
     return 'lq6mwopab8wskas';
@@ -22,89 +20,105 @@ const request = (token, options, args) => networkSvc.request({
 });
 
 export default {
-  startOauth2(fullAccess, sub = null, silent = false) {
-    return networkSvc.startOauth2(
+
+  /**
+   * https://www.dropbox.com/developers/documentation/http/documentation#oauth2-authorize
+   */
+  async startOauth2(fullAccess, sub = null, silent = false) {
+    const { accessToken } = await networkSvc.startOauth2(
       'https://www.dropbox.com/oauth2/authorize',
       {
         client_id: getAppKey(fullAccess),
         response_type: 'token',
       },
       silent,
-    )
-      // Call the user info endpoint
-      .then(({ accessToken }) => request({ accessToken }, {
-        method: 'POST',
-        url: 'https://api.dropboxapi.com/2/users/get_current_account',
-      })
-        .then((res) => {
-          // Check the returned sub consistency
-          if (sub && `${res.body.account_id}` !== sub) {
-            throw new Error('Dropbox account ID not expected.');
-          }
-          // Build token object including scopes and sub
-          const token = {
-            accessToken,
-            name: res.body.name.display_name,
-            sub: `${res.body.account_id}`,
-            fullAccess,
-          };
-          // Add token to dropboxTokens
-          store.dispatch('data/setDropboxToken', token);
-          return token;
-        }));
-  },
-  loadClientScript() {
-    if (Dropbox) {
-      return Promise.resolve();
+    );
+
+    // Call the user info endpoint
+    const { body } = await request({ accessToken }, {
+      method: 'POST',
+      url: 'https://api.dropboxapi.com/2/users/get_current_account',
+    });
+
+    // Check the returned sub consistency
+    if (sub && `${body.account_id}` !== sub) {
+      throw new Error('Dropbox account ID not expected.');
     }
-    return networkSvc.loadScript('https://www.dropbox.com/static/api/2/dropins.js')
-      .then(() => {
-        ({ Dropbox } = window);
-      });
+
+    // Build token object including scopes and sub
+    const token = {
+      accessToken,
+      name: body.name.display_name,
+      sub: `${body.account_id}`,
+      fullAccess,
+    };
+
+    // Add token to dropboxTokens
+    store.dispatch('data/setDropboxToken', token);
+    return token;
   },
   addAccount(fullAccess = false) {
     return this.startOauth2(fullAccess);
   },
-  uploadFile(token, path, content, fileId) {
-    return request(token, {
+
+  /**
+   * https://www.dropbox.com/developers/documentation/http/documentation#files-upload
+   */
+  async uploadFile({
+    token,
+    path,
+    content,
+    fileId,
+  }) {
+    return (await request(token, {
       method: 'POST',
       url: 'https://content.dropboxapi.com/2/files/upload',
       body: content,
     }, {
       path: fileId || path,
       mode: 'overwrite',
-    })
-      .then(res => res.body);
+    })).body;
   },
-  downloadFile(token, path, fileId) {
-    return request(token, {
+
+  /**
+   * https://www.dropbox.com/developers/documentation/http/documentation#files-download
+   */
+  async downloadFile({
+    token,
+    path,
+    fileId,
+  }) {
+    const res = await request(token, {
       method: 'POST',
       url: 'https://content.dropboxapi.com/2/files/download',
       raw: true,
     }, {
       path: fileId || path,
-    })
-      .then(res => ({
-        id: JSON.parse(res.headers['dropbox-api-result']).id,
-        content: res.body,
-      }));
+    });
+    return {
+      id: JSON.parse(res.headers['dropbox-api-result']).id,
+      content: res.body,
+    };
   },
-  openChooser(token) {
-    return this.loadClientScript()
-      .then(() => new Promise((resolve) => {
-        Dropbox.appKey = getAppKey(token.fullAccess);
-        Dropbox.choose({
-          multiselect: true,
-          linkType: 'direct',
-          success: (files) => {
-            const paths = files.map((file) => {
-              const path = file.link.replace(/.*\/view\/[^/]*/, '');
-              return decodeURI(path);
-            });
-            resolve(paths);
-          },
-          cancel: () => resolve([]),
-        });
-      }));
+
+  /**
+   * https://www.dropbox.com/developers/chooser
+   */
+  async openChooser(token) {
+    if (!window.Dropbox) {
+      await networkSvc.loadScript('https://www.dropbox.com/static/api/2/dropins.js');
+    }
+    return new Promise((resolve) => {
+      window.Dropbox.appKey = getAppKey(token.fullAccess);
+      window.Dropbox.choose({
+        multiselect: true,
+        linkType: 'direct',
+        success: files => resolve(files.map((file) => {
+          const path = file.link.replace(/.*\/view\/[^/]*/, '');
+          return decodeURI(path);
+        })),
+        cancel: () => resolve([]),
+      });
+    });
   },
 };

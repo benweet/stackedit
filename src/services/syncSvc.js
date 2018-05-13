@@ -50,36 +50,36 @@ const isSyncPossible = () => !store.state.offline &&
 /**
  * Return true if we are the many window, ie we have the lastSyncActivity lock.
  */
-function isSyncWindow() {
+const isSyncWindow = () => {
   const storedLastSyncActivity = getLastStoredSyncActivity();
   return lastSyncActivity === storedLastSyncActivity ||
     Date.now() > inactivityThreshold + storedLastSyncActivity;
-}
+};
 
 /**
  * Return true if auto sync can start, ie if lastSyncActivity is old enough.
  */
-function isAutoSyncReady() {
+const isAutoSyncReady = () => {
   let { autoSyncEvery } = store.getters['data/computedSettings'];
   if (autoSyncEvery < minAutoSyncEvery) {
     autoSyncEvery = minAutoSyncEvery;
   }
   return Date.now() > autoSyncEvery + getLastStoredSyncActivity();
-}
+};
 
 /**
  * Update the lastSyncActivity, assuming we have the lock.
  */
-function setLastSyncActivity() {
+const setLastSyncActivity = () => {
   const currentDate = Date.now();
   lastSyncActivity = currentDate;
   localStorage.setItem(store.getters['workspace/lastSyncActivityKey'], currentDate);
-}
+};
 
 /**
  * Upgrade hashes if syncedContent is from an old version
  */
-function upgradeSyncedContent(syncedContent) {
+const upgradeSyncedContent = (syncedContent) => {
   if (syncedContent.v) {
     return syncedContent;
   }
@@ -100,12 +100,12 @@ function upgradeSyncedContent(syncedContent) {
     syncHistory,
     v: 1,
   };
-}
+};
 
 /**
  * Clean a syncedContent.
  */
-function cleanSyncedContent(syncedContent) {
+const cleanSyncedContent = (syncedContent) => {
   // Clean syncHistory from removed syncLocations
   Object.keys(syncedContent.syncHistory).forEach((syncLocationId) => {
     if (syncLocationId !== 'main' && !store.state.syncLocation.itemMap[syncLocationId]) {
@@ -123,12 +123,12 @@ function cleanSyncedContent(syncedContent) {
         delete syncedContent.historyData[hash];
       }
     });
-}
+};
 
 /**
  * Apply changes retrieved from the main provider. Update sync data accordingly.
  */
-function applyChanges(changes) {
+const applyChanges = (changes) => {
   const storeItemMap = { ...store.getters.allItemMap };
   const syncData = { ...store.getters['data/syncData'] };
   let saveSyncData = false;
@@ -170,12 +170,12 @@ function applyChanges(changes) {
   if (saveSyncData) {
     store.dispatch('data/setSyncData', syncData);
   }
-}
+};
 
 /**
  * Create a sync location by uploading the current file content.
  */
-function createSyncLocation(syncLocation) {
+const createSyncLocation = (syncLocation) => {
   syncLocation.id = utils.uid();
   const currentFile = store.getters['file/current'];
   const fileId = currentFile.id;
@@ -184,29 +184,27 @@ function createSyncLocation(syncLocation) {
   const content = utils.deepCopy(store.getters['content/current']);
   store.dispatch(
     'queue/enqueue',
-    () => {
+    async () => {
       const provider = providerRegistry.providers[syncLocation.providerId];
       const token = provider.getToken(syncLocation);
-      return provider.uploadContent(token, {
+      const syncLocationToStore = await provider.uploadContent(token, {
         ...content,
         history: [content.hash],
-      }, syncLocation)
-        .then(syncLocationToStore => localDbSvc.loadSyncedContent(fileId)
-          .then(() => {
-            const newSyncedContent = utils.deepCopy(upgradeSyncedContent(store.state.syncedContent.itemMap[`${fileId}/syncedContent`]));
-            const newSyncHistoryItem = [];
-            newSyncedContent.syncHistory[syncLocation.id] = newSyncHistoryItem;
-            newSyncHistoryItem[LAST_SEEN] = content.hash;
-            newSyncHistoryItem[LAST_SENT] = content.hash;
-            newSyncedContent.historyData[content.hash] = content;
+      }, syncLocation);
+      await localDbSvc.loadSyncedContent(fileId);
+      const newSyncedContent = utils.deepCopy(upgradeSyncedContent(store.state.syncedContent.itemMap[`${fileId}/syncedContent`]));
+      const newSyncHistoryItem = [];
+      newSyncedContent.syncHistory[syncLocation.id] = newSyncHistoryItem;
+      newSyncHistoryItem[LAST_SEEN] = content.hash;
+      newSyncHistoryItem[LAST_SENT] = content.hash;
+      newSyncedContent.historyData[content.hash] = content;
 
-            store.commit('syncedContent/patchItem', newSyncedContent);
-            store.commit('syncLocation/setItem', syncLocationToStore);
-            store.dispatch('notification/info', `A new synchronized location was added to "${currentFile.name}".`);
-          }));
+      store.commit('syncedContent/patchItem', newSyncedContent);
+      store.commit('syncLocation/setItem', syncLocationToStore);
+      store.dispatch('notification/info', `A new synchronized location was added to "${currentFile.name}".`);
     },
   );
-}
+};
 
 // Prevent from sending new data too long after old data has been fetched
 const tooLateChecker = (timeout) => {
@@ -219,6 +217,34 @@ const tooLateChecker = (timeout) => {
   };
 };
 
+const isTempFile = (fileId) => {
+  if (store.getters['data/syncDataByItemId'][`${fileId}/content`]) {
+    // If file has already been synced, it's not a temp file
+    return false;
+  }
+  const file = store.state.file.itemMap[fileId];
+  const content = store.state.content.itemMap[`${fileId}/content`];
+  if (!file || !content) {
+    return false;
+  }
+  if (file.parentId === 'temp') {
+    return true;
+  }
+  const locations = [
+    ...store.getters['syncLocation/filteredGroupedByFileId'][fileId] || [],
+    ...store.getters['publishLocation/filteredGroupedByFileId'][fileId] || [],
+  ];
+  if (locations.length) {
+    // If file has sync/publish locations, it's not a temp file
+    return false;
+  }
+  // Return true if it's a welcome file that has no discussion
+  const { welcomeFileHashes } = store.getters['data/localSettings'];
+  const hash = utils.hash(content.text);
+  const hasDiscussions = Object.keys(content.discussions).length;
+  return file.name === 'Welcome file' && welcomeFileHashes[hash] && !hasDiscussions;
+};
+
 class SyncContext {
   restart = false;
   attempted = {};
@@ -227,332 +253,288 @@ class SyncContext {
 /**
  * Sync one file with all its locations.
  */
-function syncFile(fileId, syncContext = new SyncContext()) {
+const syncFile = async (fileId, syncContext = new SyncContext()) => {
   syncContext.attempted[`${fileId}/content`] = true;
 
-  return localDbSvc.loadSyncedContent(fileId)
-    .then(() => localDbSvc.loadItem(`${fileId}/content`)
-      .catch(() => {})) // Item may not exist if content has not been downloaded yet
-    .then(() => {
-      const getFile = () => store.state.file.itemMap[fileId];
-      const getContent = () => store.state.content.itemMap[`${fileId}/content`];
-      const getSyncedContent = () => upgradeSyncedContent(store.state.syncedContent.itemMap[`${fileId}/syncedContent`]);
-      const getSyncHistoryItem = syncLocationId => getSyncedContent().syncHistory[syncLocationId];
+  await localDbSvc.loadSyncedContent(fileId);
+  try {
+    await localDbSvc.loadItem(`${fileId}/content`);
+  } catch (e) {
+    // Item may not exist if content has not been downloaded yet
+  }
+  const getContent = () => store.state.content.itemMap[`${fileId}/content`];
+  const getSyncedContent = () => upgradeSyncedContent(store.state.syncedContent.itemMap[`${fileId}/syncedContent`]);
+  const getSyncHistoryItem = syncLocationId => getSyncedContent().syncHistory[syncLocationId];
 
-      const isTempFile = () => {
-        if (store.getters['data/syncDataByItemId'][`${fileId}/content`]) {
-          // If file has already been synced, it's not a temp file
-          return false;
-        }
-        const file = getFile();
-        const content = getContent();
-        if (!file || !content) {
-          return false;
-        }
-        if (file.parentId === 'temp') {
-          return true;
-        }
-        const locations = [
-          ...store.getters['syncLocation/filteredGroupedByFileId'][fileId] || [],
-          ...store.getters['publishLocation/filteredGroupedByFileId'][fileId] || [],
-        ];
-        if (locations.length) {
-          // If file has explicit sync/publish locations, it's not a temp file
-          return false;
-        }
-        // Return true if it's a welcome file that has no discussion
-        const { welcomeFileHashes } = store.getters['data/localSettings'];
-        const hash = utils.hash(content.text);
-        const hasDiscussions = Object.keys(content.discussions).length;
-        return file.name === 'Welcome file' && welcomeFileHashes[hash] && !hasDiscussions;
-      };
+  try {
+    if (isTempFile(fileId)) {
+      return;
+    }
 
-      if (isTempFile()) {
-        return null;
+    const syncLocations = [
+      ...store.getters['syncLocation/filteredGroupedByFileId'][fileId] || [],
+    ];
+    if (isWorkspaceSyncPossible()) {
+      syncLocations.unshift({ id: 'main', providerId: workspaceProvider.id, fileId });
+    }
+
+    await utils.awaitSequence(syncLocations, async (syncLocation) => {
+      const provider = providerRegistry.providers[syncLocation.providerId];
+      if (!provider) {
+        return;
+      }
+      const token = provider.getToken(syncLocation);
+      if (!token) {
+        return;
       }
 
-      const attemptedLocations = {};
-      const syncOneContentLocation = () => {
-        const syncLocations = [
-          ...store.getters['syncLocation/filteredGroupedByFileId'][fileId] || [],
-        ];
-        if (isWorkspaceSyncPossible()) {
-          syncLocations.unshift({ id: 'main', providerId: workspaceProvider.id, fileId });
-        }
-        let result;
-        syncLocations.some((syncLocation) => {
-          const provider = providerRegistry.providers[syncLocation.providerId];
-          if (
-            // Skip if it has been attempted already
-            !attemptedLocations[syncLocation.id] &&
-            // Skip temp file
-            !isTempFile()
-          ) {
-            attemptedLocations[syncLocation.id] = true;
-            const token = provider && provider.getToken(syncLocation);
-            result = token && store.dispatch('queue/doWithLocation', {
-              location: syncLocation,
-              promise: provider.downloadContent(token, syncLocation)
-                .then((serverContent = null) => {
-                  const syncedContent = getSyncedContent();
-                  const syncHistoryItem = getSyncHistoryItem(syncLocation.id);
-                  let mergedContent = (() => {
-                    const clientContent = utils.deepCopy(getContent());
-                    if (!clientContent) {
-                      return utils.deepCopy(serverContent);
-                    }
-                    if (!serverContent) {
-                      // Sync location has not been created yet
-                      return clientContent;
-                    }
-                    if (serverContent.hash === clientContent.hash) {
-                      // Server and client contents are synced
-                      return clientContent;
-                    }
-                    if (syncedContent.historyData[serverContent.hash]) {
-                      // Server content has not changed or has already been merged
-                      return clientContent;
-                    }
-                    // Perform a merge with last merged content if any, or a simple fusion otherwise
-                    let lastMergedContent;
-                    serverContent.history.some((hash) => {
-                      lastMergedContent = syncedContent.historyData[hash];
-                      return lastMergedContent;
-                    });
-                    if (!lastMergedContent && syncHistoryItem) {
-                      lastMergedContent = syncedContent.historyData[syncHistoryItem[LAST_MERGED]];
-                    }
-                    return diffUtils.mergeContent(serverContent, clientContent, lastMergedContent);
-                  })();
-
-                  if (!mergedContent) {
-                    return null;
-                  }
-
-                  // Update or set content in store
-                  store.commit('content/setItem', {
-                    id: `${fileId}/content`,
-                    text: utils.sanitizeText(mergedContent.text),
-                    properties: utils.sanitizeText(mergedContent.properties),
-                    discussions: mergedContent.discussions,
-                    comments: mergedContent.comments,
-                  });
-
-                  // Retrieve content with new `hash` and freeze it
-                  mergedContent = utils.deepCopy(getContent());
-
-                  // Make merged content history
-                  const mergedContentHistory = serverContent ? serverContent.history.slice() : [];
-                  let skipUpload = true;
-                  if (mergedContentHistory[0] !== mergedContent.hash) {
-                    // Put merged content hash at the beginning of history
-                    mergedContentHistory.unshift(mergedContent.hash);
-                    // Server content is either out of sync or its history is incomplete, do upload
-                    skipUpload = false;
-                  }
-                  if (syncHistoryItem
-                    && syncHistoryItem[LAST_SENT] != null
-                    && syncHistoryItem[LAST_SENT] !== mergedContent.hash
-                  ) {
-                    // Clean up by removing the hash we've previously added
-                    const idx = mergedContentHistory.lastIndexOf(syncHistoryItem[LAST_SENT]);
-                    if (idx !== -1) {
-                      mergedContentHistory.splice(idx, 1);
-                    }
-                  }
-
-                  // Store last sent if it's in the server history,
-                  // and merged content which will be sent if different
-                  const newSyncedContent = utils.deepCopy(syncedContent);
-                  const newSyncHistoryItem = newSyncedContent.syncHistory[syncLocation.id] || [];
-                  newSyncedContent.syncHistory[syncLocation.id] = newSyncHistoryItem;
-                  if (serverContent &&
-                    (serverContent.hash === newSyncHistoryItem[LAST_SEEN] ||
-                    serverContent.history.indexOf(newSyncHistoryItem[LAST_SEEN]) !== -1)
-                  ) {
-                    // That's the 2nd time we've seen this content, trust it for future merges
-                    newSyncHistoryItem[LAST_MERGED] = newSyncHistoryItem[LAST_SEEN];
-                  }
-                  newSyncHistoryItem[LAST_MERGED] = newSyncHistoryItem[LAST_MERGED] || null;
-                  newSyncHistoryItem[LAST_SEEN] = mergedContent.hash;
-                  newSyncHistoryItem[LAST_SENT] = skipUpload ? null : mergedContent.hash;
-                  newSyncedContent.historyData[mergedContent.hash] = mergedContent;
-
-                  // Clean synced content from unused revisions
-                  cleanSyncedContent(newSyncedContent);
-                  // Store synced content
-                  store.commit('syncedContent/patchItem', newSyncedContent);
-
-                  if (skipUpload) {
-                    // Server content and merged content are equal, skip content upload
-                    return null;
-                  }
-
-                  // Upload merged content
-                  return provider.uploadContent(token, {
-                    ...mergedContent,
-                    history: mergedContentHistory.slice(0, maxContentHistory),
-                  }, syncLocation, tooLateChecker(restartContentSyncAfter))
-                    .then((syncLocationToStore) => {
-                      // Replace sync location if modified
-                      if (utils.serializeObject(syncLocation) !==
-                        utils.serializeObject(syncLocationToStore)
-                      ) {
-                        store.commit('syncLocation/patchItem', syncLocationToStore);
-                      }
-
-                      // If content was just created, restart sync to create the file as well
-                      if (provider === workspaceProvider &&
-                        !store.getters['data/syncDataByItemId'][fileId]
-                      ) {
-                        syncContext.restart = true;
-                      }
-                    });
-                })
-                .catch((err) => {
-                  if (store.state.offline || (err && err.message === 'TOO_LATE')) {
-                    throw err;
-                  }
-                  console.error(err); // eslint-disable-line no-console
-                  store.dispatch('notification/error', err);
-                }),
-            })
-              .then(() => syncOneContentLocation());
+      const doSyncLocation = async () => {
+        const serverContent = await provider.downloadContent(token, syncLocation);
+        const syncedContent = getSyncedContent();
+        const syncHistoryItem = getSyncHistoryItem(syncLocation.id);
+        let mergedContent = (() => {
+          const clientContent = utils.deepCopy(getContent());
+          if (!clientContent) {
+            return utils.deepCopy(serverContent || null);
           }
-          return result;
+          if (!serverContent) {
+            // Sync location has not been created yet
+            return clientContent;
+          }
+          if (serverContent.hash === clientContent.hash) {
+            // Server and client contents are synced
+            return clientContent;
+          }
+          if (syncedContent.historyData[serverContent.hash]) {
+            // Server content has not changed or has already been merged
+            return clientContent;
+          }
+          // Perform a merge with last merged content if any, or a simple fusion otherwise
+          let lastMergedContent = utils.someResult(
+            serverContent.history,
+            hash => syncedContent.historyData[hash],
+          );
+          if (!lastMergedContent && syncHistoryItem) {
+            lastMergedContent = syncedContent.historyData[syncHistoryItem[LAST_MERGED]];
+          }
+          return diffUtils.mergeContent(serverContent, clientContent, lastMergedContent);
+        })();
+
+        if (!mergedContent) {
+          return;
+        }
+
+        // Update or set content in store
+        store.commit('content/setItem', {
+          id: `${fileId}/content`,
+          text: utils.sanitizeText(mergedContent.text),
+          properties: utils.sanitizeText(mergedContent.properties),
+          discussions: mergedContent.discussions,
+          comments: mergedContent.comments,
         });
-        return result;
+
+        // Retrieve content with its new hash value and freeze it
+        mergedContent = utils.deepCopy(getContent());
+
+        // Make merged content history
+        const mergedContentHistory = serverContent ? serverContent.history.slice() : [];
+        let skipUpload = true;
+        if (mergedContentHistory[0] !== mergedContent.hash) {
+          // Put merged content hash at the beginning of history
+          mergedContentHistory.unshift(mergedContent.hash);
+          // Server content is either out of sync or its history is incomplete, do upload
+          skipUpload = false;
+        }
+        if (syncHistoryItem
+          && syncHistoryItem[LAST_SENT] != null
+          && syncHistoryItem[LAST_SENT] !== mergedContent.hash
+        ) {
+          // Clean up by removing the hash we've previously added
+          const idx = mergedContentHistory.lastIndexOf(syncHistoryItem[LAST_SENT]);
+          if (idx !== -1) {
+            mergedContentHistory.splice(idx, 1);
+          }
+        }
+
+        // Store last sent if it's in the server history,
+        // and merged content which will be sent if different
+        const newSyncedContent = utils.deepCopy(syncedContent);
+        const newSyncHistoryItem = newSyncedContent.syncHistory[syncLocation.id] || [];
+        newSyncedContent.syncHistory[syncLocation.id] = newSyncHistoryItem;
+        if (serverContent &&
+          (serverContent.hash === newSyncHistoryItem[LAST_SEEN] ||
+          serverContent.history.indexOf(newSyncHistoryItem[LAST_SEEN]) !== -1)
+        ) {
+          // That's the 2nd time we've seen this content, trust it for future merges
+          newSyncHistoryItem[LAST_MERGED] = newSyncHistoryItem[LAST_SEEN];
+        }
+        newSyncHistoryItem[LAST_MERGED] = newSyncHistoryItem[LAST_MERGED] || null;
+        newSyncHistoryItem[LAST_SEEN] = mergedContent.hash;
+        newSyncHistoryItem[LAST_SENT] = skipUpload ? null : mergedContent.hash;
+        newSyncedContent.historyData[mergedContent.hash] = mergedContent;
+
+        // Clean synced content from unused revisions
+        cleanSyncedContent(newSyncedContent);
+        // Store synced content
+        store.commit('syncedContent/patchItem', newSyncedContent);
+
+        if (skipUpload) {
+          // Server content and merged content are equal, skip content upload
+          return;
+        }
+
+        // Upload merged content
+        const syncLocationToStore = await provider.uploadContent(token, {
+          ...mergedContent,
+          history: mergedContentHistory.slice(0, maxContentHistory),
+        }, syncLocation, tooLateChecker(restartContentSyncAfter));
+
+        // Replace sync location if modified
+        if (utils.serializeObject(syncLocation) !==
+          utils.serializeObject(syncLocationToStore)
+        ) {
+          store.commit('syncLocation/patchItem', syncLocationToStore);
+        }
+
+        // If content was just created, restart sync to create the file as well
+        if (provider === workspaceProvider &&
+          !store.getters['data/syncDataByItemId'][fileId]
+        ) {
+          syncContext.restart = true;
+        }
       };
 
-      return syncOneContentLocation();
-    })
-    .then(
-      () => localDbSvc.unloadContents(),
-      err => localDbSvc.unloadContents()
-        .then(() => {
-          throw err;
-        }),
-    )
-    .catch((err) => {
-      if (err && err.message === 'TOO_LATE') {
-        // Restart sync
-        return syncFile(fileId, syncContext);
-      }
-      throw err;
+      await store.dispatch('queue/doWithLocation', {
+        location: syncLocation,
+        action: async () => {
+          try {
+            await doSyncLocation();
+          } catch (err) {
+            if (store.state.offline || (err && err.message === 'TOO_LATE')) {
+              throw err;
+            }
+            console.error(err); // eslint-disable-line no-console
+            store.dispatch('notification/error', err);
+          }
+        },
+      });
     });
-}
+  } catch (err) {
+    if (err && err.message === 'TOO_LATE') {
+      // Restart sync
+      await syncFile(fileId, syncContext);
+    }
+    throw err;
+  } finally {
+    await localDbSvc.unloadContents();
+  }
+};
 
 /**
  * Sync a data item, typically settings, workspaces and templates.
  */
-function syncDataItem(dataId) {
+const syncDataItem = async (dataId) => {
   const getItem = () => store.state.data.itemMap[dataId]
     || store.state.data.lsItemMap[dataId];
 
   const item = getItem();
   const syncData = store.getters['data/syncDataByItemId'][dataId];
-  // Sync if item hash and syncData hash are inconsistent
+  // Sync if item hash and syncData hash are out of sync
   if (syncData && item && item.hash === syncData.hash) {
-    return null;
+    return;
   }
 
-  return workspaceProvider.downloadData(dataId)
-    .then((serverItem = null) => {
-      const dataSyncData = store.getters['data/dataSyncData'][dataId];
-      let mergedItem = (() => {
-        const clientItem = utils.deepCopy(getItem());
-        if (!clientItem) {
-          return serverItem;
-        }
-        if (!serverItem) {
-          return clientItem;
-        }
-        if (!dataSyncData) {
-          return serverItem;
-        }
-        if (dataSyncData.hash !== serverItem.hash) {
-          // Server version has changed
-          if (dataSyncData.hash !== clientItem.hash && typeof clientItem.data === 'object') {
-            // Client version has changed as well, merge data objects
-            return {
-              ...clientItem,
-              data: diffUtils.mergeObjects(serverItem.data, clientItem.data),
-            };
-          }
-          return serverItem;
-        }
-        return clientItem;
-      })();
-
-      if (!mergedItem) {
-        return null;
+  const serverItem = await workspaceProvider.downloadData(dataId);
+  const dataSyncData = store.getters['data/dataSyncData'][dataId];
+  let mergedItem = (() => {
+    const clientItem = utils.deepCopy(getItem());
+    if (!clientItem) {
+      return serverItem;
+    }
+    if (!serverItem) {
+      return clientItem;
+    }
+    if (!dataSyncData) {
+      return serverItem;
+    }
+    if (dataSyncData.hash !== serverItem.hash) {
+      // Server version has changed
+      if (dataSyncData.hash !== clientItem.hash && typeof clientItem.data === 'object') {
+        // Client version has changed as well, merge data objects
+        return {
+          ...clientItem,
+          data: diffUtils.mergeObjects(serverItem.data, clientItem.data),
+        };
       }
+      return serverItem;
+    }
+    return clientItem;
+  })();
 
-      // Update item in store
-      store.commit('data/setItem', {
-        id: dataId,
-        ...mergedItem,
-      });
+  if (!mergedItem) {
+    return;
+  }
 
-      // Retrieve item with new `hash` and freeze it
-      mergedItem = utils.deepCopy(getItem());
+  // Update item in store
+  store.commit('data/setItem', {
+    id: dataId,
+    ...mergedItem,
+  });
 
-      return Promise.resolve()
-        .then(() => {
-          if (serverItem && serverItem.hash === mergedItem.hash) {
-            return null;
-          }
-          return workspaceProvider.uploadData(mergedItem, tooLateChecker(restartContentSyncAfter));
-        })
-        .then(() => store.dispatch('data/patchDataSyncData', {
-          [dataId]: utils.deepCopy(store.getters['data/syncDataByItemId'][dataId]),
-        }));
-    });
-}
+  // Retrieve item with new `hash` and freeze it
+  mergedItem = utils.deepCopy(getItem());
+
+  if (serverItem && serverItem.hash === mergedItem.hash) {
+    return;
+  }
+  await workspaceProvider.uploadData(mergedItem, tooLateChecker(restartContentSyncAfter));
+  store.dispatch('data/patchDataSyncData', {
+    [dataId]: utils.deepCopy(store.getters['data/syncDataByItemId'][dataId]),
+  });
+};
 
 /**
  * Sync the whole workspace with the main provider and the current file explicit locations.
  */
-function syncWorkspace() {
-  const workspace = store.getters['workspace/currentWorkspace'];
-  const syncContext = new SyncContext();
+const syncWorkspace = async () => {
+  try {
+    const workspace = store.getters['workspace/currentWorkspace'];
+    const syncContext = new SyncContext();
 
-  return Promise.resolve()
-    .then(() => {
-      // Store the sub in the DB since it's not safely stored in the token
-      const syncToken = store.getters['workspace/syncToken'];
-      const localSettings = store.getters['data/localSettings'];
-      if (!localSettings.syncSub) {
-        store.dispatch('data/patchLocalSettings', {
-          syncSub: syncToken.sub,
-        });
-      } else if (localSettings.syncSub !== syncToken.sub) {
-        throw new Error('Synchronization failed due to token inconsistency.');
-      }
-    })
-    .then(() => workspaceProvider.getChanges())
-    .then((changes) => {
-      // Apply changes
-      applyChanges(changes);
-      if (workspaceProvider.onChangesApplied) {
-        workspaceProvider.onChangesApplied();
-      }
+    // Store the sub in the DB since it's not safely stored in the token
+    const syncToken = store.getters['workspace/syncToken'];
+    const localSettings = store.getters['data/localSettings'];
+    if (!localSettings.syncSub) {
+      store.dispatch('data/patchLocalSettings', {
+        syncSub: syncToken.sub,
+      });
+    } else if (localSettings.syncSub !== syncToken.sub) {
+      throw new Error('Synchronization failed due to token inconsistency.');
+    }
 
-      // Prevent from sending items too long after changes have been retrieved
-      const ifNotTooLate = tooLateChecker(restartSyncAfter);
+    const changes = await workspaceProvider.getChanges();
+    // Apply changes
+    applyChanges(changes);
+    if (workspaceProvider.onChangesApplied) {
+      workspaceProvider.onChangesApplied();
+    }
 
-      // Called until no item to save
-      const saveNextItem = ifNotTooLate(() => {
-        const storeItemMap = {
-          ...store.state.file.itemMap,
-          ...store.state.folder.itemMap,
-          ...store.state.syncLocation.itemMap,
-          ...store.state.publishLocation.itemMap,
-          // Deal with contents and data later
-        };
-        const syncDataByItemId = store.getters['data/syncDataByItemId'];
-        let promise;
-        Object.entries(storeItemMap).some(([id, item]) => {
+    // Prevent from sending items too long after changes have been retrieved
+    const ifNotTooLate = tooLateChecker(restartSyncAfter);
+
+    // Called until no item to save
+    const saveNextItem = ifNotTooLate(async () => {
+      const storeItemMap = {
+        ...store.state.file.itemMap,
+        ...store.state.folder.itemMap,
+        ...store.state.syncLocation.itemMap,
+        ...store.state.publishLocation.itemMap,
+        // Deal with contents and data later
+      };
+      const syncDataByItemId = store.getters['data/syncDataByItemId'];
+      const [changedItem, syncDataToUpdate] = utils.someResult(
+        Object.entries(storeItemMap),
+        ([id, item]) => {
           const existingSyncData = syncDataByItemId[id];
           if ((!existingSyncData || existingSyncData.hash !== item.hash)
             // Add file/folder if parent has been added
@@ -560,156 +542,141 @@ function syncWorkspace() {
             // Add file if content has been added
             && (item.type !== 'file' || syncDataByItemId[`${id}/content`])
           ) {
-            promise = workspaceProvider
-              .saveSimpleItem(
-                // Use deepCopy to freeze objects
-                utils.deepCopy(item),
-                utils.deepCopy(existingSyncData),
-                ifNotTooLate,
-              )
-              .then(resultSyncData => store.dispatch('data/patchSyncData', {
-                [resultSyncData.id]: resultSyncData,
-              }))
-              .then(() => saveNextItem());
+            return [item, existingSyncData];
           }
-          return promise;
-        });
-        return promise;
-      });
-
-      // Called until no item to remove
-      const removeNextItem = ifNotTooLate(() => {
-        const storeItemMap = {
-          ...store.state.file.itemMap,
-          ...store.state.folder.itemMap,
-          ...store.state.syncLocation.itemMap,
-          ...store.state.publishLocation.itemMap,
-          ...store.state.content.itemMap,
-        };
-        const syncData = store.getters['data/syncData'];
-        let promise;
-        Object.entries(syncData).some(([, existingSyncData]) => {
-          if (!storeItemMap[existingSyncData.itemId] &&
-            // We don't want to delete data items, especially on first sync
-            existingSyncData.type !== 'data' &&
-            // Remove content only if file has been removed
-            (existingSyncData.type !== 'content' || !storeItemMap[existingSyncData.itemId.split('/')[0]])
-          ) {
-            // Use deepCopy to freeze objects
-            const syncDataToRemove = utils.deepCopy(existingSyncData);
-            promise = workspaceProvider
-              .removeItem(syncDataToRemove, ifNotTooLate)
-              .then(() => {
-                const syncDataCopy = { ...store.getters['data/syncData'] };
-                delete syncDataCopy[syncDataToRemove.id];
-                store.dispatch('data/setSyncData', syncDataCopy);
-              })
-              .then(() => removeNextItem());
-          }
-          return promise;
-        });
-        return promise;
-      });
-
-      const getOneFileIdToSync = () => {
-        const contentIds = [...new Set([
-          ...Object.keys(localDbSvc.hashMap.content),
-          ...store.getters['file/items'].map(file => `${file.id}/content`),
-        ])];
-        let fileId;
-        contentIds.some((contentId) => {
-          // Get content hash from itemMap or from localDbSvc if not loaded
-          const loadedContent = store.state.content.itemMap[contentId];
-          const hash = loadedContent ? loadedContent.hash : localDbSvc.hashMap.content[contentId];
-          const syncData = store.getters['data/syncDataByItemId'][contentId];
-          if (
-            // Sync if content syncing was not attempted yet
-            !syncContext.attempted[contentId] &&
-            // And if syncData does not exist or if content hash and syncData hash are inconsistent
-            (!syncData || syncData.hash !== hash)
-          ) {
-            [fileId] = contentId.split('/');
-          }
-          return fileId;
-        });
-        return fileId;
-      };
-
-      const syncNextFile = () => {
-        const fileId = getOneFileIdToSync();
-        if (!fileId) {
           return null;
-        }
-        return syncFile(fileId, syncContext)
-          .then(() => syncNextFile());
-      };
+        },
+      ) || [];
 
-      const onSyncEnd = () => Promise.resolve(workspaceProvider.onSyncEnd
-        && workspaceProvider.onSyncEnd());
-
-      return Promise.resolve()
-        .then(() => saveNextItem())
-        .then(() => removeNextItem())
-        // Sync settings only in the main workspace
-        .then(() => workspace.id === 'main' && syncDataItem('settings'))
-        // Sync workspaces only in the main workspace
-        .then(() => workspace.id === 'main' && syncDataItem('workspaces'))
-        .then(() => syncDataItem('templates'))
-        .then(() => {
-          const currentFileId = store.getters['file/current'].id;
-          if (currentFileId) {
-            // Sync current file first
-            return syncFile(currentFileId, syncContext)
-              .then(() => syncNextFile());
-          }
-          return syncNextFile();
-        })
-        .then(
-          () => onSyncEnd(),
-          err => onSyncEnd().then(() => {
-            throw err;
-          }, () => {
-            throw err;
-          }),
-        )
-        .then(
-          () => {
-            if (syncContext.restart) {
-              // Restart sync
-              return syncWorkspace();
-            }
-            return null;
-          },
-          (err) => {
-            if (err && err.message === 'TOO_LATE') {
-              // Restart sync
-              return syncWorkspace();
-            }
-            throw err;
-          },
-        );
+      if (changedItem) {
+        const resultSyncData = await workspaceProvider
+          .saveSimpleItem(
+            // Use deepCopy to freeze objects
+            utils.deepCopy(changedItem),
+            utils.deepCopy(syncDataToUpdate),
+            ifNotTooLate,
+          );
+        store.dispatch('data/patchSyncData', {
+          [resultSyncData.id]: resultSyncData,
+        });
+        await saveNextItem();
+      }
     });
-}
+    await saveNextItem();
+
+    // Called until no item to remove
+    const removeNextItem = ifNotTooLate(async () => {
+      const storeItemMap = {
+        ...store.state.file.itemMap,
+        ...store.state.folder.itemMap,
+        ...store.state.syncLocation.itemMap,
+        ...store.state.publishLocation.itemMap,
+        ...store.state.content.itemMap,
+      };
+      const syncData = store.getters['data/syncData'];
+      const syncDataToRemove = utils.deepCopy(utils.someResult(
+        Object.values(syncData),
+        existingSyncData => !storeItemMap[existingSyncData.itemId]
+          // We don't want to delete data items, especially on first sync
+          && existingSyncData.type !== 'data'
+          // Remove content only if file has been removed
+          && (existingSyncData.type !== 'content'
+            || !storeItemMap[existingSyncData.itemId.split('/')[0]])
+          && existingSyncData,
+      ));
+
+      if (syncDataToRemove) {
+        // Use deepCopy to freeze objects
+        await workspaceProvider.removeItem(syncDataToRemove, ifNotTooLate);
+        const syncDataCopy = { ...store.getters['data/syncData'] };
+        delete syncDataCopy[syncDataToRemove.id];
+        store.dispatch('data/setSyncData', syncDataCopy);
+        await removeNextItem();
+      }
+    });
+    await removeNextItem();
+
+    // Sync settings and workspaces only in the main workspace
+    if (workspace.id === 'main') {
+      await syncDataItem('settings');
+      await syncDataItem('workspaces');
+    }
+    await syncDataItem('templates');
+
+    const getOneFileIdToSync = () => {
+      const contentIds = [...new Set([
+        ...Object.keys(localDbSvc.hashMap.content),
+        ...store.getters['file/items'].map(file => `${file.id}/content`),
+      ])];
+      return utils.someResult(contentIds, (contentId) => {
+        // Get content hash from itemMap or from localDbSvc if not loaded
+        const loadedContent = store.state.content.itemMap[contentId];
+        const hash = loadedContent ? loadedContent.hash : localDbSvc.hashMap.content[contentId];
+        const syncData = store.getters['data/syncDataByItemId'][contentId];
+        if (
+          // Sync if content syncing was not attempted yet
+          !syncContext.attempted[contentId] &&
+          // And if syncData does not exist or if content hash and syncData hash are inconsistent
+          (!syncData || syncData.hash !== hash)
+        ) {
+          const [fileId] = contentId.split('/');
+          return fileId;
+        }
+        return null;
+      });
+    };
+
+    const syncNextFile = async () => {
+      const fileId = getOneFileIdToSync();
+      if (fileId) {
+        await syncFile(fileId, syncContext);
+        await syncNextFile();
+      }
+    };
+
+    const currentFileId = store.getters['file/current'].id;
+    if (currentFileId) {
+      // Sync current file first
+      await syncFile(currentFileId, syncContext);
+    }
+    await syncNextFile();
+
+    if (syncContext.restart) {
+      // Restart sync
+      await syncWorkspace();
+    }
+  } catch (err) {
+    if (err && err.message === 'TOO_LATE') {
+      // Restart sync
+      await syncWorkspace();
+    } else {
+      throw err;
+    }
+  } finally {
+    if (workspaceProvider.onSyncEnd) {
+      workspaceProvider.onSyncEnd();
+    }
+  }
+};
 
 /**
  * Enqueue a sync task, if possible.
  */
-function requestSync() {
+const requestSync = () => {
   // No sync in light mode
   if (store.state.light) {
     return;
   }
 
-  store.dispatch('queue/enqueueSyncRequest', () => new Promise((resolve, reject) => {
+  store.dispatch('queue/enqueueSyncRequest', async () => {
     let intervalId;
-    const attempt = () => {
+    const attempt = async () => {
       // Only start syncing when these conditions are met
       if (networkSvc.isUserActive() && isSyncWindow()) {
         clearInterval(intervalId);
         if (!isSyncPossible()) {
           // Cancel sync
-          reject(new Error('Sync not possible.'));
-          return;
+          throw new Error('Sync not possible.');
         }
 
         // Determine if we have to clean files
@@ -729,91 +696,86 @@ function requestSync() {
         // Call setLastSyncActivity periodically
         intervalId = utils.setInterval(() => setLastSyncActivity(), 1000);
         setLastSyncActivity();
-        const cleaner = cb => (res) => {
-          clearInterval(intervalId);
-          cb(res);
-        };
 
-        Promise.resolve()
-          .then(() => {
-            if (isWorkspaceSyncPossible()) {
-              return syncWorkspace();
+        try {
+          if (isWorkspaceSyncPossible()) {
+            await syncWorkspace();
+          } else if (hasCurrentFileSyncLocations()) {
+            // Only sync current file if workspace sync is unavailable.
+            // We could sync all files that are out-of-sync but it would
+            // require to load all the syncedContent objects from the DB.
+            await syncFile(store.getters['file/current'].id);
+          }
+
+          // Clean files
+          Object.entries(fileHashesToClean).forEach(([fileId, fileHash]) => {
+            const file = store.state.file.itemMap[fileId];
+            if (file && file.hash === fileHash) {
+              fileSvc.deleteFile(fileId);
             }
-            if (hasCurrentFileSyncLocations()) {
-              // Only sync current file if workspace sync is unavailable.
-              // We could also sync files that are out-of-sync but it would
-              // require to load all the syncedContent objects from the DB.
-              return syncFile(store.getters['file/current'].id);
-            }
-            return null;
-          })
-          .then(() => {
-            // Clean files
-            Object.entries(fileHashesToClean).forEach(([fileId, fileHash]) => {
-              const file = store.state.file.itemMap[fileId];
-              if (file && file.hash === fileHash) {
-                fileSvc.deleteFile(fileId);
-              }
-            });
-          })
-          .then(cleaner(resolve), cleaner(reject));
+          });
+        } finally {
+          clearInterval(intervalId);
+        }
       }
     };
+
     intervalId = utils.setInterval(() => attempt(), 1000);
     attempt();
-  }));
-}
+  });
+};
 
 export default {
-  init() {
-    return Promise.resolve()
-      .then(() => {
-        // Load workspaces and tokens from localStorage
-        localDbSvc.syncLocalStorage();
+  async init() {
+    // Load workspaces and tokens from localStorage
+    localDbSvc.syncLocalStorage();
 
-        // Try to find a suitable action provider
-        actionProvider = providerRegistry.providers[utils.queryParams.providerId];
-        return actionProvider && actionProvider.initAction && actionProvider.initAction();
-      })
-      .then(() => {
-        // Try to find a suitable workspace sync provider
-        workspaceProvider = providerRegistry.providers[utils.queryParams.providerId];
-        if (!workspaceProvider || !workspaceProvider.initWorkspace) {
-          workspaceProvider = googleDriveAppDataProvider;
-        }
-        return workspaceProvider.initWorkspace();
-      })
-      .then(workspace => store.dispatch('workspace/setCurrentWorkspaceId', workspace.id))
-      .then(() => localDbSvc.init())
-      .then(() => {
-        // Try to find a suitable action provider
-        actionProvider = providerRegistry.providers[utils.queryParams.providerId] || actionProvider;
-        return actionProvider && actionProvider.performAction && actionProvider.performAction()
-          .then(newSyncLocation => newSyncLocation && this.createSyncLocation(newSyncLocation));
-      })
-      .then(() => tempFileSvc.init())
-      .then(() => {
-        if (!store.state.light) {
-          // Sync periodically
-          utils.setInterval(() => {
-            if (isSyncPossible()
-              && networkSvc.isUserActive()
-              && isSyncWindow()
-              && isAutoSyncReady()
-            ) {
-              requestSync();
-            }
-          }, 1000);
+    // Try to find a suitable action provider
+    actionProvider = providerRegistry.providers[utils.queryParams.providerId];
+    if (actionProvider && actionProvider.initAction) {
+      await actionProvider.initAction();
+    }
 
-          // Unload contents from memory periodically
-          utils.setInterval(() => {
-            // Wait for sync and publish to finish
-            if (store.state.queue.isEmpty) {
-              localDbSvc.unloadContents();
-            }
-          }, 5000);
+    // Try to find a suitable workspace sync provider
+    workspaceProvider = providerRegistry.providers[utils.queryParams.providerId];
+    if (!workspaceProvider || !workspaceProvider.initWorkspace) {
+      workspaceProvider = googleDriveAppDataProvider;
+    }
+    const workspace = await workspaceProvider.initWorkspace();
+    store.dispatch('workspace/setCurrentWorkspaceId', workspace.id);
+    await localDbSvc.init();
+
+    // Try to find a suitable action provider
+    actionProvider = providerRegistry.providers[utils.queryParams.providerId] || actionProvider;
+    if (actionProvider && actionProvider.performAction) {
+      const newSyncLocation = await actionProvider.performAction();
+      if (newSyncLocation) {
+        this.createSyncLocation(newSyncLocation);
+      }
+    }
+
+    await tempFileSvc.init();
+
+    if (!store.state.light) {
+      // Sync periodically
+      utils.setInterval(() => {
+        if (isSyncPossible()
+          && networkSvc.isUserActive()
+          && isSyncWindow()
+          && isAutoSyncReady()
+        ) {
+          requestSync();
         }
-      });
+      }, 1000);
+
+      // Unload contents from memory periodically
+      utils.setInterval(() => {
+        // Wait for sync and publish to finish
+        if (store.state.queue.isEmpty) {
+          localDbSvc.unloadContents();
+        }
+      }, 5000);
+    }
   },
   isSyncPossible,
   requestSync,

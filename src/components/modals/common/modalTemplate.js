@@ -63,17 +63,15 @@ export default (desc) => {
         return sortedTemplates;
       };
       // Make use of `function` to have `this` bound to the component
-      component.methods.configureTemplates = function () { // eslint-disable-line func-names
-        store.dispatch('modal/open', {
+      component.methods.configureTemplates = async function () { // eslint-disable-line func-names
+        const { templates, selectedId } = await store.dispatch('modal/open', {
           type: 'templates',
           selectedId: this.selectedTemplate,
-        })
-          .then(({ templates, selectedId }) => {
-            store.dispatch('data/setTemplates', templates);
-            store.dispatch('data/patchLocalSettings', {
-              [id]: selectedId,
-            });
-          });
+        });
+        store.dispatch('data/setTemplates', templates);
+        store.dispatch('data/patchLocalSettings', {
+          [id]: selectedId,
+        });
       };
     }
   });

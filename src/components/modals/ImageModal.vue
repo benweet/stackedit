@@ -61,15 +61,17 @@ export default modalTemplate({
     addGooglePhotosAccount() {
       return googleHelper.addPhotosAccount();
     },
-    openGooglePhotos(token) {
+    async openGooglePhotos(token) {
       const { callback } = this.config;
       this.config.reject();
-      googleHelper.openPicker(token, 'img')
-        .then(res => res[0] && this.$store.dispatch('modal/open', {
+      const res = await googleHelper.openPicker(token, 'img');
+      if (res[0]) {
+        this.$store.dispatch('modal/open', {
           type: 'googlePhoto',
           url: res[0].url,
           callback,
-        }));
+        });
+      }
     },
   },
 });

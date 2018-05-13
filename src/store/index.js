@@ -54,13 +54,33 @@ const store = new Vuex.Store({
     minuteCounter: 0,
     monetizeSponsor: false,
   },
+  mutations: {
+    setLight: (state, value) => {
+      state.light = value;
+    },
+    setOffline: (state, value) => {
+      state.offline = value;
+    },
+    updateLastOfflineCheck: (state) => {
+      state.lastOfflineCheck = Date.now();
+    },
+    updateMinuteCounter: (state) => {
+      state.minuteCounter += 1;
+    },
+    setMonetizeSponsor: (state, value) => {
+      state.monetizeSponsor = value;
+    },
+    setGoogleSponsor: (state, value) => {
+      state.googleSponsor = value;
+    },
+  },
   getters: {
     allItemMap: (state) => {
       const result = {};
       utils.types.forEach(type => Object.assign(result, state[type].itemMap));
       return result;
     },
-    itemPaths: (state) => {
+    itemPaths: (state, getters) => {
       const result = {};
       const folderMap = state.folder.itemMap;
       const getPath = (item) => {
@@ -84,8 +104,10 @@ const store = new Vuex.Store({
         result[item.id] = itemPath;
         return itemPath;
       };
-
-      [...state.folder.items, ...state.file.items].forEach(item => getPath(item));
+      [
+        ...getters['folder/items'],
+        ...getters['file/items'],
+      ].forEach(item => getPath(item));
       return result;
     },
     pathItems: (state, { allItemMap, itemPaths }) => {
@@ -97,29 +119,9 @@ const store = new Vuex.Store({
       });
       return result;
     },
-    isSponsor: (state, getters) => {
+    isSponsor: ({ light, monetizeSponsor }, getters) => {
       const sponsorToken = getters['workspace/sponsorToken'];
-      return state.light || state.monetizeSponsor || (sponsorToken && sponsorToken.isSponsor);
-    },
-  },
-  mutations: {
-    setLight: (state, value) => {
-      state.light = value;
-    },
-    setOffline: (state, value) => {
-      state.offline = value;
-    },
-    updateLastOfflineCheck: (state) => {
-      state.lastOfflineCheck = Date.now();
-    },
-    updateMinuteCounter: (state) => {
-      state.minuteCounter += 1;
-    },
-    setMonetizeSponsor: (state, value) => {
-      state.monetizeSponsor = value;
-    },
-    setGoogleSponsor: (state, value) => {
-      state.googleSponsor = value;
+      return light || monetizeSponsor || (sponsorToken && sponsorToken.isSponsor);
     },
   },
   actions: {

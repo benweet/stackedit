@@ -1,46 +1,46 @@
-function SectionDimension(startOffset, endOffset) {
-  this.startOffset = startOffset;
-  this.endOffset = endOffset;
-  this.height = endOffset - startOffset;
+class SectionDimension {
+  constructor(startOffset, endOffset) {
+    this.startOffset = startOffset;
+    this.endOffset = endOffset;
+    this.height = endOffset - startOffset;
+  }
 }
 
-function dimensionNormalizer(dimensionName) {
-  return (editorSvc) => {
-    const dimensionList = editorSvc.previewCtx.sectionDescList
-      .map(sectionDesc => sectionDesc[dimensionName]);
-    let dimension;
-    let i;
-    let j;
-    for (i = 0; i < dimensionList.length; i += 1) {
-      dimension = dimensionList[i];
-      if (dimension.height) {
-        for (j = i + 1; j < dimensionList.length && dimensionList[j].height === 0; j += 1) {
-          // Loop
-        }
-        const normalizeFactor = j - i;
-        if (normalizeFactor !== 1) {
-          const normalizedHeight = dimension.height / normalizeFactor;
+const dimensionNormalizer = dimensionName => (editorSvc) => {
+  const dimensionList = editorSvc.previewCtx.sectionDescList
+    .map(sectionDesc => sectionDesc[dimensionName]);
+  let dimension;
+  let i;
+  let j;
+  for (i = 0; i < dimensionList.length; i += 1) {
+    dimension = dimensionList[i];
+    if (dimension.height) {
+      for (j = i + 1; j < dimensionList.length && dimensionList[j].height === 0; j += 1) {
+        // Loop
+      }
+      const normalizeFactor = j - i;
+      if (normalizeFactor !== 1) {
+        const normalizedHeight = dimension.height / normalizeFactor;
+        dimension.height = normalizedHeight;
+        dimension.endOffset = dimension.startOffset + dimension.height;
+        for (j = i + 1; j < i + normalizeFactor; j += 1) {
+          const startOffset = dimension.endOffset;
+          dimension = dimensionList[j];
+          dimension.startOffset = startOffset;
           dimension.height = normalizedHeight;
           dimension.endOffset = dimension.startOffset + dimension.height;
-          for (j = i + 1; j < i + normalizeFactor; j += 1) {
-            const startOffset = dimension.endOffset;
-            dimension = dimensionList[j];
-            dimension.startOffset = startOffset;
-            dimension.height = normalizedHeight;
-            dimension.endOffset = dimension.startOffset + dimension.height;
-          }
-          i = j - 1;
         }
+        i = j - 1;
       }
     }
-  };
-}
+  }
+};
 
 const normalizeEditorDimensions = dimensionNormalizer('editorDimension');
 const normalizePreviewDimensions = dimensionNormalizer('previewDimension');
 const normalizeTocDimensions = dimensionNormalizer('tocDimension');
 
-function measureSectionDimensions(editorSvc) {
+const measureSectionDimensions = (editorSvc) => {
   let editorSectionOffset = 0;
   let previewSectionOffset = 0;
   let tocSectionOffset = 0;
@@ -106,7 +106,7 @@ function measureSectionDimensions(editorSvc) {
   normalizeEditorDimensions(editorSvc);
   normalizePreviewDimensions(editorSvc);
   normalizeTocDimensions(editorSvc);
-}
+};
 
 export default {
   measureSectionDimensions,

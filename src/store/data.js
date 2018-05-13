@@ -104,7 +104,7 @@ export default {
     lsItemMap: {},
   },
   mutations: {
-    setItem: (state, value) => {
+    setItem: ({ itemMap, lsItemMap }, value) => {
       // Create an empty item and override its data field
       const emptyItem = empty(value.id);
       const data = typeof value.data === 'object'
@@ -118,19 +118,19 @@ export default {
       });
 
       // Store item in itemMap or lsItemMap if its stored in the localStorage
-      Vue.set(lsItemIdSet.has(item.id) ? state.lsItemMap : state.itemMap, item.id, item);
+      Vue.set(lsItemIdSet.has(item.id) ? lsItemMap : itemMap, item.id, item);
     },
-    deleteItem(state, id) {
+    deleteItem({ itemMap }, id) {
       // Only used by localDbSvc to clean itemMap from object moved to localStorage
-      Vue.delete(state.itemMap, id);
+      Vue.delete(itemMap, id);
     },
   },
   getters: {
     workspaces: getter('workspaces'),
-    sanitizedWorkspaces: (state, getters, rootState, rootGetters) => {
+    sanitizedWorkspaces: (state, { workspaces }, rootState, rootGetters) => {
       const sanitizedWorkspaces = {};
       const mainWorkspaceToken = rootGetters['workspace/mainWorkspaceToken'];
-      Object.entries(getters.workspaces).forEach(([id, workspace]) => {
+      Object.entries(workspaces).forEach(([id, workspace]) => {
         const sanitizedWorkspace = {
           id,
           providerId: mainWorkspaceToken && 'googleDriveAppData',
@@ -146,9 +146,9 @@ export default {
       return sanitizedWorkspaces;
     },
     settings: getter('settings'),
-    computedSettings: (state, getters) => {
-      const customSettings = yaml.safeLoad(getters.settings);
-      const settings = yaml.safeLoad(defaultSettings);
+    computedSettings: (state, { settings }) => {
+      const customSettings = yaml.safeLoad(settings);
+      const parsedSettings = yaml.safeLoad(defaultSettings);
       const override = (obj, opt) => {
         const objType = Object.prototype.toString.call(obj);
         const optType = Object.prototype.toString.call(opt);
@@ -166,44 +166,44 @@ export default {
         });
         return obj;
       };
-      return override(settings, customSettings);
+      return override(parsedSettings, customSettings);
     },
     localSettings: getter('localSettings'),
     layoutSettings: getter('layoutSettings'),
     templates: getter('templates'),
-    allTemplates: (state, getters) => ({
-      ...getters.templates,
+    allTemplates: (state, { templates }) => ({
+      ...templates,
       ...additionalTemplates,
     }),
     lastCreated: getter('lastCreated'),
     lastOpened: getter('lastOpened'),
-    lastOpenedIds: (state, getters, rootState) => {
-      const lastOpened = {
-        ...getters.lastOpened,
+    lastOpenedIds: (state, { lastOpened }, rootState) => {
+      const result = {
+        ...lastOpened,
       };
       const currentFileId = rootState.file.currentId;
-      if (currentFileId && !lastOpened[currentFileId]) {
-        lastOpened[currentFileId] = Date.now();
+      if (currentFileId && !result[currentFileId]) {
+        result[currentFileId] = Date.now();
       }
-      return Object.keys(lastOpened)
+      return Object.keys(result)
         .filter(id => rootState.file.itemMap[id])
-        .sort((id1, id2) => lastOpened[id2] - lastOpened[id1])
+        .sort((id1, id2) => result[id2] - result[id1])
         .slice(0, 20);
     },
     syncData: getter('syncData'),
-    syncDataByItemId: (state, getters) => {
+    syncDataByItemId: (state, { syncData }) => {
       const result = {};
-      Object.entries(getters.syncData).forEach(([, value]) => {
+      Object.entries(syncData).forEach(([, value]) => {
         result[value.itemId] = value;
       });
       return result;
     },
-    syncDataByType: (state, getters) => {
+    syncDataByType: (state, { syncData }) => {
       const result = {};
       utils.types.forEach((type) => {
         result[type] = {};
       });
-      Object.entries(getters.syncData).forEach(([, item]) => {
+      Object.entries(syncData).forEach(([, item]) => {
         if (result[item.type]) {
           result[item.type][item.itemId] = item;
         }
@@ -212,12 +212,12 @@ export default {
     },
     dataSyncData: getter('dataSyncData'),
     tokens: getter('tokens'),
-    googleTokens: (state, getters) => getters.tokens.google || {},
-    couchdbTokens: (state, getters) => getters.tokens.couchdb || {},
-    dropboxTokens: (state, getters) => getters.tokens.dropbox || {},
-    githubTokens: (state, getters) => getters.tokens.github || {},
-    wordpressTokens: (state, getters) => getters.tokens.wordpress || {},
-    zendeskTokens: (state, getters) => getters.tokens.zendesk || {},
+    googleTokens: (state, { tokens }) => tokens.google || {},
+    couchdbTokens: (state, { tokens }) => tokens.couchdb || {},
+    dropboxTokens: (state, { tokens }) => tokens.dropbox || {},
+    githubTokens: (state, { tokens }) => tokens.github || {},
+    wordpressTokens: (state, { tokens }) => tokens.wordpress || {},
+    zendeskTokens: (state, { tokens }) => tokens.zendesk || {},
   },
   actions: {
     setWorkspaces: setter('workspaces'),

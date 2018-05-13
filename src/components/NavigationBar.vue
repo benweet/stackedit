@@ -192,7 +192,7 @@ export default {
         editorSvc.pagedownEditor.uiManager.doClick(name);
       }
     },
-    editTitle(toggle) {
+    async editTitle(toggle) {
       this.titleFocus = toggle;
       if (toggle) {
         this.titleInputElt.setSelectionRange(0, this.titleInputElt.value.length);
@@ -200,11 +200,14 @@ export default {
         const title = this.title.trim();
         this.title = this.$store.getters['file/current'].name;
         if (title) {
-          fileSvc.storeItem({
-            ...this.$store.getters['file/current'],
-            name: title,
-          })
-            .catch(() => { /* Cancel */ });
+          try {
+            await fileSvc.storeItem({
+              ...this.$store.getters['file/current'],
+              name: title,
+            });
+          } catch (e) {
+            // Cancel
+          }
         }
       }
     },

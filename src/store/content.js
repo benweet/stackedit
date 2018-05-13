@@ -31,11 +31,11 @@ module.mutations = {
 
 module.getters = {
   ...module.getters,
-  current: (state, getters, rootState, rootGetters) => {
-    if (state.revisionContent) {
-      return state.revisionContent;
+  current: ({ itemMap, revisionContent }, getters, rootState, rootGetters) => {
+    if (revisionContent) {
+      return revisionContent;
     }
-    return state.itemMap[`${rootGetters['file/current'].id}/content`] || empty();
+    return itemMap[`${rootGetters['file/current'].id}/content`] || empty();
   },
   currentChangeTrigger: (state, getters) => {
     const { current } = getters;
@@ -45,11 +45,9 @@ module.getters = {
       current.hash,
     ]);
   },
-  currentProperties: (state, getters) => utils.computeProperties(getters.current.properties),
-  isCurrentEditable: (state, getters, rootState, rootGetters) =>
-    !state.revisionContent &&
-    getters.current.id &&
-    rootGetters['layout/styles'].showEditor,
+  currentProperties: (state, { current }) => utils.computeProperties(current.properties),
+  isCurrentEditable: ({ revisionContent }, { current }, rootState, rootGetters) =>
+    !revisionContent && current.id && rootGetters['layout/styles'].showEditor,
 };
 
 module.actions = {
@@ -76,7 +74,7 @@ module.actions = {
       });
     }
   },
-  restoreRevision({
+  async restoreRevision({
     state,
     getters,
     commit,
@@ -84,31 +82,29 @@ module.actions = {
   }) {
     const { revisionContent } = state;
     if (revisionContent) {
-      dispatch('modal/fileRestoration', null, { root: true })
-        .then(() => {
-          // Close revision
-          commit('setRevisionContent');
-          const currentContent = utils.deepCopy(getters.current);
-          if (currentContent) {
-            // Restore text and move discussions
-            const diffs = diffMatchPatch
-              .diff_main(currentContent.text, revisionContent.originalText);
-            diffMatchPatch.diff_cleanupSemantic(diffs);
-            Object.entries(currentContent.discussions).forEach(([, discussion]) => {
-              const adjustOffset = (offsetName) => {
-                const marker = new cledit.Marker(discussion[offsetName], offsetName === 'end');
-                marker.adjustOffset(diffs);
-                discussion[offsetName] = marker.offset;
-              };
-              adjustOffset('start');
-              adjustOffset('end');
-            });
-            dispatch('patchCurrent', {
-              ...currentContent,
-              text: revisionContent.originalText,
-            });
-          }
+      await dispatch('modal/fileRestoration', null, { root: true });
+      // Close revision
+      commit('setRevisionContent');
+      const currentContent = utils.deepCopy(getters.current);
+      if (currentContent) {
+        // Restore text and move discussions
+        const diffs = diffMatchPatch
+          .diff_main(currentContent.text, revisionContent.originalText);
+        diffMatchPatch.diff_cleanupSemantic(diffs);
+        Object.entries(currentContent.discussions).forEach(([, discussion]) => {
+          const adjustOffset = (offsetName) => {
+            const marker = new cledit.Marker(discussion[offsetName], offsetName === 'end');
+            marker.adjustOffset(diffs);
+            discussion[offsetName] = marker.offset;
+          };
+          adjustOffset('start');
+          adjustOffset('end');
         });
+        dispatch('patchCurrent', {
+          ...currentContent,
+          text: revisionContent.originalText,
+        });
+      }
     }
   },
 };

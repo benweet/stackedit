@@ -15,21 +15,19 @@ export default new Provider({
     const token = this.getToken(location);
     return `${location.articleId} — ${token.name} — ${token.subdomain}`;
   },
-  publish(token, html, metadata, publishLocation) {
-    return zendeskHelper.uploadArticle(
+  async publish(token, html, metadata, publishLocation) {
+    const articleId = await zendeskHelper.uploadArticle({
+      ...publishLocation,
       token,
-      publishLocation.sectionId,
-      publishLocation.articleId,
-      metadata.title,
-      html,
-      metadata.tags,
-      publishLocation.locale,
-      metadata.status === 'draft',
-    )
-      .then(articleId => ({
-        ...publishLocation,
-        articleId,
-      }));
+      title: metadata.title,
+      content: html,
+      labels: metadata.tags,
+      isDraft: metadata.status === 'draft',
+    });
+    return {
+      ...publishLocation,
+      articleId,
+    };
   },
   makeLocation(token, sectionId, locale, articleId) {
     const location = {

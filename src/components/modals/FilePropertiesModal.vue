@@ -41,6 +41,9 @@
         </form-entry>
         <form-entry label="Status">
           <input slot="field" class="textfield" type="text" v-model.trim="status" @keydown.enter="resolve()">
+          <div class="form-entry__info">
+            <b>Example:</b> draft
+          </div>
         </form-entry>
         <form-entry label="Date" info="YYYY-MM-DD">
           <input slot="field" class="textfield" type="text" v-model.trim="date" @keydown.enter="resolve()">

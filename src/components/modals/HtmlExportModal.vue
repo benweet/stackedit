@@ -37,12 +37,13 @@ export default modalTemplate({
     let timeoutId;
     this.$watch('selectedTemplate', (selectedTemplate) => {
       clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
+      timeoutId = setTimeout(async () => {
         const currentFile = this.$store.getters['file/current'];
-        exportSvc.applyTemplate(currentFile.id, this.allTemplates[selectedTemplate])
-          .then((html) => {
-            this.result = html;
-          });
+        const html = await exportSvc.applyTemplate(
+          currentFile.id,
+          this.allTemplates[selectedTemplate],
+        );
+        this.result = html;
       }, 10);
     }, {
       immediate: true,

@@ -15,23 +15,21 @@ export default new Provider({
     const token = this.getToken(location);
     return `${location.postId} — ${location.blogUrl} — ${token.name}`;
   },
-  publish(token, html, metadata, publishLocation) {
-    return googleHelper.uploadBlogger(
+  async publish(token, html, metadata, publishLocation) {
+    const post = await googleHelper.uploadBlogger({
+      ...publishLocation,
       token,
-      publishLocation.blogUrl,
-      publishLocation.blogId,
-      publishLocation.postId,
-      metadata.title,
-      html,
-      metadata.tags,
-      metadata.status === 'draft',
-      metadata.date,
-    )
-      .then(post => ({
-        ...publishLocation,
-        blogId: post.blog.id,
-        postId: post.id,
-      }));
+      title: metadata.title,
+      content: html,
+      labels: metadata.tags,
+      isDraft: metadata.status === 'draft',
+      published: metadata.date,
+    });
+    return {
+      ...publishLocation,
+      blogId: post.blog.id,
+      postId: post.id,
+    };
   },
   makeLocation(token, blogUrl, postId) {
     const location = {

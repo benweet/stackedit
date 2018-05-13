@@ -44,11 +44,11 @@ const fakeFileNode = new Node(emptyFile());
 fakeFileNode.item.id = 'fake';
 fakeFileNode.noDrag = true;
 
-function getParent(node, getters) {
-  if (node.isNil) {
+function getParent({ item, isNil }, { nodeMap, rootNode }) {
+  if (isNil) {
     return nilFileNode;
   }
-  return getters.nodeMap[node.item.parentId] || getters.rootNode;
+  return nodeMap[item.parentId] || rootNode;
 }
 
 function getFolder(node, getters) {
@@ -66,6 +66,21 @@ export default {
     dragTargetId: null,
     newChildNode: nilFileNode,
     openNodes: {},
+  },
+  mutations: {
+    setSelectedId: setter('selectedId'),
+    setEditingId: setter('editingId'),
+    setDragSourceId: setter('dragSourceId'),
+    setDragTargetId: setter('dragTargetId'),
+    setNewItem(state, item) {
+      state.newChildNode = item ? new Node(item, [], item.type === 'folder') : nilFileNode;
+    },
+    setNewItemName(state, name) {
+      state.newChildNode.item.name = name;
+    },
+    toggleOpenNode(state, id) {
+      Vue.set(state.openNodes, id, !state.openNodes[id]);
+    },
   },
   getters: {
     nodeStructure: (state, getters, rootState, rootGetters) => {
@@ -138,39 +153,24 @@ export default {
         rootNode,
       };
     },
-    nodeMap: (state, getters) => getters.nodeStructure.nodeMap,
-    rootNode: (state, getters) => getters.nodeStructure.rootNode,
+    nodeMap: (state, { nodeStructure }) => nodeStructure.nodeMap,
+    rootNode: (state, { nodeStructure }) => nodeStructure.rootNode,
     newChildNodeParent: (state, getters) => getParent(state.newChildNode, getters),
-    selectedNode: (state, getters) => getters.nodeMap[state.selectedId] || nilFileNode,
+    selectedNode: ({ selectedId }, { nodeMap }) => nodeMap[selectedId] || nilFileNode,
     selectedNodeFolder: (state, getters) => getFolder(getters.selectedNode, getters),
-    editingNode: (state, getters) => getters.nodeMap[state.editingId] || nilFileNode,
-    dragSourceNode: (state, getters) => getters.nodeMap[state.dragSourceId] || nilFileNode,
-    dragTargetNode: (state, getters) => {
-      if (state.dragTargetId === 'fake') {
+    editingNode: ({ editingId }, { nodeMap }) => nodeMap[editingId] || nilFileNode,
+    dragSourceNode: ({ dragSourceId }, { nodeMap }) => nodeMap[dragSourceId] || nilFileNode,
+    dragTargetNode: ({ dragTargetId }, { nodeMap }) => {
+      if (dragTargetId === 'fake') {
         return fakeFileNode;
       }
-      return getters.nodeMap[state.dragTargetId] || nilFileNode;
+      return nodeMap[dragTargetId] || nilFileNode;
     },
-    dragTargetNodeFolder: (state, getters) => {
-      if (state.dragTargetId === 'fake') {
+    dragTargetNodeFolder: ({ dragTargetId }, getters) => {
+      if (dragTargetId === 'fake') {
         return getters.rootNode;
       }
       return getFolder(getters.dragTargetNode, getters);
-    },
-  },
-  mutations: {
-    setSelectedId: setter('selectedId'),
-    setEditingId: setter('editingId'),
-    setDragSourceId: setter('dragSourceId'),
-    setDragTargetId: setter('dragTargetId'),
-    setNewItem(state, item) {
-      state.newChildNode = item ? new Node(item, [], item.type === 'folder') : nilFileNode;
-    },
-    setNewItemName(state, name) {
-      state.newChildNode.item.name = name;
-    },
-    toggleOpenNode(state, id) {
-      Vue.set(state.openNodes, id, !state.openNodes[id]);
     },
   },
   actions: {

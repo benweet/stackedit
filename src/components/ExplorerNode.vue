@@ -97,29 +97,36 @@ export default {
       }
       return true;
     },
-    submitNewChild(cancel) {
+    async submitNewChild(cancel) {
       const { newChildNode } = this.$store.state.explorer;
       if (!cancel && !newChildNode.isNil && newChildNode.item.name) {
-        if (newChildNode.isFolder) {
-          fileSvc.storeItem(newChildNode.item)
-            .then(item => this.select(item.id), () => { /* cancel */ });
-        } else {
-          fileSvc.createFile(newChildNode.item)
-            .then(item => this.select(item.id), () => { /* cancel */ });
+        try {
+          if (newChildNode.isFolder) {
+            const item = await fileSvc.storeItem(newChildNode.item);
+            this.select(item.id);
+          } else {
+            const item = await fileSvc.createFile(newChildNode.item);
+            this.select(item.id);
+          }
+        } catch (e) {
+          // Cancel
         }
       }
       this.$store.commit('explorer/setNewItem', null);
     },
-    submitEdit(cancel) {
+    async submitEdit(cancel) {
       const { item } = this.$store.getters['explorer/editingNode'];
       const value = this.editingValue;
       this.setEditingId(null);
       if (!cancel && item.id && value) {
-        fileSvc.storeItem({
-          ...item,
-          name: value,
-        })
-          .catch(() => { /* cancel */ });
+        try {
+          await fileSvc.storeItem({
+            ...item,
+            name: value,
+          });
+        } catch (e) {
+          // Cancel
+        }
       }
     },
     setDragSourceId(evt) {
@@ -140,22 +147,17 @@ export default {
         && !targetNode.isNil
         && sourceNode.item.id !== targetNode.item.id
       ) {
-        const patch = {
-          id: sourceNode.item.id,
+        fileSvc.storeItem({
+          ...sourceNode.item,
           parentId: targetNode.item.id,
-        };
-        if (sourceNode.isFolder) {
-          this.$store.commit('folder/patchItem', patch);
-        } else {
-          this.$store.commit('file/patchItem', patch);
-        }
+        });
       }
     },
-    onContextMenu(evt) {
+    async onContextMenu(evt) {
       if (this.select(undefined, false)) {
         evt.preventDefault();
         evt.stopPropagation();
-        this.$store.dispatch('contextMenu/open', {
+        const item = await this.$store.dispatch('contextMenu/open', {
           coordinates: {
             left: evt.clientX,
             top: evt.clientY,
@@ -178,8 +180,8 @@ export default {
             name: 'Delete',
             perform: () => explorerSvc.deleteItem(),
           }],
-        })
-          .then(item => item.perform());
+        });
+        item.perform();
       }
     },
   },

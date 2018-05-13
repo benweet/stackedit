@@ -75,12 +75,13 @@ export default {
       }
       this.editedId = null;
     },
-    remove(id) {
-      return this.$store.dispatch('modal/removeWorkspace')
-        .then(
-          () => localDbSvc.removeWorkspace(id),
-          () => { /* Cancel */ },
-        );
+    async remove(id) {
+      try {
+        await this.$store.dispatch('modal/removeWorkspace');
+        localDbSvc.removeWorkspace(id);
+      } catch (e) {
+        // Cancel
+      }
     },
   },
 };

@@ -7,7 +7,7 @@ export default {
   /**
    * Create a file in the store with the specified fields.
    */
-  createFile({
+  async createFile({
     name,
     parentId,
     text,
@@ -29,77 +29,99 @@ export default {
       discussions: discussions || {},
       comments: comments || {},
     };
-    const nameStripped = file.name !== utils.defaultName && file.name !== name;
-
-    // Check if there is a path conflict
     const workspaceUniquePaths = store.getters['workspace/hasUniquePaths'];
-    let pathConflict;
-    if (workspaceUniquePaths) {
-      const parentPath = store.getters.itemPaths[file.parentId] || '';
-      const path = parentPath + file.name;
-      pathConflict = !!store.getters.pathItems[path];
+
+    // Show warning dialogs
+    if (!background) {
+      // If name is being stripped
+      if (file.name !== utils.defaultName && file.name !== name) {
+        await store.dispatch('modal/stripName', name);
+      }
+
+      // Check if there is already a file with that path
+      if (workspaceUniquePaths) {
+        const parentPath = store.getters.itemPaths[file.parentId] || '';
+        const path = parentPath + file.name;
+        if (store.getters.pathItems[path]) {
+          await store.dispatch('modal/pathConflict', name);
+        }
+      }
     }
 
-    // Show warning dialogs and then save in the store
-    return Promise.resolve()
-      .then(() => !background && nameStripped && store.dispatch('modal/stripName', name))
-      .then(() => !background && pathConflict && store.dispatch('modal/pathConflict', name))
-      .then(() => {
-        store.commit('content/setItem', content);
-        store.commit('file/setItem', file);
-        if (workspaceUniquePaths) {
-          this.makePathUnique(id);
-        }
-        return store.state.file.itemMap[id];
-      });
+    // Save file and content in the store
+    store.commit('content/setItem', content);
+    store.commit('file/setItem', file);
+    if (workspaceUniquePaths) {
+      this.makePathUnique(id);
+    }
+
+    // Return the new file item
+    return store.state.file.itemMap[id];
   },
 
   /**
    * Make sanity checks and then create/update the folder/file in the store.
    */
-  async storeItem(item, background = false) {
+  async storeItem(item) {
     const id = item.id || utils.uid();
     const sanitizedName = utils.sanitizeName(item.name);
 
     if (item.type === 'folder' && forbiddenFolderNameMatcher.exec(sanitizedName)) {
-      if (background) {
-        return null;
-      }
       await store.dispatch('modal/unauthorizedName', item.name);
       throw new Error('Unauthorized name.');
     }
 
-    const workspaceUniquePaths = store.getters['workspace/hasUniquePaths'];
-
     // Show warning dialogs
-    if (!background) {
-      // If name has been stripped
-      if (sanitizedName !== utils.defaultName && sanitizedName !== item.name) {
-        await store.dispatch('modal/stripName', item.name);
+    // If name has been stripped
+    if (sanitizedName !== utils.defaultName && sanitizedName !== item.name) {
+      await store.dispatch('modal/stripName', item.name);
+    }
+    // Check if there is a path conflict
+    if (store.getters['workspace/hasUniquePaths']) {
+      const parentPath = store.getters.itemPaths[item.parentId] || '';
+      const path = parentPath + sanitizedName;
+      const pathItems = store.getters.pathItems[path] || [];
+      if (pathItems.some(itemWithSamePath => itemWithSamePath.id !== id)) {
+        await store.dispatch('modal/pathConflict', item.name);
       }
-      // Check if there is a path conflict
-      if (workspaceUniquePaths) {
-        const parentPath = store.getters.itemPaths[item.parentId] || '';
-        const path = parentPath + sanitizedName;
-        const pathItems = store.getters.pathItems[path] || [];
-        if (pathItems.some(itemWithSamePath => itemWithSamePath.id !== id)) {
-          await store.dispatch('modal/pathConflict', item.name);
-        }
+    }
+
+    return this.setOrPatchItem({
+      ...item,
+      id,
+    });
+  },
+
+  /**
+   * Create/update the folder/file in the store and make sure its path is unique.
+   */
+  setOrPatchItem(patch) {
+    const item = {
+      ...store.getters.allItemMap[patch.id] || patch,
+    };
+    if (!item.id) {
+      return null;
+    }
+
+    if (patch.parentId !== undefined) {
+      item.parentId = patch.parentId || null;
+    }
+    if (patch.name) {
+      const sanitizedName = utils.sanitizeName(patch.name);
+      if (item.type !== 'folder' || !forbiddenFolderNameMatcher.exec(sanitizedName)) {
+        item.name = sanitizedName;
       }
     }
 
     // Save item in the store
-    store.commit(`${item.type}/setItem`, {
-      id,
-      parentId: item.parentId || null,
-      name: sanitizedName,
-    });
+    store.commit(`${item.type}/setItem`, item);
 
     // Ensure path uniqueness
-    if (workspaceUniquePaths) {
-      this.makePathUnique(id);
+    if (store.getters['workspace/hasUniquePaths']) {
+      this.makePathUnique(item.id);
     }
-    return store.getters.allItemMap[id];
+
+    return store.getters.allItemMap[item.id];
   },
 
   /**

@@ -31,8 +31,6 @@ import { mapGetters } from 'vuex';
 import MenuEntry from './common/MenuEntry';
 import googleHelper from '../../services/providers/helpers/googleHelper';
 
-const onCancel = () => {};
-
 export default {
   components: {
     MenuEntry,
@@ -46,28 +44,37 @@ export default {
     ]),
   },
   methods: {
-    addCouchdbWorkspace() {
-      return this.$store.dispatch('modal/open', {
-        type: 'couchdbWorkspace',
-      })
-        .catch(onCancel);
+    async addCouchdbWorkspace() {
+      try {
+        this.$store.dispatch('modal/open', {
+          type: 'couchdbWorkspace',
+        });
+      } catch (e) {
+        // Cancel
+      }
     },
-    addGithubWorkspace() {
-      return this.$store.dispatch('modal/open', {
-        type: 'githubWorkspace',
-      })
-        .catch(onCancel);
+    async addGithubWorkspace() {
+      try {
+        this.$store.dispatch('modal/open', {
+          type: 'githubWorkspace',
+        });
+      } catch (e) {
+        // Cancel
+      }
     },
-    addGoogleDriveWorkspace() {
-      return googleHelper.addDriveAccount(true)
-        .then(token => this.$store.dispatch('modal/open', {
+    async addGoogleDriveWorkspace() {
+      try {
+        const token = await googleHelper.addDriveAccount(true);
+        this.$store.dispatch('modal/open', {
           type: 'googleDriveWorkspace',
           token,
-        }))
-        .catch(onCancel);
+        });
+      } catch (e) {
+        // Cancel
+      }
     },
     manageWorkspaces() {
-      return this.$store.dispatch('modal/open', 'workspaceManagement');
+      this.$store.dispatch('modal/open', 'workspaceManagement');
     },
   },
 };

@@ -34,94 +34,88 @@ export default new Provider({
   checkPath(path) {
     return path && path.match(/^\/[^\\<>:"|?*]+$/);
   },
-  downloadContent(token, syncLocation) {
-    return dropboxHelper.downloadFile(
+  async downloadContent(token, syncLocation) {
+    const { content } = await dropboxHelper.downloadFile({
       token,
-      makePathRelative(token, syncLocation.path),
-      syncLocation.dropboxFileId,
-    )
-      .then(({ content }) => Provider.parseContent(content, `${syncLocation.fileId}/content`));
+      path: makePathRelative(token, syncLocation.path),
+      fileId: syncLocation.dropboxFileId,
+    });
+    return Provider.parseContent(content, `${syncLocation.fileId}/content`);
   },
-  uploadContent(token, content, syncLocation) {
-    return dropboxHelper.uploadFile(
+  async uploadContent(token, content, syncLocation) {
+    const dropboxFile = await dropboxHelper.uploadFile({
       token,
-      makePathRelative(token, syncLocation.path),
-      Provider.serializeContent(content),
-      syncLocation.dropboxFileId,
-    )
-      .then(dropboxFile => ({
-        ...syncLocation,
-        path: makePathAbsolute(token, dropboxFile.path_display),
-        dropboxFileId: dropboxFile.id,
-      }));
+      path: makePathRelative(token, syncLocation.path),
+      content: Provider.serializeContent(content),
+      fileId: syncLocation.dropboxFileId,
+    });
+    return {
+      ...syncLocation,
+      path: makePathAbsolute(token, dropboxFile.path_display),
+      dropboxFileId: dropboxFile.id,
+    };
   },
-  publish(token, html, metadata, publishLocation) {
-    return dropboxHelper.uploadFile(
+  async publish(token, html, metadata, publishLocation) {
+    const dropboxFile = await dropboxHelper.uploadFile({
       token,
-      publishLocation.path,
-      html,
-      publishLocation.dropboxFileId,
-    )
-      .then(dropboxFile => ({
-        ...publishLocation,
-        path: makePathAbsolute(token, dropboxFile.path_display),
-        dropboxFileId: dropboxFile.id,
-      }));
+      path: publishLocation.path,
+      content: html,
+      fileId: publishLocation.dropboxFileId,
+    });
+    return {
+      ...publishLocation,
+      path: makePathAbsolute(token, dropboxFile.path_display),
+      dropboxFileId: dropboxFile.id,
+    };
   },
-  openFiles(token, paths) {
-    const openOneFile = () => {
-      const path = paths.pop();
-      if (!path) {
-        return null;
-      }
-      if (Provider.openFileWithLocation(store.getters['syncLocation/items'], {
+  async openFiles(token, paths) {
+    await utils.awaitSequence(paths, async (path) => {
+      // Check if the file exists and open it
+      if (!Provider.openFileWithLocation(store.getters['syncLocation/items'], {
         providerId: this.id,
         path,
       })) {
-        // File exists and has just been opened. Next...
-        return openOneFile();
-      }
-      // Download content from Dropbox and create the file
-      const syncLocation = {
-        path,
-        providerId: this.id,
-        sub: token.sub,
-      };
-      return this.downloadContent(token, syncLocation)
-        .then((content) => {
-          let name = path;
-          const slashPos = name.lastIndexOf('/');
-          if (slashPos > -1 && slashPos < name.length - 1) {
-            name = name.slice(slashPos + 1);
-          }
-          const dotPos = name.lastIndexOf('.');
-          if (dotPos > 0 && slashPos < name.length) {
-            name = name.slice(0, dotPos);
-          }
-          return fileSvc.createFile({
-            name,
-            parentId: store.getters['file/current'].parentId,
-            text: content.text,
-            properties: content.properties,
-            discussions: content.discussions,
-            comments: content.comments,
-          }, true);
-        })
-        .then((item) => {
-          store.commit('file/setCurrentId', item.id);
-          store.commit('syncLocation/setItem', {
-            ...syncLocation,
-            id: utils.uid(),
-            fileId: item.id,
-          });
-          store.dispatch('notification/info', `${store.getters['file/current'].name} was imported from Dropbox.`);
-        })
-        .catch(() => {
+        // Download content from Dropbox
+        const syncLocation = {
+          path,
+          providerId: this.id,
+          sub: token.sub,
+        };
+        let content;
+        try {
+          content = await this.downloadContent(token, syncLocation);
+        } catch (e) {
           store.dispatch('notification/error', `Could not open file ${path}.`);
-        })
-        .then(() => openOneFile());
-    };
-    return Promise.resolve(openOneFile());
+          return;
+        }
+
+        // Create the file
+        let name = path;
+        const slashPos = name.lastIndexOf('/');
+        if (slashPos > -1 && slashPos < name.length - 1) {
+          name = name.slice(slashPos + 1);
+        }
+        const dotPos = name.lastIndexOf('.');
+        if (dotPos > 0 && slashPos < name.length) {
+          name = name.slice(0, dotPos);
+        }
+        const item = await fileSvc.createFile({
+          name,
+          parentId: store.getters['file/current'].parentId,
+          text: content.text,
+          properties: content.properties,
+          discussions: content.discussions,
+          comments: content.comments,
+        }, true);
+        store.commit('file/setCurrentId', item.id);
+        store.commit('syncLocation/setItem', {
+          ...syncLocation,
+          id: utils.uid(),
+          fileId: item.id,
+        });
+        store.dispatch('notification/info', `${store.getters['file/current'].name} was imported from Dropbox.`);
+      }
+    });
   },
   makeLocation(token, path) {
     return {

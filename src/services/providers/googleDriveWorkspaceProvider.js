@@ -4,13 +4,6 @@ import Provider from './common/Provider';
 import utils from '../utils';
 import fileSvc from '../fileSvc';
 
-const getSyncData = (fileId) => {
-  const syncData = store.getters['data/syncDataByItemId'][`${fileId}/content`];
-  return syncData
-    ? Promise.resolve(syncData)
-    : Promise.reject(); // No need for a proper error message.
-};
-
 let fileIdToOpen;
 let syncStartPageToken;
 
@@ -19,7 +12,7 @@ export default new Provider({
   getToken() {
     return store.getters['workspace/syncToken'];
   },
-  initWorkspace() {
+  async initWorkspace() {
     const makeWorkspaceParams = folderId => ({
       providerId: this.id,
       folderId,
@@ -31,489 +24,437 @@ export default new Provider({
     const getWorkspace = folderId =>
       store.getters['data/sanitizedWorkspaces'][makeWorkspaceId(folderId)];
 
-    const initFolder = (token, folder) => Promise.resolve({
-      folderId: folder.id,
-      dataFolderId: folder.appProperties.dataFolderId,
-      trashFolderId: folder.appProperties.trashFolderId,
-    })
-      .then((properties) => {
-        // Make sure data folder exists
-        if (properties.dataFolderId) {
-          return properties;
-        }
-        return googleHelper.uploadFile(
-          token,
-          '.stackedit-data',
-          [folder.id],
-          { folderId: folder.id },
-          undefined,
-          googleHelper.folderMimeType,
-        )
-          .then(dataFolder => ({
-            ...properties,
-            dataFolderId: dataFolder.id,
-          }));
-      })
-      .then((properties) => {
-        // Make sure trash folder exists
-        if (properties.trashFolderId) {
-          return properties;
-        }
-        return googleHelper.uploadFile(
-          token,
-          '.stackedit-trash',
-          [folder.id],
-          { folderId: folder.id },
-          undefined,
-          googleHelper.folderMimeType,
-        )
-          .then(trashFolder => ({
-            ...properties,
-            trashFolderId: trashFolder.id,
-          }));
-      })
-      .then((properties) => {
-        // Update workspace if some properties are missing
-        if (properties.folderId === folder.appProperties.folderId
-          && properties.dataFolderId === folder.appProperties.dataFolderId
-          && properties.trashFolderId === folder.appProperties.trashFolderId
-        ) {
-          return properties;
-        }
-        return googleHelper.uploadFile(
-          token,
-          undefined,
-          undefined,
-          properties,
-          undefined,
-          googleHelper.folderMimeType,
-          folder.id,
-        )
-          .then(() => properties);
-      })
-      .then((properties) => {
-        // Update workspace in the store
-        const workspaceId = makeWorkspaceId(folder.id);
-        store.dispatch('data/patchWorkspaces', {
-          [workspaceId]: {
-            id: workspaceId,
-            sub: token.sub,
-            name: folder.name,
-            providerId: this.id,
-            url: window.location.href,
-            folderId: folder.id,
-            teamDriveId: folder.teamDriveId,
-            dataFolderId: properties.dataFolderId,
-            trashFolderId: properties.trashFolderId,
-          },
-        });
+    const initFolder = async (token, folder) => {
+      const appProperties = {
+        folderId: folder.id,
+        dataFolderId: folder.appProperties.dataFolderId,
+        trashFolderId: folder.appProperties.trashFolderId,
+      };
 
-        // Return the workspace
-        return store.getters['data/sanitizedWorkspaces'][workspaceId];
-      });
-
-    return Promise.resolve()
-      .then(() => {
-        const workspace = getWorkspace(utils.queryParams.folderId);
-        // See if we already have a token
-        const googleTokens = store.getters['data/googleTokens'];
-        // Token sub is in the workspace or in the url if workspace is about to be created
-        const token = workspace ? googleTokens[workspace.sub] : googleTokens[utils.queryParams.sub];
-        if (token && token.isDrive && token.driveFullAccess) {
-          return token;
-        }
-        // If no token has been found, popup an authorize window and get one
-        return store.dispatch('modal/workspaceGoogleRedirection', {
-          onResolve: () => googleHelper.addDriveAccount(true, utils.queryParams.sub),
-        });
-      })
-      .then(token => Promise.resolve()
-        // If no folderId is provided, create one
-        .then(() => utils.queryParams.folderId || googleHelper.uploadFile(
+      // Make sure data folder exists
+      if (!appProperties.dataFolderId) {
+        appProperties.dataFolderId = (await googleHelper.uploadFile({
           token,
-          'StackEdit workspace',
-          [],
-          undefined,
-          undefined,
-          googleHelper.folderMimeType,
-        )
-          .then(folder => initFolder(token, {
-            ...folder,
-            appProperties: {},
-          })
-            .then(() => folder.id)))
-        // If workspace does not exist, initialize one
-        .then(folderId => getWorkspace(folderId) || googleHelper.getFile(token, folderId)
-          .then((folder) => {
-            folder.appProperties = folder.appProperties || {};
-            const folderIdProperty = folder.appProperties.folderId;
-            if (folderIdProperty && folderIdProperty !== folderId) {
-              throw new Error(`Folder ${folderId} is part of another workspace.`);
-            }
-            return initFolder(token, folder);
-          }, () => {
-            throw new Error(`Folder ${folderId} is not accessible. Make sure you have the right permissions.`);
-          }))
-        .then((workspace) => {
-          // Fix the URL hash
-          utils.setQueryParams(makeWorkspaceParams(workspace.folderId));
-          if (workspace.url !== window.location.href) {
-            store.dispatch('data/patchWorkspaces', {
-              [workspace.id]: {
-                ...workspace,
-                url: window.location.href,
-              },
-            });
-          }
-          return store.getters['data/sanitizedWorkspaces'][workspace.id];
-        }));
-  },
-  performAction() {
-    return Promise.resolve()
-      .then(() => {
-        const state = googleHelper.driveState || {};
-        const token = this.getToken();
-        switch (token && state.action) {
-          case 'create':
-            return Promise.resolve()
-              .then(() => {
-                const driveFolder = googleHelper.driveActionFolder;
-                let syncData = store.getters['data/syncData'][driveFolder.id];
-                if (!syncData && driveFolder.appProperties.id) {
-                  // Create folder if not already synced
-                  store.commit('folder/setItem', {
-                    id: driveFolder.appProperties.id,
-                    name: driveFolder.name,
-                  });
-                  const item = store.state.folder.itemMap[driveFolder.appProperties.id];
-                  syncData = {
-                    id: driveFolder.id,
-                    itemId: item.id,
-                    type: item.type,
-                    hash: item.hash,
-                  };
-                  store.dispatch('data/patchSyncData', {
-                    [syncData.id]: syncData,
-                  });
-                }
-                return fileSvc.createFile({
-                  parentId: syncData && syncData.itemId,
-                }, true)
-                  .then((file) => {
-                    store.commit('file/setCurrentId', file.id);
-                    // File will be created on next workspace sync
-                  });
-              });
-          case 'open':
-            return Promise.resolve()
-              .then(() => {
-                // open first file only
-                const firstFile = googleHelper.driveActionFiles[0];
-                const syncData = store.getters['data/syncData'][firstFile.id];
-                if (!syncData) {
-                  fileIdToOpen = firstFile.id;
-                } else {
-                  store.commit('file/setCurrentId', syncData.itemId);
-                }
-              });
-          default:
-            return null;
-        }
+          name: '.stackedit-data',
+          parents: [folder.id],
+          appProperties: { folderId: folder.id },
+          mediaType: googleHelper.folderMimeType,
+        })).id;
+      }
+
+      // Make sure trash folder exists
+      if (!appProperties.trashFolderId) {
+        appProperties.trashFolderId = (await googleHelper.uploadFile({
+          token,
+          name: '.stackedit-trash',
+          parents: [folder.id],
+          appProperties: { folderId: folder.id },
+          mediaType: googleHelper.folderMimeType,
+        })).id;
+      }
+
+      // Update workspace if some properties are missing
+      if (appProperties.folderId !== folder.appProperties.folderId
+        || appProperties.dataFolderId !== folder.appProperties.dataFolderId
+        || appProperties.trashFolderId !== folder.appProperties.trashFolderId
+      ) {
+        await googleHelper.uploadFile({
+          token,
+          appProperties,
+          mediaType: googleHelper.folderMimeType,
+          fileId: folder.id,
+        });
+      }
+
+      // Update workspace in the store
+      const workspaceId = makeWorkspaceId(folder.id);
+      store.dispatch('data/patchWorkspaces', {
+        [workspaceId]: {
+          id: workspaceId,
+          sub: token.sub,
+          name: folder.name,
+          providerId: this.id,
+          url: window.location.href,
+          folderId: folder.id,
+          teamDriveId: folder.teamDriveId,
+          dataFolderId: appProperties.dataFolderId,
+          trashFolderId: appProperties.trashFolderId,
+        },
       });
+    };
+
+    // Token sub is in the workspace or in the url if workspace is about to be created
+    const { sub } = getWorkspace(utils.queryParams.folderId) || utils.queryParams;
+    // See if we already have a token
+    let token = store.getters['data/googleTokens'][sub];
+    // If no token has been found, popup an authorize window and get one
+    if (!token || !token.isDrive || !token.driveFullAccess) {
+      await store.dispatch('modal/workspaceGoogleRedirection');
+      token = await googleHelper.addDriveAccount(true, utils.queryParams.sub);
+    }
+
+    let { folderId } = utils.queryParams;
+    // If no folderId is provided, create one
+    if (!folderId) {
+      const folder = await googleHelper.uploadFile({
+        token,
+        name: 'StackEdit workspace',
+        parents: [],
+        mediaType: googleHelper.folderMimeType,
+      });
+      await initFolder(token, {
+        ...folder,
+        appProperties: {},
+      });
+      folderId = folder.id;
+    }
+
+    // Init workspace
+    let workspace = getWorkspace(folderId);
+    if (!workspace) {
+      let folder;
+      try {
+        folder = googleHelper.getFile(token, folderId);
+      } catch (err) {
+        throw new Error(`Folder ${folderId} is not accessible. Make sure you have the right permissions.`);
+      }
+      folder.appProperties = folder.appProperties || {};
+      const folderIdProperty = folder.appProperties.folderId;
+      if (folderIdProperty && folderIdProperty !== folderId) {
+        throw new Error(`Folder ${folderId} is part of another workspace.`);
+      }
+      await initFolder(token, folder);
+      workspace = getWorkspace(folderId);
+    }
+
+    // Fix the URL hash
+    utils.setQueryParams(makeWorkspaceParams(workspace.folderId));
+    if (workspace.url !== window.location.href) {
+      store.dispatch('data/patchWorkspaces', {
+        [workspace.id]: {
+          ...workspace,
+          url: window.location.href,
+        },
+      });
+    }
+    return store.getters['data/sanitizedWorkspaces'][workspace.id];
   },
-  getChanges() {
+  async performAction() {
+    const state = googleHelper.driveState || {};
+    const token = this.getToken();
+    switch (token && state.action) {
+      case 'create': {
+        const driveFolder = googleHelper.driveActionFolder;
+        let syncData = store.getters['data/syncData'][driveFolder.id];
+        if (!syncData && driveFolder.appProperties.id) {
+          // Create folder if not already synced
+          store.commit('folder/setItem', {
+            id: driveFolder.appProperties.id,
+            name: driveFolder.name,
+          });
+          const item = store.state.folder.itemMap[driveFolder.appProperties.id];
+          syncData = {
+            id: driveFolder.id,
+            itemId: item.id,
+            type: item.type,
+            hash: item.hash,
+          };
+          store.dispatch('data/patchSyncData', {
+            [syncData.id]: syncData,
+          });
+        }
+        const file = await fileSvc.createFile({
+          parentId: syncData && syncData.itemId,
+        }, true);
+        store.commit('file/setCurrentId', file.id);
+        // File will be created on next workspace sync
+        break;
+      }
+      case 'open': {
+        // open first file only
+        const firstFile = googleHelper.driveActionFiles[0];
+        const syncData = store.getters['data/syncData'][firstFile.id];
+        if (!syncData) {
+          fileIdToOpen = firstFile.id;
+        } else {
+          store.commit('file/setCurrentId', syncData.itemId);
+        }
+        break;
+      }
+      default:
+    }
+  },
+  async getChanges() {
     const workspace = store.getters['workspace/currentWorkspace'];
     const syncToken = store.getters['workspace/syncToken'];
-    const startPageToken = store.getters['data/localSettings'].syncStartPageToken;
-    return googleHelper.getChanges(syncToken, startPageToken, false, workspace.teamDriveId)
-      .then((result) => {
-        // Collect possible parent IDs
-        const parentIds = {};
-        Object.entries(store.getters['data/syncDataByItemId']).forEach(([id, syncData]) => {
-          parentIds[syncData.id] = id;
-        });
-        result.changes.forEach((change) => {
-          const { id } = (change.file || {}).appProperties || {};
-          if (id) {
-            parentIds[change.fileId] = id;
-          }
-        });
+    const lastStartPageToken = store.getters['data/localSettings'].syncStartPageToken;
+    const { changes, startPageToken } = await googleHelper
+      .getChanges(syncToken, lastStartPageToken, false, workspace.teamDriveId);
 
-        // Collect changes
-        const changes = [];
-        result.changes.forEach((change) => {
-          // Ignore changes on StackEdit own folders
-          if (change.fileId === workspace.folderId
-            || change.fileId === workspace.dataFolderId
-            || change.fileId === workspace.trashFolderId
-          ) {
+    // Collect possible parent IDs
+    const parentIds = {};
+    Object.entries(store.getters['data/syncDataByItemId']).forEach(([id, syncData]) => {
+      parentIds[syncData.id] = id;
+    });
+    changes.forEach((change) => {
+      const { id } = (change.file || {}).appProperties || {};
+      if (id) {
+        parentIds[change.fileId] = id;
+      }
+    });
+
+    // Collect changes
+    const result = [];
+    changes.forEach((change) => {
+      // Ignore changes on StackEdit own folders
+      if (change.fileId === workspace.folderId
+        || change.fileId === workspace.dataFolderId
+        || change.fileId === workspace.trashFolderId
+      ) {
+        return;
+      }
+
+      let contentChange;
+      if (change.file) {
+        // Ignore changes in files that are not in the workspace
+        const { appProperties } = change.file;
+        if (!appProperties || appProperties.folderId !== workspace.folderId
+        ) {
+          return;
+        }
+
+        // If change is on a data item
+        if (change.file.parents[0] === workspace.dataFolderId) {
+          // Data item has a JSON filename
+          try {
+            change.item = JSON.parse(change.file.name);
+          } catch (e) {
             return;
           }
+        } else {
+          // Change on a file or folder
+          const type = change.file.mimeType === googleHelper.folderMimeType
+            ? 'folder'
+            : 'file';
+          const item = {
+            id: appProperties.id,
+            type,
+            name: change.file.name,
+            parentId: null,
+          };
 
-          let contentChange;
-          if (change.file) {
-            // Ignore changes in files that are not in the workspace
-            const { appProperties } = change.file;
-            if (!appProperties || appProperties.folderId !== workspace.folderId
-            ) {
-              return;
-            }
-
-            // If change is on a data item
-            if (change.file.parents[0] === workspace.dataFolderId) {
-              // Data item has a JSON filename
-              try {
-                change.item = JSON.parse(change.file.name);
-              } catch (e) {
-                return;
-              }
-            } else {
-              // Change on a file or folder
-              const type = change.file.mimeType === googleHelper.folderMimeType
-                ? 'folder'
-                : 'file';
-              const item = {
-                id: appProperties.id,
-                type,
-                name: change.file.name,
-                parentId: null,
-              };
-
-              // Fill parentId
-              if (change.file.parents.some(parentId => parentId === workspace.trashFolderId)) {
-                item.parentId = 'trash';
-              } else {
-                change.file.parents.some((parentId) => {
-                  if (!parentIds[parentId]) {
-                    return false;
-                  }
-                  item.parentId = parentIds[parentId];
-                  return true;
-                });
-              }
-              change.item = utils.addItemHash(item);
-
-              if (type === 'file') {
-                // create a fake change as a file content change
-                contentChange = {
-                  item: {
-                    id: `${appProperties.id}/content`,
-                    type: 'content',
-                    // Need a truthy value to force saving sync data
-                    hash: 1,
-                  },
-                  syncData: {
-                    id: `${change.fileId}/content`,
-                    itemId: `${appProperties.id}/content`,
-                    type: 'content',
-                    // Need a truthy value to force downloading the content
-                    hash: 1,
-                  },
-                  syncDataId: `${change.fileId}/content`,
-                };
-              }
-            }
-
-            // Build sync data
-            change.syncData = {
-              id: change.fileId,
-              parentIds: change.file.parents,
-              itemId: change.item.id,
-              type: change.item.type,
-              hash: change.item.hash,
-            };
+          // Fill parentId
+          if (change.file.parents.some(parentId => parentId === workspace.trashFolderId)) {
+            item.parentId = 'trash';
           } else {
-            // Item was removed
-            const syncData = store.getters['data/syncData'][change.fileId];
-            if (syncData && syncData.type === 'file') {
-              // create a fake change as a file content change
-              contentChange = {
-                syncDataId: `${change.fileId}/content`,
-              };
-            }
+            change.file.parents.some((parentId) => {
+              if (!parentIds[parentId]) {
+                return false;
+              }
+              item.parentId = parentIds[parentId];
+              return true;
+            });
           }
+          change.item = utils.addItemHash(item);
 
-          // Push change
-          change.syncDataId = change.fileId;
-          changes.push(change);
-          if (contentChange) {
-            changes.push(contentChange);
+          if (type === 'file') {
+            // create a fake change as a file content change
+            contentChange = {
+              item: {
+                id: `${appProperties.id}/content`,
+                type: 'content',
+                // Need a truthy value to force saving sync data
+                hash: 1,
+              },
+              syncData: {
+                id: `${change.fileId}/content`,
+                itemId: `${appProperties.id}/content`,
+                type: 'content',
+                // Need a truthy value to force downloading the content
+                hash: 1,
+              },
+              syncDataId: `${change.fileId}/content`,
+            };
           }
-        });
-        syncStartPageToken = result.startPageToken;
-        return changes;
-      });
+        }
+
+        // Build sync data
+        change.syncData = {
+          id: change.fileId,
+          parentIds: change.file.parents,
+          itemId: change.item.id,
+          type: change.item.type,
+          hash: change.item.hash,
+        };
+      } else {
+        // Item was removed
+        const syncData = store.getters['data/syncData'][change.fileId];
+        if (syncData && syncData.type === 'file') {
+          // create a fake change as a file content change
+          contentChange = {
+            syncDataId: `${change.fileId}/content`,
+          };
+        }
+      }
+
+      // Push change
+      change.syncDataId = change.fileId;
+      result.push(change);
+      if (contentChange) {
+        result.push(contentChange);
+      }
+    });
+    syncStartPageToken = startPageToken;
+    return result;
   },
   onChangesApplied() {
     store.dispatch('data/patchLocalSettings', {
       syncStartPageToken,
     });
   },
-  saveSimpleItem(item, syncData, ifNotTooLate) {
-    return Promise.resolve()
-      .then(() => {
-        const workspace = store.getters['workspace/currentWorkspace'];
-        const syncToken = store.getters['workspace/syncToken'];
-        if (item.type !== 'file' && item.type !== 'folder') {
-          return googleHelper.uploadFile(
-            syncToken,
-            JSON.stringify(item),
-            [workspace.dataFolderId],
-            {
-              folderId: workspace.folderId,
-            },
-            undefined,
-            undefined,
-            syncData && syncData.id,
-            syncData && syncData.parentIds,
-            ifNotTooLate,
-          );
-        }
-
-        // For type `file` or `folder`
-        const parentSyncData = store.getters['data/syncDataByItemId'][item.parentId];
-        let parentId;
-        if (item.parentId === 'trash') {
-          parentId = workspace.trashFolderId;
-        } else if (parentSyncData) {
-          parentId = parentSyncData.id;
-        } else {
-          parentId = workspace.folderId;
-        }
-
-        return googleHelper.uploadFile(
-          syncToken,
-          item.name,
-          [parentId],
-          {
-            id: item.id,
-            folderId: workspace.folderId,
-          },
-          undefined,
-          item.type === 'folder' ? googleHelper.folderMimeType : undefined,
-          syncData && syncData.id,
-          syncData && syncData.parentIds,
-          ifNotTooLate,
-        );
-      })
-      .then(file => ({
-        // Build sync data
-        id: file.id,
-        itemId: item.id,
-        type: item.type,
-        hash: item.hash,
-      }));
-  },
-  removeItem(syncData, ifNotTooLate) {
-    // Ignore content deletion
-    if (syncData.type === 'content') {
-      return Promise.resolve();
-    }
+  async saveSimpleItem(item, syncData, ifNotTooLate) {
+    const workspace = store.getters['workspace/currentWorkspace'];
     const syncToken = store.getters['workspace/syncToken'];
-    return googleHelper.removeFile(syncToken, syncData.id, ifNotTooLate);
+    let file;
+    if (item.type !== 'file' && item.type !== 'folder') {
+      // For sync/publish locations, store item as filename
+      file = await googleHelper.uploadFile({
+        token: syncToken,
+        name: JSON.stringify(item),
+        parents: [workspace.dataFolderId],
+        appProperties: {
+          folderId: workspace.folderId,
+        },
+        fileId: syncData && syncData.id,
+        oldParents: syncData && syncData.parentIds,
+        ifNotTooLate,
+      });
+    } else {
+      // For type `file` or `folder`
+      const parentSyncData = store.getters['data/syncDataByItemId'][item.parentId];
+      let parentId;
+      if (item.parentId === 'trash') {
+        parentId = workspace.trashFolderId;
+      } else if (parentSyncData) {
+        parentId = parentSyncData.id;
+      } else {
+        parentId = workspace.folderId;
+      }
+
+      file = await googleHelper.uploadFile({
+        token: syncToken,
+        name: item.name,
+        parents: [parentId],
+        appProperties: {
+          id: item.id,
+          folderId: workspace.folderId,
+        },
+        mediaType: item.type === 'folder' ? googleHelper.folderMimeType : undefined,
+        fileId: syncData && syncData.id,
+        oldParents: syncData && syncData.parentIds,
+        ifNotTooLate,
+      });
+    }
+    // Build sync data
+    return {
+      id: file.id,
+      itemId: item.id,
+      type: item.type,
+      hash: item.hash,
+    };
   },
-  downloadContent(token, syncLocation) {
+  async removeItem(syncData, ifNotTooLate) {
+    // Ignore content deletion
+    if (syncData.type !== 'content') {
+      const syncToken = store.getters['workspace/syncToken'];
+      await googleHelper.removeFile(syncToken, syncData.id, ifNotTooLate);
+    }
+  },
+  async downloadContent(token, syncLocation) {
     const syncData = store.getters['data/syncDataByItemId'][syncLocation.fileId];
     const contentSyncData = store.getters['data/syncDataByItemId'][`${syncLocation.fileId}/content`];
     if (!syncData || !contentSyncData) {
-      return Promise.resolve();
+      return null;
     }
-    return googleHelper.downloadFile(token, syncData.id)
-      .then((content) => {
-        const item = Provider.parseContent(content, `${syncLocation.fileId}/content`);
-        if (item.hash !== contentSyncData.hash) {
-          store.dispatch('data/patchSyncData', {
-            [contentSyncData.id]: {
-              ...contentSyncData,
-              hash: item.hash,
-            },
-          });
-        }
-        // Open the file requested by action if it wasn't synced yet
-        if (fileIdToOpen && fileIdToOpen === syncData.id) {
-          fileIdToOpen = null;
-          // Open the file once downloaded content has been stored
-          setTimeout(() => {
-            store.commit('file/setCurrentId', syncData.itemId);
-          }, 10);
-        }
-        return item;
+    const content = await googleHelper.downloadFile(token, syncData.id);
+    const item = Provider.parseContent(content, `${syncLocation.fileId}/content`);
+    if (item.hash !== contentSyncData.hash) {
+      store.dispatch('data/patchSyncData', {
+        [contentSyncData.id]: {
+          ...contentSyncData,
+          hash: item.hash,
+        },
       });
+    }
+
+    // Open the file requested by action if it wasn't synced yet
+    if (fileIdToOpen && fileIdToOpen === syncData.id) {
+      fileIdToOpen = null;
+      // Open the file once downloaded content has been stored
+      setTimeout(() => {
+        store.commit('file/setCurrentId', syncData.itemId);
+      }, 10);
+    }
+    return item;
   },
-  downloadData(dataId) {
+  async downloadData(dataId) {
     const syncData = store.getters['data/syncDataByItemId'][dataId];
     if (!syncData) {
-      return Promise.resolve();
+      return null;
     }
     const syncToken = store.getters['workspace/syncToken'];
-    return googleHelper.downloadFile(syncToken, syncData.id)
-      .then((content) => {
-        const item = JSON.parse(content);
-        if (item.hash !== syncData.hash) {
-          store.dispatch('data/patchSyncData', {
-            [syncData.id]: {
-              ...syncData,
-              hash: item.hash,
-            },
-          });
-        }
-        return item;
+    const content = await googleHelper.downloadFile(syncToken, syncData.id);
+    const item = JSON.parse(content);
+    if (item.hash !== syncData.hash) {
+      store.dispatch('data/patchSyncData', {
+        [syncData.id]: {
+          ...syncData,
+          hash: item.hash,
+        },
       });
-  },
-  uploadContent(token, content, syncLocation, ifNotTooLate) {
-    const contentSyncData = store.getters['data/syncDataByItemId'][`${syncLocation.fileId}/content`];
-    if (contentSyncData && contentSyncData.hash === content.hash) {
-      return Promise.resolve(syncLocation);
     }
-    return Promise.resolve()
-      .then(() => {
-        const syncData = store.getters['data/syncDataByItemId'][syncLocation.fileId];
-        if (syncData) {
-          // Only update file media
-          return googleHelper.uploadFile(
-            token,
-            undefined,
-            undefined,
-            undefined,
-            Provider.serializeContent(content),
-            undefined,
-            syncData.id,
-            undefined,
-            ifNotTooLate,
-          );
-        }
+    return item;
+  },
+  async uploadContent(token, content, syncLocation, ifNotTooLate) {
+    const contentSyncData = store.getters['data/syncDataByItemId'][`${syncLocation.fileId}/content`];
+    if (!contentSyncData || contentSyncData.hash !== content.hash) {
+      const syncData = store.getters['data/syncDataByItemId'][syncLocation.fileId];
+      let file;
+      if (syncData) {
+        // Only update file media
+        file = await googleHelper.uploadFile({
+          token,
+          media: Provider.serializeContent(content),
+          fileId: syncData.id,
+          ifNotTooLate,
+        });
+      } else {
         // Create file with media
         const workspace = store.getters['workspace/currentWorkspace'];
         // Use deepCopy to freeze objects
         const item = utils.deepCopy(store.state.file.itemMap[syncLocation.fileId]);
         const parentSyncData = store.getters['data/syncDataByItemId'][item.parentId];
-        return googleHelper.uploadFile(
+        file = await googleHelper.uploadFile({
           token,
-          item.name,
-          [parentSyncData ? parentSyncData.id : workspace.folderId],
-          {
+          name: item.name,
+          parents: [parentSyncData ? parentSyncData.id : workspace.folderId],
+          appProperties: {
             id: item.id,
             folderId: workspace.folderId,
           },
-          Provider.serializeContent(content),
-          undefined,
-          undefined,
-          undefined,
+          media: Provider.serializeContent(content),
           ifNotTooLate,
-        )
-          .then((file) => {
-            store.dispatch('data/patchSyncData', {
-              [file.id]: {
-                id: file.id,
-                itemId: item.id,
-                type: item.type,
-                hash: item.hash,
-              },
-            });
-            return file;
-          });
-      })
-      .then(file => store.dispatch('data/patchSyncData', {
+        });
+        store.dispatch('data/patchSyncData', {
+          [file.id]: {
+            id: file.id,
+            itemId: item.id,
+            type: item.type,
+            hash: item.hash,
+          },
+        });
+      }
+      store.dispatch('data/patchSyncData', {
         [`${file.id}/content`]: {
           // Build sync data
           id: `${file.id}/content`,
@@ -521,34 +462,32 @@ export default new Provider({
           type: content.type,
           hash: content.hash,
         },
-      }))
-      .then(() => syncLocation);
-  },
-  uploadData(item, ifNotTooLate) {
-    const syncData = store.getters['data/syncDataByItemId'][item.id];
-    if (syncData && syncData.hash === item.hash) {
-      return Promise.resolve();
+      });
     }
-    const workspace = store.getters['workspace/currentWorkspace'];
-    const syncToken = store.getters['workspace/syncToken'];
-    return googleHelper.uploadFile(
-      syncToken,
-      JSON.stringify({
-        id: item.id,
-        type: item.type,
-        hash: item.hash,
-      }),
-      [workspace.dataFolderId],
-      {
-        folderId: workspace.folderId,
-      },
-      JSON.stringify(item),
-      undefined,
-      syncData && syncData.id,
-      syncData && syncData.parentIds,
-      ifNotTooLate,
-    )
-      .then(file => store.dispatch('data/patchSyncData', {
+    return syncLocation;
+  },
+  async uploadData(item, ifNotTooLate) {
+    const syncData = store.getters['data/syncDataByItemId'][item.id];
+    if (!syncData || syncData.hash !== item.hash) {
+      const workspace = store.getters['workspace/currentWorkspace'];
+      const syncToken = store.getters['workspace/syncToken'];
+      const file = await googleHelper.uploadFile({
+        token: syncToken,
+        name: JSON.stringify({
+          id: item.id,
+          type: item.type,
+          hash: item.hash,
+        }),
+        parents: [workspace.dataFolderId],
+        appProperties: {
+          folderId: workspace.folderId,
+        },
+        media: JSON.stringify(item),
+        fileId: syncData && syncData.id,
+        oldParents: syncData && syncData.parentIds,
+        ifNotTooLate,
+      });
+      store.dispatch('data/patchSyncData', {
         [file.id]: {
           // Build sync data
           id: file.id,
@@ -556,21 +495,22 @@ export default new Provider({
           type: item.type,
           hash: item.hash,
         },
-      }));
+      });
+    }
   },
-  listRevisions(token, fileId) {
-    return getSyncData(fileId)
-      .then(syncData => googleHelper.getFileRevisions(token, syncData.id))
-      .then(revisions => revisions.map(revision => ({
-        id: revision.id,
-        sub: revision.lastModifyingUser && revision.lastModifyingUser.permissionId,
-        created: new Date(revision.modifiedTime).getTime(),
-      }))
-        .sort((revision1, revision2) => revision2.created - revision1.created));
+  async listRevisions(token, fileId) {
+    const syncData = Provider.getContentSyncData(fileId);
+    const revisions = await googleHelper.getFileRevisions(token, syncData.id);
+    return revisions.map(revision => ({
+      id: revision.id,
+      sub: revision.lastModifyingUser && revision.lastModifyingUser.permissionId,
+      created: new Date(revision.modifiedTime).getTime(),
+    }))
+      .sort((revision1, revision2) => revision2.created - revision1.created);
   },
-  getRevisionContent(token, fileId, revisionId) {
-    return getSyncData(fileId)
-      .then(syncData => googleHelper.downloadFileRevision(token, syncData.id, revisionId))
-      .then(content => Provider.parseContent(content, `${fileId}/content`));
+  async getRevisionContent(token, fileId, revisionId) {
+    const syncData = Provider.getContentSyncData(fileId);
+    const content = await googleHelper.downloadFileRevision(token, syncData.id, revisionId);
+    return Provider.parseContent(content, `${fileId}/content`);
   },
 });

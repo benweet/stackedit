@@ -78,29 +78,33 @@ export default {
         document.body.removeChild(iframeElt);
       }, 60000);
     },
-    settings() {
-      return this.$store.dispatch('modal/open', 'settings')
-        .then(
-          settings => this.$store.dispatch('data/setSettings', settings),
-          () => { /* Cancel */ },
-        );
+    async settings() {
+      try {
+        const settings = await this.$store.dispatch('modal/open', 'settings');
+        this.$store.dispatch('data/setSettings', settings);
+      } catch (e) {
+        // Cancel
+      }
     },
-    templates() {
-      return this.$store.dispatch('modal/open', 'templates')
-        .then(
-          ({ templates }) => this.$store.dispatch('data/setTemplates', templates),
-          () => { /* Cancel */ },
-        );
+    async templates() {
+      try {
+        const { templates } = await this.$store.dispatch('modal/open', 'templates');
+        this.$store.dispatch('data/setTemplates', templates);
+      } catch (e) {
+        // Cancel
+      }
     },
-    reset() {
-      return this.$store.dispatch('modal/reset')
-        .then(() => {
-          window.location.href = '#reset=true';
-          window.location.reload();
-        });
+    async reset() {
+      try {
+        await this.$store.dispatch('modal/reset');
+        window.location.href = '#reset=true';
+        window.location.reload();
+      } catch (e) {
+        // Cancel
+      }
     },
     about() {
-      return this.$store.dispatch('modal/open', 'about');
+      this.$store.dispatch('modal/open', 'about');
     },
   },
 };

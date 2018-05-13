@@ -175,10 +175,6 @@ export default {
   background-color: rgba(160, 160, 160, 0.5);
   overflow: auto;
 
-  hr {
-    margin: 0.5em 0;
-  }
-
   p {
     line-height: 1.5;
   }

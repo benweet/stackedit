@@ -38,80 +38,66 @@ const ensureDate = (value, defaultValue) => {
   return new Date(`${value}`);
 };
 
-function publish(publishLocation) {
+const publish = async (publishLocation) => {
   const { fileId } = publishLocation;
   const template = store.getters['data/allTemplates'][publishLocation.templateId];
-  return exportSvc.applyTemplate(fileId, template)
-    .then(html => localDbSvc.loadItem(`${fileId}/content`)
-      .then((content) => {
-        const file = store.state.file.itemMap[fileId];
-        const properties = utils.computeProperties(content.properties);
-        const provider = providerRegistry.providers[publishLocation.providerId];
-        const token = provider.getToken(publishLocation);
-        const metadata = {
-          title: ensureString(properties.title, file.name),
-          author: ensureString(properties.author),
-          tags: ensureArray(properties.tags),
-          categories: ensureArray(properties.categories),
-          excerpt: ensureString(properties.excerpt),
-          featuredImage: ensureString(properties.featuredImage),
-          status: ensureString(properties.status),
-          date: ensureDate(properties.date, new Date()),
-        };
-        return provider.publish(token, html, metadata, publishLocation);
-      }));
-}
+  const html = await exportSvc.applyTemplate(fileId, template);
+  const content = await localDbSvc.loadItem(`${fileId}/content`);
+  const file = store.state.file.itemMap[fileId];
+  const properties = utils.computeProperties(content.properties);
+  const provider = providerRegistry.providers[publishLocation.providerId];
+  const token = provider.getToken(publishLocation);
+  const metadata = {
+    title: ensureString(properties.title, file.name),
+    author: ensureString(properties.author),
+    tags: ensureArray(properties.tags),
+    categories: ensureArray(properties.categories),
+    excerpt: ensureString(properties.excerpt),
+    featuredImage: ensureString(properties.featuredImage),
+    status: ensureString(properties.status),
+    date: ensureDate(properties.date, new Date()),
+  };
+  return provider.publish(token, html, metadata, publishLocation);
+};
 
-function publishFile(fileId) {
+const publishFile = async (fileId) => {
   let counter = 0;
-  return loadContent(fileId)
-    .then(() => {
-      const publishLocations = [
-        ...store.getters['publishLocation/filteredGroupedByFileId'][fileId] || [],
-      ];
-      const publishOneContentLocation = () => {
-        const publishLocation = publishLocations.shift();
-        if (!publishLocation) {
-          return null;
-        }
-        return store.dispatch('queue/doWithLocation', {
-          location: publishLocation,
-          promise: publish(publishLocation)
-            .then((publishLocationToStore) => {
-              // Replace publish location if modified
-              if (utils.serializeObject(publishLocation) !==
-                utils.serializeObject(publishLocationToStore)
-              ) {
-                store.commit('publishLocation/patchItem', publishLocationToStore);
-              }
-              counter += 1;
-              return publishOneContentLocation();
-            }, (err) => {
-              if (store.state.offline) {
-                throw err;
-              }
-              console.error(err); // eslint-disable-line no-console
-              store.dispatch('notification/error', err);
-              return publishOneContentLocation();
-            }),
-        });
-      };
-      return publishOneContentLocation();
-    })
-    .then(() => {
-      const file = store.state.file.itemMap[fileId];
-      store.dispatch('notification/info', `"${file.name}" was published to ${counter} location(s).`);
-    })
-    .then(
-      () => localDbSvc.unloadContents(),
-      err => localDbSvc.unloadContents()
-        .then(() => {
-          throw err;
-        }),
-    );
-}
+  await loadContent(fileId);
+  const publishLocations = [
+    ...store.getters['publishLocation/filteredGroupedByFileId'][fileId] || [],
+  ];
+  try {
+    await utils.awaitSequence(publishLocations, async (publishLocation) => {
+      await store.dispatch('queue/doWithLocation', {
+        location: publishLocation,
+        action: async () => {
+          const publishLocationToStore = await publish(publishLocation);
+          try {
+            // Replace publish location if modified
+            if (utils.serializeObject(publishLocation) !==
+              utils.serializeObject(publishLocationToStore)
+            ) {
+              store.commit('publishLocation/patchItem', publishLocationToStore);
+            }
+            counter += 1;
+          } catch (err) {
+            if (store.state.offline) {
+              throw err;
+            }
+            console.error(err); // eslint-disable-line no-console
+            store.dispatch('notification/error', err);
+          }
+        },
+      });
+    });
+    const file = store.state.file.itemMap[fileId];
+    store.dispatch('notification/info', `"${file.name}" was published to ${counter} location(s).`);
+  } finally {
+    await localDbSvc.unloadContents();
+  }
+};
 
-function requestPublish() {
+const requestPublish = () => {
   // No publish in light mode
   if (store.state.light) {
     return;
@@ -135,21 +121,21 @@ function requestPublish() {
     intervalId = utils.setInterval(() => attempt(), 1000);
     attempt();
   }));
-}
+};
 
-function createPublishLocation(publishLocation) {
+const createPublishLocation = (publishLocation) => {
   publishLocation.id = utils.uid();
   const currentFile = store.getters['file/current'];
   publishLocation.fileId = currentFile.id;
   store.dispatch(
     'queue/enqueue',
-    () => publish(publishLocation)
-      .then((publishLocationToStore) => {
-        store.commit('publishLocation/setItem', publishLocationToStore);
-        store.dispatch('notification/info', `A new publication location was added to "${currentFile.name}".`);
-      }),
+    async () => {
+      const publishLocationToStore = await publish(publishLocation);
+      store.commit('publishLocation/setItem', publishLocationToStore);
+      store.dispatch('notification/info', `A new publication location was added to "${currentFile.name}".`);
+    },
   );
-}
+};
 
 export default {
   requestPublish,

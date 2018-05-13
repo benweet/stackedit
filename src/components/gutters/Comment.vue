@@ -47,12 +47,13 @@ export default {
     ...mapMutations('discussion', [
       'setIsCommenting',
     ]),
-    removeComment() {
-      this.$store.dispatch('modal/commentDeletion')
-        .then(
-          () => this.$store.dispatch('discussion/cleanCurrentFile', { filterComment: this.comment }),
-          () => { /* Cancel */ },
-        );
+    async removeComment() {
+      try {
+        await this.$store.dispatch('modal/commentDeletion');
+        this.$store.dispatch('discussion/cleanCurrentFile', { filterComment: this.comment });
+      } catch (e) {
+        // Cancel
+      }
     },
   },
   mounted() {

@@ -93,14 +93,15 @@ export default {
           .start();
       }
     },
-    removeDiscussion() {
-      this.$store.dispatch('modal/discussionDeletion')
-        .then(
-          () => this.$store.dispatch('discussion/cleanCurrentFile', {
-            filterDiscussion: this.currentDiscussion,
-          }),
-          () => { /* Cancel */ },
-        );
+    async removeDiscussion() {
+      try {
+        await this.$store.dispatch('modal/discussionDeletion');
+        this.$store.dispatch('discussion/cleanCurrentFile', {
+          filterDiscussion: this.currentDiscussion,
+        });
+      } catch (e) {
+        // Cancel
+      }
     },
   },
 };

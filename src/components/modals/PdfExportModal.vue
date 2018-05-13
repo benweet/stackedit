@@ -33,22 +33,24 @@ export default modalTemplate({
     selectedTemplate: 'pdfExportTemplate',
   },
   methods: {
-    resolve() {
+    async resolve() {
       this.config.resolve();
       const currentFile = this.$store.getters['file/current'];
-      this.$store.dispatch('queue/enqueue', () => Promise.all([
-        Promise.resolve().then(() => {
-          const sponsorToken = this.$store.getters['workspace/sponsorToken'];
-          return sponsorToken && googleHelper.refreshToken(sponsorToken);
-        }),
-        sponsorSvc.getToken(),
-        exportSvc.applyTemplate(
-          currentFile.id,
-          this.allTemplates[this.selectedTemplate],
-          true,
-        ),
-      ])
-        .then(([sponsorToken, token, html]) => networkSvc.request({
+      const [sponsorToken, token, html] = await this.$store
+        .dispatch('queue/enqueue', () => Promise.all([
+          Promise.resolve().then(() => {
+            const tokenToRefresh = this.$store.getters['workspace/sponsorToken'];
+            return tokenToRefresh && googleHelper.refreshToken(tokenToRefresh);
+          }),
+          sponsorSvc.getToken(),
+          exportSvc.applyTemplate(
+            currentFile.id,
+            this.allTemplates[this.selectedTemplate],
+            true,
+          ),
+        ]));
+      try {
+        const { body } = await networkSvc.request({
           method: 'POST',
           url: 'pdfExport',
           params: {
@@ -59,20 +61,16 @@ export default modalTemplate({
           body: html,
           blob: true,
           timeout: 60000,
-        })
-          .then((res) => {
-            FileSaver.saveAs(res.body, `${currentFile.name}.pdf`);
-          }, (err) => {
-            if (err.status !== 401) {
-              throw err;
-            }
-            this.$store.dispatch('modal/sponsorOnly')
-              .catch(() => { /* Cancel */ });
-          }))
-        .catch((err) => {
+        });
+        FileSaver.saveAs(body, `${currentFile.name}.pdf`);
+      } catch (err) {
+        if (err.status === 401) {
+          this.$store.dispatch('modal/sponsorOnly');
+        } else {
           console.error(err); // eslint-disable-line no-console
           this.$store.dispatch('notification/error', err);
-        }));
+        }
+      }
     },
   },
 });

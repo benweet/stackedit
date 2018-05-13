@@ -18,14 +18,12 @@ OfflinePluginRuntime.install({
     // Tells to new SW to take control immediately
     OfflinePluginRuntime.applyUpdate();
   },
-  onUpdated: () => {
+  onUpdated: async () => {
     if (!store.state.light) {
-      localDbSvc.sync()
-        .then(() => {
-          localStorage.updated = true;
-          // Reload the webpage to load into the new version
-          window.location.reload();
-        });
+      await localDbSvc.sync();
+      localStorage.updated = true;
+      // Reload the webpage to load into the new version
+      window.location.reload();
     }
   },
 });

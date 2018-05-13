@@ -118,12 +118,15 @@ const tokensToArray = (tokens, filter = () => true) => Object.keys(tokens)
   .filter(token => filter(token))
   .sort((token1, token2) => token1.name.localeCompare(token2.name));
 
-const openPublishModal = (token, type) => store.dispatch('modal/open', {
-  type,
-  token,
-}).then(publishLocation => publishSvc.createPublishLocation(publishLocation));
-
-const onCancel = () => {};
+const publishModalOpener = type => async (token) => {
+  try {
+    const publishLocation = await store.dispatch('modal/open', {
+      type,
+      token,
+    });
+    publishSvc.createPublishLocation(publishLocation);
+  } catch (e) { /* cancel */ }
+};
 
 export default {
   components: {
@@ -178,74 +181,48 @@ export default {
     managePublish() {
       return this.$store.dispatch('modal/open', 'publishManagement');
     },
-    addGoogleDriveAccount() {
-      return this.$store.dispatch('modal/open', {
-        type: 'googleDriveAccount',
-        onResolve: () => googleHelper.addDriveAccount(!store.getters['data/localSettings'].googleDriveRestrictedAccess),
-      })
-        .catch(onCancel);
+    async addGoogleDriveAccount() {
+      try {
+        await this.$store.dispatch('modal/open', { type: 'googleDriveAccount' });
+        await googleHelper.addDriveAccount(!store.getters['data/localSettings'].googleDriveRestrictedAccess);
+      } catch (e) { /* cancel */ }
     },
-    addDropboxAccount() {
-      return this.$store.dispatch('modal/open', {
-        type: 'dropboxAccount',
-        onResolve: () => dropboxHelper.addAccount(!store.getters['data/localSettings'].dropboxRestrictedAccess),
-      })
-        .catch(onCancel);
+    async addDropboxAccount() {
+      try {
+        await this.$store.dispatch('modal/open', { type: 'dropboxAccount' });
+        await dropboxHelper.addAccount(!store.getters['data/localSettings'].dropboxRestrictedAccess);
+      } catch (e) { /* cancel */ }
     },
-    addGithubAccount() {
-      return this.$store.dispatch('modal/open', {
-        type: 'githubAccount',
-        onResolve: () => githubHelper.addAccount(store.getters['data/localSettings'].githubRepoFullAccess),
-      })
-        .catch(onCancel);
+    async addGithubAccount() {
+      try {
+        await this.$store.dispatch('modal/open', { type: 'githubAccount' });
+        await githubHelper.addAccount(store.getters['data/localSettings'].githubRepoFullAccess);
+      } catch (e) { /* cancel */ }
     },
-    addWordpressAccount() {
-      return wordpressHelper.addAccount()
-        .catch(onCancel);
+    async addWordpressAccount() {
+      try {
+        await wordpressHelper.addAccount();
+      } catch (e) { /* cancel */ }
     },
-    addBloggerAccount() {
-      return googleHelper.addBloggerAccount()
-        .catch(onCancel);
+    async addBloggerAccount() {
+      try {
+        await googleHelper.addBloggerAccount();
+      } catch (e) { /* cancel */ }
     },
-    addZendeskAccount() {
-      return this.$store.dispatch('modal/open', {
-        type: 'zendeskAccount',
-        onResolve: ({ subdomain, clientId }) => zendeskHelper.addAccount(subdomain, clientId),
-      })
-        .catch(onCancel);
+    async addZendeskAccount() {
+      try {
+        const { subdomain, clientId } = await this.$store.dispatch('modal/open', { type: 'zendeskAccount' });
+        await zendeskHelper.addAccount(subdomain, clientId);
+      } catch (e) { /* cancel */ }
     },
-    publishGoogleDrive(token) {
-      return openPublishModal(token, 'googleDrivePublish')
-        .catch(onCancel);
-    },
-    publishDropbox(token) {
-      return openPublishModal(token, 'dropboxPublish')
-        .catch(onCancel);
-    },
-    publishGithub(token) {
-      return openPublishModal(token, 'githubPublish')
-        .catch(onCancel);
-    },
-    publishGist(token) {
-      return openPublishModal(token, 'gistPublish')
-        .catch(onCancel);
-    },
-    publishWordpress(token) {
-      return openPublishModal(token, 'wordpressPublish')
-        .catch(onCancel);
-    },
-    publishBlogger(token) {
-      return openPublishModal(token, 'bloggerPublish')
-        .catch(onCancel);
-    },
-    publishBloggerPage(token) {
-      return openPublishModal(token, 'bloggerPagePublish')
-        .catch(onCancel);
-    },
-    publishZendesk(token) {
-      return openPublishModal(token, 'zendeskPublish')
-        .catch(onCancel);
-    },
+    publishGoogleDrive: publishModalOpener('googleDrivePublish'),
+    publishDropbox: publishModalOpener('dropboxPublish'),
+    publishGithub: publishModalOpener('githubPublish'),
+    publishGist: publishModalOpener('gistPublish'),
+    publishWordpress: publishModalOpener('wordpressPublish'),
+    publishBlogger: publishModalOpener('bloggerPublish'),
+    publishBloggerPage: publishModalOpener('bloggerPagePublish'),
+    publishZendesk: publishModalOpener('zendeskPublish'),
   },
 };
 </script>

@@ -6,7 +6,7 @@
 
 https://stackedit.io/
 
-### NEW!!! Embed StackEdit in any website!
+### NEW!!! Embed StackEdit in any website! Very Simple!
 
 See https://github.com/benweet/stackedit.js
 

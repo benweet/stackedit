@@ -1,11 +1,11 @@
 <template>
-  <div class="modal" @keydown.esc="onEscape" @keydown.tab="onTab">
+  <div class="modal" v-if="config" @keydown.esc="onEscape" @keydown.tab="onTab">
     <component v-if="currentModalComponent" :is="currentModalComponent"></component>
     <modal-inner v-else aria-label="Dialog">
-      <div class="modal__content" v-html="config.content"></div>
+      <div class="modal__content" v-html="simpleModal.contentHtml(config)"></div>
       <div class="modal__button-bar">
-        <button class="button" v-if="config.rejectText" @click="config.reject()">{{config.rejectText}}</button>
-        <button class="button" v-if="config.resolveText" @click="config.resolve()">{{config.resolveText}}</button>
+        <button class="button" v-if="simpleModal.rejectText" @click="config.reject()">{{simpleModal.rejectText}}</button>
+        <button class="button" v-if="simpleModal.resolveText" @click="config.resolve()">{{simpleModal.resolveText}}</button>
       </div>
     </modal-inner>
   </div>
@@ -13,6 +13,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import simpleModals from '../data/simpleModals';
 import editorSvc from '../services/editorSvc';
 import ModalInner from './modals/common/ModalInner';
 import FilePropertiesModal from './modals/FilePropertiesModal';
@@ -112,6 +113,9 @@ export default {
       }
       return null;
     },
+    simpleModal() {
+      return simpleModals[this.config.type] || {};
+    },
   },
   methods: {
     onEscape() {
@@ -153,14 +157,22 @@ export default {
     },
   },
   mounted() {
-    window.addEventListener('focusin', this.onFocusInOut);
-    window.addEventListener('focusout', this.onFocusInOut);
-    const tabbables = getTabbables(this.$el);
-    tabbables[0].focus();
-  },
-  destroyed() {
-    window.removeEventListener('focusin', this.onFocusInOut);
-    window.removeEventListener('focusout', this.onFocusInOut);
+    this.$watch(
+      () => this.config,
+      () => {
+        if (this.$el) {
+          window.addEventListener('focusin', this.onFocusInOut);
+          window.addEventListener('focusout', this.onFocusInOut);
+          const tabbables = getTabbables(this.$el);
+          if (tabbables[0]) {
+            tabbables[0].focus();
+          }
+        } else {
+          window.removeEventListener('focusin', this.onFocusInOut);
+          window.removeEventListener('focusout', this.onFocusInOut);
+        }
+      },
+    );
   },
 };
 </script>

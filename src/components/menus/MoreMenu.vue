@@ -96,7 +96,7 @@ export default {
     },
     async reset() {
       try {
-        await this.$store.dispatch('modal/reset');
+        await this.$store.dispatch('modal/open', 'reset');
         window.location.href = '#reset=true';
         window.location.reload();
       } catch (e) {

@@ -18,11 +18,10 @@ const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
 const compare = (node1, node2) => collator.compare(node1.item.name, node2.item.name);
 
 class Node {
-  constructor(item, locations = [], isFolder = false, isRoot = false) {
+  constructor(item, locations = [], isFolder = false) {
     this.item = item;
     this.locations = locations;
     this.isFolder = isFolder;
-    this.isRoot = isRoot;
     if (isFolder) {
       this.folders = [];
       this.files = [];
@@ -84,7 +83,8 @@ export default {
   },
   getters: {
     nodeStructure: (state, getters, rootState, rootGetters) => {
-      const rootNode = new Node(emptyFolder(), [], true, true);
+      const rootNode = new Node(emptyFolder(), [], true);
+      rootNode.isRoot = true;
 
       // Create Trash node
       const trashFolderNode = new Node(emptyFolder(), [], true);

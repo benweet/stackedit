@@ -68,7 +68,7 @@ export default modalTemplate({
         FileSaver.saveAs(body, `${currentFile.name}.${selectedFormat}`);
       } catch (err) {
         if (err.status === 401) {
-          this.$store.dispatch('modal/sponsorOnly');
+          this.$store.dispatch('modal/open', 'sponsorOnly');
         } else {
           console.error(err); // eslint-disable-line no-console
           this.$store.dispatch('notification/error', err);

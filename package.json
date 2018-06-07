@@ -14,7 +14,9 @@
     "build": "node build/build.js && npm run build-style",
     "build-style": "webpack --config build/webpack.style.conf.js",
     "lint": "eslint --ext .js,.vue src server",
-    "test": "npm run lint",
+    "unit": "jest --config test/unit/jest.conf.js --runInBand",
+    "unit-with-coverage": "jest --config test/unit/jest.conf.js --runInBand --coverage",
+    "test": "npm run lint && npm run unit",
     "preversion": "npm run test",
     "postversion": "git push origin master --tags && npm publish",
     "patch": "npm version patch -m \"Tag v%s\"",
@@ -22,7 +24,9 @@
     "major": "npm version major -m \"Tag v%s\""
   },
   "dependencies": {
+    "@vue/test-utils": "^1.0.0-beta.16",
     "aws-sdk": "^2.133.0",
+    "babel-runtime": "^6.26.0",
     "bezier-easing": "^1.1.0",
     "body-parser": "^1.18.2",
     "clipboard": "^1.7.1",
@@ -59,8 +63,11 @@
     "autoprefixer": "^6.7.2",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.3",
+    "babel-jest": "^21.0.2",
     "babel-loader": "^7.1.4",
-    "babel-plugin-transform-runtime": "^6.22.0",
+    "babel-plugin-dynamic-import-node": "^1.2.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-polyfill": "^6.23.0",
     "babel-preset-env": "^1.3.2",
     "babel-preset-stage-2": "^6.22.0",
@@ -86,7 +93,11 @@
     "gulp-concat": "^2.6.1",
     "html-webpack-plugin": "^3.2.0",
     "http-proxy-middleware": "^0.18.0",
+    "identity-obj-proxy": "^3.0.0",
     "ignore-loader": "^0.1.2",
+    "jest": "^23.0.0",
+    "jest-raw-loader": "^1.0.1",
+    "jest-serializer-vue": "^0.3.0",
     "node-sass": "^4.9.0",
     "npm-bump": "^0.0.23",
     "offline-plugin": "^5.0.3",
@@ -103,6 +114,7 @@
     "stylelint-processor-html": "^1.0.0",
     "stylelint-webpack-plugin": "^0.10.4",
     "url-loader": "^1.0.1",
+    "vue-jest": "^1.0.2",
     "vue-loader": "^15.0.9",
     "vue-style-loader": "^4.1.0",
     "vue-template-compiler": "^2.5.16",
@@ -114,12 +126,12 @@
     "worker-loader": "^1.1.1"
   },
   "engines": {
-    "node": ">= 4.0.0",
-    "npm": ">= 3.0.0"
+    "node": ">= 8.0.0",
+    "npm": ">= 5.0.0"
   },
   "browserslist": [
     "> 1%",
     "last 2 versions",
-    "not ie <= 8"
+    "not ie <= 10"
   ]
 }

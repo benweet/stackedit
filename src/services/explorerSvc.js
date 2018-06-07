@@ -20,9 +20,10 @@ export default {
     if (selectedNode.isNil) {
       return;
     }
+
     if (selectedNode.isTrash || selectedNode.item.parentId === 'trash') {
       try {
-        await store.dispatch('modal/trashDeletion');
+        await store.dispatch('modal/open', 'trashDeletion');
       } catch (e) {
         // Cancel
       }
@@ -33,13 +34,19 @@ export default {
     let moveToTrash = true;
     try {
       if (selectedNode.isTemp) {
-        await store.dispatch('modal/tempFolderDeletion', selectedNode.item);
+        await store.dispatch('modal/open', 'tempFolderDeletion');
         moveToTrash = false;
       } else if (selectedNode.item.parentId === 'temp') {
-        await store.dispatch('modal/tempFileDeletion', selectedNode.item);
+        await store.dispatch('modal/open', {
+          type: 'tempFileDeletion',
+          item: selectedNode.item,
+        });
         moveToTrash = false;
       } else if (selectedNode.isFolder) {
-        await store.dispatch('modal/folderDeletion', selectedNode.item);
+        await store.dispatch('modal/open', {
+          type: 'folderDeletion',
+          item: selectedNode.item,
+        });
       }
     } catch (e) {
       return; // cancel

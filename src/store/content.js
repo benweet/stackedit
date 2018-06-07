@@ -82,7 +82,7 @@ module.actions = {
   }) {
     const { revisionContent } = state;
     if (revisionContent) {
-      await dispatch('modal/fileRestoration', null, { root: true });
+      await dispatch('modal/open', 'fileRestoration', { root: true });
       // Close revision
       commit('setRevisionContent');
       const currentContent = utils.deepCopy(getters.current);

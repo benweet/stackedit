@@ -33,7 +33,7 @@ export default {
       try {
         if (!this.$store.getters['workspace/sponsorToken']) {
           // User has to sign in
-          await this.$store.dispatch('modal/signInForSponsorship');
+          await this.$store.dispatch('modal/open', 'signInForSponsorship');
           await googleHelper.signin();
           syncSvc.requestSync();
         }

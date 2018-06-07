@@ -113,12 +113,12 @@ export default {
     repo,
     branch,
   }) {
-    const { commit } = (await repoRequest(token, owner, repo, {
+    const { commit } = await repoRequest(token, owner, repo, {
       url: `commits/${encodeURIComponent(branch)}`,
-    })).body;
-    const { tree, truncated } = (await repoRequest(token, owner, repo, {
+    });
+    const { tree, truncated } = await repoRequest(token, owner, repo, {
       url: `git/trees/${encodeURIComponent(commit.tree.sha)}?recursive=1`,
-    })).body;
+    });
     if (truncated) {
       throw new Error('Git tree too big. Please remove some files in the repository.');
     }
@@ -198,13 +198,13 @@ export default {
     branch,
     path,
   }) {
-    const body = await repoRequest(token, owner, repo, {
+    const { sha, content } = await repoRequest(token, owner, repo, {
       url: `contents/${encodeURIComponent(path)}`,
       params: { ref: branch },
     });
     return {
-      sha: body.sha,
-      content: utils.decodeBase64(body.content),
+      sha,
+      content: utils.decodeBase64(content),
     };
   },
 

@@ -28,6 +28,7 @@ const endsWith = (str, suffix) => str.slice(-suffix.length) === suffix;
 
 export default new Provider({
   id: 'githubWorkspace',
+  isGit: true,
   getToken() {
     return store.getters['workspace/syncToken'];
   },
@@ -110,29 +111,31 @@ export default new Provider({
         const path = blobEntry.path.slice(workspacePath.length);
         // Collect blob sha
         treeShaMap[path] = blobEntry.sha;
-        // Collect parents path
-        let parentPath = '';
-        path.split('/').slice(0, -1).forEach((folderName) => {
-          const folderPath = `${parentPath}${folderName}/`;
-          treeFolderMap[folderPath] = parentPath;
-          parentPath = folderPath;
-        });
-        // Collect file path
         if (path.indexOf('.stackedit-data/') === 0) {
           treeDataMap[path] = true;
-        } else if (endsWith(path, '.md')) {
-          treeFileMap[path] = parentPath;
-        } else if (endsWith(path, '.sync')) {
-          treeSyncLocationMap[path] = true;
-        } else if (endsWith(path, '.publish')) {
-          treePublishLocationMap[path] = true;
+        } else {
+          // Collect parents path
+          let parentPath = '';
+          path.split('/').slice(0, -1).forEach((folderName) => {
+            const folderPath = `${parentPath}${folderName}/`;
+            treeFolderMap[folderPath] = parentPath;
+            parentPath = folderPath;
+          });
+          // Collect file path
+          if (endsWith(path, '.md')) {
+            treeFileMap[path] = parentPath;
+          } else if (endsWith(path, '.sync')) {
+            treeSyncLocationMap[path] = true;
+          } else if (endsWith(path, '.publish')) {
+            treePublishLocationMap[path] = true;
+          }
         }
       });
 
     // Collect changes
     const changes = [];
     const pathIds = {};
-    const syncDataToIgnore = Object.create(null);
+    const syncDataToKeep = Object.create(null);
     const getId = (path) => {
       const syncData = syncDataByPath[path];
       const id = syncData ? syncData.itemId : utils.uid();
@@ -185,7 +188,7 @@ export default new Provider({
       // Content creations/updates
       const contentSyncData = syncDataByItemId[`${id}/content`];
       if (contentSyncData) {
-        syncDataToIgnore[contentSyncData.id] = true;
+        syncDataToKeep[contentSyncData.id] = true;
       }
       if (!contentSyncData || contentSyncData.sha !== treeShaMap[path]) {
         // Use `/` as a prefix to get a unique syncData id
@@ -211,11 +214,12 @@ export default new Provider({
     // Data creations/updates
     Object.keys(treeDataMap).forEach((path) => {
       try {
-        const [, id] = path.match(/^\.stackedit-data\/([\s\S]+)\.json$/);
+        // Only template data are stored
+        const [, id] = path.match(/^\.stackedit-data\/(templates)\.json$/) || [];
         pathIds[path] = id;
         const syncData = syncDataByItemId[id];
         if (syncData) {
-          syncDataToIgnore[syncData.id] = true;
+          syncDataToKeep[syncData.id] = true;
         }
         if (!syncData || syncData.sha !== treeShaMap[path]) {
           changes.push({
@@ -281,40 +285,28 @@ export default new Provider({
 
     // Deletions
     Object.keys(syncDataByPath).forEach((path) => {
-      if (!pathIds[path] && !syncDataToIgnore[path]) {
+      if (!pathIds[path] && !syncDataToKeep[path]) {
         changes.push({ syncDataId: path });
       }
     });
 
     return changes;
   },
-  async saveSimpleItem(item) {
-    const path = store.getters.itemPaths[item.fileId || item.id];
-    const syncToken = store.getters['workspace/syncToken'];
+  async saveWorkspaceItem(item) {
     const syncData = {
+      id: store.getters.itemGitPaths[item.id],
       itemId: item.id,
       type: item.type,
       hash: item.hash,
     };
 
-    if (item.type === 'file') {
-      syncData.id = `${path}.md`;
-      return syncData;
-    }
-    if (item.type === 'folder') {
-      syncData.id = path;
+    // Files and folders are not in git, only contents
+    if (item.type === 'file' || item.type === 'folder') {
       return syncData;
     }
 
     // locations are stored as paths, so we upload an empty file
-    const data = utils.encodeBase64(utils.serializeObject({
-      ...item,
-      id: undefined,
-      type: undefined,
-      fileId: undefined,
-    }), true);
-    const extension = item.type === 'syncLocation' ? 'sync' : 'publish';
-    syncData.id = `${path}.${data}.${extension}`;
+    const syncToken = store.getters['workspace/syncToken'];
     await githubHelper.uploadFile({
       ...getWorkspaceWithOwner(),
       token: syncToken,
@@ -324,9 +316,8 @@ export default new Provider({
     });
     return syncData;
   },
-  async removeItem(syncData) {
-    // Ignore content deletion
-    if (syncData.type !== 'content') {
+  async removeWorkspaceItem(syncData) {
+    if (treeShaMap[syncData.id]) {
       const syncToken = store.getters['workspace/syncToken'];
       await githubHelper.removeFile({
         ...getWorkspaceWithOwner(),
@@ -336,102 +327,91 @@ export default new Provider({
       });
     }
   },
-  async downloadContent(token, syncLocation) {
-    const syncData = store.getters['data/syncDataByItemId'][syncLocation.fileId];
-    const contentSyncData = store.getters['data/syncDataByItemId'][`${syncLocation.fileId}/content`];
-    if (!syncData || !contentSyncData) {
-      return null;
+  async downloadWorkspaceContent(token, contentSyncData) {
+    const [fileId] = contentSyncData.itemId.split('/');
+    const path = store.getters.itemGitPaths[fileId];
+    const syncData = store.getters['data/syncData'][path];
+    if (!syncData) {
+      return {};
     }
     const { sha, content } = await githubHelper.downloadFile({
       ...getWorkspaceWithOwner(),
       token,
       path: getAbsolutePath(syncData),
     });
-    const item = Provider.parseContent(content, `${syncLocation.fileId}/content`);
-    if (item.hash !== contentSyncData.hash) {
-      store.dispatch('data/patchSyncData', {
-        [contentSyncData.id]: {
-          ...contentSyncData,
-          hash: item.hash,
-          sha,
-        },
-      });
-    }
-    return item;
+    treeShaMap[path] = sha;
+    const item = Provider.parseContent(content, `${fileId}/content`);
+    return {
+      item,
+      syncData: {
+        ...contentSyncData,
+        hash: item.hash,
+        sha,
+      },
+    };
   },
-  async downloadData(dataId) {
-    const syncData = store.getters['data/syncDataByItemId'][dataId];
+  async downloadWorkspaceData(token, dataId, syncData) {
     if (!syncData) {
-      return null;
+      return {};
     }
-    const syncToken = store.getters['workspace/syncToken'];
+
     const { sha, content } = await githubHelper.downloadFile({
       ...getWorkspaceWithOwner(),
-      token: syncToken,
+      token,
       path: getAbsolutePath(syncData),
     });
+    treeShaMap[syncData.id] = sha;
     const item = JSON.parse(content);
-    if (item.hash !== syncData.hash) {
-      store.dispatch('data/patchSyncData', {
-        [syncData.id]: {
-          ...syncData,
-          hash: item.hash,
-          sha,
-        },
-      });
-    }
-    return item;
-  },
-  async uploadContent(token, content, syncLocation) {
-    const contentSyncData = store.getters['data/syncDataByItemId'][`${syncLocation.fileId}/content`];
-    if (!contentSyncData || contentSyncData.hash !== content.hash) {
-      const path = `${store.getters.itemPaths[syncLocation.fileId]}.md`;
-      const absolutePath = `${store.getters['workspace/currentWorkspace'].path || ''}${path}`;
-      const id = `/${path}`;
-      const res = await githubHelper.uploadFile({
-        ...getWorkspaceWithOwner(),
-        token,
-        path: absolutePath,
-        content: Provider.serializeContent(content),
-        sha: treeShaMap[id],
-      });
-      store.dispatch('data/patchSyncData', {
-        [id]: {
-          // Build sync data
-          id,
-          itemId: content.id,
-          type: content.type,
-          hash: content.hash,
-          sha: res.content.sha,
-        },
-      });
-    }
-    return syncLocation;
-  },
-  async uploadData(item) {
-    const oldSyncData = store.getters['data/syncDataByItemId'][item.id];
-    if (!oldSyncData || oldSyncData.hash !== item.hash) {
-      const syncData = {
-        id: `.stackedit-data/${item.id}.json`,
-        itemId: item.id,
-        type: item.type,
+    return {
+      item,
+      syncData: {
+        ...syncData,
         hash: item.hash,
-      };
-      const syncToken = store.getters['workspace/syncToken'];
-      const res = await githubHelper.uploadFile({
-        ...getWorkspaceWithOwner(),
-        token: syncToken,
-        path: getAbsolutePath(syncData),
-        content: JSON.stringify(item),
-        sha: oldSyncData && oldSyncData.sha,
-      });
-      store.dispatch('data/patchSyncData', {
-        [syncData.id]: {
-          ...syncData,
-          sha: res.content.sha,
-        },
-      });
-    }
+        sha,
+      },
+    };
+  },
+  async uploadWorkspaceContent(token, item) {
+    const [fileId] = item.id.split('/');
+    const path = store.getters.itemGitPaths[fileId];
+    const absolutePath = `${store.getters['workspace/currentWorkspace'].path || ''}${path}`;
+    const res = await githubHelper.uploadFile({
+      ...getWorkspaceWithOwner(),
+      token,
+      path: absolutePath,
+      content: Provider.serializeContent(item),
+      sha: treeShaMap[path],
+    });
+
+    // Return new sync data
+    return {
+      id: store.getters.itemGitPaths[item.id],
+      itemId: item.id,
+      type: item.type,
+      hash: item.hash,
+      sha: res.content.sha,
+    };
+  },
+  async uploadWorkspaceData(token, item) {
+    const path = store.getters.itemGitPaths[item.id];
+    const syncData = {
+      id: path,
+      itemId: item.id,
+      type: item.type,
+      hash: item.hash,
+    };
+    const res = await githubHelper.uploadFile({
+      ...getWorkspaceWithOwner(),
+      token,
+      path: getAbsolutePath(syncData),
+      content: JSON.stringify(item),
+      sha: treeShaMap[path],
+    });
+
+    return {
+      ...syncData,
+      sha: res.content.sha,
+    };
   },
   onSyncEnd() {
     // Clean up

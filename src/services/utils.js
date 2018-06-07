@@ -23,7 +23,6 @@ const parseQueryParams = (params) => {
   return result;
 };
 
-
 // For utils.computeProperties()
 const deepOverride = (obj, opt) => {
   if (obj === undefined) {
@@ -172,10 +171,12 @@ export default {
     return Math.abs(this.hash(this.serializeObject(params))).toString(36);
   },
   encodeBase64(str, urlSafe = false) {
-    const result = btoa(encodeURIComponent(str).replace(
+    const uriEncodedStr = encodeURIComponent(str);
+    const utf8Str = uriEncodedStr.replace(
       /%([0-9A-F]{2})/g,
       (match, p1) => String.fromCharCode(`0x${p1}`),
-    ));
+    );
+    const result = btoa(utf8Str);
     if (!urlSafe) {
       return result;
     }
@@ -187,10 +188,12 @@ export default {
   decodeBase64(str) {
     // In case of URL safe base64
     const sanitizedStr = str.replace(/_/g, '/').replace(/-/g, '+');
-    return decodeURIComponent(atob(sanitizedStr)
+    const utf8Str = atob(sanitizedStr);
+    const uriEncodedStr = utf8Str
       .split('')
       .map(c => `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`)
-      .join(''));
+      .join('');
+    return decodeURIComponent(uriEncodedStr);
   },
   computeProperties(yamlProperties) {
     let properties = {};

@@ -3,8 +3,7 @@ node_modules/
 dist/
 .history
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 .vscode
 stackedit_v4
 chrome-app/*.zip
+/test/unit/coverage/

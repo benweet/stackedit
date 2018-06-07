@@ -57,7 +57,10 @@ export default {
     }
     // Existing token is going to expire.
     // Try to get a new token in background
-    await store.dispatch('modal/providerRedirection', { providerName: 'WordPress' });
+    await store.dispatch('modal/open', {
+      type: 'providerRedirection',
+      name: 'WordPress',
+    });
     return this.startOauth2(sub);
   },
   addAccount(fullAccess = false) {

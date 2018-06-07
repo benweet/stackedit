@@ -16,7 +16,7 @@ export default {
     comments,
   } = {}, background = false) {
     const id = utils.uid();
-    const file = {
+    const item = {
       id,
       name: utils.sanitizeName(name),
       parentId: parentId || null,
@@ -34,23 +34,29 @@ export default {
     // Show warning dialogs
     if (!background) {
       // If name is being stripped
-      if (file.name !== utils.defaultName && file.name !== name) {
-        await store.dispatch('modal/stripName', name);
+      if (item.name !== utils.defaultName && item.name !== name) {
+        await store.dispatch('modal/open', {
+          type: 'stripName',
+          item,
+        });
       }
 
       // Check if there is already a file with that path
       if (workspaceUniquePaths) {
-        const parentPath = store.getters.itemPaths[file.parentId] || '';
-        const path = parentPath + file.name;
+        const parentPath = store.getters.itemPaths[item.parentId] || '';
+        const path = parentPath + item.name;
         if (store.getters.pathItems[path]) {
-          await store.dispatch('modal/pathConflict', name);
+          await store.dispatch('modal/open', {
+            type: 'pathConflict',
+            item,
+          });
         }
       }
     }
 
     // Save file and content in the store
     store.commit('content/setItem', content);
-    store.commit('file/setItem', file);
+    store.commit('file/setItem', item);
     if (workspaceUniquePaths) {
       this.makePathUnique(id);
     }
@@ -67,14 +73,20 @@ export default {
     const sanitizedName = utils.sanitizeName(item.name);
 
     if (item.type === 'folder' && forbiddenFolderNameMatcher.exec(sanitizedName)) {
-      await store.dispatch('modal/unauthorizedName', item.name);
+      await store.dispatch('modal/open', {
+        type: 'unauthorizedName',
+        item,
+      });
       throw new Error('Unauthorized name.');
     }
 
     // Show warning dialogs
     // If name has been stripped
     if (sanitizedName !== utils.defaultName && sanitizedName !== item.name) {
-      await store.dispatch('modal/stripName', item.name);
+      await store.dispatch('modal/open', {
+        type: 'stripName',
+        item,
+      });
     }
     // Check if there is a path conflict
     if (store.getters['workspace/hasUniquePaths']) {
@@ -82,7 +94,10 @@ export default {
       const path = parentPath + sanitizedName;
       const pathItems = store.getters.pathItems[path] || [];
       if (pathItems.some(itemWithSamePath => itemWithSamePath.id !== id)) {
-        await store.dispatch('modal/pathConflict', item.name);
+        await store.dispatch('modal/open', {
+          type: 'pathConflict',
+          item,
+        });
       }
     }
 

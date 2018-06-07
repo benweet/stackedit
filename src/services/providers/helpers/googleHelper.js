@@ -190,7 +190,10 @@ export default {
       if (store.state.offline) {
         throw err;
       }
-      await store.dispatch('modal/providerRedirection', { providerName: 'Google' });
+      await store.dispatch('modal/open', {
+        type: 'providerRedirection',
+        name: 'Google',
+      });
       return this.startOauth2(mergedScopes, sub);
     }
   },
@@ -231,7 +234,7 @@ export default {
     mediaType = null,
     fileId = null,
     oldParents = null,
-    ifNotTooLate = cb => res => cb(res),
+    ifNotTooLate = cb => cb(),
   }) {
     // Refreshing a token can take a while if an oauth window pops up, make sure it's not too late
     return ifNotTooLate(() => {
@@ -374,7 +377,7 @@ export default {
   /**
    * https://developers.google.com/drive/v3/reference/files/delete
    */
-  async $removeFile(refreshedToken, id, ifNotTooLate = cb => res => cb(res)) {
+  async $removeFile(refreshedToken, id, ifNotTooLate = cb => cb()) {
     // Refreshing a token can take a while if an oauth window pops up, so check if it's too late
     return ifNotTooLate(() => this.$request(refreshedToken, {
       method: 'DELETE',
@@ -388,7 +391,7 @@ export default {
     const refreshedToken = await this.refreshToken(token, getDriveScopes(token));
     return this.$removeFile(refreshedToken, id, ifNotTooLate);
   },
-  async removeAppDataFile(token, id, ifNotTooLate = cb => res => cb(res)) {
+  async removeAppDataFile(token, id, ifNotTooLate = cb => cb()) {
     const refreshedToken = await this.refreshToken(token, driveAppDataScopes);
     return this.$removeFile(refreshedToken, id, ifNotTooLate);
   },
@@ -599,7 +602,7 @@ export default {
     }
     const refreshedToken = await this.refreshToken(token, scopes);
     const { google } = window;
-    return Promise((resolve) => {
+    return new Promise((resolve) => {
       let picker;
       const pickerBuilder = new google.picker.PickerBuilder()
         .setOAuthToken(refreshedToken.accessToken)

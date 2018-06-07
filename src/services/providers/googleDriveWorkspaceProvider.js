@@ -89,7 +89,7 @@ export default new Provider({
     let token = store.getters['data/googleTokens'][sub];
     // If no token has been found, popup an authorize window and get one
     if (!token || !token.isDrive || !token.driveFullAccess) {
-      await store.dispatch('modal/workspaceGoogleRedirection');
+      await store.dispatch('modal/open', 'workspaceGoogleRedirection');
       token = await googleHelper.addDriveAccount(true, utils.queryParams.sub);
     }
 
@@ -312,7 +312,7 @@ export default new Provider({
       syncStartPageToken,
     });
   },
-  async saveSimpleItem(item, syncData, ifNotTooLate) {
+  async saveWorkspaceItem(item, syncData, ifNotTooLate) {
     const workspace = store.getters['workspace/currentWorkspace'];
     const syncToken = store.getters['workspace/syncToken'];
     let file;
@@ -363,133 +363,88 @@ export default new Provider({
       hash: item.hash,
     };
   },
-  async removeItem(syncData, ifNotTooLate) {
+  async removeWorkspaceItem(syncData, ifNotTooLate) {
     // Ignore content deletion
     if (syncData.type !== 'content') {
       const syncToken = store.getters['workspace/syncToken'];
       await googleHelper.removeFile(syncToken, syncData.id, ifNotTooLate);
     }
   },
-  async downloadContent(token, syncLocation) {
-    const syncData = store.getters['data/syncDataByItemId'][syncLocation.fileId];
-    const contentSyncData = store.getters['data/syncDataByItemId'][`${syncLocation.fileId}/content`];
-    if (!syncData || !contentSyncData) {
-      return null;
+  async downloadWorkspaceContent(token, contentSyncData) {
+    const [fileId] = contentSyncData.itemId.split('/');
+    const syncData = store.getters['data/syncDataByItemId'][fileId];
+    if (!syncData) {
+      return {};
     }
     const content = await googleHelper.downloadFile(token, syncData.id);
-    const item = Provider.parseContent(content, `${syncLocation.fileId}/content`);
-    if (item.hash !== contentSyncData.hash) {
-      store.dispatch('data/patchSyncData', {
-        [contentSyncData.id]: {
-          ...contentSyncData,
-          hash: item.hash,
-        },
-      });
-    }
+    const item = Provider.parseContent(content, contentSyncData.itemId);
 
     // Open the file requested by action if it wasn't synced yet
     if (fileIdToOpen && fileIdToOpen === syncData.id) {
       fileIdToOpen = null;
       // Open the file once downloaded content has been stored
       setTimeout(() => {
-        store.commit('file/setCurrentId', syncData.itemId);
+        store.commit('file/setCurrentId', fileId);
       }, 10);
     }
-    return item;
+
+    return {
+      item,
+      syncData: {
+        ...contentSyncData,
+        hash: item.hash,
+      },
+    };
   },
-  async downloadData(dataId) {
-    const syncData = store.getters['data/syncDataByItemId'][dataId];
+  async downloadWorkspaceData(token, dataId, syncData) {
     if (!syncData) {
-      return null;
+      return {};
     }
-    const syncToken = store.getters['workspace/syncToken'];
-    const content = await googleHelper.downloadFile(syncToken, syncData.id);
+
+    const content = await googleHelper.downloadFile(token, syncData.id);
     const item = JSON.parse(content);
-    if (item.hash !== syncData.hash) {
-      store.dispatch('data/patchSyncData', {
-        [syncData.id]: {
-          ...syncData,
-          hash: item.hash,
-        },
-      });
-    }
-    return item;
+    return {
+      item,
+      syncData: {
+        ...syncData,
+        hash: item.hash,
+      },
+    };
   },
-  async uploadContent(token, content, syncLocation, ifNotTooLate) {
-    const contentSyncData = store.getters['data/syncDataByItemId'][`${syncLocation.fileId}/content`];
-    if (!contentSyncData || contentSyncData.hash !== content.hash) {
-      const syncData = store.getters['data/syncDataByItemId'][syncLocation.fileId];
-      let file;
-      if (syncData) {
-        // Only update file media
-        file = await googleHelper.uploadFile({
-          token,
-          media: Provider.serializeContent(content),
-          fileId: syncData.id,
-          ifNotTooLate,
-        });
-      } else {
-        // Create file with media
-        const workspace = store.getters['workspace/currentWorkspace'];
-        // Use deepCopy to freeze objects
-        const item = utils.deepCopy(store.state.file.itemMap[syncLocation.fileId]);
-        const parentSyncData = store.getters['data/syncDataByItemId'][item.parentId];
-        file = await googleHelper.uploadFile({
-          token,
-          name: item.name,
-          parents: [parentSyncData ? parentSyncData.id : workspace.folderId],
-          appProperties: {
-            id: item.id,
-            folderId: workspace.folderId,
-          },
-          media: Provider.serializeContent(content),
-          ifNotTooLate,
-        });
-        store.dispatch('data/patchSyncData', {
-          [file.id]: {
-            id: file.id,
-            itemId: item.id,
-            type: item.type,
-            hash: item.hash,
-          },
-        });
-      }
-      store.dispatch('data/patchSyncData', {
-        [`${file.id}/content`]: {
-          // Build sync data
-          id: `${file.id}/content`,
-          itemId: content.id,
-          type: content.type,
-          hash: content.hash,
-        },
-      });
-    }
-    return syncLocation;
-  },
-  async uploadData(item, ifNotTooLate) {
-    const syncData = store.getters['data/syncDataByItemId'][item.id];
-    if (!syncData || syncData.hash !== item.hash) {
-      const workspace = store.getters['workspace/currentWorkspace'];
-      const syncToken = store.getters['workspace/syncToken'];
-      const file = await googleHelper.uploadFile({
-        token: syncToken,
-        name: JSON.stringify({
-          id: item.id,
-          type: item.type,
-          hash: item.hash,
-        }),
-        parents: [workspace.dataFolderId],
-        appProperties: {
-          folderId: workspace.folderId,
-        },
-        media: JSON.stringify(item),
-        fileId: syncData && syncData.id,
-        oldParents: syncData && syncData.parentIds,
+  async uploadWorkspaceContent(token, content, contentSyncData, ifNotTooLate) {
+    const [fileId] = content.id.split('/');
+    const syncData = store.getters['data/syncDataByItemId'][fileId];
+    let file;
+
+    if (syncData) {
+      // Only update file media
+      file = await googleHelper.uploadFile({
+        token,
+        media: Provider.serializeContent(content),
+        fileId: syncData.id,
         ifNotTooLate,
       });
+    } else {
+      // Create file with media
+      const workspace = store.getters['workspace/currentWorkspace'];
+      // Use deepCopy to freeze objects
+      const item = utils.deepCopy(store.state.file.itemMap[fileId]);
+      const parentSyncData = store.getters['data/syncDataByItemId'][item.parentId];
+      file = await googleHelper.uploadFile({
+        token,
+        name: item.name,
+        parents: [parentSyncData ? parentSyncData.id : workspace.folderId],
+        appProperties: {
+          id: item.id,
+          folderId: workspace.folderId,
+        },
+        media: Provider.serializeContent(content),
+        ifNotTooLate,
+      });
+
+      // Create file syncData
       store.dispatch('data/patchSyncData', {
         [file.id]: {
-          // Build sync data
           id: file.id,
           itemId: item.id,
           type: item.type,
@@ -497,6 +452,41 @@ export default new Provider({
         },
       });
     }
+
+    // Return new sync data
+    return {
+      id: `${file.id}/content`,
+      itemId: content.id,
+      type: content.type,
+      hash: content.hash,
+    };
+  },
+  async uploadWorkspaceData(token, item, syncData, ifNotTooLate) {
+    const workspace = store.getters['workspace/currentWorkspace'];
+    const file = await googleHelper.uploadFile({
+      token,
+      name: JSON.stringify({
+        id: item.id,
+        type: item.type,
+        hash: item.hash,
+      }),
+      parents: [workspace.dataFolderId],
+      appProperties: {
+        folderId: workspace.folderId,
+      },
+      media: JSON.stringify(item),
+      fileId: syncData && syncData.id,
+      oldParents: syncData && syncData.parentIds,
+      ifNotTooLate,
+    });
+
+    // Return new sync data
+    return {
+      id: file.id,
+      itemId: item.id,
+      type: item.type,
+      hash: item.hash,
+    };
   },
   async listRevisions(token, fileId) {
     const syncData = Provider.getContentSyncData(fileId);

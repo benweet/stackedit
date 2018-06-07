@@ -3,7 +3,7 @@
     <!-- Explorer -->
     <div class="navigation-bar__inner navigation-bar__inner--left navigation-bar__inner--button">
       <button class="navigation-bar__button button" v-if="light" @click="close()" v-title="'Close StackEdit'"><icon-close-circle></icon-close-circle></button>
-      <button class="navigation-bar__button button" v-else tour-step-anchor="explorer" @click="toggleExplorer()" v-title="'Toggle explorer'"><icon-folder></icon-folder></button>
+      <button class="navigation-bar__button navigation-bar__button--explorer-toggler button" v-else tour-step-anchor="explorer" @click="toggleExplorer()" v-title="'Toggle explorer'"><icon-folder></icon-folder></button>
     </div>
     <!-- Side bar -->
     <div class="navigation-bar__inner navigation-bar__inner--right navigation-bar__inner--button">
@@ -64,17 +64,16 @@ const mod = /Mac|iPod|iPhone|iPad/.test(navigator.platform) ? 'Meta' : 'Ctrl';
 const getShortcut = (method) => {
   let result = '';
   Object.entries(store.getters['data/computedSettings'].shortcuts).some(([keys, shortcut]) => {
-    if (`${shortcut.method || shortcut}` !== method) {
-      return false;
+    if (`${shortcut.method || shortcut}` === method) {
+      result = keys.split('+').map(key => key.toLowerCase()).map((key) => {
+        if (key === 'mod') {
+          return mod;
+        }
+        // Capitalize
+        return key && `${key[0].toUpperCase()}${key.slice(1)}`;
+      }).join('+');
     }
-    result = keys.split('+').map(key => key.toLowerCase()).map((key) => {
-      if (key === 'mod') {
-        return mod;
-      }
-      // Capitalize
-      return key && `${key[0].toUpperCase()}${key.slice(1)}`;
-    }).join('+');
-    return true;
+    return result;
   });
   return result && ` – ${result}`;
 };

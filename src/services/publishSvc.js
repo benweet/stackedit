@@ -103,24 +103,22 @@ const requestPublish = () => {
     return;
   }
 
-  store.dispatch('queue/enqueuePublishRequest', () => new Promise((resolve, reject) => {
+  store.dispatch('queue/enqueuePublishRequest', async () => {
     let intervalId;
-    const attempt = () => {
+    const attempt = async () => {
       // Only start publishing when these conditions are met
       if (networkSvc.isUserActive()) {
         clearInterval(intervalId);
         if (!hasCurrentFilePublishLocations()) {
           // Cancel sync
-          reject(new Error('Publish not possible.'));
-          return;
+          throw new Error('Publish not possible.');
         }
-        publishFile(store.getters['file/current'].id)
-          .then(resolve, reject);
+        await publishFile(store.getters['file/current'].id);
       }
     };
     intervalId = utils.setInterval(() => attempt(), 1000);
-    attempt();
-  }));
+    return attempt();
+  });
 };
 
 const createPublishLocation = (publishLocation) => {

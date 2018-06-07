@@ -399,7 +399,7 @@ const localDbSvc = {
     // Enable sponsorship
     if (utils.queryParams.paymentSuccess) {
       window.location.hash = ''; // PaymentSuccess param is always on its own
-      store.dispatch('modal/paymentSuccess')
+      store.dispatch('modal/open', 'paymentSuccess')
         .catch(() => { /* Cancel */ });
       const sponsorToken = store.getters['workspace/sponsorToken'];
       // Force check sponsorship after a few seconds

@@ -135,7 +135,7 @@ export default {
       const loginToken = rootGetters['workspace/loginToken'];
       if (!loginToken) {
         try {
-          await dispatch('modal/signInForComment', null, { root: true });
+          await dispatch('modal/open', 'signInForComment', { root: true });
           await googleHelper.signin();
           syncSvc.requestSync();
           await dispatch('createNewDiscussion', selection);

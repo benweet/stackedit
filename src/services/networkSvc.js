@@ -215,13 +215,24 @@ export default {
 
     const attempt = async () => {
       try {
-        await new Promise((resolve, reject) => {
+        return await new Promise((resolve, reject) => {
           if (offlineCheck) {
             store.commit('updateLastOfflineCheck');
           }
+
           const xhr = new window.XMLHttpRequest();
           xhr.withCredentials = config.withCredentials || false;
-          let timeoutId;
+
+          const timeoutId = setTimeout(() => {
+            xhr.abort();
+            if (offlineCheck) {
+              isConnectionDown = true;
+              store.commit('setOffline', true);
+              reject(new Error('You are offline.'));
+            } else {
+              reject(new Error('Network request timeout.'));
+            }
+          }, config.timeout);
 
           xhr.onload = () => {
             if (offlineCheck) {
@@ -242,9 +253,9 @@ export default {
             }
             if (result.status >= 200 && result.status < 300) {
               resolve(result);
-              return;
+            } else {
+              reject(result);
             }
-            reject(result);
           };
 
           xhr.onerror = () => {
@@ -258,21 +269,13 @@ export default {
             }
           };
 
-          timeoutId = setTimeout(() => {
-            xhr.abort();
-            if (offlineCheck) {
-              isConnectionDown = true;
-              store.commit('setOffline', true);
-              reject(new Error('You are offline.'));
-            } else {
-              reject(new Error('Network request timeout.'));
-            }
-          }, config.timeout);
-
           const url = utils.addQueryParams(config.url, config.params);
           xhr.open(config.method || 'GET', url);
-          Object.entries(config.headers).forEach(([key, value]) =>
-            value && xhr.setRequestHeader(key, `${value}`));
+          Object.entries(config.headers).forEach(([key, value]) => {
+            if (value) {
+              xhr.setRequestHeader(key, `${value}`);
+            }
+          });
           if (config.blob) {
             xhr.responseType = 'blob';
           }
@@ -286,7 +289,7 @@ export default {
             // Exponential backoff
             retryAfter *= 2;
           });
-          attempt();
+          return attempt();
         }
         throw err;
       }

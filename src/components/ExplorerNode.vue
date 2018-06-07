@@ -181,7 +181,9 @@ export default {
             perform: () => explorerSvc.deleteItem(),
           }],
         });
-        item.perform();
+        if (item) {
+          item.perform();
+        }
       }
     },
   },

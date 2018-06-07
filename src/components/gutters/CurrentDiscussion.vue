@@ -95,7 +95,7 @@ export default {
     },
     async removeDiscussion() {
       try {
-        await this.$store.dispatch('modal/discussionDeletion');
+        await this.$store.dispatch('modal/open', 'discussionDeletion');
         this.$store.dispatch('discussion/cleanCurrentFile', {
           filterDiscussion: this.currentDiscussion,
         });

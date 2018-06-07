@@ -119,6 +119,41 @@ const store = new Vuex.Store({
       });
       return result;
     },
+    itemGitPaths: (state, { allItemMap, itemPaths }) => {
+      const result = {};
+      Object.entries(allItemMap).forEach(([id, item]) => {
+        if (item.type === 'data') {
+          result[id] = `.stackedit-data/${id}.json`;
+        } else if (item.type === 'file') {
+          result[id] = `${itemPaths[id]}.md`;
+        } else if (item.type === 'content') {
+          const [fileId] = id.split('/');
+          result[id] = `/${itemPaths[fileId]}.md`;
+        } else if (item.type === 'folder') {
+          result[id] = itemPaths[id];
+        } else if (item.type === 'syncLocation' || item.type === 'publishLocation') {
+          // locations are stored as paths
+          const encodedItem = utils.encodeBase64(utils.serializeObject({
+            ...item,
+            id: undefined,
+            type: undefined,
+            fileId: undefined,
+          }), true);
+          const extension = item.type === 'syncLocation' ? 'sync' : 'publish';
+          result[id] = `${itemPaths[item.fileId]}.${encodedItem}.${extension}`;
+        }
+      });
+      return result;
+    },
+    gitPathItems: (state, { allItemMap, itemGitPaths }) => {
+      const result = {};
+      Object.entries(itemGitPaths).forEach(([id, path]) => {
+        const items = result[path] || [];
+        items.push(allItemMap[id]);
+        result[path] = items;
+      });
+      return result;
+    },
     isSponsor: ({ light, monetizeSponsor }, getters) => {
       const sponsorToken = getters['workspace/sponsorToken'];
       return light || monetizeSponsor || (sponsorToken && sponsorToken.isSponsor);

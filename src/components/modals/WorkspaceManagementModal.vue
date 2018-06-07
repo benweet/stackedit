@@ -77,7 +77,7 @@ export default {
     },
     async remove(id) {
       try {
-        await this.$store.dispatch('modal/removeWorkspace');
+        await this.$store.dispatch('modal/open', 'removeWorkspace');
         localDbSvc.removeWorkspace(id);
       } catch (e) {
         // Cancel

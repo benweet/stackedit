@@ -49,7 +49,7 @@ export default {
     ]),
     async removeComment() {
       try {
-        await this.$store.dispatch('modal/commentDeletion');
+        await this.$store.dispatch('modal/open', 'commentDeletion');
         this.$store.dispatch('discussion/cleanCurrentFile', { filterComment: this.comment });
       } catch (e) {
         // Cancel

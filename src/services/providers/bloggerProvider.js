@@ -5,7 +5,7 @@ import Provider from './common/Provider';
 export default new Provider({
   id: 'blogger',
   getToken(location) {
-    const token = store.getters['data/googleTokens'][location.sub];
+    const token = store.getters['data/googleTokensBySub'][location.sub];
     return token && token.isBlogger ? token : null;
   },
   getUrl(location) {

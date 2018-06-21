@@ -45,8 +45,8 @@ export default {
       sub: uniqueSub,
     };
 
-    // Add token to zendeskTokens
-    store.dispatch('data/setZendeskToken', token);
+    // Add token to zendesk tokens
+    store.dispatch('data/addZendeskToken', token);
     return token;
   },
   addAccount(subdomain, clientId) {

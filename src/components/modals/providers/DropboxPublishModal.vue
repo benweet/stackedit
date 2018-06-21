@@ -14,7 +14,7 @@
       </form-entry>
       <form-entry label="Template">
         <select slot="field" class="textfield" v-model="selectedTemplate" @keydown.enter="resolve()">
-          <option v-for="(template, id) in allTemplates" :key="id" :value="id">
+          <option v-for="(template, id) in allTemplatesById" :key="id" :value="id">
             {{ template.name }}
           </option>
         </select>

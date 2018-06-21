@@ -37,13 +37,13 @@ const lsItemIdSet = new Set(utils.localStorageDataIds);
 
 // Getter/setter/patcher factories
 const getter = id => state => ((lsItemIdSet.has(id)
-  ? state.lsItemMap
-  : state.itemMap)[id] || {}).data || empty(id).data;
+  ? state.lsItemsById
+  : state.itemsById)[id] || {}).data || empty(id).data;
 const setter = id => ({ commit }, data) => commit('setItem', itemTemplate(id, data));
 const patcher = id => ({ state, commit }, data) => {
   const item = Object.assign(empty(id), (lsItemIdSet.has(id)
-    ? state.lsItemMap
-    : state.itemMap)[id]);
+    ? state.lsItemsById
+    : state.itemsById)[id]);
   commit('setItem', {
     ...empty(id),
     data: typeof data === 'object' ? {
@@ -83,10 +83,10 @@ const additionalTemplates = {
 };
 
 // For tokens
-const tokenSetter = providerId => ({ getters, dispatch }, token) => {
-  dispatch('patchTokens', {
+const tokenAdder = providerId => ({ getters, dispatch }, token) => {
+  dispatch('patchTokensByProviderId', {
     [providerId]: {
-      ...getters[`${providerId}Tokens`],
+      ...getters[`${providerId}TokensBySub`],
       [token.sub]: token,
     },
   });
@@ -99,12 +99,12 @@ export default {
   namespaced: true,
   state: {
     // Data items stored in the DB
-    itemMap: {},
+    itemsById: {},
     // Data items stored in the localStorage
-    lsItemMap: {},
+    lsItemsById: {},
   },
   mutations: {
-    setItem: ({ itemMap, lsItemMap }, value) => {
+    setItem: ({ itemsById, lsItemsById }, value) => {
       // Create an empty item and override its data field
       const emptyItem = empty(value.id);
       const data = typeof value.data === 'object'
@@ -117,20 +117,20 @@ export default {
         data,
       });
 
-      // Store item in itemMap or lsItemMap if its stored in the localStorage
-      Vue.set(lsItemIdSet.has(item.id) ? lsItemMap : itemMap, item.id, item);
+      // Store item in itemsById or lsItemsById if its stored in the localStorage
+      Vue.set(lsItemIdSet.has(item.id) ? lsItemsById : itemsById, item.id, item);
     },
-    deleteItem({ itemMap }, id) {
-      // Only used by localDbSvc to clean itemMap from object moved to localStorage
-      Vue.delete(itemMap, id);
+    deleteItem({ itemsById }, id) {
+      // Only used by localDbSvc to clean itemsById from object moved to localStorage
+      Vue.delete(itemsById, id);
     },
   },
   getters: {
-    workspaces: getter('workspaces'),
-    sanitizedWorkspaces: (state, { workspaces }, rootState, rootGetters) => {
-      const sanitizedWorkspaces = {};
+    workspacesById: getter('workspaces'),
+    sanitizedWorkspacesById: (state, { workspacesById }, rootState, rootGetters) => {
+      const sanitizedWorkspacesById = {};
       const mainWorkspaceToken = rootGetters['workspace/mainWorkspaceToken'];
-      Object.entries(workspaces).forEach(([id, workspace]) => {
+      Object.entries(workspacesById).forEach(([id, workspace]) => {
         const sanitizedWorkspace = {
           id,
           providerId: mainWorkspaceToken && 'googleDriveAppData',
@@ -141,9 +141,9 @@ export default {
         urlParser.href = workspace.url || 'app';
         const params = utils.parseQueryParams(urlParser.hash.slice(1));
         sanitizedWorkspace.url = utils.addQueryParams('app', params, true);
-        sanitizedWorkspaces[id] = sanitizedWorkspace;
+        sanitizedWorkspacesById[id] = sanitizedWorkspace;
       });
-      return sanitizedWorkspaces;
+      return sanitizedWorkspacesById;
     },
     settings: getter('settings'),
     computedSettings: (state, { settings }) => {
@@ -170,9 +170,9 @@ export default {
     },
     localSettings: getter('localSettings'),
     layoutSettings: getter('layoutSettings'),
-    templates: getter('templates'),
-    allTemplates: (state, { templates }) => ({
-      ...templates,
+    templatesById: getter('templates'),
+    allTemplatesById: (state, { templatesById }) => ({
+      ...templatesById,
       ...additionalTemplates,
     }),
     lastCreated: getter('lastCreated'),
@@ -186,42 +186,51 @@ export default {
         result[currentFileId] = Date.now();
       }
       return Object.keys(result)
-        .filter(id => rootState.file.itemMap[id])
+        .filter(id => rootState.file.itemsById[id])
         .sort((id1, id2) => result[id2] - result[id1])
         .slice(0, 20);
     },
-    syncData: getter('syncData'),
-    syncDataByItemId: (state, { syncData }) => {
+    syncDataById: getter('syncData'),
+    syncDataByItemId: (state, { syncDataById }, rootState, rootGetters) => {
       const result = {};
-      Object.entries(syncData).forEach(([, value]) => {
-        result[value.itemId] = value;
-      });
+      if (rootGetters['workspace/currentWorkspaceIsGit']) {
+        Object.entries(rootGetters.gitPathsByItemId).forEach(([id, path]) => {
+          const syncDataEntry = syncDataById[path];
+          if (syncDataEntry) {
+            result[id] = syncDataEntry;
+          }
+        });
+      } else {
+        Object.entries(syncDataById).forEach(([, syncDataEntry]) => {
+          result[syncDataEntry.itemId] = syncDataEntry;
+        });
+      }
       return result;
     },
-    syncDataByType: (state, { syncData }) => {
+    syncDataByType: (state, { syncDataById }) => {
       const result = {};
       utils.types.forEach((type) => {
         result[type] = {};
       });
-      Object.entries(syncData).forEach(([, item]) => {
+      Object.entries(syncDataById).forEach(([, item]) => {
         if (result[item.type]) {
           result[item.type][item.itemId] = item;
         }
       });
       return result;
     },
-    dataSyncData: getter('dataSyncData'),
-    tokens: getter('tokens'),
-    googleTokens: (state, { tokens }) => tokens.google || {},
-    couchdbTokens: (state, { tokens }) => tokens.couchdb || {},
-    dropboxTokens: (state, { tokens }) => tokens.dropbox || {},
-    githubTokens: (state, { tokens }) => tokens.github || {},
-    wordpressTokens: (state, { tokens }) => tokens.wordpress || {},
-    zendeskTokens: (state, { tokens }) => tokens.zendesk || {},
+    dataSyncDataById: getter('dataSyncData'),
+    tokensByProviderId: getter('tokens'),
+    googleTokensBySub: (state, { tokensByProviderId }) => tokensByProviderId.google || {},
+    couchdbTokensBySub: (state, { tokensByProviderId }) => tokensByProviderId.couchdb || {},
+    dropboxTokensBySub: (state, { tokensByProviderId }) => tokensByProviderId.dropbox || {},
+    githubTokensBySub: (state, { tokensByProviderId }) => tokensByProviderId.github || {},
+    wordpressTokensBySub: (state, { tokensByProviderId }) => tokensByProviderId.wordpress || {},
+    zendeskTokensBySub: (state, { tokensByProviderId }) => tokensByProviderId.zendesk || {},
   },
   actions: {
-    setWorkspaces: setter('workspaces'),
-    patchWorkspaces: patcher('workspaces'),
+    setWorkspacesById: setter('workspaces'),
+    patchWorkspacesById: patcher('workspaces'),
     setSettings: setter('settings'),
     patchLocalSettings: patcher('localSettings'),
     patchLayoutSettings: patcher('layoutSettings'),
@@ -257,15 +266,15 @@ export default {
     setSideBarPanel: ({ dispatch }, value) => dispatch('patchLayoutSettings', {
       sideBarPanel: value === undefined ? 'menu' : value,
     }),
-    setTemplates: ({ commit }, data) => {
-      const dataToCommit = {
-        ...data,
+    setTemplatesById: ({ commit }, templatesById) => {
+      const templatesToCommit = {
+        ...templatesById,
       };
       // We don't store additional templates
       Object.keys(additionalTemplates).forEach((id) => {
-        delete dataToCommit[id];
+        delete templatesToCommit[id];
       });
-      commit('setItem', itemTemplate('templates', dataToCommit));
+      commit('setItem', itemTemplate('templates', templatesToCommit));
     },
     setLastCreated: setter('lastCreated'),
     setLastOpenedId: ({ getters, commit, rootState }, fileId) => {
@@ -274,21 +283,21 @@ export default {
       // Remove entries that don't exist anymore
       const cleanedLastOpened = {};
       Object.entries(lastOpened).forEach(([id, value]) => {
-        if (rootState.file.itemMap[id]) {
+        if (rootState.file.itemsById[id]) {
           cleanedLastOpened[id] = value;
         }
       });
       commit('setItem', itemTemplate('lastOpened', cleanedLastOpened));
     },
-    setSyncData: setter('syncData'),
-    patchSyncData: patcher('syncData'),
-    patchDataSyncData: patcher('dataSyncData'),
-    patchTokens: patcher('tokens'),
-    setGoogleToken: tokenSetter('google'),
-    setCouchdbToken: tokenSetter('couchdb'),
-    setDropboxToken: tokenSetter('dropbox'),
-    setGithubToken: tokenSetter('github'),
-    setWordpressToken: tokenSetter('wordpress'),
-    setZendeskToken: tokenSetter('zendesk'),
+    setSyncDataById: setter('syncData'),
+    patchSyncDataById: patcher('syncData'),
+    patchDataSyncDataById: patcher('dataSyncData'),
+    patchTokensByProviderId: patcher('tokens'),
+    addGoogleToken: tokenAdder('google'),
+    addCouchdbToken: tokenAdder('couchdb'),
+    addDropboxToken: tokenAdder('dropbox'),
+    addGithubToken: tokenAdder('github'),
+    addWordpressToken: tokenAdder('wordpress'),
+    addZendeskToken: tokenAdder('zendesk'),
   },
 };

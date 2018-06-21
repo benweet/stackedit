@@ -28,7 +28,6 @@ const endsWith = (str, suffix) => str.slice(-suffix.length) === suffix;
 
 export default new Provider({
   id: 'githubWorkspace',
-  isGit: true,
   getToken() {
     return store.getters['workspace/syncToken'];
   },
@@ -47,13 +46,13 @@ export default new Provider({
       workspaceParams.path = path;
     }
     const workspaceId = utils.makeWorkspaceId(workspaceParams);
-    let workspace = store.getters['data/sanitizedWorkspaces'][workspaceId];
+    let workspace = store.getters['data/sanitizedWorkspacesById'][workspaceId];
 
     // See if we already have a token
     let token;
     if (workspace) {
       // Token sub is in the workspace
-      token = store.getters['data/githubTokens'][workspace.sub];
+      token = store.getters['data/githubTokensBySub'][workspace.sub];
     }
     if (!token) {
       await store.dispatch('modal/open', { type: 'githubAccount' });
@@ -74,27 +73,27 @@ export default new Provider({
     // Fix the URL hash
     utils.setQueryParams(workspaceParams);
     if (workspace.url !== window.location.href) {
-      store.dispatch('data/patchWorkspaces', {
+      store.dispatch('data/patchWorkspacesById', {
         [workspaceId]: {
           ...workspace,
           url: window.location.href,
         },
       });
     }
-    return store.getters['data/sanitizedWorkspaces'][workspaceId];
+    return store.getters['data/sanitizedWorkspacesById'][workspaceId];
   },
-  async getChanges() {
+  getChanges() {
     const syncToken = store.getters['workspace/syncToken'];
     const { owner, repo, branch } = getWorkspaceWithOwner();
-    const tree = await githubHelper.getTree({
+    return githubHelper.getTree({
       token: syncToken,
       owner,
       repo,
       branch,
     });
+  },
+  prepareChanges(tree) {
     const workspacePath = store.getters['workspace/currentWorkspace'].path || '';
-    const syncDataByPath = store.getters['data/syncData'];
-    const syncDataByItemId = store.getters['data/syncDataByItemId'];
 
     // Store all blobs sha
     treeShaMap = Object.create(null);
@@ -136,9 +135,20 @@ export default new Provider({
     const changes = [];
     const pathIds = {};
     const syncDataToKeep = Object.create(null);
+    const syncDataByPath = store.getters['data/syncDataById'];
+    const { itemsByGitPath } = store.getters;
     const getId = (path) => {
-      const syncData = syncDataByPath[path];
-      const id = syncData ? syncData.itemId : utils.uid();
+      const existingItem = itemsByGitPath[path];
+      // Use the item ID only if the item was already synced
+      if (existingItem && syncDataByPath[path]) {
+        pathIds[path] = existingItem.id;
+        return existingItem.id;
+      }
+      // Generate a new ID
+      let id = utils.uid();
+      if (path[0] === '/') {
+        id += '/content';
+      }
       pathIds[path] = id;
       return id;
     };
@@ -146,9 +156,8 @@ export default new Provider({
     // Folder creations/updates
     // Assume map entries are sorted from top to bottom
     Object.entries(treeFolderMap).forEach(([path, parentPath]) => {
-      const id = getId(path);
       const item = utils.addItemHash({
-        id,
+        id: getId(path),
         type: 'folder',
         name: path.slice(parentPath.length, -1),
         parentId: pathIds[parentPath] || null,
@@ -158,18 +167,22 @@ export default new Provider({
         item,
         syncData: {
           id: path,
-          itemId: id,
           type: item.type,
           hash: item.hash,
         },
       });
     });
 
-    // File creations/updates
+    // File/content creations/updates
     Object.entries(treeFileMap).forEach(([path, parentPath]) => {
-      const id = getId(path);
+      // Look for content sync data as it's created before file sync data
+      const contentPath = `/${path}`;
+      const contentId = getId(contentPath);
+
+      // File creations/updates
+      const [fileId] = contentId.split('/');
       const item = utils.addItemHash({
-        id,
+        id: fileId,
         type: 'file',
         name: path.slice(parentPath.length, -'.md'.length),
         parentId: pathIds[parentPath] || null,
@@ -179,31 +192,31 @@ export default new Provider({
         item,
         syncData: {
           id: path,
-          itemId: id,
           type: item.type,
           hash: item.hash,
         },
       });
 
       // Content creations/updates
-      const contentSyncData = syncDataByItemId[`${id}/content`];
+      const contentSyncData = syncDataByPath[contentPath];
       if (contentSyncData) {
-        syncDataToKeep[contentSyncData.id] = true;
+        syncDataToKeep[path] = true;
+        syncDataToKeep[contentPath] = true;
       }
       if (!contentSyncData || contentSyncData.sha !== treeShaMap[path]) {
+        const type = 'content';
         // Use `/` as a prefix to get a unique syncData id
         changes.push({
-          syncDataId: `/${path}`,
+          syncDataId: contentPath,
           item: {
-            id: `${id}/content`,
-            type: 'content',
-            // Need a truthy value to force saving sync data
+            id: contentId,
+            type,
+            // Need a truthy value to force downloading the content
             hash: 1,
           },
           syncData: {
-            id: `/${path}`,
-            itemId: `${id}/content`,
-            type: 'content',
+            id: contentPath,
+            type,
             // Need a truthy value to force downloading the content
             hash: 1,
           },
@@ -212,35 +225,34 @@ export default new Provider({
     });
 
     // Data creations/updates
+    const syncDataByItemId = store.getters['data/syncDataByItemId'];
     Object.keys(treeDataMap).forEach((path) => {
-      try {
-        // Only template data are stored
-        const [, id] = path.match(/^\.stackedit-data\/(templates)\.json$/) || [];
+      // Only template data are stored
+      const [, id] = path.match(/^\.stackedit-data\/(templates)\.json$/) || [];
+      if (id) {
         pathIds[path] = id;
         const syncData = syncDataByItemId[id];
         if (syncData) {
           syncDataToKeep[syncData.id] = true;
         }
         if (!syncData || syncData.sha !== treeShaMap[path]) {
+          const type = 'data';
           changes.push({
             syncDataId: path,
             item: {
               id,
-              type: 'data',
+              type,
               // Need a truthy value to force saving sync data
               hash: 1,
             },
             syncData: {
               id: path,
-              itemId: id,
-              type: 'data',
+              type,
               // Need a truthy value to force downloading the content
               hash: 1,
             },
           });
         }
-      } catch (e) {
-        // Ignore parsing errors
       }
     });
 
@@ -255,12 +267,18 @@ export default new Provider({
       pathMatcher: /^([\s\S]+)\.([\w-]+)\.publish$/,
     }]
       .forEach(({ type, map, pathMatcher }) => Object.keys(map).forEach((path) => {
-        try {
-          const [, filePath, data] = path.match(pathMatcher);
+        const [, filePath, data] = path.match(pathMatcher) || [];
+        if (filePath) {
           // If there is a corresponding md file in the tree
           const fileId = pathIds[`${filePath}.md`];
           if (fileId) {
-            const id = getId(path);
+            // Reuse existing ID or create a new one
+            const existingItem = itemsByGitPath[path];
+            const id = existingItem
+              ? existingItem.id
+              : utils.uid();
+            pathIds[path] = id;
+
             const item = utils.addItemHash({
               ...JSON.parse(utils.decodeBase64(data)),
               id,
@@ -272,14 +290,11 @@ export default new Provider({
               item,
               syncData: {
                 id: path,
-                itemId: id,
                 type: item.type,
                 hash: item.hash,
               },
             });
           }
-        } catch (e) {
-          // Ignore parsing errors
         }
       }));
 
@@ -292,10 +307,9 @@ export default new Provider({
 
     return changes;
   },
-  async saveWorkspaceItem(item) {
+  async saveWorkspaceItem({ item }) {
     const syncData = {
-      id: store.getters.itemGitPaths[item.id],
-      itemId: item.id,
+      id: store.getters.gitPathsByItemId[item.id],
       type: item.type,
       hash: item.hash,
     };
@@ -316,7 +330,7 @@ export default new Provider({
     });
     return syncData;
   },
-  async removeWorkspaceItem(syncData) {
+  async removeWorkspaceItem({ syncData }) {
     if (treeShaMap[syncData.id]) {
       const syncToken = store.getters['workspace/syncToken'];
       await githubHelper.removeFile({
@@ -327,41 +341,40 @@ export default new Provider({
       });
     }
   },
-  async downloadWorkspaceContent(token, contentSyncData) {
-    const [fileId] = contentSyncData.itemId.split('/');
-    const path = store.getters.itemGitPaths[fileId];
-    const syncData = store.getters['data/syncData'][path];
-    if (!syncData) {
-      return {};
-    }
-    const { sha, content } = await githubHelper.downloadFile({
+  async downloadWorkspaceContent({
+    token,
+    contentId,
+    contentSyncData,
+    fileSyncData,
+  }) {
+    const { sha, data } = await githubHelper.downloadFile({
       ...getWorkspaceWithOwner(),
       token,
-      path: getAbsolutePath(syncData),
+      path: getAbsolutePath(fileSyncData),
     });
-    treeShaMap[path] = sha;
-    const item = Provider.parseContent(content, `${fileId}/content`);
+    treeShaMap[fileSyncData.id] = sha;
+    const content = Provider.parseContent(data, contentId);
     return {
-      item,
-      syncData: {
+      content,
+      contentSyncData: {
         ...contentSyncData,
-        hash: item.hash,
+        hash: content.hash,
         sha,
       },
     };
   },
-  async downloadWorkspaceData(token, dataId, syncData) {
+  async downloadWorkspaceData({ token, syncData }) {
     if (!syncData) {
       return {};
     }
 
-    const { sha, content } = await githubHelper.downloadFile({
+    const { sha, data } = await githubHelper.downloadFile({
       ...getWorkspaceWithOwner(),
       token,
       path: getAbsolutePath(syncData),
     });
     treeShaMap[syncData.id] = sha;
-    const item = JSON.parse(content);
+    const item = JSON.parse(data);
     return {
       item,
       syncData: {
@@ -371,32 +384,36 @@ export default new Provider({
       },
     };
   },
-  async uploadWorkspaceContent(token, item) {
-    const [fileId] = item.id.split('/');
-    const path = store.getters.itemGitPaths[fileId];
+  async uploadWorkspaceContent({ token, content, file }) {
+    const path = store.getters.gitPathsByItemId[file.id];
     const absolutePath = `${store.getters['workspace/currentWorkspace'].path || ''}${path}`;
     const res = await githubHelper.uploadFile({
       ...getWorkspaceWithOwner(),
       token,
       path: absolutePath,
-      content: Provider.serializeContent(item),
+      content: Provider.serializeContent(content),
       sha: treeShaMap[path],
     });
 
     // Return new sync data
     return {
-      id: store.getters.itemGitPaths[item.id],
-      itemId: item.id,
-      type: item.type,
-      hash: item.hash,
-      sha: res.content.sha,
+      contentSyncData: {
+        id: store.getters.gitPathsByItemId[content.id],
+        type: content.type,
+        hash: content.hash,
+        sha: res.content.sha,
+      },
+      fileSyncData: {
+        id: path,
+        type: 'file',
+        hash: file.hash,
+      },
     };
   },
-  async uploadWorkspaceData(token, item) {
-    const path = store.getters.itemGitPaths[item.id];
+  async uploadWorkspaceData({ token, item }) {
+    const path = store.getters.gitPathsByItemId[item.id];
     const syncData = {
       id: path,
-      itemId: item.id,
       type: item.type,
       hash: item.hash,
     };
@@ -409,8 +426,10 @@ export default new Provider({
     });
 
     return {
-      ...syncData,
-      sha: res.content.sha,
+      syncData: {
+        ...syncData,
+        sha: res.content.sha,
+      },
     };
   },
   onSyncEnd() {
@@ -458,12 +477,12 @@ export default new Provider({
   },
   async getRevisionContent(token, fileId, revisionId) {
     const syncData = Provider.getContentSyncData(fileId);
-    const { content } = await githubHelper.downloadFile({
+    const { data } = await githubHelper.downloadFile({
       ...getWorkspaceWithOwner(),
       token,
       branch: revisionId,
       path: getAbsolutePath(syncData),
     });
-    return Provider.parseContent(content, `${fileId}/content`);
+    return Provider.parseContent(data, `${fileId}/content`);
   },
 });

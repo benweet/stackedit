@@ -52,7 +52,7 @@ export default {
       const { reason } = (((err.body || {}).error || {}).errors || [])[0] || {};
       if (reason === 'authError') {
         // Mark the token as revoked and get a new one
-        store.dispatch('data/setGoogleToken', {
+        store.dispatch('data/addGoogleToken', {
           ...token,
           expiresOn: 0,
         });
@@ -101,7 +101,7 @@ export default {
     }
 
     // Build token object including scopes and sub
-    const existingToken = store.getters['data/googleTokens'][body.sub];
+    const existingToken = store.getters['data/googleTokensBySub'][body.sub];
     const token = {
       scopes,
       accessToken,
@@ -158,13 +158,13 @@ export default {
       }
     }
 
-    // Add token to googleTokens
-    store.dispatch('data/setGoogleToken', token);
+    // Add token to google tokens
+    store.dispatch('data/addGoogleToken', token);
     return token;
   },
   async refreshToken(token, scopes = []) {
     const { sub } = token;
-    const lastToken = store.getters['data/googleTokens'][sub];
+    const lastToken = store.getters['data/googleTokensBySub'][sub];
     const mergedScopes = [...new Set([
       ...scopes,
       ...lastToken.scopes,

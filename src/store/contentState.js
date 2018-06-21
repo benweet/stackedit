@@ -5,8 +5,8 @@ const module = moduleTemplate(empty, true);
 
 module.getters = {
   ...module.getters,
-  current: ({ itemMap }, getters, rootState, rootGetters) =>
-    itemMap[`${rootGetters['file/current'].id}/contentState`] || empty(),
+  current: ({ itemsById }, getters, rootState, rootGetters) =>
+    itemsById[`${rootGetters['file/current'].id}/contentState`] || empty(),
 };
 
 module.actions = {

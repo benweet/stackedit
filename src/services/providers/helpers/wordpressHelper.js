@@ -44,13 +44,13 @@ export default {
       name: body.display_name,
       sub: `${body.ID}`,
     };
-    // Add token to wordpressTokens
-    store.dispatch('data/setWordpressToken', token);
+    // Add token to wordpress tokens
+    store.dispatch('data/addWordpressToken', token);
     return token;
   },
   async refreshToken(token) {
     const { sub } = token;
-    const lastToken = store.getters['data/wordpressTokens'][sub];
+    const lastToken = store.getters['data/wordpressTokensBySub'][sub];
 
     if (lastToken.expiresOn > Date.now() + tokenExpirationMargin) {
       return lastToken;

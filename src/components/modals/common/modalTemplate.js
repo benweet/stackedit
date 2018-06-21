@@ -52,15 +52,15 @@ export default (desc) => {
       },
     };
     if (key === 'selectedTemplate') {
-      component.computed.allTemplates = () => {
-        const allTemplates = store.getters['data/allTemplates'];
-        const sortedTemplates = {};
-        Object.entries(allTemplates)
+      component.computed.allTemplatesById = () => {
+        const allTemplatesById = store.getters['data/allTemplatesById'];
+        const sortedTemplatesById = {};
+        Object.entries(allTemplatesById)
           .sort(([, template1], [, template2]) => collator.compare(template1.name, template2.name))
           .forEach(([templateId, template]) => {
-            sortedTemplates[templateId] = template;
+            sortedTemplatesById[templateId] = template;
           });
-        return sortedTemplates;
+        return sortedTemplatesById;
       };
       // Make use of `function` to have `this` bound to the component
       component.methods.configureTemplates = async function () { // eslint-disable-line func-names
@@ -68,7 +68,7 @@ export default (desc) => {
           type: 'templates',
           selectedId: this.selectedTemplate,
         });
-        store.dispatch('data/setTemplates', templates);
+        store.dispatch('data/setTemplatesById', templates);
         store.dispatch('data/patchLocalSettings', {
           [id]: selectedId,
         });

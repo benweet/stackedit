@@ -7,7 +7,7 @@ import fileSvc from '../fileSvc';
 export default new Provider({
   id: 'googleDrive',
   getToken(location) {
-    const token = store.getters['data/googleTokens'][location.sub];
+    const token = store.getters['data/googleTokensBySub'][location.sub];
     return token && token.isDrive ? token : null;
   },
   getUrl(location) {
@@ -21,7 +21,7 @@ export default new Provider({
     const state = googleHelper.driveState || {};
     if (state.userId) {
       // Try to find the token corresponding to the user ID
-      let token = store.getters['data/googleTokens'][state.userId];
+      let token = store.getters['data/googleTokensBySub'][state.userId];
       // If not found or not enough permission, popup an OAuth2 window
       if (!token || !token.isDrive) {
         await store.dispatch('modal/open', { type: 'googleDriveAccount' });
@@ -42,7 +42,7 @@ export default new Provider({
             folderId,
           };
           const workspaceId = utils.makeWorkspaceId(workspaceParams);
-          const workspace = store.getters['data/sanitizedWorkspaces'][workspaceId];
+          const workspace = store.getters['data/sanitizedWorkspacesById'][workspaceId];
           // If we have the workspace, open it by changing the current URL
           if (workspace) {
             utils.setQueryParams(workspaceParams);
@@ -83,7 +83,7 @@ export default new Provider({
   },
   async performAction() {
     const state = googleHelper.driveState || {};
-    const token = store.getters['data/googleTokens'][state.userId];
+    const token = store.getters['data/googleTokensBySub'][state.userId];
     switch (token && state.action) {
       case 'create': {
         const file = await fileSvc.createFile({}, true);
@@ -106,7 +106,7 @@ export default new Provider({
     return Provider.parseContent(content, `${syncLocation.fileId}/content`);
   },
   async uploadContent(token, content, syncLocation, ifNotTooLate) {
-    const file = store.state.file.itemMap[syncLocation.fileId];
+    const file = store.state.file.itemsById[syncLocation.fileId];
     const name = utils.sanitizeName(file && file.name);
     const parents = [];
     if (syncLocation.driveParentId) {

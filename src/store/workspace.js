@@ -16,13 +16,14 @@ export default {
   },
   getters: {
     mainWorkspace: (state, getters, rootState, rootGetters) => {
-      const workspaces = rootGetters['data/sanitizedWorkspaces'];
-      return workspaces.main;
+      const sanitizedWorkspacesById = rootGetters['data/sanitizedWorkspacesById'];
+      return sanitizedWorkspacesById.main;
     },
     currentWorkspace: ({ currentWorkspaceId }, { mainWorkspace }, rootState, rootGetters) => {
-      const workspaces = rootGetters['data/sanitizedWorkspaces'];
-      return workspaces[currentWorkspaceId] || mainWorkspace;
+      const sanitizedWorkspacesById = rootGetters['data/sanitizedWorkspacesById'];
+      return sanitizedWorkspacesById[currentWorkspaceId] || mainWorkspace;
     },
+    currentWorkspaceIsGit: (state, { currentWorkspace }) => currentWorkspace.providerId === 'githubWorkspace',
     hasUniquePaths: (state, { currentWorkspace }) =>
       currentWorkspace.providerId === 'githubWorkspace',
     lastSyncActivityKey: (state, { currentWorkspace }) => `${currentWorkspace.id}/lastSyncActivity`,

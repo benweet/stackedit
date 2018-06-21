@@ -17,12 +17,12 @@ export default new Provider({
       dbUrl,
     };
     const workspaceId = utils.makeWorkspaceId(workspaceParams);
-    const getToken = () => store.getters['data/couchdbTokens'][workspaceId];
-    const getWorkspace = () => store.getters['data/sanitizedWorkspaces'][workspaceId];
+    const getToken = () => store.getters['data/couchdbTokensBySub'][workspaceId];
+    const getWorkspace = () => store.getters['data/sanitizedWorkspacesById'][workspaceId];
 
     if (!getToken()) {
       // Create token
-      store.dispatch('data/setCouchdbToken', {
+      store.dispatch('data/addCouchdbToken', {
         sub: workspaceId,
         dbUrl,
       });
@@ -38,7 +38,7 @@ export default new Provider({
       } catch (e) {
         throw new Error(`${dbUrl} is not accessible. Make sure you have the proper permissions.`);
       }
-      store.dispatch('data/patchWorkspaces', {
+      store.dispatch('data/patchWorkspacesById', {
         [workspaceId]: {
           id: workspaceId,
           name: db.db_name,
@@ -52,7 +52,7 @@ export default new Provider({
     // Fix the URL hash
     utils.setQueryParams(workspaceParams);
     if (workspace.url !== window.location.href) {
-      store.dispatch('data/patchWorkspaces', {
+      store.dispatch('data/patchWorkspacesById', {
         [workspace.id]: {
           ...workspace,
           url: window.location.href,
@@ -91,7 +91,7 @@ export default new Provider({
       syncLastSeq,
     });
   },
-  async saveWorkspaceItem(item, syncData) {
+  async saveWorkspaceItem({ item, syncData }) {
     const syncToken = store.getters['workspace/syncToken'];
     const { id, rev } = couchdbHelper.uploadDocument({
       token: syncToken,
@@ -108,24 +108,24 @@ export default new Provider({
       rev,
     };
   },
-  removeWorkspaceItem(syncData) {
+  removeWorkspaceItem({ syncData }) {
     const syncToken = store.getters['workspace/syncToken'];
     return couchdbHelper.removeDocument(syncToken, syncData.id, syncData.rev);
   },
-  async downloadWorkspaceContent(token, syncData) {
-    const body = await couchdbHelper.retrieveDocumentWithAttachments(token, syncData.id);
+  async downloadWorkspaceContent({ token, contentSyncData }) {
+    const body = await couchdbHelper.retrieveDocumentWithAttachments(token, contentSyncData.id);
     const rev = body._rev; // eslint-disable-line no-underscore-dangle
-    const item = Provider.parseContent(body.attachments.data, body.item.id);
+    const content = Provider.parseContent(body.attachments.data, body.item.id);
     return {
-      item,
-      syncData: {
-        ...syncData,
-        hash: item.hash,
+      content,
+      contentSyncData: {
+        ...contentSyncData,
+        hash: content.hash,
         rev,
       },
     };
   },
-  async downloadWorkspaceData(token, dataId, syncData) {
+  async downloadWorkspaceData({ token, syncData }) {
     if (!syncData) {
       return {};
     }
@@ -142,30 +142,32 @@ export default new Provider({
       },
     };
   },
-  async uploadWorkspaceContent(token, item, syncData) {
+  async uploadWorkspaceContent({ token, content, contentSyncData }) {
     const res = await couchdbHelper.uploadDocument({
       token,
       item: {
-        id: item.id,
-        type: item.type,
-        hash: item.hash,
+        id: content.id,
+        type: content.type,
+        hash: content.hash,
       },
-      data: Provider.serializeContent(item),
+      data: Provider.serializeContent(content),
       dataType: 'text/plain',
-      documentId: syncData && syncData.id,
-      rev: syncData && syncData.rev,
+      documentId: contentSyncData && contentSyncData.id,
+      rev: contentSyncData && contentSyncData.rev,
     });
 
     // Return new sync data
     return {
-      id: res.id,
-      itemId: item.id,
-      type: item.type,
-      hash: item.hash,
-      rev: res.rev,
+      contentSyncData: {
+        id: res.id,
+        itemId: content.id,
+        type: content.type,
+        hash: content.hash,
+        rev: res.rev,
+      },
     };
   },
-  async uploadWorkspaceData(token, item, syncData) {
+  async uploadWorkspaceData({ token, item, syncData }) {
     const res = await couchdbHelper.uploadDocument({
       token,
       item: {
@@ -181,11 +183,13 @@ export default new Provider({
 
     // Return new sync data
     return {
-      id: res.id,
-      itemId: item.id,
-      type: item.type,
-      hash: item.hash,
-      rev: res.rev,
+      syncData: {
+        id: res.id,
+        itemId: item.id,
+        type: item.type,
+        hash: item.hash,
+        rev: res.rev,
+      },
     };
   },
   async listRevisions(token, fileId) {

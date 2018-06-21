@@ -91,11 +91,11 @@ export default {
   },
   created() {
     this.$watch(
-      () => this.$store.getters['data/allTemplates'],
-      (allTemplates) => {
+      () => this.$store.getters['data/allTemplatesById'],
+      (allTemplatesById) => {
         const templates = {};
         // Sort templates by name
-        Object.entries(allTemplates)
+        Object.entries(allTemplatesById)
           .sort(([, template1], [, template2]) => collator.compare(template1.name, template2.name))
           .forEach(([id, template]) => {
             const templateClone = utils.deepCopy(template);

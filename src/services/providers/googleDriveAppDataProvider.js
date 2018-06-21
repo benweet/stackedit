@@ -15,7 +15,7 @@ export default new Provider({
     // Remove the URL hash
     utils.setQueryParams();
     // Return the main workspace
-    return store.getters['data/workspaces'].main;
+    return store.getters['data/workspacesById'].main;
   },
   async getChanges() {
     const syncToken = store.getters['workspace/syncToken'];
@@ -48,7 +48,7 @@ export default new Provider({
       syncStartPageToken,
     });
   },
-  async saveWorkspaceItem(item, syncData, ifNotTooLate) {
+  async saveWorkspaceItem({ item, syncData, ifNotTooLate }) {
     const syncToken = store.getters['workspace/syncToken'];
     const file = await googleHelper.uploadAppDataFile({
       token: syncToken,
@@ -64,22 +64,22 @@ export default new Provider({
       hash: item.hash,
     };
   },
-  removeWorkspaceItem(syncData, ifNotTooLate) {
+  removeWorkspaceItem({ syncData, ifNotTooLate }) {
     const syncToken = store.getters['workspace/syncToken'];
     return googleHelper.removeAppDataFile(syncToken, syncData.id, ifNotTooLate);
   },
-  async downloadWorkspaceContent(token, syncData) {
-    const data = await googleHelper.downloadAppDataFile(token, syncData.id);
-    const item = utils.addItemHash(JSON.parse(data));
+  async downloadWorkspaceContent({ token, contentSyncData }) {
+    const data = await googleHelper.downloadAppDataFile(token, contentSyncData.id);
+    const content = utils.addItemHash(JSON.parse(data));
     return {
-      item,
-      syncData: {
-        ...syncData,
-        hash: item.hash,
+      content,
+      contentSyncData: {
+        ...contentSyncData,
+        hash: content.hash,
       },
     };
   },
-  async downloadWorkspaceData(token, dataId, syncData) {
+  async downloadWorkspaceData({ token, syncData }) {
     if (!syncData) {
       return {};
     }
@@ -94,28 +94,40 @@ export default new Provider({
       },
     };
   },
-  async uploadWorkspaceContent(token, item, syncData, ifNotTooLate) {
-    const file = await googleHelper.uploadAppDataFile({
+  async uploadWorkspaceContent({
+    token,
+    content,
+    contentSyncData,
+    ifNotTooLate,
+  }) {
+    const gdriveFile = await googleHelper.uploadAppDataFile({
       token,
       name: JSON.stringify({
-        id: item.id,
-        type: item.type,
-        hash: item.hash,
+        id: content.id,
+        type: content.type,
+        hash: content.hash,
       }),
-      media: JSON.stringify(item),
-      fileId: syncData && syncData.id,
+      media: JSON.stringify(content),
+      fileId: contentSyncData && contentSyncData.id,
       ifNotTooLate,
     });
 
     // Return new sync data
     return {
-      id: file.id,
-      itemId: item.id,
-      type: item.type,
-      hash: item.hash,
+      contentSyncData: {
+        id: gdriveFile.id,
+        itemId: content.id,
+        type: content.type,
+        hash: content.hash,
+      },
     };
   },
-  async uploadWorkspaceData(token, item, syncData, ifNotTooLate) {
+  async uploadWorkspaceData({
+    token,
+    item,
+    syncData,
+    ifNotTooLate,
+  }) {
     const file = await googleHelper.uploadAppDataFile({
       token,
       name: JSON.stringify({
@@ -130,10 +142,12 @@ export default new Provider({
 
     // Return new sync data
     return {
-      id: file.id,
-      itemId: item.id,
-      type: item.type,
-      hash: item.hash,
+      syncData: {
+        id: file.id,
+        itemId: item.id,
+        type: item.type,
+        hash: item.hash,
+      },
     };
   },
   async listRevisions(token, fileId) {

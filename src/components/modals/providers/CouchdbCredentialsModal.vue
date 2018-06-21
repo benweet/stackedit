@@ -45,7 +45,7 @@ export default modalTemplate({
           name: this.name,
           password: this.password,
         };
-        this.$store.dispatch('data/setCouchdbToken', token);
+        this.$store.dispatch('data/addCouchdbToken', token);
         this.config.resolve();
       }
     },

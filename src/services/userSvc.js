@@ -21,7 +21,7 @@ export default {
       const [type, sub] = parseUserId(userId);
 
       // Try to find a token with this sub
-      const token = store.getters[`data/${type}Tokens`][sub];
+      const token = store.getters[`data/${type}TokensBySub`][sub];
       if (token) {
         store.commit('userInfo/addItem', {
           id: userId,

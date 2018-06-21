@@ -1,7 +1,7 @@
 <template>
   <modal-inner class="modal__inner-1--workspace-management" aria-label="Manage workspaces">
     <div class="modal__content">
-      <div class="workspace-entry flex flex--row flex--align-center" v-for="(workspace, id) in sanitizedWorkspaces" :key="id">
+      <div class="workspace-entry flex flex--row flex--align-center" v-for="(workspace, id) in sanitizedWorkspacesById" :key="id">
         <div class="workspace-entry__icon flex flex--column flex--center">
           <icon-provider :provider-id="workspace.providerId"></icon-provider>
         </div>
@@ -48,8 +48,8 @@ export default {
       'config',
     ]),
     ...mapGetters('data', [
-      'workspaces',
-      'sanitizedWorkspaces',
+      'workspacesById',
+      'sanitizedWorkspacesById',
     ]),
     ...mapGetters('workspace', [
       'mainWorkspace',
@@ -59,12 +59,12 @@ export default {
   methods: {
     edit(id) {
       this.editedId = id;
-      this.editingName = this.workspaces[id].name;
+      this.editingName = this.workspacesById[id].name;
     },
     submitEdit(cancel) {
-      const workspace = this.workspaces[this.editedId];
+      const workspace = this.workspacesById[this.editedId];
       if (workspace && !cancel && this.editingName) {
-        this.$store.dispatch('data/patchWorkspaces', {
+        this.$store.dispatch('data/patchWorkspacesById', {
           [this.editedId]: {
             ...workspace,
             name: this.editingName,

@@ -10,7 +10,7 @@ export default {
   props: ['userId'],
   computed: {
     url() {
-      const userInfo = this.$store.state.userInfo.itemMap[this.userId];
+      const userInfo = this.$store.state.userInfo.itemsById[this.userId];
       return userInfo && userInfo.imageUrl && `url('${userInfo.imageUrl}')`;
     },
   },

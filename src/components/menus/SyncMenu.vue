@@ -122,13 +122,13 @@ export default {
       return this.$store.getters['file/current'].name;
     },
     googleDriveTokens() {
-      return tokensToArray(this.$store.getters['data/googleTokens'], token => token.isDrive);
+      return tokensToArray(this.$store.getters['data/googleTokensBySub'], token => token.isDrive);
     },
     dropboxTokens() {
-      return tokensToArray(this.$store.getters['data/dropboxTokens']);
+      return tokensToArray(this.$store.getters['data/dropboxTokensBySub']);
     },
     githubTokens() {
-      return tokensToArray(this.$store.getters['data/githubTokens']);
+      return tokensToArray(this.$store.getters['data/githubTokensBySub']);
     },
     noToken() {
       return !this.googleDriveTokens.length

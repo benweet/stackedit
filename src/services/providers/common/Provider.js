@@ -7,6 +7,9 @@ import fileSvc from '../../fileSvc';
 const dataExtractor = /<!--stackedit_data:([A-Za-z0-9+/=\s]+)-->$/;
 
 export default class Provider {
+  prepareChanges = changes => changes
+  onChangesApplied = () => {}
+
   constructor(props) {
     Object.assign(this, props);
     providerRegistry.register(this);
@@ -41,7 +44,7 @@ export default class Provider {
    * Parse content serialized with serializeContent()
    */
   static parseContent(serializedContent, id) {
-    const result = utils.deepCopy(store.state.content.itemMap[id]) || emptyContent(id);
+    const result = utils.deepCopy(store.state.content.itemsById[id]) || emptyContent(id);
     result.text = utils.sanitizeText(serializedContent);
     result.history = [];
     const extractedData = dataExtractor.exec(serializedContent);
@@ -82,7 +85,7 @@ export default class Provider {
     const location = utils.search(allLocations, criteria);
     if (location) {
       // Found one, open it if it exists
-      const item = store.state.file.itemMap[location.fileId];
+      const item = store.state.file.itemsById[location.fileId];
       if (item) {
         store.commit('file/setCurrentId', item.id);
         // If file is in the trash, restore it

@@ -82,7 +82,7 @@ export default {
       if (doClose) {
         // Close the current file by opening the last opened, not deleted one
         store.getters['data/lastOpenedIds'].some((id) => {
-          const file = store.state.file.itemMap[id];
+          const file = store.state.file.itemsById[id];
           if (file.parentId === 'trash') {
             return false;
           }

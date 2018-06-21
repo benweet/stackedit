@@ -20,7 +20,7 @@ const makePathRelative = (token, path) => {
 export default new Provider({
   id: 'dropbox',
   getToken(location) {
-    return store.getters['data/dropboxTokens'][location.sub];
+    return store.getters['data/dropboxTokensBySub'][location.sub];
   },
   getUrl(location) {
     const pathComponents = location.path.split('/').map(encodeURIComponent);

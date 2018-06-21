@@ -9,7 +9,7 @@ export default {
   props: ['userId'],
   computed: {
     name() {
-      const userInfo = this.$store.state.userInfo.itemMap[this.userId];
+      const userInfo = this.$store.state.userInfo.itemsById[this.userId];
       return userInfo ? userInfo.name : 'Someone';
     },
   },

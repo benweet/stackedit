@@ -146,22 +146,22 @@ export default {
       return this.$store.getters['file/current'].name;
     },
     googleDriveTokens() {
-      return tokensToArray(this.$store.getters['data/googleTokens'], token => token.isDrive);
+      return tokensToArray(this.$store.getters['data/googleTokensBySub'], token => token.isDrive);
     },
     dropboxTokens() {
-      return tokensToArray(this.$store.getters['data/dropboxTokens']);
+      return tokensToArray(this.$store.getters['data/dropboxTokensBySub']);
     },
     githubTokens() {
-      return tokensToArray(this.$store.getters['data/githubTokens']);
+      return tokensToArray(this.$store.getters['data/githubTokensBySub']);
     },
     wordpressTokens() {
-      return tokensToArray(this.$store.getters['data/wordpressTokens']);
+      return tokensToArray(this.$store.getters['data/wordpressTokensBySub']);
     },
     bloggerTokens() {
-      return tokensToArray(this.$store.getters['data/googleTokens'], token => token.isBlogger);
+      return tokensToArray(this.$store.getters['data/googleTokensBySub'], token => token.isBlogger);
     },
     zendeskTokens() {
-      return tokensToArray(this.$store.getters['data/zendeskTokens']);
+      return tokensToArray(this.$store.getters['data/zendeskTokensBySub']);
     },
     noToken() {
       return !this.googleDriveTokens.length

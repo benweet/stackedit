@@ -31,11 +31,11 @@ module.mutations = {
 
 module.getters = {
   ...module.getters,
-  current: ({ itemMap, revisionContent }, getters, rootState, rootGetters) => {
+  current: ({ itemsById, revisionContent }, getters, rootState, rootGetters) => {
     if (revisionContent) {
       return revisionContent;
     }
-    return itemMap[`${rootGetters['file/current'].id}/content`] || empty();
+    return itemsById[`${rootGetters['file/current'].id}/content`] || empty();
   },
   currentChangeTrigger: (state, getters) => {
     const { current } = getters;
@@ -63,7 +63,7 @@ module.actions = {
   },
   setRevisionContent({ state, rootGetters, commit }, value) {
     const currentFile = rootGetters['file/current'];
-    const currentContent = state.itemMap[`${currentFile.id}/content`];
+    const currentContent = state.itemsById[`${currentFile.id}/content`];
     if (currentContent) {
       const diffs = diffMatchPatch.diff_main(currentContent.text, value.text);
       diffMatchPatch.diff_cleanupSemantic(diffs);

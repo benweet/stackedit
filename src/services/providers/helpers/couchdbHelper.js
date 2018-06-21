@@ -4,7 +4,7 @@ import store from '../../../store';
 
 const request = async (token, options = {}) => {
   const baseUrl = `${token.dbUrl}/`;
-  const getLastToken = () => store.getters['data/couchdbTokens'][token.sub];
+  const getLastToken = () => store.getters['data/couchdbTokensBySub'][token.sub];
 
   const assertUnauthorized = (err) => {
     if (err.status !== 401) {

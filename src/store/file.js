@@ -10,10 +10,10 @@ module.state = {
 
 module.getters = {
   ...module.getters,
-  current: ({ itemMap, currentId }) => itemMap[currentId] || empty(),
+  current: ({ itemsById, currentId }) => itemsById[currentId] || empty(),
   isCurrentTemp: (state, { current }) => current.parentId === 'temp',
-  lastOpened: ({ itemMap }, { items }, rootState, rootGetters) =>
-    itemMap[rootGetters['data/lastOpenedIds'][0]] || items[0] || empty(),
+  lastOpened: ({ itemsById }, { items }, rootState, rootGetters) =>
+    itemsById[rootGetters['data/lastOpenedIds'][0]] || items[0] || empty(),
 };
 
 module.mutations = {

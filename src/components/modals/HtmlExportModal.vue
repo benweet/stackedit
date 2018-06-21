@@ -4,7 +4,7 @@
       <p>Please choose a template for your <b>HTML export</b>.</p>
       <form-entry label="Template">
         <select class="textfield" slot="field" v-model="selectedTemplate" @keydown.enter="resolve()">
-          <option v-for="(template, id) in allTemplates" :key="id" :value="id">
+          <option v-for="(template, id) in allTemplatesById" :key="id" :value="id">
             {{ template.name }}
           </option>
         </select>
@@ -41,7 +41,7 @@ export default modalTemplate({
         const currentFile = this.$store.getters['file/current'];
         const html = await exportSvc.applyTemplate(
           currentFile.id,
-          this.allTemplates[selectedTemplate],
+          this.allTemplatesById[selectedTemplate],
         );
         this.result = html;
       }, 10);
@@ -60,7 +60,7 @@ export default modalTemplate({
       const { config } = this;
       const currentFile = this.$store.getters['file/current'];
       config.resolve();
-      exportSvc.exportToDisk(currentFile.id, 'html', this.allTemplates[this.selectedTemplate]);
+      exportSvc.exportToDisk(currentFile.id, 'html', this.allTemplatesById[this.selectedTemplate]);
     },
   },
 });

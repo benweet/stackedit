@@ -9,8 +9,8 @@ const select = (id) => {
   store.commit('explorer/setSelectedId', id);
   expect(store.getters['explorer/selectedNode'].item.id).toEqual(id);
 };
-const ensureExists = file => expect(store.getters.allItemMap).toHaveProperty(file.id);
-const ensureNotExists = file => expect(store.getters.allItemMap).not.toHaveProperty(file.id);
+const ensureExists = file => expect(store.getters.allItemsById).toHaveProperty(file.id);
+const ensureNotExists = file => expect(store.getters.allItemsById).not.toHaveProperty(file.id);
 
 describe('Explorer.vue', () => {
   it('should create new files in the root folder', () => {

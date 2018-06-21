@@ -40,10 +40,10 @@ const ensureDate = (value, defaultValue) => {
 
 const publish = async (publishLocation) => {
   const { fileId } = publishLocation;
-  const template = store.getters['data/allTemplates'][publishLocation.templateId];
+  const template = store.getters['data/allTemplatesById'][publishLocation.templateId];
   const html = await exportSvc.applyTemplate(fileId, template);
   const content = await localDbSvc.loadItem(`${fileId}/content`);
-  const file = store.state.file.itemMap[fileId];
+  const file = store.state.file.itemsById[fileId];
   const properties = utils.computeProperties(content.properties);
   const provider = providerRegistry.providers[publishLocation.providerId];
   const token = provider.getToken(publishLocation);
@@ -90,7 +90,7 @@ const publishFile = async (fileId) => {
         },
       });
     });
-    const file = store.state.file.itemMap[fileId];
+    const file = store.state.file.itemsById[fileId];
     store.dispatch('notification/info', `"${file.name}" was published to ${counter} location(s).`);
   } finally {
     await localDbSvc.unloadContents();

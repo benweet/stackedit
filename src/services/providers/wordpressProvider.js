@@ -5,7 +5,7 @@ import Provider from './common/Provider';
 export default new Provider({
   id: 'wordpress',
   getToken(location) {
-    return store.getters['data/wordpressTokens'][location.sub];
+    return store.getters['data/wordpressTokensBySub'][location.sub];
   },
   getUrl(location) {
     return `https://wordpress.com/post/${location.siteId}/${location.postId}`;

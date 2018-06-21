@@ -3,11 +3,11 @@ import Vue from 'vue';
 export default {
   namespaced: true,
   state: {
-    itemMap: {},
+    itemsById: {},
   },
   mutations: {
-    addItem: ({ itemMap }, item) => {
-      Vue.set(itemMap, item.id, item);
+    addItem: ({ itemsById }, item) => {
+      Vue.set(itemsById, item.id, item);
     },
   },
 };

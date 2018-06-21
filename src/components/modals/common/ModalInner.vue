@@ -5,7 +5,7 @@
         <icon-close></icon-close>
       </button>
       <div class="modal__sponsor-button" v-if="showSponsorButton">
-        StackEdit is <a class="not-tabbable" target="_blank" href="https://github.com/benweet/stackedit/">open source</a>. Please consider
+        StackEdit is <a class="not-tabbable" target="_blank" href="https://github.com/benweet/stackedit/">open source</a>, please consider
         <a class="not-tabbable" href="javascript:void(0)" @click="sponsor">sponsoring</a> for just $5.
       </div>
       <slot></slot>
@@ -51,11 +51,11 @@ export default {
 
 .modal__close-button {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 7px;
+  right: 7px;
   color: rgba(0, 0, 0, 0.5);
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   padding: 2px;
 
   &:active,

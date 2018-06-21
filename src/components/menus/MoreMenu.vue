@@ -89,7 +89,7 @@ export default {
     async templates() {
       try {
         const { templates } = await this.$store.dispatch('modal/open', 'templates');
-        this.$store.dispatch('data/setTemplates', templates);
+        this.$store.dispatch('data/setTemplatesById', templates);
       } catch (e) {
         // Cancel
       }

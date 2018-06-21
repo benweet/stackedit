@@ -22,7 +22,7 @@ export default new Provider({
       && utils.makeWorkspaceId(makeWorkspaceParams(folderId));
 
     const getWorkspace = folderId =>
-      store.getters['data/sanitizedWorkspaces'][makeWorkspaceId(folderId)];
+      store.getters['data/sanitizedWorkspacesById'][makeWorkspaceId(folderId)];
 
     const initFolder = async (token, folder) => {
       const appProperties = {
@@ -68,7 +68,7 @@ export default new Provider({
 
       // Update workspace in the store
       const workspaceId = makeWorkspaceId(folder.id);
-      store.dispatch('data/patchWorkspaces', {
+      store.dispatch('data/patchWorkspacesById', {
         [workspaceId]: {
           id: workspaceId,
           sub: token.sub,
@@ -86,7 +86,7 @@ export default new Provider({
     // Token sub is in the workspace or in the url if workspace is about to be created
     const { sub } = getWorkspace(utils.queryParams.folderId) || utils.queryParams;
     // See if we already have a token
-    let token = store.getters['data/googleTokens'][sub];
+    let token = store.getters['data/googleTokensBySub'][sub];
     // If no token has been found, popup an authorize window and get one
     if (!token || !token.isDrive || !token.driveFullAccess) {
       await store.dispatch('modal/open', 'workspaceGoogleRedirection');
@@ -130,14 +130,14 @@ export default new Provider({
     // Fix the URL hash
     utils.setQueryParams(makeWorkspaceParams(workspace.folderId));
     if (workspace.url !== window.location.href) {
-      store.dispatch('data/patchWorkspaces', {
+      store.dispatch('data/patchWorkspacesById', {
         [workspace.id]: {
           ...workspace,
           url: window.location.href,
         },
       });
     }
-    return store.getters['data/sanitizedWorkspaces'][workspace.id];
+    return store.getters['data/sanitizedWorkspacesById'][workspace.id];
   },
   async performAction() {
     const state = googleHelper.driveState || {};
@@ -145,21 +145,21 @@ export default new Provider({
     switch (token && state.action) {
       case 'create': {
         const driveFolder = googleHelper.driveActionFolder;
-        let syncData = store.getters['data/syncData'][driveFolder.id];
+        let syncData = store.getters['data/syncDataById'][driveFolder.id];
         if (!syncData && driveFolder.appProperties.id) {
           // Create folder if not already synced
           store.commit('folder/setItem', {
             id: driveFolder.appProperties.id,
             name: driveFolder.name,
           });
-          const item = store.state.folder.itemMap[driveFolder.appProperties.id];
+          const item = store.state.folder.itemsById[driveFolder.appProperties.id];
           syncData = {
             id: driveFolder.id,
             itemId: item.id,
             type: item.type,
             hash: item.hash,
           };
-          store.dispatch('data/patchSyncData', {
+          store.dispatch('data/patchSyncDataById', {
             [syncData.id]: syncData,
           });
         }
@@ -173,7 +173,7 @@ export default new Provider({
       case 'open': {
         // open first file only
         const firstFile = googleHelper.driveActionFiles[0];
-        const syncData = store.getters['data/syncData'][firstFile.id];
+        const syncData = store.getters['data/syncDataById'][firstFile.id];
         if (!syncData) {
           fileIdToOpen = firstFile.id;
         } else {
@@ -191,6 +191,10 @@ export default new Provider({
     const { changes, startPageToken } = await googleHelper
       .getChanges(syncToken, lastStartPageToken, false, workspace.teamDriveId);
 
+    syncStartPageToken = startPageToken;
+    return changes;
+  },
+  prepareChanges(changes) {
     // Collect possible parent IDs
     const parentIds = {};
     Object.entries(store.getters['data/syncDataByItemId']).forEach(([id, syncData]) => {
@@ -204,6 +208,7 @@ export default new Provider({
     });
 
     // Collect changes
+    const workspace = store.getters['workspace/currentWorkspace'];
     const result = [];
     changes.forEach((change) => {
       // Ignore changes on StackEdit own folders
@@ -259,21 +264,23 @@ export default new Provider({
 
           if (type === 'file') {
             // create a fake change as a file content change
+            const id = `${appProperties.id}/content`;
+            const syncDataId = `${change.fileId}/content`;
             contentChange = {
               item: {
-                id: `${appProperties.id}/content`,
+                id,
                 type: 'content',
                 // Need a truthy value to force saving sync data
                 hash: 1,
               },
               syncData: {
-                id: `${change.fileId}/content`,
-                itemId: `${appProperties.id}/content`,
+                id: syncDataId,
+                itemId: id,
                 type: 'content',
                 // Need a truthy value to force downloading the content
                 hash: 1,
               },
-              syncDataId: `${change.fileId}/content`,
+              syncDataId,
             };
           }
         }
@@ -288,7 +295,7 @@ export default new Provider({
         };
       } else {
         // Item was removed
-        const syncData = store.getters['data/syncData'][change.fileId];
+        const syncData = store.getters['data/syncDataById'][change.fileId];
         if (syncData && syncData.type === 'file') {
           // create a fake change as a file content change
           contentChange = {
@@ -304,7 +311,7 @@ export default new Provider({
         result.push(contentChange);
       }
     });
-    syncStartPageToken = startPageToken;
+
     return result;
   },
   onChangesApplied() {
@@ -312,7 +319,7 @@ export default new Provider({
       syncStartPageToken,
     });
   },
-  async saveWorkspaceItem(item, syncData, ifNotTooLate) {
+  async saveWorkspaceItem({ item, syncData, ifNotTooLate }) {
     const workspace = store.getters['workspace/currentWorkspace'];
     const syncToken = store.getters['workspace/syncToken'];
     let file;
@@ -363,40 +370,35 @@ export default new Provider({
       hash: item.hash,
     };
   },
-  async removeWorkspaceItem(syncData, ifNotTooLate) {
+  async removeWorkspaceItem({ syncData, ifNotTooLate }) {
     // Ignore content deletion
     if (syncData.type !== 'content') {
       const syncToken = store.getters['workspace/syncToken'];
       await googleHelper.removeFile(syncToken, syncData.id, ifNotTooLate);
     }
   },
-  async downloadWorkspaceContent(token, contentSyncData) {
-    const [fileId] = contentSyncData.itemId.split('/');
-    const syncData = store.getters['data/syncDataByItemId'][fileId];
-    if (!syncData) {
-      return {};
-    }
-    const content = await googleHelper.downloadFile(token, syncData.id);
-    const item = Provider.parseContent(content, contentSyncData.itemId);
+  async downloadWorkspaceContent({ token, contentSyncData, fileSyncData }) {
+    const data = await googleHelper.downloadFile(token, fileSyncData.id);
+    const content = Provider.parseContent(data, contentSyncData.itemId);
 
     // Open the file requested by action if it wasn't synced yet
-    if (fileIdToOpen && fileIdToOpen === syncData.id) {
+    if (fileIdToOpen && fileIdToOpen === fileSyncData.id) {
       fileIdToOpen = null;
       // Open the file once downloaded content has been stored
       setTimeout(() => {
-        store.commit('file/setCurrentId', fileId);
+        store.commit('file/setCurrentId', fileSyncData.itemId);
       }, 10);
     }
 
     return {
-      item,
-      syncData: {
+      content,
+      contentSyncData: {
         ...contentSyncData,
-        hash: item.hash,
+        hash: content.hash,
       },
     };
   },
-  async downloadWorkspaceData(token, dataId, syncData) {
+  async downloadWorkspaceData({ token, syncData }) {
     if (!syncData) {
       return {};
     }
@@ -411,57 +413,66 @@ export default new Provider({
       },
     };
   },
-  async uploadWorkspaceContent(token, content, contentSyncData, ifNotTooLate) {
-    const [fileId] = content.id.split('/');
-    const syncData = store.getters['data/syncDataByItemId'][fileId];
-    let file;
+  async uploadWorkspaceContent({
+    token,
+    content,
+    file,
+    fileSyncData,
+    ifNotTooLate,
+  }) {
+    let gdriveFile;
+    let newFileSyncData;
 
-    if (syncData) {
+    if (fileSyncData) {
       // Only update file media
-      file = await googleHelper.uploadFile({
+      gdriveFile = await googleHelper.uploadFile({
         token,
         media: Provider.serializeContent(content),
-        fileId: syncData.id,
+        fileId: fileSyncData.id,
         ifNotTooLate,
       });
     } else {
       // Create file with media
       const workspace = store.getters['workspace/currentWorkspace'];
-      // Use deepCopy to freeze objects
-      const item = utils.deepCopy(store.state.file.itemMap[fileId]);
-      const parentSyncData = store.getters['data/syncDataByItemId'][item.parentId];
-      file = await googleHelper.uploadFile({
+      const parentSyncData = store.getters['data/syncDataByItemId'][file.parentId];
+      gdriveFile = await googleHelper.uploadFile({
         token,
-        name: item.name,
+        name: file.name,
         parents: [parentSyncData ? parentSyncData.id : workspace.folderId],
         appProperties: {
-          id: item.id,
+          id: file.id,
           folderId: workspace.folderId,
         },
         media: Provider.serializeContent(content),
         ifNotTooLate,
       });
 
-      // Create file syncData
-      store.dispatch('data/patchSyncData', {
-        [file.id]: {
-          id: file.id,
-          itemId: item.id,
-          type: item.type,
-          hash: item.hash,
-        },
-      });
+      // Create file sync data
+      newFileSyncData = {
+        id: gdriveFile.id,
+        itemId: file.id,
+        type: file.type,
+        hash: file.hash,
+      };
     }
 
     // Return new sync data
     return {
-      id: `${file.id}/content`,
-      itemId: content.id,
-      type: content.type,
-      hash: content.hash,
+      contentSyncData: {
+        id: `${gdriveFile.id}/content`,
+        itemId: content.id,
+        type: content.type,
+        hash: content.hash,
+      },
+      fileSyncData: newFileSyncData,
     };
   },
-  async uploadWorkspaceData(token, item, syncData, ifNotTooLate) {
+  async uploadWorkspaceData({
+    token,
+    item,
+    syncData,
+    ifNotTooLate,
+  }) {
     const workspace = store.getters['workspace/currentWorkspace'];
     const file = await googleHelper.uploadFile({
       token,
@@ -482,10 +493,12 @@ export default new Provider({
 
     // Return new sync data
     return {
-      id: file.id,
-      itemId: item.id,
-      type: item.type,
-      hash: item.hash,
+      syncData: {
+        id: file.id,
+        itemId: item.id,
+        type: item.type,
+        hash: item.hash,
+      },
     };
   },
   async listRevisions(token, fileId) {

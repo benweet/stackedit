@@ -53,8 +53,8 @@ export default {
       fullAccess,
     };
 
-    // Add token to dropboxTokens
-    store.dispatch('data/setDropboxToken', token);
+    // Add token to dropbox tokens
+    store.dispatch('data/addDropboxToken', token);
     return token;
   },
   addAccount(fullAccess = false) {

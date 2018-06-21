@@ -1,5 +1,5 @@
 <template>
-  <div class="modal" v-if="config" @keydown.esc="onEscape" @keydown.tab="onTab">
+  <div class="modal" v-if="config" @keydown.esc="onEscape" @keydown.tab="onTab" @focusin="onFocusInOut" @focusout="onFocusInOut">
     <component v-if="currentModalComponent" :is="currentModalComponent"></component>
     <modal-inner v-else aria-label="Dialog">
       <div class="modal__content" v-html="simpleModal.contentHtml(config)"></div>
@@ -138,8 +138,8 @@ export default {
       const isFocusIn = evt.type === 'focusin';
       if (evt.target.parentNode && evt.target.parentNode.parentNode) {
         // Focus effect
-        if (evt.target.parentNode.classList.contains('form-entry__field') &&
-          evt.target.parentNode.parentNode.classList.contains('form-entry')) {
+        if (evt.target.parentNode.classList.contains('form-entry__field')
+          && evt.target.parentNode.parentNode.classList.contains('form-entry')) {
           evt.target.parentNode.parentNode.classList.toggle('form-entry--focused', isFocusIn);
         }
       }
@@ -159,19 +159,15 @@ export default {
   mounted() {
     this.$watch(
       () => this.config,
-      () => {
-        if (this.$el) {
-          window.addEventListener('focusin', this.onFocusInOut);
-          window.addEventListener('focusout', this.onFocusInOut);
+      (isOpen) => {
+        if (isOpen) {
           const tabbables = getTabbables(this.$el);
           if (tabbables[0]) {
             tabbables[0].focus();
           }
-        } else {
-          window.removeEventListener('focusin', this.onFocusInOut);
-          window.removeEventListener('focusout', this.onFocusInOut);
         }
       },
+      { immediate: true },
     );
   },
 };

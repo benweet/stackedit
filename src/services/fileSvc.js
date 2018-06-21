@@ -43,9 +43,9 @@ export default {
 
       // Check if there is already a file with that path
       if (workspaceUniquePaths) {
-        const parentPath = store.getters.itemPaths[item.parentId] || '';
+        const parentPath = store.getters.pathsByItemId[item.parentId] || '';
         const path = parentPath + item.name;
-        if (store.getters.pathItems[path]) {
+        if (store.getters.itemsByPath[path]) {
           await store.dispatch('modal/open', {
             type: 'pathConflict',
             item,
@@ -62,7 +62,7 @@ export default {
     }
 
     // Return the new file item
-    return store.state.file.itemMap[id];
+    return store.state.file.itemsById[id];
   },
 
   /**
@@ -88,12 +88,13 @@ export default {
         item,
       });
     }
+
     // Check if there is a path conflict
     if (store.getters['workspace/hasUniquePaths']) {
-      const parentPath = store.getters.itemPaths[item.parentId] || '';
+      const parentPath = store.getters.pathsByItemId[item.parentId] || '';
       const path = parentPath + sanitizedName;
-      const pathItems = store.getters.pathItems[path] || [];
-      if (pathItems.some(itemWithSamePath => itemWithSamePath.id !== id)) {
+      const items = store.getters.itemsByPath[path] || [];
+      if (items.some(itemWithSamePath => itemWithSamePath.id !== id)) {
         await store.dispatch('modal/open', {
           type: 'pathConflict',
           item,
@@ -112,7 +113,7 @@ export default {
    */
   setOrPatchItem(patch) {
     const item = {
-      ...store.getters.allItemMap[patch.id] || patch,
+      ...store.getters.allItemsById[patch.id] || patch,
     };
     if (!item.id) {
       return null;
@@ -136,7 +137,7 @@ export default {
       this.makePathUnique(item.id);
     }
 
-    return store.getters.allItemMap[item.id];
+    return store.getters.allItemsById[item.id];
   },
 
   /**
@@ -160,12 +161,15 @@ export default {
   },
 
   /**
-   * Ensure two files/folders don't have the same path if the workspace doesn't support it.
+   * Ensure two files/folders don't have the same path if the workspace doesn't allow it.
    */
-  ensureUniquePaths() {
+  ensureUniquePaths(idsToKeep = {}) {
     if (store.getters['workspace/hasUniquePaths']) {
-      if (Object.keys(store.getters.itemPaths).some(id => this.makePathUnique(id))) {
-        this.ensureUniquePaths();
+      if (Object.keys(store.getters.pathsByItemId)
+        .some(id => !idsToKeep[id] && this.makePathUnique(id))
+      ) {
+        // Just changed one item path, restart
+        this.ensureUniquePaths(idsToKeep);
       }
     }
   },
@@ -175,13 +179,13 @@ export default {
    * Add a prefix to its name and return true otherwise.
    */
   makePathUnique(id) {
-    const { pathItems, allItemMap, itemPaths } = store.getters;
-    const item = allItemMap[id];
+    const { itemsByPath, allItemsById, pathsByItemId } = store.getters;
+    const item = allItemsById[id];
     if (!item) {
       return false;
     }
-    let path = itemPaths[id];
-    if (pathItems[path].length === 1) {
+    let path = pathsByItemId[id];
+    if (itemsByPath[path].length === 1) {
       return false;
     }
     const isFolder = item.type === 'folder';
@@ -190,11 +194,11 @@ export default {
       path = path.slice(0, -1);
     }
     for (let suffix = 1; ; suffix += 1) {
-      let pathWithPrefix = `${path}.${suffix}`;
+      let pathWithSuffix = `${path}.${suffix}`;
       if (isFolder) {
-        pathWithPrefix += '/';
+        pathWithSuffix += '/';
       }
-      if (!pathItems[pathWithPrefix]) {
+      if (!itemsByPath[pathWithSuffix]) {
         store.commit(`${item.type}/patchItem`, {
           id: item.id,
           name: `${item.name}.${suffix}`,

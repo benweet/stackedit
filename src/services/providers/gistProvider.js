@@ -6,7 +6,7 @@ import utils from '../utils';
 export default new Provider({
   id: 'gist',
   getToken(location) {
-    return store.getters['data/githubTokens'][location.sub];
+    return store.getters['data/githubTokensBySub'][location.sub];
   },
   getUrl(location) {
     return `https://gist.github.com/${location.gistId}`;
@@ -23,7 +23,7 @@ export default new Provider({
     return Provider.parseContent(content, `${syncLocation.fileId}/content`);
   },
   async uploadContent(token, content, syncLocation) {
-    const file = store.state.file.itemMap[syncLocation.fileId];
+    const file = store.state.file.itemsById[syncLocation.fileId];
     const description = utils.sanitizeName(file && file.name);
     const gist = await githubHelper.uploadGist({
       ...syncLocation,

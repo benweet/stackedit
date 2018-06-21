@@ -38,12 +38,11 @@ export default {
       parentId: 'temp',
     }, true);
 
-    const fileItemMap = store.state.file.itemMap;
-
     // Sanitize file creations
     const lastCreated = {};
+    const fileItemsById = store.state.file.itemsById;
     Object.entries(store.getters['data/lastCreated']).forEach(([id, createdOn]) => {
-      if (fileItemMap[id] && fileItemMap[id].parentId === 'temp') {
+      if (fileItemsById[id] && fileItemsById[id].parentId === 'temp') {
         lastCreated[id] = createdOn;
       }
     });

@@ -123,7 +123,7 @@ const localDbSvc = {
       }
 
       // Write item if different from stored one
-      const item = store.state.data.lsItemMap[id];
+      const item = store.state.data.lsItemsById[id];
       if (item && item.hash !== lsHashMap[id]) {
         localStorage.setItem(key, JSON.stringify(item));
         lsHashMap[id] = item.hash;
@@ -178,7 +178,7 @@ const localDbSvc = {
         changes.push(item);
         cursor.continue();
       } else {
-        const storeItemMap = { ...store.getters.allItemMap };
+        const storeItemMap = { ...store.getters.allItemsById };
         changes.forEach((item) => {
           this.readDbItem(item, storeItemMap);
           // If item is an old delete marker, remove it from the DB
@@ -213,7 +213,7 @@ const localDbSvc = {
         checker = cb => (id) => {
           if (!storeItemMap[id]) {
             const [fileId] = id.split('/');
-            if (!store.state.file.itemMap[fileId]) {
+            if (!store.state.file.itemsById[fileId]) {
               cb(id);
             }
           }
@@ -277,7 +277,7 @@ const localDbSvc = {
    */
   async loadItem(id) {
     // Check if item is in the store
-    const itemInStore = store.getters.allItemMap[id];
+    const itemInStore = store.getters.allItemsById[id];
     if (itemInStore) {
       // Use deepCopy to freeze item
       return Promise.resolve(itemInStore);
@@ -326,11 +326,11 @@ const localDbSvc = {
    * Drop the database and clean the localStorage for the specified workspaceId.
    */
   async removeWorkspace(id) {
-    const workspaces = {
-      ...store.getters['data/workspaces'],
+    const workspacesById = {
+      ...store.getters['data/workspacesById'],
     };
-    delete workspaces[id];
-    store.dispatch('data/setWorkspaces', workspaces);
+    delete workspacesById[id];
+    store.dispatch('data/setWorkspacesById', workspacesById);
     this.syncLocalStorage();
     await new Promise((resolve, reject) => {
       const dbName = getDbName(id);
@@ -348,7 +348,7 @@ const localDbSvc = {
   async init() {
     // Reset the app if reset flag was passed
     if (resetApp) {
-      await Promise.all(Object.keys(store.getters['data/workspaces'])
+      await Promise.all(Object.keys(store.getters['data/workspacesById'])
         .map(workspaceId => localDbSvc.removeWorkspace(workspaceId)));
       utils.localStorageDataIds.forEach((id) => {
         // Clean data stored in localStorage
@@ -366,7 +366,7 @@ const localDbSvc = {
 
     // If exportWorkspace parameter was provided
     if (exportWorkspace) {
-      const backup = JSON.stringify(store.getters.allItemMap);
+      const backup = JSON.stringify(store.getters.allItemsById);
       const blob = new Blob([backup], {
         type: 'text/plain;charset=utf-8',
       });
@@ -405,7 +405,7 @@ const localDbSvc = {
       // Force check sponsorship after a few seconds
       const currentDate = Date.now();
       if (sponsorToken && sponsorToken.expiresOn > currentDate - checkSponsorshipAfter) {
-        store.dispatch('data/setGoogleToken', {
+        store.dispatch('data/addGoogleToken', {
           ...sponsorToken,
           expiresOn: currentDate - checkSponsorshipAfter,
         });

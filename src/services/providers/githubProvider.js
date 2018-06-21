@@ -9,7 +9,7 @@ const savedSha = {};
 export default new Provider({
   id: 'github',
   getToken(location) {
-    return store.getters['data/githubTokens'][location.sub];
+    return store.getters['data/githubTokensBySub'][location.sub];
   },
   getUrl(location) {
     return `https://github.com/${encodeURIComponent(location.owner)}/${encodeURIComponent(location.repo)}/blob/${encodeURIComponent(location.branch)}/${encodeURIComponent(location.path)}`;
@@ -20,12 +20,12 @@ export default new Provider({
   },
   async downloadContent(token, syncLocation) {
     try {
-      const { sha, content } = await githubHelper.downloadFile({
+      const { sha, data } = await githubHelper.downloadFile({
         ...syncLocation,
         token,
       });
       savedSha[syncLocation.id] = sha;
-      return Provider.parseContent(content, `${syncLocation.fileId}/content`);
+      return Provider.parseContent(data, `${syncLocation.fileId}/content`);
     } catch (e) {
       // Ignore error, upload is going to fail anyway
       return null;

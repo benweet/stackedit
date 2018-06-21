@@ -8,7 +8,7 @@
       <div class="form-entry">
         <div class="form-entry__checkbox">
           <label>
-            <input type="checkbox" v-model="repoFullAccess"> Grant access to my <b>private repositories</b>
+            <input type="checkbox" v-model="repoFullAccess"> Grant access to your private repositories
           </label>
         </div>
       </div>

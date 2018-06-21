@@ -75,14 +75,14 @@ const store = new Vuex.Store({
     },
   },
   getters: {
-    allItemMap: (state) => {
+    allItemsById: (state) => {
       const result = {};
-      utils.types.forEach(type => Object.assign(result, state[type].itemMap));
+      utils.types.forEach(type => Object.assign(result, state[type].itemsById));
       return result;
     },
-    itemPaths: (state, getters) => {
+    pathsByItemId: (state, getters) => {
       const result = {};
-      const folderMap = state.folder.itemMap;
+      const foldersById = state.folder.itemsById;
       const getPath = (item) => {
         let itemPath = result[item.id];
         if (!itemPath) {
@@ -90,10 +90,10 @@ const store = new Vuex.Store({
             itemPath = `.stackedit-trash/${item.name}`;
           } else {
             let { name } = item;
-            if (folderMap[item.id]) {
+            if (foldersById[item.id]) {
               name += '/';
             }
-            const parentFolder = folderMap[item.parentId];
+            const parentFolder = foldersById[item.parentId];
             if (parentFolder) {
               itemPath = getPath(parentFolder) + name;
             } else {
@@ -104,33 +104,38 @@ const store = new Vuex.Store({
         result[item.id] = itemPath;
         return itemPath;
       };
+
       [
         ...getters['folder/items'],
         ...getters['file/items'],
       ].forEach(item => getPath(item));
       return result;
     },
-    pathItems: (state, { allItemMap, itemPaths }) => {
+    itemsByPath: (state, { allItemsById, pathsByItemId }) => {
       const result = {};
-      Object.entries(itemPaths).forEach(([id, path]) => {
+      Object.entries(pathsByItemId).forEach(([id, path]) => {
         const items = result[path] || [];
-        items.push(allItemMap[id]);
+        items.push(allItemsById[id]);
         result[path] = items;
       });
       return result;
     },
-    itemGitPaths: (state, { allItemMap, itemPaths }) => {
+    gitPathsByItemId: (state, { allItemsById, pathsByItemId }) => {
       const result = {};
-      Object.entries(allItemMap).forEach(([id, item]) => {
+      Object.entries(allItemsById).forEach(([id, item]) => {
         if (item.type === 'data') {
           result[id] = `.stackedit-data/${id}.json`;
         } else if (item.type === 'file') {
-          result[id] = `${itemPaths[id]}.md`;
+          const filePath = pathsByItemId[id];
+          result[id] = `${filePath}.md`;
+          result[`${id}/content`] = `/${filePath}.md`;
         } else if (item.type === 'content') {
           const [fileId] = id.split('/');
-          result[id] = `/${itemPaths[fileId]}.md`;
+          const filePath = pathsByItemId[fileId];
+          result[fileId] = `${filePath}.md`;
+          result[id] = `/${filePath}.md`;
         } else if (item.type === 'folder') {
-          result[id] = itemPaths[id];
+          result[id] = pathsByItemId[id];
         } else if (item.type === 'syncLocation' || item.type === 'publishLocation') {
           // locations are stored as paths
           const encodedItem = utils.encodeBase64(utils.serializeObject({
@@ -140,17 +145,20 @@ const store = new Vuex.Store({
             fileId: undefined,
           }), true);
           const extension = item.type === 'syncLocation' ? 'sync' : 'publish';
-          result[id] = `${itemPaths[item.fileId]}.${encodedItem}.${extension}`;
+          result[id] = `${pathsByItemId[item.fileId]}.${encodedItem}.${extension}`;
         }
       });
       return result;
     },
-    gitPathItems: (state, { allItemMap, itemGitPaths }) => {
+    itemsByGitPath: (state, { allItemsById, gitPathsByItemId }) => {
       const result = {};
-      Object.entries(itemGitPaths).forEach(([id, path]) => {
-        const items = result[path] || [];
-        items.push(allItemMap[id]);
-        result[path] = items;
+      Object.entries(gitPathsByItemId).forEach(([id, path]) => {
+        const item = allItemsById[id];
+        if (item) {
+          const items = result[path] || [];
+          items.push(item);
+          result[path] = items;
+        }
       });
       return result;
     },

@@ -36,7 +36,7 @@ export default modalTemplate({
   }),
   computed: {
     googlePhotosTokens() {
-      const googleTokens = this.$store.getters['data/googleTokens'];
+      const googleTokens = this.$store.getters['data/googleTokensBySub'];
       return Object.entries(googleTokens)
         .map(([, token]) => token)
         .filter(token => token.isPhotos)

@@ -76,8 +76,8 @@ export default {
       repoFullAccess: scopes.indexOf('repo') !== -1,
     };
 
-    // Add token to githubTokens
-    store.dispatch('data/setGithubToken', token);
+    // Add token to github tokens
+    store.dispatch('data/addGithubToken', token);
     return token;
   },
   async addAccount(repoFullAccess = false) {
@@ -204,7 +204,7 @@ export default {
     });
     return {
       sha,
-      content: utils.decodeBase64(content),
+      data: utils.decodeBase64(content),
     };
   },
 

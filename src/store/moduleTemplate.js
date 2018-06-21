@@ -8,10 +8,10 @@ export default (empty, simpleHash = false) => {
   return {
     namespaced: true,
     state: {
-      itemMap: {},
+      itemsById: {},
     },
     getters: {
-      items: ({ itemMap }) => Object.values(itemMap),
+      items: ({ itemsById }) => Object.values(itemsById),
     },
     mutations: {
       setItem(state, value) {
@@ -19,20 +19,20 @@ export default (empty, simpleHash = false) => {
         if (!item.hash || !simpleHash) {
           item.hash = hashFunc(item);
         }
-        Vue.set(state.itemMap, item.id, item);
+        Vue.set(state.itemsById, item.id, item);
       },
       patchItem(state, patch) {
-        const item = state.itemMap[patch.id];
+        const item = state.itemsById[patch.id];
         if (item) {
           Object.assign(item, patch);
           item.hash = hashFunc(item);
-          Vue.set(state.itemMap, item.id, item);
+          Vue.set(state.itemsById, item.id, item);
           return true;
         }
         return false;
       },
       deleteItem(state, id) {
-        Vue.delete(state.itemMap, id);
+        Vue.delete(state.itemsById, id);
       },
     },
     actions: {},

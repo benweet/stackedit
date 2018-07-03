@@ -34,7 +34,7 @@
 <script>
 import { mapState } from 'vuex';
 import editorSvc from '../services/editorSvc';
-import cledit from '../services/cledit';
+import cledit from '../services/editor/cledit';
 import store from '../store';
 import EditorClassApplier from './common/EditorClassApplier';
 

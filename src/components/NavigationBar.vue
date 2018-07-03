@@ -56,7 +56,7 @@ import tempFileSvc from '../services/tempFileSvc';
 import utils from '../services/utils';
 import pagedownButtons from '../data/pagedownButtons';
 import store from '../store';
-import fileSvc from '../services/fileSvc';
+import workspaceSvc from '../services/workspaceSvc';
 
 // According to mousetrap
 const mod = /Mac|iPod|iPhone|iPad/.test(navigator.platform) ? 'Meta' : 'Ctrl';
@@ -200,7 +200,7 @@ export default {
         this.title = this.$store.getters['file/current'].name;
         if (title) {
           try {
-            await fileSvc.storeItem({
+            await workspaceSvc.storeItem({
               ...this.$store.getters['file/current'],
               name: title,
             });

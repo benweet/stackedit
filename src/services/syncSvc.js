@@ -9,12 +9,12 @@ import './providers/couchdbWorkspaceProvider';
 import './providers/githubWorkspaceProvider';
 import './providers/googleDriveWorkspaceProvider';
 import tempFileSvc from './tempFileSvc';
-import fileSvc from './fileSvc';
+import workspaceSvc from './workspaceSvc';
 
 const minAutoSyncEvery = 60 * 1000; // 60 sec
 const inactivityThreshold = 3 * 1000; // 3 sec
 const restartSyncAfter = 30 * 1000; // 30 sec
-const restartContentSyncAfter = 500; // Restart if an authorize window pops up
+const restartContentSyncAfter = 1000; // Enough to detect an authorize pop up
 const maxContentHistory = 20;
 
 const LAST_SEEN = 0;
@@ -112,9 +112,11 @@ const cleanSyncedContent = (syncedContent) => {
       delete syncedContent.syncHistory[syncLocationId];
     }
   });
+
   const allSyncLocationHashSet = new Set([]
     .concat(...Object.keys(syncedContent.syncHistory)
       .map(id => syncedContent.syncHistory[id])));
+
   // Clean historyData from unused contents
   Object.keys(syncedContent.historyData)
     .map(hash => parseInt(hash, 10))
@@ -131,9 +133,11 @@ const cleanSyncedContent = (syncedContent) => {
 const applyChanges = (changes) => {
   const allItemsById = { ...store.getters.allItemsById };
   const syncDataById = { ...store.getters['data/syncDataById'] };
+  const idsToKeep = {};
+  let saveSyncData = false;
   let getExistingItem;
-  if (workspaceProvider.isGit) {
-    const { itemsByGitPath } = store.getters;
+  if (store.getters['workspace/currentWorkspaceIsGit']) {
+    const itemsByGitPath = { ...store.getters.itemsByGitPath };
     getExistingItem = (existingSyncData) => {
       const items = existingSyncData && itemsByGitPath[existingSyncData.id];
       return items ? items[0] : null;
@@ -141,9 +145,6 @@ const applyChanges = (changes) => {
   } else {
     getExistingItem = existingSyncData => existingSyncData && allItemsById[existingSyncData.itemId];
   }
-
-  const idsToKeep = {};
-  let saveSyncData = false;
 
   // Process each change
   changes.forEach((change) => {
@@ -184,7 +185,10 @@ const applyChanges = (changes) => {
 
   if (saveSyncData) {
     store.dispatch('data/setSyncDataById', syncDataById);
-    fileSvc.ensureUniquePaths(idsToKeep);
+
+    // Sanitize the workspace
+    workspaceSvc.ensureUniquePaths(idsToKeep);
+    workspaceSvc.ensureUniqueLocations(idsToKeep);
   }
 };
 
@@ -192,18 +196,17 @@ const applyChanges = (changes) => {
  * Create a sync location by uploading the current file content.
  */
 const createSyncLocation = (syncLocation) => {
-  syncLocation.id = utils.uid();
   const currentFile = store.getters['file/current'];
   const fileId = currentFile.id;
   syncLocation.fileId = fileId;
-  // Use deepCopy to freeze item
+  // Use deepCopy to freeze the item
   const content = utils.deepCopy(store.getters['content/current']);
   store.dispatch(
     'queue/enqueue',
     async () => {
-      const provider = providerRegistry.providers[syncLocation.providerId];
+      const provider = providerRegistry.providersById[syncLocation.providerId];
       const token = provider.getToken(syncLocation);
-      const syncLocationToStore = await provider.uploadContent(token, {
+      const updatedSyncLocation = await provider.uploadContent(token, {
         ...content,
         history: [content.hash],
       }, syncLocation);
@@ -216,7 +219,7 @@ const createSyncLocation = (syncLocation) => {
       newSyncedContent.historyData[content.hash] = content;
 
       store.commit('syncedContent/patchItem', newSyncedContent);
-      store.commit('syncLocation/setItem', syncLocationToStore);
+      workspaceSvc.addSyncLocation(updatedSyncLocation);
       store.dispatch('notification/info', `A new synchronized location was added to "${currentFile.name}".`);
     },
   );
@@ -241,7 +244,7 @@ const tooLateChecker = (timeout) => {
 const isTempFile = (fileId) => {
   const contentId = `${fileId}/content`;
   if (store.getters['data/syncDataByItemId'][contentId]) {
-    // If file has already been synced, it's not a temp file
+    // If file has already been synced, let's not consider it a temp file
     return false;
   }
   const file = store.state.file.itemsById[fileId];
@@ -271,8 +274,11 @@ const isTempFile = (fileId) => {
  * Patch sync data if some have changed in the result.
  */
 const updateSyncData = (result) => {
-  ['syncData', 'contentSyncData', 'fileSyncData'].forEach((field) => {
-    const syncData = result[field];
+  [
+    result.syncData,
+    result.contentSyncData,
+    result.fileSyncData,
+  ].forEach((syncData) => {
     if (syncData) {
       const oldSyncData = store.getters['data/syncDataById'][syncData.id];
       if (utils.serializeObject(oldSyncData) !== utils.serializeObject(syncData)) {
@@ -286,7 +292,7 @@ const updateSyncData = (result) => {
 };
 
 class SyncContext {
-  restart = false;
+  restartSkipContents = false;
   attempted = {};
 }
 
@@ -320,7 +326,7 @@ const syncFile = async (fileId, syncContext = new SyncContext()) => {
     }
 
     await utils.awaitSequence(syncLocations, async (syncLocation) => {
-      const provider = providerRegistry.providers[syncLocation.providerId];
+      const provider = providerRegistry.providersById[syncLocation.providerId];
       if (!provider) {
         return;
       }
@@ -491,7 +497,7 @@ const syncFile = async (fileId, syncContext = new SyncContext()) => {
         if (provider === workspaceProvider &&
           !store.getters['data/syncDataByItemId'][fileId]
         ) {
-          syncContext.restart = true;
+          syncContext.restartSkipContents = true;
         }
       };
 
@@ -514,15 +520,16 @@ const syncFile = async (fileId, syncContext = new SyncContext()) => {
     if (err && err.message === 'TOO_LATE') {
       // Restart sync
       await syncFile(fileId, syncContext);
+    } else {
+      throw err;
     }
-    throw err;
   } finally {
     await localDbSvc.unloadContents();
   }
 };
 
 /**
- * Sync a data item, typically settings, workspaces and templates.
+ * Sync a data item, typically settings, templates or workspaces.
  */
 const syncDataItem = async (dataId) => {
   const getItem = () => store.state.data.itemsById[dataId]
@@ -543,8 +550,8 @@ const syncDataItem = async (dataId) => {
 
   const serverItem = item;
   const dataSyncData = store.getters['data/dataSyncDataById'][dataId];
+  const clientItem = utils.deepCopy(getItem());
   let mergedItem = (() => {
-    const clientItem = utils.deepCopy(getItem());
     if (!clientItem) {
       return serverItem;
     }
@@ -572,6 +579,13 @@ const syncDataItem = async (dataId) => {
     return;
   }
 
+  if (clientItem && dataId === 'workspaces') {
+    // Clean deleted workspaces
+    await Promise.all(Object.keys(clientItem.data)
+      .filter(id => !mergedItem.data[id])
+      .map(id => workspaceSvc.removeWorkspace(id)));
+  }
+
   // Update item in store
   store.commit('data/setItem', {
     id: dataId,
@@ -581,19 +595,17 @@ const syncDataItem = async (dataId) => {
   // Retrieve item with new `hash` and freeze it
   mergedItem = utils.deepCopy(getItem());
 
-  if (serverItem && serverItem.hash === mergedItem.hash) {
-    return;
+  // Upload merged data item if out of sync
+  if (!serverItem || serverItem.hash !== mergedItem.hash) {
+    updateSyncData(await workspaceProvider.uploadWorkspaceData({
+      token,
+      item: mergedItem,
+      syncData: store.getters['data/syncDataByItemId'][dataId],
+      ifNotTooLate: tooLateChecker(restartContentSyncAfter),
+    }));
   }
 
-  // Upload merged data item
-  updateSyncData(await workspaceProvider.uploadWorkspaceData({
-    token,
-    item: mergedItem,
-    syncData: store.getters['data/syncDataByItemId'][dataId],
-    ifNotTooLate: tooLateChecker(restartContentSyncAfter),
-  }));
-
-  // Update data sync data
+  // Copy sync data into data sync data
   store.dispatch('data/patchDataSyncDataById', {
     [dataId]: utils.deepCopy(store.getters['data/syncDataByItemId'][dataId]),
   });
@@ -602,7 +614,7 @@ const syncDataItem = async (dataId) => {
 /**
  * Sync the whole workspace with the main provider and the current file explicit locations.
  */
-const syncWorkspace = async () => {
+const syncWorkspace = async (skipContents = false) => {
   try {
     const workspace = store.getters['workspace/currentWorkspace'];
     const syncContext = new SyncContext();
@@ -627,8 +639,8 @@ const syncWorkspace = async () => {
     // Prevent from sending items too long after changes have been retrieved
     const ifNotTooLate = tooLateChecker(restartSyncAfter);
 
-    // Called until no item to save
-    const saveNextItem = () => ifNotTooLate(async () => {
+    // Find and save one item to save
+    await utils.awaitSome(() => ifNotTooLate(async () => {
       const storeItemMap = {
         ...store.state.file.itemsById,
         ...store.state.folder.itemsById,
@@ -654,27 +666,26 @@ const syncWorkspace = async () => {
         },
       ) || [];
 
-      if (changedItem) {
-        const resultSyncData = await workspaceProvider
-          .saveWorkspaceItem({
-            // Use deepCopy to freeze objects
-            item: utils.deepCopy(changedItem),
-            syncData: utils.deepCopy(syncDataToUpdate),
-            ifNotTooLate,
-          });
-        store.dispatch('data/patchSyncDataById', {
-          [resultSyncData.id]: resultSyncData,
-        });
-        await saveNextItem();
-      }
-    });
-    await saveNextItem();
+      if (!changedItem) return false;
 
-    // Called until no item to remove
-    const removeNextItem = () => ifNotTooLate(async () => {
+      const resultSyncData = await workspaceProvider
+        .saveWorkspaceItem({
+          // Use deepCopy to freeze objects
+          item: utils.deepCopy(changedItem),
+          syncData: utils.deepCopy(syncDataToUpdate),
+          ifNotTooLate,
+        });
+      store.dispatch('data/patchSyncDataById', {
+        [resultSyncData.id]: resultSyncData,
+      });
+      return true;
+    }));
+
+    // Find and remove one item to remove
+    await utils.awaitSome(() => ifNotTooLate(async () => {
       let getItem;
       let getFileItem;
-      if (workspaceProvider.isGit) {
+      if (store.getters['workspace/currentWorkspaceIsGit']) {
         const { itemsByGitPath } = store.getters;
         getItem = syncData => itemsByGitPath[syncData.id];
         getFileItem = syncData => itemsByGitPath[syncData.id.slice(1)]; // Remove leading /
@@ -701,18 +712,17 @@ const syncWorkspace = async () => {
         },
       ));
 
-      if (syncDataToRemove) {
-        await workspaceProvider.removeWorkspaceItem({
-          syncData: syncDataToRemove,
-          ifNotTooLate,
-        });
-        const syncDataCopy = { ...store.getters['data/syncDataById'] };
-        delete syncDataCopy[syncDataToRemove.id];
-        store.dispatch('data/setSyncDataById', syncDataCopy);
-        await removeNextItem();
-      }
-    });
-    await removeNextItem();
+      if (!syncDataToRemove) return false;
+
+      await workspaceProvider.removeWorkspaceItem({
+        syncData: syncDataToRemove,
+        ifNotTooLate,
+      });
+      const syncDataCopy = { ...store.getters['data/syncDataById'] };
+      delete syncDataCopy[syncDataToRemove.id];
+      store.dispatch('data/setSyncDataById', syncDataCopy);
+      return true;
+    }));
 
     // Sync settings and workspaces only in the main workspace
     if (workspace.id === 'main') {
@@ -721,63 +731,61 @@ const syncWorkspace = async () => {
     }
     await syncDataItem('templates');
 
-    const getOneFileIdToSync = () => {
-      let getSyncData;
-      if (workspaceProvider.isGit) {
-        const { gitPathsByItemId } = store.getters;
-        const syncDataById = store.getters['data/syncDataById'];
-        // Use file git path as content may not exist or not be loaded
-        getSyncData = fileId => syncDataById[`/${gitPathsByItemId[fileId]}`];
-      } else {
-        const syncDataByItemId = store.getters['data/syncDataByItemId'];
-        getSyncData = (fileId, contentId) => syncDataByItemId[contentId];
+    if (!skipContents) {
+      const currentFileId = store.getters['file/current'].id;
+      if (currentFileId) {
+        // Sync current file first
+        await syncFile(currentFileId, syncContext);
       }
 
-      // Collect all [fileId, contentId]
-      const ids = [
-        ...Object.keys(localDbSvc.hashMap.content)
-          .map(contentId => [contentId.split('/')[0], contentId]),
-        ...store.getters['file/items']
-          .map(file => [file.id, `${file.id}/content`]),
-      ];
-
-      // Find the first content out of sync
-      const contentMap = store.state.content.itemsById;
-      return utils.someResult(ids, ([fileId, contentId]) => {
-        // Get content hash from itemsById or from localDbSvc if not loaded
-        const loadedContent = contentMap[contentId];
-        const hash = loadedContent ? loadedContent.hash : localDbSvc.hashMap.content[contentId];
-        const syncData = getSyncData(fileId, contentId);
-        if (
-          // Sync if content syncing was not attempted yet
-          !syncContext.attempted[contentId] &&
-          // And if syncData does not exist or if content hash and syncData hash are inconsistent
-          (!syncData || syncData.hash !== hash)
-        ) {
-          return fileId;
+      // Find and sync one file out of sync
+      await utils.awaitSome(async () => {
+        let getSyncData;
+        if (store.getters['workspace/currentWorkspaceIsGit']) {
+          const { gitPathsByItemId } = store.getters;
+          const syncDataById = store.getters['data/syncDataById'];
+          getSyncData = contentId => syncDataById[gitPathsByItemId[contentId]];
+        } else {
+          const syncDataByItemId = store.getters['data/syncDataByItemId'];
+          getSyncData = contentId => syncDataByItemId[contentId];
         }
-        return null;
+
+        // Collect all [fileId, contentId]
+        const ids = [
+          ...Object.keys(localDbSvc.hashMap.content)
+            .map(contentId => [contentId.split('/')[0], contentId]),
+          ...store.getters['file/items']
+            .map(file => [file.id, `${file.id}/content`]),
+        ];
+
+        // Find the first content out of sync
+        const contentMap = store.state.content.itemsById;
+        const fileIdToSync = utils.someResult(ids, ([fileId, contentId]) => {
+          // Get the content hash from itemsById or from localDbSvc if not loaded
+          const loadedContent = contentMap[contentId];
+          const hash = loadedContent ? loadedContent.hash : localDbSvc.hashMap.content[contentId];
+          const syncData = getSyncData(contentId);
+          if (
+            // Sync if content syncing was not attempted yet
+            !syncContext.attempted[contentId] &&
+            // And if syncData does not exist or if content hash and syncData hash are inconsistent
+            (!syncData || syncData.hash !== hash)
+          ) {
+            return fileId;
+          }
+          return null;
+        });
+
+        if (!fileIdToSync) return false;
+
+        await syncFile(fileIdToSync, syncContext);
+        return true;
       });
-    };
-
-    const syncNextFile = async () => {
-      const fileId = getOneFileIdToSync();
-      if (fileId) {
-        await syncFile(fileId, syncContext);
-        await syncNextFile();
-      }
-    };
-
-    const currentFileId = store.getters['file/current'].id;
-    if (currentFileId) {
-      // Sync current file first
-      await syncFile(currentFileId, syncContext);
     }
-    await syncNextFile();
 
-    if (syncContext.restart) {
-      // Restart sync
-      await syncWorkspace();
+    // Restart sync if requested
+    if (syncContext.restartSkipContents) {
+      await syncWorkspace(true);
     }
   } catch (err) {
     if (err && err.message === 'TOO_LATE') {
@@ -785,10 +793,6 @@ const syncWorkspace = async () => {
       await syncWorkspace();
     } else {
       throw err;
-    }
-  } finally {
-    if (workspaceProvider.onSyncEnd) {
-      workspaceProvider.onSyncEnd();
     }
   }
 };
@@ -835,9 +839,9 @@ const requestSync = () => {
           if (isWorkspaceSyncPossible()) {
             await syncWorkspace();
           } else if (hasCurrentFileSyncLocations()) {
-            // Only sync current file if workspace sync is unavailable.
-            // We could sync all files that are out-of-sync but it would
-            // require to load all the syncedContent objects from the DB.
+            // Only sync the current file if workspace sync is unavailable
+            // as we don't want to look for out-of-sync files by loading
+            // all the syncedContent objects.
             await syncFile(store.getters['file/current'].id);
           }
 
@@ -845,7 +849,7 @@ const requestSync = () => {
           Object.entries(fileHashesToClean).forEach(([fileId, fileHash]) => {
             const file = store.state.file.itemsById[fileId];
             if (file && file.hash === fileHash) {
-              fileSvc.deleteFile(fileId);
+              workspaceSvc.deleteFile(fileId);
             }
           });
         } finally {
@@ -865,22 +869,25 @@ export default {
     localDbSvc.syncLocalStorage();
 
     // Try to find a suitable action provider
-    actionProvider = providerRegistry.providers[utils.queryParams.providerId];
+    actionProvider = providerRegistry.providersById[utils.queryParams.providerId];
     if (actionProvider && actionProvider.initAction) {
       await actionProvider.initAction();
     }
 
     // Try to find a suitable workspace sync provider
-    workspaceProvider = providerRegistry.providers[utils.queryParams.providerId];
+    workspaceProvider = providerRegistry.providersById[utils.queryParams.providerId];
     if (!workspaceProvider || !workspaceProvider.initWorkspace) {
       workspaceProvider = googleDriveAppDataProvider;
     }
     const workspace = await workspaceProvider.initWorkspace();
+    // Fix the URL hash
+    utils.setQueryParams(workspaceProvider.getWorkspaceParams(workspace));
+
     store.dispatch('workspace/setCurrentWorkspaceId', workspace.id);
     await localDbSvc.init();
 
     // Try to find a suitable action provider
-    actionProvider = providerRegistry.providers[utils.queryParams.providerId] || actionProvider;
+    actionProvider = providerRegistry.providersById[utils.queryParams.providerId] || actionProvider;
     if (actionProvider && actionProvider.performAction) {
       const newSyncLocation = await actionProvider.performAction();
       if (newSyncLocation) {

@@ -92,9 +92,6 @@ const tokenAdder = providerId => ({ getters, dispatch }, token) => {
   });
 };
 
-// For workspaces
-const urlParser = window.document.createElement('a');
-
 export default {
   namespaced: true,
   state: {
@@ -126,25 +123,7 @@ export default {
     },
   },
   getters: {
-    workspacesById: getter('workspaces'),
-    sanitizedWorkspacesById: (state, { workspacesById }, rootState, rootGetters) => {
-      const sanitizedWorkspacesById = {};
-      const mainWorkspaceToken = rootGetters['workspace/mainWorkspaceToken'];
-      Object.entries(workspacesById).forEach(([id, workspace]) => {
-        const sanitizedWorkspace = {
-          id,
-          providerId: mainWorkspaceToken && 'googleDriveAppData',
-          sub: mainWorkspaceToken && mainWorkspaceToken.sub,
-          ...workspace,
-        };
-        // Rebuild the url with current hostname
-        urlParser.href = workspace.url || 'app';
-        const params = utils.parseQueryParams(urlParser.hash.slice(1));
-        sanitizedWorkspace.url = utils.addQueryParams('app', params, true);
-        sanitizedWorkspacesById[id] = sanitizedWorkspace;
-      });
-      return sanitizedWorkspacesById;
-    },
+    workspaces: getter('workspaces'), // Not to be used, prefer workspace/workspacesById
     settings: getter('settings'),
     computedSettings: (state, { settings }) => {
       const customSettings = yaml.safeLoad(settings);
@@ -207,18 +186,6 @@ export default {
       }
       return result;
     },
-    syncDataByType: (state, { syncDataById }) => {
-      const result = {};
-      utils.types.forEach((type) => {
-        result[type] = {};
-      });
-      Object.entries(syncDataById).forEach(([, item]) => {
-        if (result[item.type]) {
-          result[item.type][item.itemId] = item;
-        }
-      });
-      return result;
-    },
     dataSyncDataById: getter('dataSyncData'),
     tokensByProviderId: getter('tokens'),
     googleTokensBySub: (state, { tokensByProviderId }) => tokensByProviderId.google || {},
@@ -229,8 +196,6 @@ export default {
     zendeskTokensBySub: (state, { tokensByProviderId }) => tokensByProviderId.zendesk || {},
   },
   actions: {
-    setWorkspacesById: setter('workspaces'),
-    patchWorkspacesById: patcher('workspaces'),
     setSettings: setter('settings'),
     patchLocalSettings: patcher('localSettings'),
     patchLayoutSettings: patcher('layoutSettings'),

@@ -2,21 +2,25 @@ import store from '../../store';
 import githubHelper from './helpers/githubHelper';
 import Provider from './common/Provider';
 import utils from '../utils';
-import fileSvc from '../fileSvc';
+import workspaceSvc from '../workspaceSvc';
 
 const savedSha = {};
 
 export default new Provider({
   id: 'github',
-  getToken(location) {
-    return store.getters['data/githubTokensBySub'][location.sub];
+  getToken({ sub }) {
+    return store.getters['data/githubTokensBySub'][sub];
   },
-  getUrl(location) {
-    return `https://github.com/${encodeURIComponent(location.owner)}/${encodeURIComponent(location.repo)}/blob/${encodeURIComponent(location.branch)}/${encodeURIComponent(location.path)}`;
+  getLocationUrl({
+    owner,
+    repo,
+    branch,
+    path,
+  }) {
+    return `https://github.com/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/tree/${encodeURIComponent(branch)}/${utils.encodeUrlPath(path)}`;
   },
-  getDescription(location) {
-    const token = this.getToken(location);
-    return `${location.path} — ${location.owner}/${location.repo} — ${token.name}`;
+  getLocationDescription({ path }) {
+    return path;
   },
   async downloadContent(token, syncLocation) {
     try {
@@ -59,7 +63,7 @@ export default new Provider({
   },
   async openFile(token, syncLocation) {
     // Check if the file exists and open it
-    if (!Provider.openFileWithLocation(store.getters['syncLocation/items'], syncLocation)) {
+    if (!Provider.openFileWithLocation(syncLocation)) {
       // Download content from GitHub
       let content;
       try {
@@ -79,7 +83,7 @@ export default new Provider({
       if (dotPos > 0 && slashPos < name.length) {
         name = name.slice(0, dotPos);
       }
-      const item = await fileSvc.createFile({
+      const item = await workspaceSvc.createFile({
         name,
         parentId: store.getters['file/current'].parentId,
         text: content.text,
@@ -88,20 +92,12 @@ export default new Provider({
         comments: content.comments,
       }, true);
       store.commit('file/setCurrentId', item.id);
-      store.commit('syncLocation/setItem', {
+      workspaceSvc.addSyncLocation({
         ...syncLocation,
-        id: utils.uid(),
         fileId: item.id,
       });
       store.dispatch('notification/info', `${store.getters['file/current'].name} was imported from GitHub.`);
     }
-  },
-  parseRepoUrl(url) {
-    const parsedRepo = url && url.match(/([^/:]+)\/([^/]+?)(?:\.git|\/)?$/);
-    return parsedRepo && {
-      owner: parsedRepo[1],
-      repo: parsedRepo[2],
-    };
   },
   makeLocation(token, owner, repo, branch, path) {
     return {

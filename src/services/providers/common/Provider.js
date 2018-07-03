@@ -2,7 +2,7 @@ import providerRegistry from './providerRegistry';
 import emptyContent from '../../../data/emptyContent';
 import utils from '../../utils';
 import store from '../../../store';
-import fileSvc from '../../fileSvc';
+import workspaceSvc from '../../workspaceSvc';
 
 const dataExtractor = /<!--stackedit_data:([A-Za-z0-9+/=\s]+)-->$/;
 
@@ -81,8 +81,8 @@ export default class Provider {
   /**
    * Find and open a file with location that meets the criteria
    */
-  static openFileWithLocation(allLocations, criteria) {
-    const location = utils.search(allLocations, criteria);
+  static openFileWithLocation(criteria) {
+    const location = utils.search(store.getters['syncLocation/items'], criteria);
     if (location) {
       // Found one, open it if it exists
       const item = store.state.file.itemsById[location.fileId];
@@ -90,7 +90,7 @@ export default class Provider {
         store.commit('file/setCurrentId', item.id);
         // If file is in the trash, restore it
         if (item.parentId === 'trash') {
-          fileSvc.setOrPatchItem({
+          workspaceSvc.setOrPatchItem({
             ...item,
             parentId: null,
           });

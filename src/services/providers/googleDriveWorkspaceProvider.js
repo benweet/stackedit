@@ -2,7 +2,7 @@ import store from '../../store';
 import googleHelper from './helpers/googleHelper';
 import Provider from './common/Provider';
 import utils from '../utils';
-import fileSvc from '../fileSvc';
+import workspaceSvc from '../workspaceSvc';
 
 let fileIdToOpen;
 let syncStartPageToken;
@@ -12,17 +12,27 @@ export default new Provider({
   getToken() {
     return store.getters['workspace/syncToken'];
   },
-  async initWorkspace() {
-    const makeWorkspaceParams = folderId => ({
+  getWorkspaceParams({ folderId }) {
+    return {
       providerId: this.id,
       folderId,
-    });
-
+    };
+  },
+  getWorkspaceLocationUrl({ folderId }) {
+    return `https://docs.google.com/folder/d/${folderId}`;
+  },
+  getSyncDataUrl({ id }) {
+    return `https://docs.google.com/file/d/${id}/edit`;
+  },
+  getSyncDataDescription({ id }) {
+    return id;
+  },
+  async initWorkspace() {
     const makeWorkspaceId = folderId => folderId
-      && utils.makeWorkspaceId(makeWorkspaceParams(folderId));
+      && utils.makeWorkspaceId(this.getWorkspaceParams({ folderId }));
 
     const getWorkspace = folderId =>
-      store.getters['data/sanitizedWorkspacesById'][makeWorkspaceId(folderId)];
+      store.getters['workspace/workspacesById'][makeWorkspaceId(folderId)];
 
     const initFolder = async (token, folder) => {
       const appProperties = {
@@ -33,24 +43,26 @@ export default new Provider({
 
       // Make sure data folder exists
       if (!appProperties.dataFolderId) {
-        appProperties.dataFolderId = (await googleHelper.uploadFile({
+        const dataFolder = await googleHelper.uploadFile({
           token,
           name: '.stackedit-data',
           parents: [folder.id],
           appProperties: { folderId: folder.id },
           mediaType: googleHelper.folderMimeType,
-        })).id;
+        });
+        appProperties.dataFolderId = dataFolder.id;
       }
 
       // Make sure trash folder exists
       if (!appProperties.trashFolderId) {
-        appProperties.trashFolderId = (await googleHelper.uploadFile({
+        const trashFolder = await googleHelper.uploadFile({
           token,
           name: '.stackedit-trash',
           parents: [folder.id],
           appProperties: { folderId: folder.id },
           mediaType: googleHelper.folderMimeType,
-        })).id;
+        });
+        appProperties.trashFolderId = trashFolder.id;
       }
 
       // Update workspace if some properties are missing
@@ -68,13 +80,12 @@ export default new Provider({
 
       // Update workspace in the store
       const workspaceId = makeWorkspaceId(folder.id);
-      store.dispatch('data/patchWorkspacesById', {
+      store.dispatch('workspace/patchWorkspacesById', {
         [workspaceId]: {
           id: workspaceId,
           sub: token.sub,
           name: folder.name,
           providerId: this.id,
-          url: window.location.href,
           folderId: folder.id,
           teamDriveId: folder.teamDriveId,
           dataFolderId: appProperties.dataFolderId,
@@ -110,11 +121,10 @@ export default new Provider({
     }
 
     // Init workspace
-    let workspace = getWorkspace(folderId);
-    if (!workspace) {
+    if (!getWorkspace(folderId)) {
       let folder;
       try {
-        folder = googleHelper.getFile(token, folderId);
+        folder = await googleHelper.getFile(token, folderId);
       } catch (err) {
         throw new Error(`Folder ${folderId} is not accessible. Make sure you have the right permissions.`);
       }
@@ -124,20 +134,9 @@ export default new Provider({
         throw new Error(`Folder ${folderId} is part of another workspace.`);
       }
       await initFolder(token, folder);
-      workspace = getWorkspace(folderId);
     }
 
-    // Fix the URL hash
-    utils.setQueryParams(makeWorkspaceParams(workspace.folderId));
-    if (workspace.url !== window.location.href) {
-      store.dispatch('data/patchWorkspacesById', {
-        [workspace.id]: {
-          ...workspace,
-          url: window.location.href,
-        },
-      });
-    }
-    return store.getters['data/sanitizedWorkspacesById'][workspace.id];
+    return getWorkspace(folderId);
   },
   async performAction() {
     const state = googleHelper.driveState || {};
@@ -163,7 +162,7 @@ export default new Provider({
             [syncData.id]: syncData,
           });
         }
-        const file = await fileSvc.createFile({
+        const file = await workspaceSvc.createFile({
           parentId: syncData && syncData.itemId,
         }, true);
         store.commit('file/setCurrentId', file.id);
@@ -486,6 +485,7 @@ export default new Provider({
         folderId: workspace.folderId,
       },
       media: JSON.stringify(item),
+      mediaType: 'application/json',
       fileId: syncData && syncData.id,
       oldParents: syncData && syncData.parentIds,
       ifNotTooLate,

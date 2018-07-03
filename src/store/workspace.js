@@ -1,4 +1,5 @@
 import utils from '../services/utils';
+import providerRegistry from '../services/providers/common/providerRegistry';
 
 export default {
   namespaced: true,
@@ -15,53 +16,63 @@ export default {
     },
   },
   getters: {
-    mainWorkspace: (state, getters, rootState, rootGetters) => {
-      const sanitizedWorkspacesById = rootGetters['data/sanitizedWorkspacesById'];
-      return sanitizedWorkspacesById.main;
+    workspacesById: (state, getters, rootState, rootGetters) => {
+      const workspacesById = {};
+      const mainWorkspaceToken = rootGetters['workspace/mainWorkspaceToken'];
+      Object.entries(rootGetters['data/workspaces']).forEach(([id, workspace]) => {
+        const sanitizedWorkspace = {
+          id,
+          providerId: mainWorkspaceToken && 'googleDriveAppData',
+          sub: mainWorkspaceToken && mainWorkspaceToken.sub,
+          ...workspace,
+        };
+        // Filter workspaces that don't have a provider
+        const workspaceProvider = providerRegistry.providersById[sanitizedWorkspace.providerId];
+        if (workspaceProvider) {
+          // Rebuild the url with the current hostname
+          const params = workspaceProvider.getWorkspaceParams(sanitizedWorkspace);
+          sanitizedWorkspace.url = utils.addQueryParams('app', params, true);
+          sanitizedWorkspace.locationUrl = workspaceProvider
+            .getWorkspaceLocationUrl(sanitizedWorkspace);
+          workspacesById[id] = sanitizedWorkspace;
+        }
+      });
+      return workspacesById;
     },
-    currentWorkspace: ({ currentWorkspaceId }, { mainWorkspace }, rootState, rootGetters) => {
-      const sanitizedWorkspacesById = rootGetters['data/sanitizedWorkspacesById'];
-      return sanitizedWorkspacesById[currentWorkspaceId] || mainWorkspace;
-    },
-    currentWorkspaceIsGit: (state, { currentWorkspace }) => currentWorkspace.providerId === 'githubWorkspace',
-    hasUniquePaths: (state, { currentWorkspace }) =>
+    mainWorkspace: (state, { workspacesById }) => workspacesById.main,
+    currentWorkspace: ({ currentWorkspaceId }, { workspacesById, mainWorkspace }) =>
+      workspacesById[currentWorkspaceId] || mainWorkspace,
+    currentWorkspaceIsGit: (state, { currentWorkspace }) =>
+      currentWorkspace.providerId === 'githubWorkspace',
+    currentWorkspaceHasUniquePaths: (state, { currentWorkspace }) =>
       currentWorkspace.providerId === 'githubWorkspace',
     lastSyncActivityKey: (state, { currentWorkspace }) => `${currentWorkspace.id}/lastSyncActivity`,
     lastFocusKey: (state, { currentWorkspace }) => `${currentWorkspace.id}/lastWindowFocus`,
-    mainWorkspaceToken: (state, getters, rootState, rootGetters) => {
-      const googleTokens = rootGetters['data/googleTokens'];
-      const loginSubs = Object.keys(googleTokens)
-        .filter(sub => googleTokens[sub].isLogin);
-      return googleTokens[loginSubs[0]];
-    },
+    mainWorkspaceToken: (state, getters, rootState, rootGetters) =>
+      utils.someResult(Object.values(rootGetters['data/googleTokensBySub']), (token) => {
+        if (token.isLogin) {
+          return token;
+        }
+        return null;
+      }),
     syncToken: (state, { currentWorkspace, mainWorkspaceToken }, rootState, rootGetters) => {
       switch (currentWorkspace.providerId) {
-        case 'googleDriveWorkspace': {
-          const googleTokens = rootGetters['data/googleTokens'];
-          return googleTokens[currentWorkspace.sub];
-        }
-        case 'githubWorkspace': {
-          const githubTokens = rootGetters['data/githubTokens'];
-          return githubTokens[currentWorkspace.sub];
-        }
-        case 'couchdbWorkspace': {
-          const couchdbTokens = rootGetters['data/couchdbTokens'];
-          return couchdbTokens[currentWorkspace.id];
-        }
+        case 'googleDriveWorkspace':
+          return rootGetters['data/googleTokensBySub'][currentWorkspace.sub];
+        case 'githubWorkspace':
+          return rootGetters['data/githubTokensBySub'][currentWorkspace.sub];
+        case 'couchdbWorkspace':
+          return rootGetters['data/couchdbTokensBySub'][currentWorkspace.id];
         default:
           return mainWorkspaceToken;
       }
     },
     loginToken: (state, { currentWorkspace, mainWorkspaceToken }, rootState, rootGetters) => {
       switch (currentWorkspace.providerId) {
-        case 'googleDriveWorkspace': {
-          const googleTokens = rootGetters['data/googleTokens'];
-          return googleTokens[currentWorkspace.sub];
-        }
-        case 'githubWorkspace': {
-          const githubTokens = rootGetters['data/githubTokens'];
-          return githubTokens[currentWorkspace.sub];
-        }
+        case 'googleDriveWorkspace':
+          return rootGetters['data/googleTokensBySub'][currentWorkspace.sub];
+        case 'githubWorkspace':
+          return rootGetters['data/githubTokensBySub'][currentWorkspace.sub];
         default:
           return mainWorkspaceToken;
       }
@@ -70,18 +81,49 @@ export default {
       if (!loginToken) {
         return null;
       }
-      let prefix;
-      Object.entries(utils.userIdPrefixes).some(([key, value]) => {
-        if (rootGetters[`data/${value}Tokens`][loginToken.sub]) {
-          prefix = key;
+      const prefix = utils.someResult(Object.entries(utils.userIdPrefixes), ([key, value]) => {
+        if (rootGetters[`data/${value}TokensBySub`][loginToken.sub]) {
+          return key;
         }
-        return prefix;
+        return null;
       });
       return prefix ? `${prefix}:${loginToken.sub}` : loginToken.sub;
     },
     sponsorToken: (state, { mainWorkspaceToken }) => mainWorkspaceToken,
   },
   actions: {
+    removeWorkspace: ({ commit, rootGetters }, id) => {
+      const workspaces = {
+        ...rootGetters['data/workspaces'],
+      };
+      delete workspaces[id];
+      commit(
+        'data/setItem',
+        { id: 'workspaces', data: workspaces },
+        { root: true },
+      );
+    },
+    patchWorkspacesById: ({ commit, rootGetters }, workspaces) => {
+      const sanitizedWorkspaces = {};
+      Object
+        .values({
+          ...rootGetters['data/workspaces'],
+          ...workspaces,
+        })
+        .forEach((workspace) => {
+          sanitizedWorkspaces[workspace.id] = {
+            ...workspace,
+            // Do not store urls
+            url: undefined,
+            locationUrl: undefined,
+          };
+        });
+      commit(
+        'data/setItem',
+        { id: 'workspaces', data: sanitizedWorkspaces },
+        { root: true },
+      );
+    },
     setCurrentWorkspaceId: ({ commit, getters }, value) => {
       commit('setCurrentWorkspaceId', value);
       const lastFocus = parseInt(localStorage.getItem(getters.lastFocusKey), 10) || 0;

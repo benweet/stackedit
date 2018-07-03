@@ -10,12 +10,25 @@ export default new Provider({
   getToken() {
     return store.getters['workspace/syncToken'];
   },
+  getWorkspaceParams() {
+    // No param as it's the main workspace
+    return {};
+  },
+  getWorkspaceLocationUrl() {
+    // No direct link to app data
+    return null;
+  },
+  getSyncDataUrl() {
+    // No direct link to app data
+    return null;
+  },
+  getSyncDataDescription({ id }) {
+    return id;
+  },
   async initWorkspace() {
     // Nothing much to do since the main workspace isn't necessarily synchronized
-    // Remove the URL hash
-    utils.setQueryParams();
     // Return the main workspace
-    return store.getters['data/workspacesById'].main;
+    return store.getters['workspace/workspacesById'].main;
   },
   async getChanges() {
     const syncToken = store.getters['workspace/syncToken'];
@@ -155,7 +168,7 @@ export default new Provider({
     const revisions = await googleHelper.getAppDataFileRevisions(token, syncData.id);
     return revisions.map(revision => ({
       id: revision.id,
-      sub: revision.lastModifyingUser && `go:${revision.lastModifyingUser.permissionId}`,
+      sub: `go:${revision.lastModifyingUser.permissionId}`,
       created: new Date(revision.modifiedTime).getTime(),
     }))
       .sort((revision1, revision2) => revision2.created - revision1.created);

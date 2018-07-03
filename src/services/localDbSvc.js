@@ -2,7 +2,7 @@ import FileSaver from 'file-saver';
 import utils from './utils';
 import store from '../store';
 import welcomeFile from '../data/welcomeFile.md';
-import fileSvc from './fileSvc';
+import workspaceSvc from './workspaceSvc';
 
 const dbVersion = 1;
 const dbStoreName = 'objects';
@@ -12,21 +12,13 @@ const resetApp = utils.queryParams.reset;
 const deleteMarkerMaxAge = 1000;
 const checkSponsorshipAfter = (5 * 60 * 1000) + (30 * 1000); // tokenExpirationMargin + 30 sec
 
-const getDbName = (workspaceId) => {
-  let dbName = 'stackedit-db';
-  if (workspaceId !== 'main') {
-    dbName += `-${workspaceId}`;
-  }
-  return dbName;
-};
-
 class Connection {
   constructor() {
     this.getTxCbs = [];
 
     // Make the DB name
     const workspaceId = store.getters['workspace/currentWorkspace'].id;
-    this.dbName = getDbName(workspaceId);
+    this.dbName = utils.getDbName(workspaceId);
 
     // Init connection
     const request = indexedDB.open(this.dbName, dbVersion);
@@ -142,9 +134,12 @@ const localDbSvc = {
       this.connection.createTx((tx) => {
         // Look for DB changes and apply them to the store
         this.readAll(tx, (storeItemMap) => {
+          // Sanitize the workspace
+          workspaceSvc.ensureUniquePaths();
+          workspaceSvc.ensureUniqueLocations();
           // Persist all the store changes into the DB
           this.writeAll(storeItemMap, tx);
-          // Sync localStorage
+          // Sync the localStorage
           this.syncLocalStorage();
           // Done
           resolve();
@@ -177,19 +172,21 @@ const localDbSvc = {
         // Collect change
         changes.push(item);
         cursor.continue();
-      } else {
-        const storeItemMap = { ...store.getters.allItemsById };
-        changes.forEach((item) => {
-          this.readDbItem(item, storeItemMap);
-          // If item is an old delete marker, remove it from the DB
-          if (!item.hash && lastTx - item.tx > deleteMarkerMaxAge) {
-            dbStore.delete(item.id);
-          }
-        });
-        fileSvc.ensureUniquePaths();
-        this.lastTx = lastTx;
-        cb(storeItemMap);
+        return;
       }
+
+      // Read the collected changes
+      const storeItemMap = { ...store.getters.allItemsById };
+      changes.forEach((item) => {
+        this.readDbItem(item, storeItemMap);
+        // If item is an old delete marker, remove it from the DB
+        if (!item.hash && lastTx - item.tx > deleteMarkerMaxAge) {
+          dbStore.delete(item.id);
+        }
+      });
+
+      this.lastTx = lastTx;
+      cb(storeItemMap);
     };
   },
 
@@ -323,39 +320,19 @@ const localDbSvc = {
   },
 
   /**
-   * Drop the database and clean the localStorage for the specified workspaceId.
-   */
-  async removeWorkspace(id) {
-    const workspacesById = {
-      ...store.getters['data/workspacesById'],
-    };
-    delete workspacesById[id];
-    store.dispatch('data/setWorkspacesById', workspacesById);
-    this.syncLocalStorage();
-    await new Promise((resolve, reject) => {
-      const dbName = getDbName(id);
-      const request = indexedDB.deleteDatabase(dbName);
-      request.onerror = reject;
-      request.onsuccess = resolve;
-    });
-    localStorage.removeItem(`${id}/lastSyncActivity`);
-    localStorage.removeItem(`${id}/lastWindowFocus`);
-  },
-
-  /**
    * Create the connection and start syncing.
    */
   async init() {
     // Reset the app if reset flag was passed
     if (resetApp) {
-      await Promise.all(Object.keys(store.getters['data/workspacesById'])
-        .map(workspaceId => localDbSvc.removeWorkspace(workspaceId)));
+      await Promise.all(Object.keys(store.getters['workspace/workspacesById'])
+        .map(workspaceId => workspaceSvc.removeWorkspace(workspaceId)));
       utils.localStorageDataIds.forEach((id) => {
         // Clean data stored in localStorage
         localStorage.removeItem(`data/${id}`);
       });
       window.location.reload();
-      throw new Error('reload');
+      throw new Error('RELOAD');
     }
 
     // Create the connection
@@ -373,6 +350,13 @@ const localDbSvc = {
       FileSaver.saveAs(blob, 'StackEdit workspace.json');
       return;
     }
+
+    // Watch workspace deletions and persist them as soon as possible
+    // to make the changes available to reloading workspace tabs.
+    store.watch(
+      () => store.getters['data/workspaces'],
+      () => this.syncLocalStorage(),
+    );
 
     // Save welcome file content hash if not done already
     const hash = utils.hash(welcomeFile);
@@ -393,7 +377,7 @@ const localDbSvc = {
       // Clean files
       store.getters['file/items']
         .filter(file => file.parentId === 'trash') // If file is in the trash
-        .forEach(file => fileSvc.deleteFile(file.id));
+        .forEach(file => workspaceSvc.deleteFile(file.id));
     }
 
     // Enable sponsorship
@@ -429,7 +413,7 @@ const localDbSvc = {
             store.commit('file/setCurrentId', recentFile.id);
           } else {
             // If still no ID, create a new file
-            const newFile = await fileSvc.createFile({
+            const newFile = await workspaceSvc.createFile({
               name: 'Welcome file',
               text: welcomeFile,
             }, true);

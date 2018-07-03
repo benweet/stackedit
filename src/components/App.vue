@@ -21,7 +21,7 @@ import syncSvc from '../services/syncSvc';
 import networkSvc from '../services/networkSvc';
 import sponsorSvc from '../services/sponsorSvc';
 import tempFileSvc from '../services/tempFileSvc';
-import './common/globals';
+import './common/vueGlobals';
 
 const themeClasses = {
   light: ['app--light'],
@@ -53,7 +53,7 @@ export default {
       this.ready = true;
       tempFileSvc.setReady();
     } catch (err) {
-      if (err && err.message !== 'reload') {
+      if (err && err.message !== 'RELOAD') {
         console.error(err); // eslint-disable-line no-console
         this.$store.dispatch('notification/error', err);
       }

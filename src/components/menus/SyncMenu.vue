@@ -1,7 +1,7 @@
 <template>
   <div class="side-bar__panel side-bar__panel--menu">
     <div class="side-bar__info" v-if="isCurrentTemp">
-      <p><b>{{currentFileName}}</b> can not be synchronized as it's a temporary file.</p>
+      <p><b>{{currentFileName}}</b> can not be synced as it's a temporary file.</p>
     </div>
     <div v-else>
       <div class="side-bar__info" v-if="noToken">
@@ -16,7 +16,7 @@
         </menu-entry>
         <menu-entry @click.native="manageSync">
           <icon-view-list slot="icon"></icon-view-list>
-          <div>File synchronization</div>
+          <div><div class="menu-entry__label menu-entry__label--count">{{locationCount}}</div> File synchronization</div>
           <span>Manage current file synchronized locations.</span>
         </menu-entry>
       </div>
@@ -91,8 +91,7 @@ import githubProvider from '../../services/providers/githubProvider';
 import syncSvc from '../../services/syncSvc';
 import store from '../../store';
 
-const tokensToArray = (tokens, filter = () => true) => Object.keys(tokens)
-  .map(sub => tokens[sub])
+const tokensToArray = (tokens, filter = () => true) => Object.values(tokens)
   .filter(token => filter(token))
   .sort((token1, token2) => token1.name.localeCompare(token2.name));
 
@@ -116,8 +115,11 @@ export default {
       'isCurrentTemp',
     ]),
     ...mapGetters('syncLocation', {
-      syncLocations: 'current',
+      syncLocations: 'currentWithWorkspaceSyncLocation',
     }),
+    locationCount() {
+      return Object.keys(this.syncLocations).length;
+    },
     currentFileName() {
       return this.$store.getters['file/current'].name;
     },
@@ -142,8 +144,10 @@ export default {
         syncSvc.requestSync();
       }
     },
-    manageSync() {
-      return this.$store.dispatch('modal/open', 'syncManagement');
+    async manageSync() {
+      try {
+        await this.$store.dispatch('modal/open', 'syncManagement');
+      } catch (e) { /* cancel */ }
     },
     async addGoogleDriveAccount() {
       try {
@@ -180,16 +184,12 @@ export default {
     async saveGoogleDrive(token) {
       try {
         await openSyncModal(token, 'googleDriveSave');
-      } catch (e) {
-        // Cancel
-      }
+      } catch (e) { /* cancel */ }
     },
     async saveDropbox(token) {
       try {
         await openSyncModal(token, 'dropboxSave');
-      } catch (e) {
-        // Cancel
-      }
+      } catch (e) { /* cancel */ }
     },
     async openGithub(token) {
       try {
@@ -201,23 +201,17 @@ export default {
           'queue/enqueue',
           () => githubProvider.openFile(token, syncLocation),
         );
-      } catch (e) {
-        // Cancel
-      }
+      } catch (e) { /* cancel */ }
     },
     async saveGithub(token) {
       try {
         await openSyncModal(token, 'githubSave');
-      } catch (e) {
-        // Cancel
-      }
+      } catch (e) { /* cancel */ }
     },
     async saveGist(token) {
       try {
         await openSyncModal(token, 'gistSync');
-      } catch (e) {
-        // Cancel
-      }
+      } catch (e) { /* cancel */ }
     },
   },
 };

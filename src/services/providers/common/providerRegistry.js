@@ -1,7 +1,7 @@
 export default {
-  providers: {},
+  providersById: {},
   register(provider) {
-    this.providers[provider.id] = provider;
+    this.providersById[provider.id] = provider;
     return provider;
   },
 };

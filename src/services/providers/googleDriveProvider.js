@@ -2,20 +2,19 @@ import store from '../../store';
 import googleHelper from './helpers/googleHelper';
 import Provider from './common/Provider';
 import utils from '../utils';
-import fileSvc from '../fileSvc';
+import workspaceSvc from '../workspaceSvc';
 
 export default new Provider({
   id: 'googleDrive',
-  getToken(location) {
-    const token = store.getters['data/googleTokensBySub'][location.sub];
+  getToken({ sub }) {
+    const token = store.getters['data/googleTokensBySub'][sub];
     return token && token.isDrive ? token : null;
   },
-  getUrl(location) {
-    return `https://docs.google.com/file/d/${location.driveFileId}/edit`;
+  getLocationUrl({ driveFileId }) {
+    return `https://docs.google.com/file/d/${driveFileId}/edit`;
   },
-  getDescription(location) {
-    const token = this.getToken(location);
-    return `${location.driveFileId} — ${token.name}`;
+  getLocationDescription({ driveFileId }) {
+    return driveFileId;
   },
   async initAction() {
     const state = googleHelper.driveState || {};
@@ -42,7 +41,7 @@ export default new Provider({
             folderId,
           };
           const workspaceId = utils.makeWorkspaceId(workspaceParams);
-          const workspace = store.getters['data/sanitizedWorkspacesById'][workspaceId];
+          const workspace = store.getters['workspace/workspacesById'][workspaceId];
           // If we have the workspace, open it by changing the current URL
           if (workspace) {
             utils.setQueryParams(workspaceParams);
@@ -86,7 +85,7 @@ export default new Provider({
     const token = store.getters['data/googleTokensBySub'][state.userId];
     switch (token && state.action) {
       case 'create': {
-        const file = await fileSvc.createFile({}, true);
+        const file = await workspaceSvc.createFile({}, true);
         store.commit('file/setCurrentId', file.id);
         // Return a new syncLocation
         return this.makeLocation(token, null, googleHelper.driveActionFolder.id);
@@ -142,7 +141,7 @@ export default new Provider({
   async openFiles(token, driveFiles) {
     return utils.awaitSequence(driveFiles, async (driveFile) => {
       // Check if the file exists and open it
-      if (!Provider.openFileWithLocation(store.getters['syncLocation/items'], {
+      if (!Provider.openFileWithLocation({
         providerId: this.id,
         driveFileId: driveFile.id,
       })) {
@@ -161,7 +160,7 @@ export default new Provider({
         }
 
         // Create the file
-        const item = await fileSvc.createFile({
+        const item = await workspaceSvc.createFile({
           name: driveFile.name,
           parentId: store.getters['file/current'].parentId,
           text: content.text,
@@ -170,9 +169,8 @@ export default new Provider({
           comments: content.comments,
         }, true);
         store.commit('file/setCurrentId', item.id);
-        store.commit('syncLocation/setItem', {
+        workspaceSvc.addSyncLocation({
           ...syncLocation,
-          id: utils.uid(),
           fileId: item.id,
         });
         store.dispatch('notification/info', `${store.getters['file/current'].name} was imported from Google Drive.`);

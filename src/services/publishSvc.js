@@ -4,6 +4,7 @@ import utils from './utils';
 import networkSvc from './networkSvc';
 import exportSvc from './exportSvc';
 import providerRegistry from './providers/common/providerRegistry';
+import workspaceSvc from './workspaceSvc';
 
 const hasCurrentFilePublishLocations = () => !!store.getters['publishLocation/current'].length;
 
@@ -45,7 +46,7 @@ const publish = async (publishLocation) => {
   const content = await localDbSvc.loadItem(`${fileId}/content`);
   const file = store.state.file.itemsById[fileId];
   const properties = utils.computeProperties(content.properties);
-  const provider = providerRegistry.providers[publishLocation.providerId];
+  const provider = providerRegistry.providersById[publishLocation.providerId];
   const token = provider.getToken(publishLocation);
   const metadata = {
     title: ensureString(properties.title, file.name),
@@ -122,14 +123,12 @@ const requestPublish = () => {
 };
 
 const createPublishLocation = (publishLocation) => {
-  publishLocation.id = utils.uid();
   const currentFile = store.getters['file/current'];
   publishLocation.fileId = currentFile.id;
   store.dispatch(
     'queue/enqueue',
     async () => {
-      const publishLocationToStore = await publish(publishLocation);
-      store.commit('publishLocation/setItem', publishLocationToStore);
+      workspaceSvc.addPublishLocation(await publish(publishLocation));
       store.dispatch('notification/info', `A new publication location was added to "${currentFile.name}".`);
     },
   );

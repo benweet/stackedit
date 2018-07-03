@@ -24,20 +24,18 @@
   span {
     display: inline-block;
     font-size: 0.75rem;
-    opacity: 0.5;
+    opacity: 0.6;
     line-height: 1.3;
+
+    .menu-entry__label {
+      opacity: 1;
+    }
 
     span {
       display: inline;
       opacity: 1;
     }
   }
-}
-
-.menu-info-entries {
-  padding: 10px;
-  margin: -10px -10px 10px;
-  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .menu-entry--info {
@@ -70,10 +68,22 @@
   float: right;
   font-size: 0.6rem;
   font-weight: 600;
-  padding: 0.05em 0.25em;
-  background-color: darken($error-color, 10);
+  line-height: 1;
+  padding: 0.15em 0.25em;
+  background-color: #fff;
   border-radius: 3px;
+  opacity: 0.6;
+}
+
+.menu-entry__label--warning {
   color: #fff;
+  background-color: darken($error-color, 10);
+  opacity: 1;
+}
+
+.menu-entry__label--count {
+  font-size: 0.75rem;
+  font-weight: 400;
 }
 
 .menu-entry__text {

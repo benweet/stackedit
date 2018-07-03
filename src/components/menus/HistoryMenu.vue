@@ -169,7 +169,7 @@ export default {
   created() {
     // Find the workspace provider
     const workspace = this.$store.getters['workspace/currentWorkspace'];
-    this.workspaceProvider = providerRegistry.providers[workspace.providerId];
+    this.workspaceProvider = providerRegistry.providersById[workspace.providerId];
 
     // Watch file changes
     this.$watch(

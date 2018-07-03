@@ -1,4 +1,4 @@
-import cledit from '../../services/cledit';
+import cledit from '../../services/editor/cledit';
 import editorSvc from '../../services/editorSvc';
 import utils from '../../services/utils';
 

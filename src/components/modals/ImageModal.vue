@@ -17,7 +17,7 @@
     </div>
     <div class="modal__button-bar">
       <button class="button" @click="reject()">Cancel</button>
-      <button class="button" @click="resolve()">Ok</button>
+      <button class="button button--resolve" @click="resolve()">Ok</button>
     </div>
   </modal-inner>
 </template>
@@ -36,9 +36,8 @@ export default modalTemplate({
   }),
   computed: {
     googlePhotosTokens() {
-      const googleTokens = this.$store.getters['data/googleTokensBySub'];
-      return Object.entries(googleTokens)
-        .map(([, token]) => token)
+      const googleTokensBySub = this.$store.getters['data/googleTokensBySub'];
+      return Object.values(googleTokensBySub)
         .filter(token => token.isPhotos)
         .sort((token1, token2) => token1.name.localeCompare(token2.name));
     },

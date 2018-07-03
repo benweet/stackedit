@@ -11,7 +11,7 @@
     </div>
     <div class="modal__button-bar">
       <button class="button" @click="reject()">Cancel</button>
-      <button class="button" @click="resolve()">Ok</button>
+      <button class="button button--resolve" @click="resolve()">Ok</button>
     </div>
   </modal-inner>
 </template>

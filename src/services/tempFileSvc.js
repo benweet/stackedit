@@ -1,8 +1,8 @@
-import cledit from './cledit';
+import cledit from './editor/cledit';
 import store from '../store';
 import utils from './utils';
 import editorSvc from './editorSvc';
-import fileSvc from './fileSvc';
+import workspaceSvc from './workspaceSvc';
 
 const {
   origin,
@@ -31,7 +31,7 @@ export default {
     }
     store.commit('setLight', true);
 
-    const file = await fileSvc.createFile({
+    const file = await workspaceSvc.createFile({
       name: fileName || utils.getHostname(origin),
       text: contentText || '\n',
       properties: contentProperties,
@@ -58,7 +58,7 @@ export default {
       .splice(10)
       .forEach(([id]) => {
         delete lastCreated[id];
-        fileSvc.deleteFile(id);
+        workspaceSvc.deleteFile(id);
       });
 
     // Store file creations and open the file

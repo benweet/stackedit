@@ -2,9 +2,12 @@ import moduleTemplate from './moduleTemplate';
 import providerRegistry from '../services/providers/common/providerRegistry';
 
 const addToGroup = (groups, item) => {
-  const list = groups[item.fileId] || [];
-  list.push(item);
-  groups[item.fileId] = list;
+  const list = groups[item.fileId];
+  if (!list) {
+    groups[item.fileId] = [item];
+  } else {
+    list.push(item);
+  }
 };
 
 export default (empty) => {
@@ -17,25 +20,63 @@ export default (empty) => {
       items.forEach(item => addToGroup(groups, item));
       return groups;
     },
+    groupedByFileIdAndHash: (state, { items }) => {
+      const fileIdGroups = {};
+      items.forEach((item) => {
+        let hashGroups = fileIdGroups[item.fileId];
+        if (!hashGroups) {
+          hashGroups = {};
+          fileIdGroups[item.fileId] = hashGroups;
+        }
+        const list = hashGroups[item.hash];
+        if (!list) {
+          hashGroups[item.hash] = [item];
+        } else {
+          list.push(item);
+        }
+      });
+      return fileIdGroups;
+    },
     filteredGroupedByFileId: (state, { items }) => {
       const groups = {};
-      items.filter((item) => {
-        // Filter items that we can't use
-        const provider = providerRegistry.providers[item.providerId];
-        return provider && provider.getToken(item);
-      }).forEach(item => addToGroup(groups, item));
+      items
+        .filter((item) => {
+          // Filter items that we can't use
+          const provider = providerRegistry.providersById[item.providerId];
+          return provider && provider.getToken(item);
+        })
+        .forEach(item => addToGroup(groups, item));
       return groups;
     },
     current: (state, { filteredGroupedByFileId }, rootState, rootGetters) => {
       const locations = filteredGroupedByFileId[rootGetters['file/current'].id] || [];
       return locations.map((location) => {
-        const provider = providerRegistry.providers[location.providerId];
+        const provider = providerRegistry.providersById[location.providerId];
         return {
           ...location,
-          description: provider.getDescription(location),
-          url: provider.getUrl(location),
+          description: provider.getLocationDescription(location),
+          url: provider.getLocationUrl(location),
         };
       });
+    },
+    currentWithWorkspaceSyncLocation: (state, { current }, rootState, rootGetters) => {
+      const fileId = rootGetters['file/current'].id;
+      const fileSyncData = rootGetters['data/syncDataByItemId'][fileId];
+      const contentSyncData = rootGetters['data/syncDataByItemId'][`${fileId}/content`];
+      if (!fileSyncData || !contentSyncData) {
+        return current;
+      }
+
+      // Add the workspace sync location
+      const workspaceProvider = providerRegistry.providersById[
+        rootGetters['workspace/currentWorkspace'].providerId];
+      return [{
+        id: 'main',
+        providerId: workspaceProvider.id,
+        fileId,
+        description: workspaceProvider.getSyncDataDescription(fileSyncData, contentSyncData),
+        url: workspaceProvider.getSyncDataUrl(fileSyncData, contentSyncData),
+      }, ...current];
     },
   };
 

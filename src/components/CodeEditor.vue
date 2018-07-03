@@ -4,7 +4,7 @@
 
 <script>
 import Prism from 'prismjs';
-import cledit from '../services/cledit';
+import cledit from '../services/editor/cledit';
 
 export default {
   props: ['value', 'lang', 'disabled'],

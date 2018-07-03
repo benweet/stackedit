@@ -1,19 +1,19 @@
 import { shallowMount } from '@vue/test-utils';
 import ExplorerNode from '../../../../src/components/ExplorerNode';
 import store from '../../../../src/store';
-import fileSvc from '../../../../src/services/fileSvc';
+import workspaceSvc from '../../../../src/services/workspaceSvc';
 import explorerSvc from '../../../../src/services/explorerSvc';
 import specUtils from '../specUtils';
 
 const makeFileNode = async () => {
-  const file = await fileSvc.createFile({}, true);
+  const file = await workspaceSvc.createFile({}, true);
   const node = store.getters['explorer/nodeMap'][file.id];
   expect(node.item.id).toEqual(file.id);
   return node;
 };
 
 const makeFolderNode = async () => {
-  const folder = await fileSvc.storeItem({ type: 'folder' });
+  const folder = await workspaceSvc.storeItem({ type: 'folder' });
   const node = store.getters['explorer/nodeMap'][folder.id];
   expect(node.item.id).toEqual(folder.id);
   return node;
@@ -226,21 +226,21 @@ describe('ExplorerNode.vue', () => {
   });
 
   it('should move a file into a folder', async () => {
-    const sourceItem = await fileSvc.createFile({}, true);
-    const targetItem = await fileSvc.storeItem({ type: 'folder' });
+    const sourceItem = await workspaceSvc.createFile({}, true);
+    const targetItem = await workspaceSvc.storeItem({ type: 'folder' });
     dragAndDrop(sourceItem, targetItem);
   });
 
   it('should move a folder into a folder', async () => {
-    const sourceItem = await fileSvc.storeItem({ type: 'folder' });
-    const targetItem = await fileSvc.storeItem({ type: 'folder' });
+    const sourceItem = await workspaceSvc.storeItem({ type: 'folder' });
+    const targetItem = await workspaceSvc.storeItem({ type: 'folder' });
     dragAndDrop(sourceItem, targetItem);
   });
 
   it('should move a file into a file parent folder', async () => {
-    const targetItem = await fileSvc.storeItem({ type: 'folder' });
-    const file = await fileSvc.createFile({ parentId: targetItem.id }, true);
-    const sourceItem = await fileSvc.createFile({}, true);
+    const targetItem = await workspaceSvc.storeItem({ type: 'folder' });
+    const file = await workspaceSvc.createFile({ parentId: targetItem.id }, true);
+    const sourceItem = await workspaceSvc.createFile({}, true);
     dragAndDrop(sourceItem, file);
   });
 
@@ -264,7 +264,7 @@ describe('ExplorerNode.vue', () => {
   });
 
   it('should not move a file to a file in the temp folder', async () => {
-    const file = await fileSvc.createFile({ parentId: 'temp' }, true);
+    const file = await workspaceSvc.createFile({ parentId: 'temp' }, true);
     const targetNode = store.getters['explorer/nodeMap'][file.id];
     const wrapper = mount(targetNode);
     wrapper.trigger('dragenter');

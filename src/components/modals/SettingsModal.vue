@@ -25,7 +25,7 @@
     </div>
     <div class="modal__button-bar">
       <button class="button" @click="config.reject()">Cancel</button>
-      <button class="button" @click="!error && config.resolve(strippedCustomSettings)">Ok</button>
+      <button class="button button--resolve" @click="!error && config.resolve(strippedCustomSettings)">Ok</button>
     </div>
   </modal-inner>
 </template>

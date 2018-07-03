@@ -2,7 +2,7 @@ import DiffMatchPatch from 'diff-match-patch';
 import moduleTemplate from './moduleTemplate';
 import empty from '../data/emptyContent';
 import utils from '../services/utils';
-import cledit from '../services/cledit';
+import cledit from '../services/editor/cledit';
 
 const diffMatchPatch = new DiffMatchPatch();
 

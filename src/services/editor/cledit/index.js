@@ -1,4 +1,4 @@
-import '../../libs/clunderscore';
+import '../../../libs/clunderscore';
 import cledit from './cleditCore';
 import './cleditHighlighter';
 import './cleditKeystroke';

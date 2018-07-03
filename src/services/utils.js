@@ -170,6 +170,13 @@ export default {
   makeWorkspaceId(params) {
     return Math.abs(this.hash(this.serializeObject(params))).toString(36);
   },
+  getDbName(workspaceId) {
+    let dbName = 'stackedit-db';
+    if (workspaceId !== 'main') {
+      dbName += `-${workspaceId}`;
+    }
+    return dbName;
+  },
   encodeBase64(str, urlSafe = false) {
     const uriEncodedStr = encodeURIComponent(str);
     const utf8Str = uriEncodedStr.replace(
@@ -227,6 +234,12 @@ export default {
     };
     return runWithNextValue();
   },
+  async awaitSome(asyncFunc) {
+    if (await asyncFunc()) {
+      return this.awaitSome(asyncFunc);
+    }
+    return null;
+  },
   someResult(values, func) {
     let result;
     values.some((value) => {
@@ -278,6 +291,16 @@ export default {
   getHostname(url) {
     urlParser.href = url;
     return urlParser.hostname;
+  },
+  encodeUrlPath(path) {
+    return path ? path.split('/').map(encodeURIComponent).join('/') : '';
+  },
+  parseGithubRepoUrl(url) {
+    const parsedRepo = url && url.match(/([^/:]+)\/([^/]+?)(?:\.git|\/)?$/);
+    return parsedRepo && {
+      owner: parsedRepo[1],
+      repo: parsedRepo[2],
+    };
   },
   createHiddenIframe(url) {
     const iframeElt = document.createElement('iframe');

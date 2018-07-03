@@ -2,7 +2,7 @@ import store from '../../store';
 import dropboxHelper from './helpers/dropboxHelper';
 import Provider from './common/Provider';
 import utils from '../utils';
-import fileSvc from '../fileSvc';
+import workspaceSvc from '../workspaceSvc';
 
 const makePathAbsolute = (token, path) => {
   if (!token.fullAccess) {
@@ -19,17 +19,16 @@ const makePathRelative = (token, path) => {
 
 export default new Provider({
   id: 'dropbox',
-  getToken(location) {
-    return store.getters['data/dropboxTokensBySub'][location.sub];
+  getToken({ sub }) {
+    return store.getters['data/dropboxTokensBySub'][sub];
   },
-  getUrl(location) {
-    const pathComponents = location.path.split('/').map(encodeURIComponent);
+  getLocationUrl({ path }) {
+    const pathComponents = path.split('/').map(encodeURIComponent);
     const filename = pathComponents.pop();
     return `https://www.dropbox.com/home${pathComponents.join('/')}?preview=${filename}`;
   },
-  getDescription(location) {
-    const token = this.getToken(location);
-    return `${location.path} — ${location.dropboxFileId} — ${token.name}`;
+  getLocationDescription({ path }) {
+    return path;
   },
   checkPath(path) {
     return path && path.match(/^\/[^\\<>:"|?*]+$/);
@@ -71,7 +70,7 @@ export default new Provider({
   async openFiles(token, paths) {
     await utils.awaitSequence(paths, async (path) => {
       // Check if the file exists and open it
-      if (!Provider.openFileWithLocation(store.getters['syncLocation/items'], {
+      if (!Provider.openFileWithLocation({
         providerId: this.id,
         path,
       })) {
@@ -99,7 +98,7 @@ export default new Provider({
         if (dotPos > 0 && slashPos < name.length) {
           name = name.slice(0, dotPos);
         }
-        const item = await fileSvc.createFile({
+        const item = await workspaceSvc.createFile({
           name,
           parentId: store.getters['file/current'].parentId,
           text: content.text,
@@ -108,9 +107,8 @@ export default new Provider({
           comments: content.comments,
         }, true);
         store.commit('file/setCurrentId', item.id);
-        store.commit('syncLocation/setItem', {
+        workspaceSvc.addSyncLocation({
           ...syncLocation,
-          id: utils.uid(),
           fileId: item.id,
         });
         store.dispatch('notification/info', `${store.getters['file/current'].name} was imported from Dropbox.`);

@@ -7,12 +7,11 @@ export default new Provider({
   getToken(location) {
     return store.getters['data/wordpressTokensBySub'][location.sub];
   },
-  getUrl(location) {
+  getLocationUrl(location) {
     return `https://wordpress.com/post/${location.siteId}/${location.postId}`;
   },
-  getDescription(location) {
-    const token = this.getToken(location);
-    return `${location.postId} — ${location.domain} — ${token.name}`;
+  getLocationDescription({ postId }) {
+    return postId;
   },
   async publish(token, html, metadata, publishLocation) {
     const post = await wordpressHelper.uploadPost({

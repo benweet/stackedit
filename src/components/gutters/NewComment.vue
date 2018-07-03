@@ -24,7 +24,7 @@
 import { mapGetters, mapMutations, mapActions } from 'vuex';
 import Prism from 'prismjs';
 import UserImage from '../UserImage';
-import cledit from '../../services/cledit';
+import cledit from '../../services/editor/cledit';
 import editorSvc from '../../services/editorSvc';
 import markdownConversionSvc from '../../services/markdownConversionSvc';
 import utils from '../../services/utils';

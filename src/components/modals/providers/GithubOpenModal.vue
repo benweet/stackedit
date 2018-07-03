@@ -4,7 +4,7 @@
       <div class="modal__image">
         <icon-provider provider-id="github"></icon-provider>
       </div>
-      <p>Open a file from your <b>GitHub</b> repository and keep it synchronized.</p>
+      <p>Open a file from your <b>GitHub</b> repository and keep it synced.</p>
       <form-entry label="Repository URL" error="repoUrl">
         <input slot="field" class="textfield" type="text" v-model.trim="repoUrl" @keydown.enter="resolve()">
         <div class="form-entry__info">
@@ -26,7 +26,7 @@
     </div>
     <div class="modal__button-bar">
       <button class="button" @click="config.reject()">Cancel</button>
-      <button class="button" @click="resolve()">Ok</button>
+      <button class="button button--resolve" @click="resolve()">Ok</button>
     </div>
   </modal-inner>
 </template>
@@ -34,6 +34,7 @@
 <script>
 import githubProvider from '../../../services/providers/githubProvider';
 import modalTemplate from '../common/modalTemplate';
+import utils from '../../../services/utils';
 
 export default modalTemplate({
   data: () => ({
@@ -52,7 +53,7 @@ export default modalTemplate({
         this.setError('path');
       }
       if (this.repoUrl && this.path) {
-        const parsedRepo = githubProvider.parseRepoUrl(this.repoUrl);
+        const parsedRepo = utils.parseGithubRepoUrl(this.repoUrl);
         if (!parsedRepo) {
           this.setError('repoUrl');
         } else {

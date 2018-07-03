@@ -1,7 +1,7 @@
 import { shallowMount } from '@vue/test-utils';
 import Explorer from '../../../../src/components/Explorer';
 import store from '../../../../src/store';
-import fileSvc from '../../../../src/services/fileSvc';
+import workspaceSvc from '../../../../src/services/workspaceSvc';
 import specUtils from '../specUtils';
 
 const mount = () => shallowMount(Explorer, { store });
@@ -57,7 +57,7 @@ describe('Explorer.vue', () => {
   });
 
   it('should create new folders in a folder', async () => {
-    const folder = await fileSvc.storeItem({ type: 'folder' });
+    const folder = await workspaceSvc.storeItem({ type: 'folder' });
     const wrapper = mount();
     select(folder.id);
     wrapper.find('.side-title__button--new-folder').trigger('click');
@@ -88,7 +88,7 @@ describe('Explorer.vue', () => {
   });
 
   it('should move file to the trash folder on delete', async () => {
-    const file = await fileSvc.createFile({}, true);
+    const file = await workspaceSvc.createFile({}, true);
     expect(file.parentId).toEqual(null);
     const wrapper = mount();
     select(file.id);
@@ -105,7 +105,7 @@ describe('Explorer.vue', () => {
   });
 
   it('should not delete files in the trash folder', async () => {
-    const file = await fileSvc.createFile({ parentId: 'trash' }, true);
+    const file = await workspaceSvc.createFile({ parentId: 'trash' }, true);
     const wrapper = mount();
     select(file.id);
     wrapper.find('.side-title__button--delete').trigger('click');
@@ -114,7 +114,7 @@ describe('Explorer.vue', () => {
   });
 
   it('should delete the temp folder after confirmation', async () => {
-    const file = await fileSvc.createFile({ parentId: 'temp' }, true);
+    const file = await workspaceSvc.createFile({ parentId: 'temp' }, true);
     const wrapper = mount();
     select('temp');
     wrapper.find('.side-title__button--delete').trigger('click');
@@ -123,7 +123,7 @@ describe('Explorer.vue', () => {
   });
 
   it('should delete temp files after confirmation', async () => {
-    const file = await fileSvc.createFile({ parentId: 'temp' }, true);
+    const file = await workspaceSvc.createFile({ parentId: 'temp' }, true);
     const wrapper = mount();
     select(file.id);
     wrapper.find('.side-title__button--delete').trigger('click');
@@ -133,8 +133,8 @@ describe('Explorer.vue', () => {
   });
 
   it('should delete folder after confirmation', async () => {
-    const folder = await fileSvc.storeItem({ type: 'folder' });
-    const file = await fileSvc.createFile({ parentId: folder.id }, true);
+    const folder = await workspaceSvc.storeItem({ type: 'folder' });
+    const file = await workspaceSvc.createFile({ parentId: folder.id }, true);
     const wrapper = mount();
     select(folder.id);
     wrapper.find('.side-title__button--delete').trigger('click');
@@ -146,7 +146,7 @@ describe('Explorer.vue', () => {
   });
 
   it('should rename files', async () => {
-    const file = await fileSvc.createFile({}, true);
+    const file = await workspaceSvc.createFile({}, true);
     const wrapper = mount();
     select(file.id);
     wrapper.find('.side-title__button--rename').trigger('click');
@@ -154,7 +154,7 @@ describe('Explorer.vue', () => {
   });
 
   it('should rename folders', async () => {
-    const folder = await fileSvc.storeItem({ type: 'folder' });
+    const folder = await workspaceSvc.storeItem({ type: 'folder' });
     const wrapper = mount();
     select(folder.id);
     wrapper.find('.side-title__button--rename').trigger('click');

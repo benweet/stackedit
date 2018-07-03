@@ -1,5 +1,5 @@
 import store from '../store';
-import fileSvc from './fileSvc';
+import workspaceSvc from './workspaceSvc';
 
 export default {
   newItem(isFolder = false) {
@@ -59,7 +59,7 @@ export default {
           parentId: 'trash',
         });
       } else {
-        fileSvc.deleteFile(id);
+        workspaceSvc.deleteFile(id);
       }
     };
 

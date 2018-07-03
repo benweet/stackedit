@@ -19,7 +19,7 @@
 
 <script>
 import { mapMutations, mapActions } from 'vuex';
-import fileSvc from '../services/fileSvc';
+import workspaceSvc from '../services/workspaceSvc';
 import explorerSvc from '../services/explorerSvc';
 
 export default {
@@ -102,10 +102,10 @@ export default {
       if (!cancel && !newChildNode.isNil && newChildNode.item.name) {
         try {
           if (newChildNode.isFolder) {
-            const item = await fileSvc.storeItem(newChildNode.item);
+            const item = await workspaceSvc.storeItem(newChildNode.item);
             this.select(item.id);
           } else {
-            const item = await fileSvc.createFile(newChildNode.item);
+            const item = await workspaceSvc.createFile(newChildNode.item);
             this.select(item.id);
           }
         } catch (e) {
@@ -120,7 +120,7 @@ export default {
       this.setEditingId(null);
       if (!cancel && item.id && value) {
         try {
-          await fileSvc.storeItem({
+          await workspaceSvc.storeItem({
             ...item,
             name: value,
           });
@@ -147,7 +147,7 @@ export default {
         && !targetNode.isNil
         && sourceNode.item.id !== targetNode.item.id
       ) {
-        fileSvc.storeItem({
+        workspaceSvc.storeItem({
           ...sourceNode.item,
           parentId: targetNode.item.id,
         });

@@ -1,10 +1,10 @@
 import DiffMatchPatch from 'diff-match-patch';
 import cledit from './cledit';
-import utils from './utils';
-import diffUtils from './diffUtils';
-import store from '../store';
-import EditorClassApplier from '../components/common/EditorClassApplier';
-import PreviewClassApplier from '../components/common/PreviewClassApplier';
+import utils from '../utils';
+import diffUtils from '../diffUtils';
+import store from '../../store';
+import EditorClassApplier from '../../components/common/EditorClassApplier';
+import PreviewClassApplier from '../../components/common/PreviewClassApplier';
 
 let clEditor;
 // let discussionIds = {};

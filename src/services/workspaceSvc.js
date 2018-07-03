@@ -4,6 +4,7 @@ import utils from './utils';
 const forbiddenFolderNameMatcher = /^\.stackedit-data$|^\.stackedit-trash$|\.md$|\.sync$|\.publish$/;
 
 export default {
+
   /**
    * Create a file in the store with the specified fields.
    */
@@ -29,7 +30,7 @@ export default {
       discussions: discussions || {},
       comments: comments || {},
     };
-    const workspaceUniquePaths = store.getters['workspace/hasUniquePaths'];
+    const workspaceUniquePaths = store.getters['workspace/currentWorkspaceHasUniquePaths'];
 
     // Show warning dialogs
     if (!background) {
@@ -90,7 +91,7 @@ export default {
     }
 
     // Check if there is a path conflict
-    if (store.getters['workspace/hasUniquePaths']) {
+    if (store.getters['workspace/currentWorkspaceHasUniquePaths']) {
       const parentPath = store.getters.pathsByItemId[item.parentId] || '';
       const path = parentPath + sanitizedName;
       const items = store.getters.itemsByPath[path] || [];
@@ -133,7 +134,7 @@ export default {
     store.commit(`${item.type}/setItem`, item);
 
     // Ensure path uniqueness
-    if (store.getters['workspace/hasUniquePaths']) {
+    if (store.getters['workspace/currentWorkspaceHasUniquePaths']) {
       this.makePathUnique(item.id);
     }
 
@@ -164,7 +165,7 @@ export default {
    * Ensure two files/folders don't have the same path if the workspace doesn't allow it.
    */
   ensureUniquePaths(idsToKeep = {}) {
-    if (store.getters['workspace/hasUniquePaths']) {
+    if (store.getters['workspace/currentWorkspaceHasUniquePaths']) {
       if (Object.keys(store.getters.pathsByItemId)
         .some(id => !idsToKeep[id] && this.makePathUnique(id))
       ) {
@@ -206,5 +207,60 @@ export default {
         return true;
       }
     }
+  },
+
+  addSyncLocation(location) {
+    store.commit('syncLocation/setItem', {
+      ...location,
+      id: utils.uid(),
+    });
+    // Sanitize the workspace
+    this.ensureUniqueLocations();
+  },
+
+  addPublishLocation(location) {
+    store.commit('publishLocation/setItem', {
+      ...location,
+      id: utils.uid(),
+    });
+    // Sanitize the workspace
+    this.ensureUniqueLocations();
+  },
+
+  /**
+   * Ensure two sync/publish locations of the same file don't have the same hash.
+   */
+  ensureUniqueLocations(idsToKeep = {}) {
+    ['syncLocation', 'publishLocation'].forEach((type) => {
+      store.getters[`${type}/items`].forEach((item) => {
+        if (!idsToKeep[item.id]
+          && store.getters[`${type}/groupedByFileIdAndHash`][item.fileId][item.hash].length > 1
+        ) {
+          store.commit(`${item.type}/deleteItem`, item.id);
+        }
+      });
+    });
+  },
+
+  /**
+   * Drop the database and clean the localStorage for the specified workspaceId.
+   */
+  async removeWorkspace(id) {
+    // Remove from the store first as workspace tabs will reload.
+    // Workspace deletion will be persisted as soon as possible
+    // by the store.getters['data/workspaces'] watcher in localDbSvc.
+    store.dispatch('workspace/removeWorkspace', id);
+
+    // Drop the database
+    await new Promise((resolve) => {
+      const dbName = utils.getDbName(id);
+      const request = indexedDB.deleteDatabase(dbName);
+      request.onerror = resolve; // Ignore errors
+      request.onsuccess = resolve;
+    });
+
+    // Clean the local storage
+    localStorage.removeItem(`${id}/lastSyncActivity`);
+    localStorage.removeItem(`${id}/lastWindowFocus`);
   },
 };

@@ -10,56 +10,54 @@ export default new Provider({
   getToken() {
     return store.getters['workspace/syncToken'];
   },
-  async initWorkspace() {
-    const dbUrl = (utils.queryParams.dbUrl || '').replace(/\/?$/, ''); // Remove trailing /
-    const workspaceParams = {
+  getWorkspaceParams({ dbUrl }) {
+    return {
       providerId: this.id,
       dbUrl,
     };
+  },
+  getWorkspaceLocationUrl({ dbUrl }) {
+    return dbUrl;
+  },
+  getSyncDataUrl(fileSyncData, { id }) {
+    const { dbUrl } = this.getToken();
+    return `${dbUrl}/${id}/data`;
+  },
+  getSyncDataDescription(fileSyncData, { id }) {
+    return id;
+  },
+  async initWorkspace() {
+    const dbUrl = (utils.queryParams.dbUrl || '').replace(/\/?$/, ''); // Remove trailing /
+    const workspaceParams = this.getWorkspaceParams({ dbUrl });
     const workspaceId = utils.makeWorkspaceId(workspaceParams);
-    const getToken = () => store.getters['data/couchdbTokensBySub'][workspaceId];
-    const getWorkspace = () => store.getters['data/sanitizedWorkspacesById'][workspaceId];
 
-    if (!getToken()) {
-      // Create token
+    // Create the token if it doesn't exist
+    if (!store.getters['data/couchdbTokensBySub'][workspaceId]) {
       store.dispatch('data/addCouchdbToken', {
         sub: workspaceId,
         dbUrl,
       });
     }
 
-    // Create the workspace
-    let workspace = getWorkspace();
-    if (!workspace) {
-      // Make sure the database exists and retrieve its name
-      let db;
+    // Create the workspace if it doesn't exist
+    if (!store.getters['workspace/workspacesById'][workspaceId]) {
       try {
-        db = await couchdbHelper.getDb(getToken());
+        // Make sure the database exists and retrieve its name
+        const db = await couchdbHelper.getDb(store.getters['data/couchdbTokensBySub'][workspaceId]);
+        store.dispatch('workspace/patchWorkspacesById', {
+          [workspaceId]: {
+            id: workspaceId,
+            name: db.db_name,
+            providerId: this.id,
+            dbUrl,
+          },
+        });
       } catch (e) {
         throw new Error(`${dbUrl} is not accessible. Make sure you have the proper permissions.`);
       }
-      store.dispatch('data/patchWorkspacesById', {
-        [workspaceId]: {
-          id: workspaceId,
-          name: db.db_name,
-          providerId: this.id,
-          dbUrl,
-        },
-      });
-      workspace = getWorkspace();
     }
 
-    // Fix the URL hash
-    utils.setQueryParams(workspaceParams);
-    if (workspace.url !== window.location.href) {
-      store.dispatch('data/patchWorkspacesById', {
-        [workspace.id]: {
-          ...workspace,
-          url: window.location.href,
-        },
-      });
-    }
-    return getWorkspace();
+    return store.getters['workspace/workspacesById'][workspaceId];
   },
   async getChanges() {
     const syncToken = store.getters['workspace/syncToken'];

@@ -4,16 +4,15 @@ import Provider from './common/Provider';
 
 export default new Provider({
   id: 'bloggerPage',
-  getToken(location) {
-    const token = store.getters['data/googleTokensBySub'][location.sub];
+  getToken({ sub }) {
+    const token = store.getters['data/googleTokensBySub'][sub];
     return token && token.isBlogger ? token : null;
   },
-  getUrl(location) {
-    return `https://www.blogger.com/blogger.g?blogID=${location.blogId}#editor/target=page;pageID=${location.pageId}`;
+  getLocationUrl({ blogId, pageId }) {
+    return `https://www.blogger.com/blogger.g?blogID=${blogId}#editor/target=page;pageID=${pageId}`;
   },
-  getDescription(location) {
-    const token = this.getToken(location);
-    return `${location.pageId} — ${location.blogUrl} — ${token.name}`;
+  getLocationDescription({ pageId }) {
+    return pageId;
   },
   async publish(token, html, metadata, publishLocation) {
     const page = await googleHelper.uploadBlogger({

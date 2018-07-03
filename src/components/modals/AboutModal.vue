@@ -24,7 +24,7 @@
       <a target="_blank" href="privacy_policy.html">Privacy Policy</a>
     </div>
     <div class="modal__button-bar">
-      <button class="button" @click="config.resolve()">Close</button>
+      <button class="button button--resolve" @click="config.resolve()">Close</button>
     </div>
   </modal-inner>
 </template>

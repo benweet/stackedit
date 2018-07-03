@@ -14,15 +14,15 @@
       </form-entry>
     </div>
     <div class="modal__button-bar">
-      <button class="button button--copy">Copy to clipboard</button>
+      <button class="button button--copy" v-clipboard="result" @click="info('HTML copied to clipboard!')">Copy</button>
       <button class="button" @click="config.reject()">Cancel</button>
-      <button class="button" @click="resolve()">Ok</button>
+      <button class="button button--resolve" @click="resolve()">Ok</button>
     </div>
   </modal-inner>
 </template>
 
 <script>
-import Clipboard from 'clipboard';
+import { mapActions } from 'vuex';
 import exportSvc from '../../services/exportSvc';
 import modalTemplate from './common/modalTemplate';
 
@@ -48,14 +48,11 @@ export default modalTemplate({
     }, {
       immediate: true,
     });
-    this.clipboard = new Clipboard(this.$el.querySelector('.button--copy'), {
-      text: () => this.result,
-    });
-  },
-  destroyed() {
-    this.clipboard.destroy();
   },
   methods: {
+    ...mapActions('notification', [
+      'info',
+    ]),
     resolve() {
       const { config } = this;
       const currentFile = this.$store.getters['file/current'];

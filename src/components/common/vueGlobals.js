@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import Clipboard from 'clipboard';
 import timeSvc from '../../services/timeSvc';
 import store from '../../store';
 
@@ -32,10 +33,43 @@ Vue.directive('show', {
   },
 });
 
+const setElTitle = (el, title) => {
+  el.title = title;
+  el.setAttribute('aria-label', title);
+};
 Vue.directive('title', {
   bind(el, { value }) {
-    el.title = value;
-    el.setAttribute('aria-label', value);
+    setElTitle(el, value);
+  },
+  update(el, { value, oldValue }) {
+    if (value !== oldValue) {
+      setElTitle(el, value);
+    }
+  },
+});
+
+// Clipboard directive
+const createClipboard = (el, value) => {
+  el.seClipboard = new Clipboard(el, { text: () => value });
+};
+const destroyClipboard = (el) => {
+  if (el.seClipboard) {
+    el.seClipboard.destroy();
+    el.seClipboard = null;
+  }
+};
+Vue.directive('clipboard', {
+  bind(el, { value }) {
+    createClipboard(el, value);
+  },
+  update(el, { value, oldValue }) {
+    if (value !== oldValue) {
+      destroyClipboard(el);
+      createClipboard(el, value);
+    }
+  },
+  unbind(el) {
+    destroyClipboard(el);
   },
 });
 

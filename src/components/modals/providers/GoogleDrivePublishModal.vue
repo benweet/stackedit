@@ -48,7 +48,7 @@
     </div>
     <div class="modal__button-bar">
       <button class="button" @click="config.reject()">Cancel</button>
-      <button class="button" @click="resolve()">Ok</button>
+      <button class="button button--resolve" @click="resolve()">Ok</button>
     </div>
   </modal-inner>
 </template>
@@ -73,9 +73,11 @@ export default modalTemplate({
         'modal/hideUntil',
         googleHelper.openPicker(this.config.token, 'folder')
           .then((folders) => {
-            this.$store.dispatch('data/patchLocalSettings', {
-              googleDriveFolderId: folders[0].id,
-            });
+            if (folders[0]) {
+              this.$store.dispatch('data/patchLocalSettings', {
+                googleDriveFolderId: folders[0].id,
+              });
+            }
           }),
       );
     },

@@ -1,4 +1,4 @@
-import fileSvc from './fileSvc';
+import workspaceSvc from './workspaceSvc';
 import utils from './utils';
 
 export default {
@@ -51,7 +51,7 @@ export default {
 
     await utils.awaitSequence(
       Object.keys(folderNameMap),
-      async externalId => fileSvc.setOrPatchItem({
+      async externalId => workspaceSvc.setOrPatchItem({
         id: folderIdMap[externalId],
         type: 'folder',
         name: folderNameMap[externalId],
@@ -61,7 +61,7 @@ export default {
 
     await utils.awaitSequence(
       Object.keys(fileNameMap),
-      async externalId => fileSvc.createFile({
+      async externalId => workspaceSvc.createFile({
         name: fileNameMap[externalId],
         parentId: folderIdMap[parentIdMap[externalId]],
         text: textMap[externalId],

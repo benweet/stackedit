@@ -4,7 +4,7 @@
       <div class="modal__image">
         <icon-provider provider-id="gist"></icon-provider>
       </div>
-      <p>Save <b>{{currentFileName}}</b> to a <b>Gist</b> and keep it synchronized.</p>
+      <p>Save <b>{{currentFileName}}</b> to a <b>Gist</b> and keep it synced.</p>
       <form-entry label="Filename" error="filename">
         <input slot="field" class="textfield" type="text" v-model.trim="filename" @keydown.enter="resolve()">
       </form-entry>
@@ -24,7 +24,7 @@
     </div>
     <div class="modal__button-bar">
       <button class="button" @click="config.reject()">Cancel</button>
-      <button class="button" @click="resolve()">Ok</button>
+      <button class="button button--resolve" @click="resolve()">Ok</button>
     </div>
   </modal-inner>
 </template>

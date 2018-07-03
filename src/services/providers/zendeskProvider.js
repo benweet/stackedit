@@ -7,13 +7,12 @@ export default new Provider({
   getToken(location) {
     return store.getters['data/zendeskTokensBySub'][location.sub];
   },
-  getUrl(location) {
+  getLocationUrl(location) {
     const token = this.getToken(location);
     return `https://${token.subdomain}.zendesk.com/hc/${location.locale}/articles/${location.articleId}`;
   },
-  getDescription(location) {
-    const token = this.getToken(location);
-    return `${location.articleId} — ${token.name} — ${token.subdomain}`;
+  getLocationDescription({ articleId }) {
+    return articleId;
   },
   async publish(token, html, metadata, publishLocation) {
     const articleId = await zendeskHelper.uploadArticle({

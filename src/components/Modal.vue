@@ -5,7 +5,7 @@
       <div class="modal__content" v-html="simpleModal.contentHtml(config)"></div>
       <div class="modal__button-bar">
         <button class="button" v-if="simpleModal.rejectText" @click="config.reject()">{{simpleModal.rejectText}}</button>
-        <button class="button" v-if="simpleModal.resolveText" @click="config.resolve()">{{simpleModal.resolveText}}</button>
+        <button class="button button--resolve" v-if="simpleModal.resolveText" @click="config.resolve()">{{simpleModal.resolveText}}</button>
       </div>
     </modal-inner>
   </div>
@@ -250,7 +250,7 @@ export default {
 }
 
 .modal__sub-title {
-  opacity: 0.5;
+  opacity: 0.6;
   font-size: 0.75rem;
   margin-bottom: 1.5rem;
 }
@@ -278,8 +278,10 @@ export default {
 }
 
 .modal__button-bar {
-  margin-top: 1.75rem;
-  text-align: right;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
 }
 
 .form-entry {

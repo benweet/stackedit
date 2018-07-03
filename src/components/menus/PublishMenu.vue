@@ -16,7 +16,7 @@
         </menu-entry>
         <menu-entry @click.native="managePublish">
           <icon-view-list slot="icon"></icon-view-list>
-          <div>File publication</div>
+          <div><div class="menu-entry__label menu-entry__label--count">{{locationCount}}</div> File publication</div>
           <span>Manage current file publication locations.</span>
         </menu-entry>
       </div>
@@ -113,8 +113,7 @@ import zendeskHelper from '../../services/providers/helpers/zendeskHelper';
 import publishSvc from '../../services/publishSvc';
 import store from '../../store';
 
-const tokensToArray = (tokens, filter = () => true) => Object.keys(tokens)
-  .map(sub => tokens[sub])
+const tokensToArray = (tokens, filter = () => true) => Object.values(tokens)
   .filter(token => filter(token))
   .sort((token1, token2) => token1.name.localeCompare(token2.name));
 
@@ -142,6 +141,9 @@ export default {
     ...mapGetters('publishLocation', {
       publishLocations: 'current',
     }),
+    locationCount() {
+      return Object.keys(this.publishLocations).length;
+    },
     currentFileName() {
       return this.$store.getters['file/current'].name;
     },
@@ -178,8 +180,10 @@ export default {
         publishSvc.requestPublish();
       }
     },
-    managePublish() {
-      return this.$store.dispatch('modal/open', 'publishManagement');
+    async managePublish() {
+      try {
+        await this.$store.dispatch('modal/open', 'publishManagement');
+      } catch (e) { /* cancel */ }
     },
     async addGoogleDriveAccount() {
       try {

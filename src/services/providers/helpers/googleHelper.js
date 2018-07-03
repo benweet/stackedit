@@ -413,7 +413,7 @@ export default {
       });
       revisions.forEach((revision) => {
         store.commit('userInfo/addItem', {
-          id: revision.lastModifyingUser.permissionId,
+          id: `go:${revision.lastModifyingUser.permissionId}`,
           name: revision.lastModifyingUser.displayName,
           imageUrl: revision.lastModifyingUser.photoLink,
         });

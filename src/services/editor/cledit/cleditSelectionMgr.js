@@ -29,10 +29,14 @@ function SelectionMgr(editor) {
 
   this.createRange = (start, end) => {
     const range = document.createRange();
-    const startContainer = Number.isNaN(start) ? start : this.findContainer(start < 0 ? 0 : start);
+    const startContainer = typeof start === 'number'
+      ? this.findContainer(start < 0 ? 0 : start)
+      : start;
     let endContainer = startContainer;
     if (start !== end) {
-      endContainer = Number.isNaN(end) ? end : this.findContainer(end < 0 ? 0 : end);
+      endContainer = typeof end === 'number'
+        ? this.findContainer(end < 0 ? 0 : end)
+        : end;
     }
     range.setStart(startContainer.container, startContainer.offsetInContainer);
     range.setEnd(endContainer.container, endContainer.offsetInContainer);

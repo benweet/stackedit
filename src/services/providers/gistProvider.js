@@ -5,15 +5,14 @@ import utils from '../utils';
 
 export default new Provider({
   id: 'gist',
-  getToken(location) {
-    return store.getters['data/githubTokensBySub'][location.sub];
+  getToken({ sub }) {
+    return store.getters['data/githubTokensBySub'][sub];
   },
-  getUrl(location) {
-    return `https://gist.github.com/${location.gistId}`;
+  getLocationUrl({ gistId }) {
+    return `https://gist.github.com/${gistId}`;
   },
-  getDescription(location) {
-    const token = this.getToken(location);
-    return `${location.filename} — ${location.gistId} — ${token.name}`;
+  getLocationDescription({ filename }) {
+    return filename;
   },
   async downloadContent(token, syncLocation) {
     const content = await githubHelper.downloadGist({

@@ -1,6 +1,9 @@
 <template>
   <modal-inner class="modal__inner-1--publish-management" aria-label="Manage publication locations">
     <div class="modal__content">
+      <div class="modal__image">
+        <icon-upload></icon-upload>
+      </div>
       <p v-if="publishLocations.length"><b>{{currentFileName}}</b> is published to the following location(s):</p>
       <p v-else><b>{{currentFileName}}</b> is not published yet.</p>
       <div>
@@ -12,21 +15,21 @@
             {{location.description}}
           </div>
           <div class="publish-entry__buttons flex flex--row flex--center">
-            <a class="publish-entry__button button" :href="location.url" target="_blank">
+            <a class="publish-entry__button button" :href="location.url" target="_blank" v-title="'Open location'">
               <icon-open-in-new></icon-open-in-new>
             </a>
-            <button class="publish-entry__button button" @click="remove(location)">
+            <button class="publish-entry__button button" @click="remove(location)" v-title="'Remove location'">
               <icon-delete></icon-delete>
             </button>
           </div>
         </div>
       </div>
       <div class="modal__info" v-if="publishLocations.length">
-        <b>Note:</b> Removing a synchronized location won't delete any file.
+        <b>Tip:</b> Removing a location won't delete any file.
       </div>
     </div>
     <div class="modal__button-bar">
-      <button class="button" @click="config.resolve()">Close</button>
+      <button class="button button--resolve" @click="config.resolve()">Close</button>
     </div>
   </modal-inner>
 </template>

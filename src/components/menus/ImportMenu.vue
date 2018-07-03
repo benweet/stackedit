@@ -29,7 +29,7 @@ import htmlSanitizer from '../../libs/htmlSanitizer';
 import MenuEntry from './common/MenuEntry';
 import Provider from '../../services/providers/common/Provider';
 import store from '../../store';
-import fileSvc from '../../services/fileSvc';
+import workspaceSvc from '../../services/workspaceSvc';
 
 const turndownService = new TurndownService(store.getters['data/computedSettings'].turndown);
 
@@ -56,7 +56,7 @@ export default {
     async onImportMarkdown(evt) {
       const file = evt.target.files[0];
       const content = await readFile(file);
-      const item = await fileSvc.createFile({
+      const item = await workspaceSvc.createFile({
         ...Provider.parseContent(content),
         name: file.name,
       });
@@ -67,7 +67,7 @@ export default {
       const content = await readFile(file);
       const sanitizedContent = htmlSanitizer.sanitizeHtml(content)
         .replace(/&#160;/g, ' '); // Replace non-breaking spaces with classic spaces
-      const item = await fileSvc.createFile({
+      const item = await workspaceSvc.createFile({
         ...Provider.parseContent(turndownService.turndown(sanitizedContent)),
         name: file.name,
       });

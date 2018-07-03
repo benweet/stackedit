@@ -50,6 +50,7 @@ import Database from './Database';
 import Magnify from './Magnify';
 import FormatListChecks from './FormatListChecks';
 import CloseCircle from './CloseCircle';
+import ContentCopy from './ContentCopy';
 
 Vue.component('iconProvider', Provider);
 Vue.component('iconFormatBold', FormatBold);
@@ -102,3 +103,4 @@ Vue.component('iconDatabase', Database);
 Vue.component('iconMagnify', Magnify);
 Vue.component('iconFormatListChecks', FormatListChecks);
 Vue.component('iconCloseCircle', CloseCircle);
+Vue.component('iconContentCopy', ContentCopy);

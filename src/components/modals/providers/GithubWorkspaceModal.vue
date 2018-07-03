@@ -4,7 +4,7 @@
       <div class="modal__image">
         <icon-provider provider-id="github"></icon-provider>
       </div>
-      <p>Create a workspace synchronized with a <b>GitHub</b> repository folder.</p>
+      <p>Create a workspace synced with a <b>GitHub</b> repository folder.</p>
       <form-entry label="Repository URL" error="repoUrl">
         <input slot="field" class="textfield" type="text" v-model.trim="repoUrl" @keydown.enter="resolve()">
         <div class="form-entry__info">
@@ -26,13 +26,12 @@
     </div>
     <div class="modal__button-bar">
       <button class="button" @click="config.reject()">Cancel</button>
-      <button class="button" @click="resolve()">Ok</button>
+      <button class="button button--resolve" @click="resolve()">Ok</button>
     </div>
   </modal-inner>
 </template>
 
 <script>
-import githubProvider from '../../../services/providers/githubProvider';
 import utils from '../../../services/utils';
 import modalTemplate from '../common/modalTemplate';
 
@@ -46,14 +45,14 @@ export default modalTemplate({
   },
   methods: {
     resolve() {
-      const parsedRepo = githubProvider.parseRepoUrl(this.repoUrl);
+      const parsedRepo = utils.parseGithubRepoUrl(this.repoUrl);
       if (!parsedRepo) {
         this.setError('repoUrl');
       } else {
         const path = this.path && this.path.replace(/^\//, '');
         const url = utils.addQueryParams('app', {
+          ...parsedRepo,
           providerId: 'githubWorkspace',
-          repo: `${parsedRepo.owner}/${parsedRepo.repo}`,
           branch: this.branch || 'master',
           path: path || undefined,
         }, true);

@@ -8,13 +8,16 @@ const getAppKey = (fullAccess) => {
   return 'sw0hlixhr8q1xk0';
 };
 
+const httpHeaderSafeJson = args => args && JSON.stringify(args)
+  .replace(/[\u007f-\uffff]/g, c => `\\u${`000${c.charCodeAt(0).toString(16)}`.slice(-4)}`);
+
 const request = (token, options, args) => networkSvc.request({
   ...options,
   headers: {
     ...options.headers || {},
     'Content-Type': options.body && (typeof options.body === 'string'
       ? 'application/octet-stream' : 'application/json; charset=utf-8'),
-    'Dropbox-API-Arg': args && JSON.stringify(args),
+    'Dropbox-API-Arg': httpHeaderSafeJson(args),
     Authorization: `Bearer ${token.accessToken}`,
   },
 });

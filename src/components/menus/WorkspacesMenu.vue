@@ -1,6 +1,6 @@
 <template>
   <div class="side-bar__panel side-bar__panel--menu">
-    <div class="workspace" v-for="(workspace, id) in sanitizedWorkspacesById" :key="id">
+    <div class="workspace" v-for="(workspace, id) in workspacesById" :key="id">
       <menu-entry :href="workspace.url" target="_blank">
         <icon-provider slot="icon" :provider-id="workspace.providerId"></icon-provider>
         <div class="workspace__name"><div class="menu-entry__label" v-if="currentWorkspace === workspace">current</div>{{workspace.name}}</div>
@@ -9,19 +9,22 @@
     <hr>
     <menu-entry @click.native="addCouchdbWorkspace">
       <icon-provider slot="icon" provider-id="couchdbWorkspace"></icon-provider>
-      <span>Add CouchDB workspace</span>
+      <div>CouchDB workspace</div>
+      <span>Add a workspace synced with your CouchDB database.</span>
     </menu-entry>
     <menu-entry @click.native="addGithubWorkspace">
       <icon-provider slot="icon" provider-id="githubWorkspace"></icon-provider>
-      <span>Add GitHub workspace</span>
+      <div>GitHub workspace</div>
+      <span>Add a workspace synced with a GitHub repository.</span>
     </menu-entry>
     <menu-entry @click.native="addGoogleDriveWorkspace">
       <icon-provider slot="icon" provider-id="googleDriveWorkspace"></icon-provider>
-      <span>Add Google Drive workspace</span>
+      <div>Google Drive workspace</div>
+      <span>Add a workspace synced with a Google Drive folder.</span>
     </menu-entry>
     <menu-entry @click.native="manageWorkspaces">
       <icon-database slot="icon"></icon-database>
-      <span>Manage workspaces</span>
+      <span><div class="menu-entry__label menu-entry__label--count">{{workspaceCount}}</div> Manage workspaces</span>
     </menu-entry>
   </div>
 </template>
@@ -36,12 +39,13 @@ export default {
     MenuEntry,
   },
   computed: {
-    ...mapGetters('data', [
-      'sanitizedWorkspaceById',
-    ]),
     ...mapGetters('workspace', [
+      'workspacesById',
       'currentWorkspace',
     ]),
+    workspaceCount() {
+      return Object.keys(this.workspacesById).length;
+    },
   },
   methods: {
     async addCouchdbWorkspace() {

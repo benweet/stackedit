@@ -4,7 +4,7 @@
       <div class="modal__image">
         <icon-provider provider-id="dropbox"></icon-provider>
       </div>
-      <p>Save <b>{{currentFileName}}</b> to your <b>Dropbox</b> and keep it synchronized.</p>
+      <p>Save <b>{{currentFileName}}</b> to your <b>Dropbox</b> and keep it synced.</p>
       <form-entry label="File path" error="path">
         <input slot="field" class="textfield" type="text" v-model.trim="path" @keydown.enter="resolve()">
         <div class="form-entry__info">
@@ -15,7 +15,7 @@
     </div>
     <div class="modal__button-bar">
       <button class="button" @click="config.reject()">Cancel</button>
-      <button class="button" @click="resolve()">Ok</button>
+      <button class="button button--resolve" @click="resolve()">Ok</button>
     </div>
   </modal-inner>
 </template>

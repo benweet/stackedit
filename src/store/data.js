@@ -1,14 +1,15 @@
 import Vue from 'vue';
 import yaml from 'js-yaml';
 import utils from '../services/utils';
-import defaultWorkspaces from '../data/defaultWorkspaces';
-import defaultSettings from '../data/defaultSettings.yml';
-import defaultLocalSettings from '../data/defaultLocalSettings';
-import defaultLayoutSettings from '../data/defaultLayoutSettings';
-import plainHtmlTemplate from '../data/plainHtmlTemplate.html';
-import styledHtmlTemplate from '../data/styledHtmlTemplate.html';
-import styledHtmlWithTocTemplate from '../data/styledHtmlWithTocTemplate.html';
-import jekyllSiteTemplate from '../data/jekyllSiteTemplate.html';
+import defaultWorkspaces from '../data/defaults/defaultWorkspaces';
+import defaultSettings from '../data/defaults/defaultSettings.yml';
+import defaultLocalSettings from '../data/defaults/defaultLocalSettings';
+import defaultLayoutSettings from '../data/defaults/defaultLayoutSettings';
+import plainHtmlTemplate from '../data/templates/plainHtmlTemplate.html';
+import styledHtmlTemplate from '../data/templates/styledHtmlTemplate.html';
+import styledHtmlWithTocTemplate from '../data/templates/styledHtmlWithTocTemplate.html';
+import jekyllSiteTemplate from '../data/templates/jekyllSiteTemplate.html';
+import constants from '../data/constants';
 
 const itemTemplate = (id, data = {}) => ({
   id,
@@ -33,7 +34,7 @@ const empty = (id) => {
 };
 
 // Item IDs that will be stored in the localStorage
-const lsItemIdSet = new Set(utils.localStorageDataIds);
+const lsItemIdSet = new Set(constants.localStorageDataIds);
 
 // Getter/setter/patcher factories
 const getter = id => state => ((lsItemIdSet.has(id)
@@ -58,13 +59,13 @@ const layoutSettingsToggler = propertyName => ({ getters, dispatch }, value) => 
   [propertyName]: value === undefined ? !getters.layoutSettings[propertyName] : value,
 });
 const notEnoughSpace = (getters) => {
-  const constants = getters['layout/constants'];
+  const layoutConstants = getters['layout/constants'];
   const showGutter = getters['discussion/currentDiscussion'];
-  return document.body.clientWidth < constants.editorMinWidth +
-    constants.explorerWidth +
-    constants.sideBarWidth +
-    constants.buttonBarWidth +
-    (showGutter ? constants.gutterWidth : 0);
+  return document.body.clientWidth < layoutConstants.editorMinWidth +
+    layoutConstants.explorerWidth +
+    layoutConstants.sideBarWidth +
+    layoutConstants.buttonBarWidth +
+    (showGutter ? layoutConstants.gutterWidth : 0);
 };
 
 // For templates

@@ -3,11 +3,13 @@ import githubHelper from './helpers/githubHelper';
 import Provider from './common/Provider';
 import utils from '../utils';
 import workspaceSvc from '../workspaceSvc';
+import userSvc from '../userSvc';
 
 const savedSha = {};
 
 export default new Provider({
   id: 'github',
+  name: 'GitHub',
   getToken({ sub }) {
     return store.getters['data/githubTokensBySub'][sub];
   },
@@ -23,21 +25,21 @@ export default new Provider({
     return path;
   },
   async downloadContent(token, syncLocation) {
-    try {
-      const { sha, data } = await githubHelper.downloadFile({
-        ...syncLocation,
-        token,
-      });
-      savedSha[syncLocation.id] = sha;
-      return Provider.parseContent(data, `${syncLocation.fileId}/content`);
-    } catch (e) {
-      // Ignore error, upload is going to fail anyway
-      return null;
-    }
+    const { sha, data } = await githubHelper.downloadFile({
+      ...syncLocation,
+      token,
+    });
+    savedSha[syncLocation.id] = sha;
+    return Provider.parseContent(data, `${syncLocation.fileId}/content`);
   },
   async uploadContent(token, content, syncLocation) {
     if (!savedSha[syncLocation.id]) {
-      await this.downloadContent(token, syncLocation); // Get the last sha
+      try {
+        // Get the last sha
+        await this.downloadContent(token, syncLocation);
+      } catch (e) {
+        // Ignore error
+      }
     }
     const sha = savedSha[syncLocation.id];
     delete savedSha[syncLocation.id];
@@ -50,7 +52,12 @@ export default new Provider({
     return syncLocation;
   },
   async publish(token, html, metadata, publishLocation) {
-    await this.downloadContent(token, publishLocation); // Get the last sha
+    try {
+      // Get the last sha
+      await this.downloadContent(token, publishLocation);
+    } catch (e) {
+      // Ignore error
+    }
     const sha = savedSha[publishLocation.id];
     delete savedSha[publishLocation.id];
     await githubHelper.uploadFile({
@@ -108,5 +115,51 @@ export default new Provider({
       branch,
       path,
     };
+  },
+  async listFileRevisions({ token, syncLocation }) {
+    const entries = await githubHelper.getCommits({
+      ...syncLocation,
+      token,
+    });
+
+    return entries.map(({
+      author,
+      committer,
+      commit,
+      sha,
+    }) => {
+      let user;
+      if (author && author.login) {
+        user = author;
+      } else if (committer && committer.login) {
+        user = committer;
+      }
+      const sub = `gh:${user.id}`;
+      userSvc.addInfo({ id: sub, name: user.login, imageUrl: user.avatar_url });
+      const date = (commit.author && commit.author.date)
+        || (commit.committer && commit.committer.date);
+      return {
+        id: sha,
+        sub,
+        created: date ? new Date(date).getTime() : 1,
+      };
+    });
+  },
+  async loadFileRevision() {
+    // Revision are already loaded
+    return false;
+  },
+  async getFileRevisionContent({
+    token,
+    contentId,
+    syncLocation,
+    revisionId,
+  }) {
+    const { data } = await githubHelper.downloadFile({
+      ...syncLocation,
+      token,
+      branch: revisionId,
+    });
+    return Provider.parseContent(data, contentId);
   },
 });

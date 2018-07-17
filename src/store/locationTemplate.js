@@ -1,5 +1,6 @@
 import moduleTemplate from './moduleTemplate';
 import providerRegistry from '../services/providers/common/providerRegistry';
+import utils from '../services/utils';
 
 const addToGroup = (groups, item) => {
   const list = groups[item.fileId];
@@ -54,7 +55,7 @@ export default (empty) => {
         const provider = providerRegistry.providersById[location.providerId];
         return {
           ...location,
-          description: provider.getLocationDescription(location),
+          description: utils.sanitizeName(provider.getLocationDescription(location)),
           url: provider.getLocationUrl(location),
         };
       });
@@ -74,7 +75,8 @@ export default (empty) => {
         id: 'main',
         providerId: workspaceProvider.id,
         fileId,
-        description: workspaceProvider.getSyncDataDescription(fileSyncData, contentSyncData),
+        description: utils.sanitizeName(workspaceProvider
+          .getSyncDataDescription(fileSyncData, contentSyncData)),
         url: workspaceProvider.getSyncDataUrl(fileSyncData, contentSyncData),
       }, ...current];
     },

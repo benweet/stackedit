@@ -18,6 +18,7 @@ const endsWith = (str, suffix) => str.slice(-suffix.length) === suffix;
 
 export default new Provider({
   id: 'githubWorkspace',
+  name: 'GitHub',
   getToken() {
     return store.getters['workspace/syncToken'];
   },
@@ -136,76 +137,90 @@ export default new Provider({
 
     // Collect changes
     const changes = [];
-    const pathIds = {};
-    const syncDataToKeep = Object.create(null);
+    const idsByPath = {};
     const syncDataByPath = store.getters['data/syncDataById'];
-    const { itemsByGitPath } = store.getters;
-    const getId = (path) => {
-      const existingItem = itemsByGitPath[path];
-      // Use the item ID only if the item was already synced
-      if (existingItem && syncDataByPath[path]) {
-        pathIds[path] = existingItem.id;
-        return existingItem.id;
+    const { itemIdsByGitPath } = store.getters;
+    const getIdFromPath = (path, isFile) => {
+      let itemId = idsByPath[path];
+      if (!itemId) {
+        const existingItemId = itemIdsByGitPath[path];
+        // We can replace the item only if it was already synced
+        if (existingItemId
+          && (syncDataByPath[path]
+          // Content may have already be synced
+          || (isFile && syncDataByPath[`/${path}`]))
+        ) {
+          itemId = existingItemId;
+        } else {
+          // Otherwise, make a new ID for a new item
+          itemId = utils.uid();
+        }
+        // If it's a file path, add the content path as well
+        if (isFile) {
+          idsByPath[`/${path}`] = `${itemId}/content`;
+        }
+        idsByPath[path] = itemId;
       }
-      // Generate a new ID
-      let id = utils.uid();
-      if (path[0] === '/') {
-        id += '/content';
-      }
-      pathIds[path] = id;
-      return id;
+      return itemId;
     };
 
     // Folder creations/updates
     // Assume map entries are sorted from top to bottom
     Object.entries(treeFolderMap).forEach(([path, parentPath]) => {
-      const item = utils.addItemHash({
-        id: getId(path),
-        type: 'folder',
-        name: path.slice(parentPath.length, -1),
-        parentId: pathIds[parentPath] || null,
-      });
-      changes.push({
-        syncDataId: path,
-        item,
-        syncData: {
-          id: path,
-          type: item.type,
-          hash: item.hash,
-        },
-      });
+      if (path === '.stackedit-trash/') {
+        idsByPath[path] = 'trash';
+      } else {
+        const item = utils.addItemHash({
+          id: getIdFromPath(path),
+          type: 'folder',
+          name: path.slice(parentPath.length, -1),
+          parentId: idsByPath[parentPath] || null,
+        });
+
+        const folderSyncData = syncDataByPath[path];
+        if (!folderSyncData || folderSyncData.hash !== item.hash) {
+          changes.push({
+            syncDataId: path,
+            item,
+            syncData: {
+              id: path,
+              type: item.type,
+              hash: item.hash,
+            },
+          });
+        }
+      }
     });
 
     // File/content creations/updates
     Object.entries(treeFileMap).forEach(([path, parentPath]) => {
-      // Look for content sync data as it's created before file sync data
+      const fileId = getIdFromPath(path, true);
       const contentPath = `/${path}`;
-      const contentId = getId(contentPath);
+      const contentId = idsByPath[contentPath];
 
       // File creations/updates
-      const [fileId] = contentId.split('/');
       const item = utils.addItemHash({
         id: fileId,
         type: 'file',
         name: path.slice(parentPath.length, -'.md'.length),
-        parentId: pathIds[parentPath] || null,
+        parentId: idsByPath[parentPath] || null,
       });
-      changes.push({
-        syncDataId: path,
-        item,
-        syncData: {
-          id: path,
-          type: item.type,
-          hash: item.hash,
-        },
-      });
+
+      const fileSyncData = syncDataByPath[path];
+      if (!fileSyncData || fileSyncData.hash !== item.hash) {
+        changes.push({
+          syncDataId: path,
+          item,
+          syncData: {
+            id: path,
+            type: item.type,
+            hash: item.hash,
+          },
+        });
+      }
 
       // Content creations/updates
       const contentSyncData = syncDataByPath[contentPath];
-      if (contentSyncData) {
-        syncDataToKeep[path] = true;
-        syncDataToKeep[contentPath] = true;
-      }
       if (!contentSyncData || contentSyncData.sha !== treeShaMap[path]) {
         const type = 'content';
         // Use `/` as a prefix to get a unique syncData id
@@ -233,11 +248,8 @@ export default new Provider({
       // Only template data are stored
       const [, id] = path.match(/^\.stackedit-data\/(templates)\.json$/) || [];
       if (id) {
-        pathIds[path] = id;
+        idsByPath[path] = id;
         const syncData = syncDataByItemId[id];
-        if (syncData) {
-          syncDataToKeep[syncData.id] = true;
-        }
         if (!syncData || syncData.sha !== treeShaMap[path]) {
           const type = 'data';
           changes.push({
@@ -273,14 +285,11 @@ export default new Provider({
         const [, filePath, data] = path.match(pathMatcher) || [];
         if (filePath) {
           // If there is a corresponding md file in the tree
-          const fileId = pathIds[`${filePath}.md`];
+          const fileId = idsByPath[`${filePath}.md`];
           if (fileId) {
             // Reuse existing ID or create a new one
-            const existingItem = itemsByGitPath[path];
-            const id = existingItem
-              ? existingItem.id
-              : utils.uid();
-            pathIds[path] = id;
+            const id = itemIdsByGitPath[path] || utils.uid();
+            idsByPath[path] = id;
 
             const item = utils.addItemHash({
               ...JSON.parse(utils.decodeBase64(data)),
@@ -288,22 +297,26 @@ export default new Provider({
               type,
               fileId,
             });
-            changes.push({
-              syncDataId: path,
-              item,
-              syncData: {
-                id: path,
-                type: item.type,
-                hash: item.hash,
-              },
-            });
+
+            const locationSyncData = syncDataByPath[path];
+            if (!locationSyncData || locationSyncData.hash !== item.hash) {
+              changes.push({
+                syncDataId: path,
+                item,
+                syncData: {
+                  id: path,
+                  type: item.type,
+                  hash: item.hash,
+                },
+              });
+            }
           }
         }
       }));
 
     // Deletions
     Object.keys(syncDataByPath).forEach((path) => {
-      if (!pathIds[path] && !syncDataToKeep[path]) {
+      if (!idsByPath[path]) {
         changes.push({ syncDataId: path });
       }
     });
@@ -331,7 +344,11 @@ export default new Provider({
       content: '',
       sha: treeShaMap[syncData.id],
     });
-    return syncData;
+
+    // Return sync data to save
+    return {
+      syncData,
+    };
   },
   async removeWorkspaceItem({ syncData }) {
     if (treeShaMap[syncData.id]) {
@@ -435,16 +452,16 @@ export default new Provider({
       },
     };
   },
-  async listRevisions(token, fileId) {
+  async listFileRevisions({ token, fileSyncData }) {
     const { owner, repo, branch } = store.getters['workspace/currentWorkspace'];
-    const syncData = Provider.getContentSyncData(fileId);
     const entries = await githubHelper.getCommits({
       token,
       owner,
       repo,
       sha: branch,
-      path: syncData.id,
+      path: getAbsolutePath(fileSyncData),
     });
+
     return entries.map(({
       author,
       committer,
@@ -466,17 +483,24 @@ export default new Provider({
         sub,
         created: date ? new Date(date).getTime() : 1,
       };
-    })
-      .sort((revision1, revision2) => revision2.created - revision1.created);
+    });
   },
-  async getRevisionContent(token, fileId, revisionId) {
-    const syncData = Provider.getContentSyncData(fileId);
+  async loadFileRevision() {
+    // Revisions are already loaded
+    return false;
+  },
+  async getFileRevisionContent({
+    token,
+    contentId,
+    fileSyncData,
+    revisionId,
+  }) {
     const { data } = await githubHelper.downloadFile({
       ...store.getters['workspace/currentWorkspace'],
       token,
       branch: revisionId,
-      path: getAbsolutePath(syncData),
+      path: getAbsolutePath(fileSyncData),
     });
-    return Provider.parseContent(data, `${fileId}/content`);
+    return Provider.parseContent(data, contentId);
   },
 });

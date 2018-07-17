@@ -1,5 +1,6 @@
 import utils from '../services/utils';
 import providerRegistry from '../services/providers/common/providerRegistry';
+import constants from '../data/constants';
 
 export default {
   namespaced: true,
@@ -22,14 +23,14 @@ export default {
       Object.entries(rootGetters['data/workspaces']).forEach(([id, workspace]) => {
         const sanitizedWorkspace = {
           id,
-          providerId: mainWorkspaceToken && 'googleDriveAppData',
+          providerId: 'googleDriveAppData',
           sub: mainWorkspaceToken && mainWorkspaceToken.sub,
           ...workspace,
         };
         // Filter workspaces that don't have a provider
         const workspaceProvider = providerRegistry.providersById[sanitizedWorkspace.providerId];
         if (workspaceProvider) {
-          // Rebuild the url with the current hostname
+          // Build the url with the current hostname
           const params = workspaceProvider.getWorkspaceParams(sanitizedWorkspace);
           sanitizedWorkspace.url = utils.addQueryParams('app', params, true);
           sanitizedWorkspace.locationUrl = workspaceProvider
@@ -81,7 +82,7 @@ export default {
       if (!loginToken) {
         return null;
       }
-      const prefix = utils.someResult(Object.entries(utils.userIdPrefixes), ([key, value]) => {
+      const prefix = utils.someResult(Object.entries(constants.userIdPrefixes), ([key, value]) => {
         if (rootGetters[`data/${value}TokensBySub`][loginToken.sub]) {
           return key;
         }

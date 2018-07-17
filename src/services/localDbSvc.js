@@ -3,6 +3,7 @@ import utils from './utils';
 import store from '../store';
 import welcomeFile from '../data/welcomeFile.md';
 import workspaceSvc from './workspaceSvc';
+import constants from '../data/constants';
 
 const dbVersion = 1;
 const dbStoreName = 'objects';
@@ -82,7 +83,7 @@ const contentTypes = {
 };
 
 const hashMap = {};
-utils.types.forEach((type) => {
+constants.types.forEach((type) => {
   hashMap[type] = Object.create(null);
 });
 const lsHashMap = Object.create(null);
@@ -96,7 +97,7 @@ const localDbSvc = {
    * Sync data items stored in the localStorage.
    */
   syncLocalStorage() {
-    utils.localStorageDataIds.forEach((id) => {
+    constants.localStorageDataIds.forEach((id) => {
       const key = `data/${id}`;
 
       // Skip reloading the layoutSettings
@@ -327,7 +328,7 @@ const localDbSvc = {
     if (resetApp) {
       await Promise.all(Object.keys(store.getters['workspace/workspacesById'])
         .map(workspaceId => workspaceSvc.removeWorkspace(workspaceId)));
-      utils.localStorageDataIds.forEach((id) => {
+      constants.localStorageDataIds.forEach((id) => {
         // Clean data stored in localStorage
         localStorage.removeItem(`data/${id}`);
       });
@@ -372,7 +373,7 @@ const localDbSvc = {
 
     // If app was last opened 7 days ago and synchronization is off
     if (!store.getters['workspace/syncToken'] &&
-      (store.state.workspace.lastFocus + utils.cleanTrashAfter < Date.now())
+      (store.state.workspace.lastFocus + constants.cleanTrashAfter < Date.now())
     ) {
       // Clean files
       store.getters['file/items']

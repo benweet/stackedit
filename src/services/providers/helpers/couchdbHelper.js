@@ -141,6 +141,11 @@ export default {
    * http://docs.couchdb.org/en/2.1.1/api/document/common.html#delete--db-docid
    */
   async removeDocument(token, documentId, rev) {
+    if (!documentId) {
+      // Prevent from deleting the whole database
+      throw new Error('Missing document ID');
+    }
+
     return request(token, {
       method: 'DELETE',
       path: documentId,

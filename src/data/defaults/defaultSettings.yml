@@ -5,7 +5,7 @@ fontSizeFactor: 1
 # Adjust maximum text width in editor and preview
 maxWidthFactor: 1
 # Auto-sync frequency (in ms). Minimum is 60000.
-autoSyncEvery: 60000
+autoSyncEvery: 90000
 
 # Editor settings
 editor:
@@ -77,10 +77,11 @@ turndown:
   linkStyle: inlined
   linkReferenceStyle: full
 
+# GitHub commit messages
 github:
-  createFileMessage: Create {{path}} from https://stackedit.io/
-  updateFileMessage: Update {{path}} from https://stackedit.io/
-  deleteFileMessage: Delete {{path}} from https://stackedit.io/
+  createFileMessage: '{{path}} created from https://stackedit.io/'
+  updateFileMessage: '{{path}} updated from https://stackedit.io/'
+  deleteFileMessage: '{{path}} deleted from https://stackedit.io/'
 
 # Default content for new files
 newFileContent: |

@@ -54,7 +54,7 @@ export default {
 
     const deleteFile = (id) => {
       if (moveToTrash) {
-        store.commit('file/patchItem', {
+        workspaceSvc.setOrPatchItem({
           id,
           parentId: 'trash',
         });

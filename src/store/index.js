@@ -19,8 +19,9 @@ import syncedContent from './syncedContent';
 import userInfo from './userInfo';
 import workspace from './workspace';
 import locationTemplate from './locationTemplate';
-import emptyPublishLocation from '../data/emptyPublishLocation';
-import emptySyncLocation from '../data/emptySyncLocation';
+import emptyPublishLocation from '../data/empties/emptyPublishLocation';
+import emptySyncLocation from '../data/empties/emptySyncLocation';
+import constants from '../data/constants';
 
 Vue.use(Vuex);
 
@@ -77,7 +78,7 @@ const store = new Vuex.Store({
   getters: {
     allItemsById: (state) => {
       const result = {};
-      utils.types.forEach(type => Object.assign(result, state[type].itemsById));
+      constants.types.forEach(type => Object.assign(result, state[type].itemsById));
       return result;
     },
     pathsByItemId: (state, getters) => {
@@ -86,7 +87,7 @@ const store = new Vuex.Store({
       const getPath = (item) => {
         let itemPath = result[item.id];
         if (!itemPath) {
-          if (item.parendId === 'trash') {
+          if (item.parentId === 'trash') {
             itemPath = `.stackedit-trash/${item.name}`;
           } else {
             let { name } = item;
@@ -150,14 +151,19 @@ const store = new Vuex.Store({
       });
       return result;
     },
+    itemIdsByGitPath: (state, { gitPathsByItemId }) => {
+      const result = {};
+      Object.entries(gitPathsByItemId).forEach(([id, path]) => {
+        result[path] = id;
+      });
+      return result;
+    },
     itemsByGitPath: (state, { allItemsById, gitPathsByItemId }) => {
       const result = {};
       Object.entries(gitPathsByItemId).forEach(([id, path]) => {
         const item = allItemsById[id];
         if (item) {
-          const items = result[path] || [];
-          items.push(item);
-          result[path] = items;
+          result[path] = item;
         }
       });
       return result;

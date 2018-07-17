@@ -9,6 +9,7 @@ let syncStartPageToken;
 
 export default new Provider({
   id: 'googleDriveWorkspace',
+  name: 'Google Drive',
   getToken() {
     return store.getters['workspace/syncToken'];
   },
@@ -361,12 +362,16 @@ export default new Provider({
         ifNotTooLate,
       });
     }
-    // Build sync data
+
+    // Build sync data to save
     return {
-      id: file.id,
-      itemId: item.id,
-      type: item.type,
-      hash: item.hash,
+      syncData: {
+        id: file.id,
+        parentIds: file.parents,
+        itemId: item.id,
+        type: item.type,
+        hash: item.hash,
+      },
     };
   },
   async removeWorkspaceItem({ syncData, ifNotTooLate }) {
@@ -449,6 +454,7 @@ export default new Provider({
       // Create file sync data
       newFileSyncData = {
         id: gdriveFile.id,
+        parentIds: gdriveFile.parents,
         itemId: file.id,
         type: file.type,
         hash: file.hash,
@@ -495,25 +501,32 @@ export default new Provider({
     return {
       syncData: {
         id: file.id,
+        parentIds: file.parents,
         itemId: item.id,
         type: item.type,
         hash: item.hash,
       },
     };
   },
-  async listRevisions(token, fileId) {
-    const syncData = Provider.getContentSyncData(fileId);
-    const revisions = await googleHelper.getFileRevisions(token, syncData.id);
+  async listFileRevisions({ token, fileSyncData }) {
+    const revisions = await googleHelper.getFileRevisions(token, fileSyncData.id);
     return revisions.map(revision => ({
       id: revision.id,
-      sub: revision.lastModifyingUser && revision.lastModifyingUser.permissionId,
+      sub: `go:${revision.lastModifyingUser.permissionId}`,
       created: new Date(revision.modifiedTime).getTime(),
-    }))
-      .sort((revision1, revision2) => revision2.created - revision1.created);
+    }));
   },
-  async getRevisionContent(token, fileId, revisionId) {
-    const syncData = Provider.getContentSyncData(fileId);
-    const content = await googleHelper.downloadFileRevision(token, syncData.id, revisionId);
-    return Provider.parseContent(content, `${fileId}/content`);
+  async loadFileRevision() {
+    // Revision are already loaded
+    return false;
+  },
+  async getFileRevisionContent({
+    token,
+    contentId,
+    fileSyncData,
+    revisionId,
+  }) {
+    const content = await googleHelper.downloadFileRevision(token, fileSyncData.id, revisionId);
+    return Provider.parseContent(content, contentId);
   },
 });

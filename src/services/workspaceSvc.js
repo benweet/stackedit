@@ -1,5 +1,6 @@
 import store from '../store';
 import utils from './utils';
+import constants from '../data/constants';
 
 const forbiddenFolderNameMatcher = /^\.stackedit-data$|^\.stackedit-trash$|\.md$|\.sync$|\.publish$/;
 
@@ -35,7 +36,7 @@ export default {
     // Show warning dialogs
     if (!background) {
       // If name is being stripped
-      if (item.name !== utils.defaultName && item.name !== name) {
+      if (item.name !== constants.defaultName && item.name !== name) {
         await store.dispatch('modal/open', {
           type: 'stripName',
           item,
@@ -83,7 +84,7 @@ export default {
 
     // Show warning dialogs
     // If name has been stripped
-    if (sanitizedName !== utils.defaultName && sanitizedName !== item.name) {
+    if (sanitizedName !== constants.defaultName && sanitizedName !== item.name) {
       await store.dispatch('modal/open', {
         type: 'stripName',
         item,

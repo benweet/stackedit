@@ -6,6 +6,7 @@ import workspaceSvc from '../workspaceSvc';
 
 export default new Provider({
   id: 'googleDrive',
+  name: 'Google Drive',
   getToken({ sub }) {
     const token = store.getters['data/googleTokensBySub'][sub];
     return token && token.isDrive ? token : null;
@@ -189,5 +190,27 @@ export default new Provider({
       location.driveParentId = folderId;
     }
     return location;
+  },
+  async listFileRevisions({ token, syncLocation }) {
+    const revisions = await googleHelper.getFileRevisions(token, syncLocation.driveFileId);
+    return revisions.map(revision => ({
+      id: revision.id,
+      sub: `go:${revision.lastModifyingUser.permissionId}`,
+      created: new Date(revision.modifiedTime).getTime(),
+    }));
+  },
+  async loadFileRevision() {
+    // Revision are already loaded
+    return false;
+  },
+  async getFileRevisionContent({
+    token,
+    contentId,
+    syncLocation,
+    revisionId,
+  }) {
+    const content = await googleHelper
+      .downloadFileRevision(token, syncLocation.driveFileId, revisionId);
+    return Provider.parseContent(content, contentId);
   },
 });

@@ -19,6 +19,7 @@ const makePathRelative = (token, path) => {
 
 export default new Provider({
   id: 'dropbox',
+  name: 'Dropbox',
   getToken({ sub }) {
     return store.getters['data/dropboxTokensBySub'][sub];
   },
@@ -27,8 +28,8 @@ export default new Provider({
     const filename = pathComponents.pop();
     return `https://www.dropbox.com/home${pathComponents.join('/')}?preview=${filename}`;
   },
-  getLocationDescription({ path }) {
-    return path;
+  getLocationDescription({ path, dropboxFileId }) {
+    return dropboxFileId || path;
   },
   checkPath(path) {
     return path && path.match(/^\/[^\\<>:"|?*]+$/);
@@ -121,5 +122,28 @@ export default new Provider({
       sub: token.sub,
       path,
     };
+  },
+  async listFileRevisions({ token, syncLocation }) {
+    const entries = await dropboxHelper.listRevisions(token, syncLocation.dropboxFileId);
+    return entries.map(entry => ({
+      id: entry.rev,
+      sub: `db:${(entry.sharing_info || {}).modified_by || token.sub}`,
+      created: new Date(entry.server_modified).getTime(),
+    }));
+  },
+  async loadFileRevision() {
+    // Revision are already loaded
+    return false;
+  },
+  async getFileRevisionContent({
+    token,
+    contentId,
+    revisionId,
+  }) {
+    const { content } = await dropboxHelper.downloadFile({
+      token,
+      path: `rev:${revisionId}`,
+    });
+    return Provider.parseContent(content, contentId);
   },
 });

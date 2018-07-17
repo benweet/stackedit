@@ -1,3 +1,5 @@
+import providerRegistry from '../services/providers/common/providerRegistry';
+
 const defaultTimeout = 5000;
 
 export default {
@@ -34,7 +36,8 @@ export default {
         } else if (error.status) {
           const location = rootState.queue.currentLocation;
           if (location.providerId) {
-            item.content = `HTTP error ${error.status} on ${location.providerId} location.`;
+            const provider = providerRegistry.providersById[location.providerId];
+            item.content = `HTTP error ${error.status} on ${provider.name} location.`;
           } else {
             item.content = `HTTP error ${error.status}.`;
           }

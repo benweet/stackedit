@@ -79,6 +79,7 @@ const publishFile = async (fileId) => {
               utils.serializeObject(publishLocationToStore)
             ) {
               store.commit('publishLocation/patchItem', publishLocationToStore);
+              workspaceSvc.ensureUniqueLocations();
             }
             counter += 1;
           } catch (err) {

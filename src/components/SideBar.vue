@@ -116,6 +116,11 @@ export default {
   hr + hr {
     display: none;
   }
+
+  .textfield {
+    font-size: 14px;
+    height: 26px;
+  }
 }
 
 .side-bar__inner {

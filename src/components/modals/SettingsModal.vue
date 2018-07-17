@@ -36,7 +36,7 @@ import { mapGetters } from 'vuex';
 import ModalInner from './common/ModalInner';
 import Tab from './common/Tab';
 import CodeEditor from '../CodeEditor';
-import defaultSettings from '../../data/defaultSettings.yml';
+import defaultSettings from '../../data/defaults/defaultSettings.yml';
 
 const emptySettings = `# Add your custom settings here to override the
 # default settings.
@@ -83,8 +83,8 @@ export default {
 <style lang="scss">
 @import '../../styles/variables.scss';
 
-.modal__inner-1--settings {
-  max-width: 600px;
+.modal__inner-1.modal__inner-1--settings {
+  max-width: 560px;
 }
 
 .modal__error--settings {

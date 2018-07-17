@@ -4,6 +4,7 @@ import Provider from './common/Provider';
 
 export default new Provider({
   id: 'blogger',
+  name: 'Blogger',
   getToken({ sub }) {
     const token = store.getters['data/googleTokensBySub'][sub];
     return token && token.isBlogger ? token : null;

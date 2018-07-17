@@ -55,8 +55,8 @@ import { mapGetters } from 'vuex';
 import utils from '../../services/utils';
 import ModalInner from './common/ModalInner';
 import CodeEditor from '../CodeEditor';
-import emptyTemplateValue from '../../data/emptyTemplateValue.html';
-import emptyTemplateHelpers from '!raw-loader!../../data/emptyTemplateHelpers.js'; // eslint-disable-line
+import emptyTemplateValue from '../../data/empties/emptyTemplateValue.html';
+import emptyTemplateHelpers from '!raw-loader!../../data/empties/emptyTemplateHelpers.js'; // eslint-disable-line
 
 const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
 
@@ -163,7 +163,7 @@ export default {
 </script>
 
 <style lang="scss">
-.modal__inner-1--templates {
-  max-width: 680px;
+.modal__inner-1.modal__inner-1--templates {
+  max-width: 600px;
 }
 </style>

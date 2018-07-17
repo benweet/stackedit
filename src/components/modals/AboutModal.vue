@@ -65,6 +65,7 @@ export default {
   small {
     display: block;
     font-size: 0.75em;
+    opacity: 0.75;
   }
 
   hr {

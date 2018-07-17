@@ -2,12 +2,12 @@
   <div class="tour" @keydown.esc="skip">
     <div class="tour-step" :class="'tour-step--' + step" :style="stepStyle">
       <div class="tour-step__inner" v-if="step === 'welcome'">
-        <h2>Welcome to StackEdit!</h2>
-        <p>Greater, lighter, faster... <b>StackEdit 5</b> is here!</p>
+        <h2>Welcome back!</h2>
+        <p>The new <b>StackEdit 5</b> is here!</p>
         <p>Please click <b>Next</b> to take a quick tour.</p>
         <div class="tour-step__button-bar">
           <button class="button" @click="finish">Skip</button>
-          <button class="button" @click="next">Next</button>
+          <button class="button button--resolve" @click="next">Next</button>
         </div>
       </div>
       <div class="tour-step__inner" v-else-if="step === 'editor'">
@@ -16,7 +16,7 @@
         <p>Click <icon-side-preview></icon-side-preview> to toggle the side preview.</p>
         <div class="tour-step__button-bar">
           <button class="button" @click="finish">Skip</button>
-          <button class="button" @click="next">Next</button>
+          <button class="button button--resolve" @click="next">Next</button>
         </div>
       </div>
       <div class="tour-step__inner" v-else-if="step === 'explorer'">
@@ -25,7 +25,7 @@
         <p>Click <icon-folder></icon-folder> to open the file explorer.</p>
         <div class="tour-step__button-bar">
           <button class="button" @click="finish">Skip</button>
-          <button class="button" @click="next">Next</button>
+          <button class="button button--resolve" @click="next">Next</button>
         </div>
       </div>
       <div class="tour-step__inner" v-else-if="step === 'menu'">
@@ -34,7 +34,7 @@
         <p>Click <icon-provider provider-id="stackedit"></icon-provider> to explore the menu.</p>
         <div class="tour-step__button-bar">
           <button class="button" @click="finish">Skip</button>
-          <button class="button" @click="next">Next</button>
+          <button class="button button--resolve" @click="next">Next</button>
         </div>
       </div>
       <div class="tour-step__inner" v-else-if="step === 'end'">
@@ -42,7 +42,7 @@
         <p>If you like StackEdit, please rate 5 stars on the <a target="_blank" href="https://chrome.google.com/webstore/detail/iiooodelglhkcpgbajoejffhijaclcdg/reviews">Chrome Web Store</a>.</p>
         <p>You can also star the project on <a target="_blank" href="https://github.com/benweet/stackedit">GitHub</a> and join the <a target="_blank" href="https://community.stackedit.io/">community</a>.</p>
         <div class="tour-step__button-bar">
-          <button class="button" @click="finish">Ok</button>
+          <button class="button button--resolve" @click="finish">Ok</button>
         </div>
       </div>
     </div>
@@ -139,12 +139,12 @@ export default {
 }
 
 $tour-step-background: mix(#f3f3f3, $selection-highlighting-color, 75%);
-$tour-step-width: 220px;
+$tour-step-width: 240px;
 
 .tour-step__inner {
   position: absolute;
   background-color: $tour-step-background;
-  padding: 1.5em 1em 1em;
+  padding: 1em;
   font-size: 0.9em;
   line-height: 1.33;
   width: $tour-step-width;
@@ -213,6 +213,11 @@ $tour-step-width: 220px;
 }
 
 .tour-step__button-bar {
+  margin-top: 1.75em;
   text-align: right;
+
+  .button {
+    font-size: 1.1em;
+  }
 }
 </style>

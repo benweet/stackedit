@@ -1,26 +1,41 @@
 <template>
-  <div class="history side-bar__panel">
-    <div class="side-bar__info" v-if="!syncToken">
-      <p>You have to <a href="javascript:void(0)" @click="signin">sign in with Google</a> to enable revision history.</p>
-      <p><b>Note:</b> This will sync your main workspace.</p>
-    </div>
-    <div class="side-bar__info" v-if="loading">
-      <p>Loading history…</p>
-    </div>
-    <div class="side-bar__info" v-else-if="!revisionsWithSpacer.length">
-      <p><b>{{currentFileName}}</b> has no history.</p>
-    </div>
-    <div class="revision" v-for="revision in revisionsWithSpacer" :key="revision.id">
-      <div class="history__spacer" v-if="revision.spacer"></div>
-      <a class="revision__button button flex flex--row" href="javascript:void(0)" @click="open(revision)">
-        <div class="revision__icon">
-          <user-image :user-id="revision.sub"></user-image>
+  <div class="history side-bar__panel side-bar__panel--menu">
+    <div class="side-bar__info">
+      <p v-if="syncLocations.length > 1">
+        <select slot="field" class="textfield" v-model="syncLocationId" @keydown.enter="resolve()">
+          <option v-for="location in syncLocations" :key="location.id" :value="location.id">
+            {{ location.description }}
+          </option>
+        </select>
+      </p>
+      <p v-if="!historyContext">Synchronize <b>{{currentFileName}}</b> to enable revision history or <a href="javascript:void(0)" @click="signin">sign in with Google</a> to synchronize your main workspace.</p>
+      <p v-else-if="loading">Loading history…</p>
+      <p v-else-if="!revisionsWithSpacer.length"><b>{{currentFileName}}</b> has no history.</p>
+      <div class="menu-entry menu-entry--info flex flex--row flex--align-center" v-else>
+        <div class="menu-entry__icon menu-entry__icon--image">
+          <icon-provider :provider-id="syncLocation.providerId"></icon-provider>
         </div>
-        <div class="revision__header flex flex--column">
-          <user-name :user-id="revision.sub"></user-name>
-          <div class="revision__created">{{revision.created | formatTime}}</div>
-        </div>
-      </a>
+        <span v-if="syncLocation.url">
+          The following revisions are stored in <a :href="syncLocation.url" target="_blank">{{ syncLocationProviderName }}</a>.
+        </span>
+        <span v-else>
+          The following revisions are stored in {{ syncLocationProviderName }}.
+        </span>
+      </div>
+    </div>
+    <div>
+      <div class="revision" v-for="revision in revisionsWithSpacer" :key="revision.id">
+        <div class="history__spacer" v-if="revision.spacer"></div>
+        <a class="revision__button button flex flex--row" href="javascript:void(0)" @click="open(revision)">
+          <div class="revision__icon">
+            <user-image :user-id="revision.sub"></user-image>
+          </div>
+          <div class="revision__header flex flex--column">
+            <user-name :user-id="revision.sub"></user-name>
+            <div class="revision__created">{{revision.created | formatTime}}</div>
+          </div>
+        </a>
+      </div>
     </div>
     <div class="history__spacer history__spacer--last" v-if="revisions.length"></div>
     <div class="flex flex--row flex--end" v-if="showMoreButton">
@@ -30,7 +45,7 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from 'vuex';
+import { mapState, mapMutations, mapGetters } from 'vuex';
 import providerRegistry from '../../services/providers/common/providerRegistry';
 import MenuEntry from './common/MenuEntry';
 import UserImage from '../UserImage';
@@ -44,7 +59,7 @@ import syncSvc from '../../services/syncSvc';
 let editorClassAppliers = [];
 let previewClassAppliers = [];
 
-let cachedFileId;
+let cachedHistoryContextHash;
 let revisionsPromise;
 let revisionContentPromises;
 const pageSize = 30;
@@ -60,16 +75,73 @@ export default {
     allRevisions: [],
     loading: false,
     showCount: pageSize,
+    syncLocationId: null,
   }),
   computed: {
-    ...mapGetters('workspace', [
-      'syncToken',
+    ...mapGetters('data', [
+      'syncDataByItemId',
     ]),
+    ...mapGetters('syncLocation', {
+      syncLocations: 'currentWithWorkspaceSyncLocation',
+    }),
+    ...mapState('content', [
+      'revisionContent',
+    ]),
+    syncLocation() {
+      return utils.someResult(this.syncLocations, (syncLocation) => {
+        if (syncLocation.id === this.syncLocationId) {
+          return syncLocation;
+        }
+        return null;
+      });
+    },
+    syncLocationProviderName() {
+      if (!this.syncLocation) {
+        return null;
+      }
+      return providerRegistry.providersById[this.syncLocation.providerId].name;
+    },
     currentFileName() {
       return this.$store.getters['file/current'].name;
     },
+    historyContext() {
+      const { syncLocation } = this;
+      if (syncLocation) {
+        const provider = providerRegistry.providersById[syncLocation.providerId];
+        const token = provider.getToken(syncLocation);
+        const fileId = this.$store.getters['file/current'].id;
+        const contentId = `${fileId}/content`;
+        const historyContext = {
+          token,
+          fileId,
+          contentId,
+          syncLocation: this.syncLocation,
+        };
+        if (syncLocation.id !== 'main') {
+          return historyContext;
+        }
+
+        // Add syncData for workspace sync location
+        const { syncDataByItemId } = this;
+        const fileSyncData = syncDataByItemId[fileId];
+        const contentSyncData = syncDataByItemId[contentId];
+        if (fileSyncData && contentSyncData) {
+          return {
+            ...historyContext,
+            fileSyncData,
+            contentSyncData,
+          };
+        }
+      }
+      return null;
+    },
+    historyContextHash() {
+      return utils.serializeObject(this.historyContext);
+    },
     revisions() {
-      return this.allRevisions.slice(0, this.showCount);
+      return this.allRevisions.slice()
+        .sort((revision1, revision2) => revision2.created - revision1.created)
+        .slice(0, this.showCount);
     },
     revisionsWithSpacer() {
       let previousCreated = 0;
@@ -84,12 +156,6 @@ export default {
     },
     showMoreButton() {
       return this.showCount < this.allRevisions.length;
-    },
-    refreshTrigger() {
-      return utils.serializeObject([
-        this.$store.getters['file/current'].id,
-        this.syncToken,
-      ]);
     },
   },
   methods: {
@@ -113,32 +179,31 @@ export default {
     open(revision) {
       let revisionContentPromise = revisionContentPromises[revision.id];
       if (!revisionContentPromise) {
-        revisionContentPromise = new Promise((resolve, reject) => {
-          const { syncToken } = this;
-          const currentFile = this.$store.getters['file/current'];
-          this.$store.dispatch(
+        const historyContext = utils.deepCopy(this.historyContext);
+        if (historyContext) {
+          const provider = providerRegistry.providersById[this.syncLocation.providerId];
+          revisionContentPromise = new Promise((resolve, reject) => this.$store.dispatch(
             'queue/enqueue',
-            async () => {
-              try {
-                const content = await this.workspaceProvider
-                  .getRevisionContent(syncToken, currentFile.id, revision.id);
-                resolve(content);
-              } catch (e) {
-                reject(e);
-              }
-            },
-          );
-        });
-        revisionContentPromises[revision.id] = revisionContentPromise;
-        revisionContentPromise.catch(() => {
-          revisionContentPromises[revision.id] = null;
-        });
+            () => provider.getFileRevisionContent({
+              ...historyContext,
+              revisionId: revision.id,
+            })
+              .then(resolve, reject),
+          ));
+          revisionContentPromises[revision.id] = revisionContentPromise;
+          revisionContentPromise.catch((err) => {
+            this.$store.dispatch('notification/error', err);
+            revisionContentPromises[revision.id] = null;
+          });
+        }
       }
-      revisionContentPromise.then(revisionContent =>
-        this.$store.dispatch('content/setRevisionContent', revisionContent));
+      if (revisionContentPromise) {
+        revisionContentPromise.then(revisionContent =>
+          this.$store.dispatch('content/setRevisionContent', revisionContent));
+      }
     },
     refreshHighlighters() {
-      const { revisionContent } = this.$store.state.content;
+      const { revisionContent } = this;
       editorClassAppliers.forEach(editorClassApplier => editorClassApplier.stop());
       editorClassAppliers = [];
       previewClassAppliers.forEach(previewClassApplier => previewClassApplier.stop());
@@ -166,40 +231,40 @@ export default {
       }
     },
   },
-  created() {
-    // Find the workspace provider
-    const workspace = this.$store.getters['workspace/currentWorkspace'];
-    this.workspaceProvider = providerRegistry.providersById[workspace.providerId];
-
-    // Watch file changes
-    this.$watch(
-      () => this.refreshTrigger,
-      () => {
+  watch: {
+    // Fix syncLocationId
+    syncLocation: {
+      immediate: true,
+      handler(value) {
+        if (!value) {
+          const firstSyncLocation = this.syncLocations[0];
+          if (firstSyncLocation) {
+            this.syncLocationId = firstSyncLocation.id;
+          }
+        }
+      },
+    },
+    // Load revision list on context changes
+    historyContextHash: {
+      immediate: true,
+      handler() {
         this.allRevisions = [];
-        const { id } = this.$store.getters['file/current'];
-        const { syncToken } = this;
-        if (id && syncToken) {
-          if (id !== cachedFileId) {
+        const historyContext = utils.deepCopy(this.historyContext);
+        if (historyContext) {
+          if (this.historyContextHash !== cachedHistoryContextHash) {
             this.setRevisionContent();
-            cachedFileId = id;
+            cachedHistoryContextHash = this.historyContextHash;
             revisionContentPromises = {};
-            const currentFile = this.$store.getters['file/current'];
-            revisionsPromise = new Promise((resolve, reject) => {
-              this.$store.dispatch(
-                'queue/enqueue',
-                async () => {
-                  try {
-                    const revisions = await this.workspaceProvider
-                      .listRevisions(syncToken, currentFile.id);
-                    resolve(revisions);
-                  } catch (e) {
-                    reject(e);
-                  }
-                },
-              );
-            })
-              .catch(() => {
-                cachedFileId = null;
+            const provider = providerRegistry.providersById[this.syncLocation.providerId];
+            revisionsPromise = new Promise((resolve, reject) => this.$store.dispatch(
+              'queue/enqueue',
+              () => provider
+                .listFileRevisions(historyContext)
+                .then(resolve, reject),
+            ))
+              .catch((err) => {
+                this.$store.dispatch('notification/error', err);
+                cachedHistoryContextHash = null;
                 return [];
               });
           }
@@ -211,44 +276,40 @@ export default {
             });
           }
         }
-      }, { immediate: true },
-    );
-
-    const loadOne = () => {
-      if (!this.destroyed) {
+      },
+    },
+    // Load each revision on revision list changes
+    revisions(revisions) {
+      const { historyContext } = this;
+      if (historyContext) {
         this.$store.dispatch(
           'queue/enqueue',
-          () => {
-            let loadPromise;
-            this.revisions.some((revision) => {
-              if (!revision.created) {
-                const { syncToken } = this;
-                const currentFile = this.$store.getters['file/current'];
-                loadPromise = this.workspaceProvider
-                  .loadRevision(syncToken, currentFile.id, revision)
-                  .then(() => loadOne());
-              }
-              return loadPromise;
-            });
-            return loadPromise;
-          },
+          () => utils.awaitSequence(revisions, async (revision) => {
+            // Make sure revisions and historyContext haven't changed
+            if (!this.destroyed
+              && this.revisions === revisions
+              && this.historyContext === historyContext
+            ) {
+              const provider = providerRegistry.providersById[this.syncLocation.providerId];
+              await provider.loadFileRevision({
+                ...historyContext,
+                revision,
+              });
+            }
+          }),
         );
       }
-    };
-
-    this.$watch(
-      () => this.revisions,
-      () => loadOne(),
-      { immediate: true },
-    );
-
-    // Watch diffs changes
-    this.$watch(
-      () => this.$store.state.content.revisionContent,
-      () => this.refreshHighlighters(),
-    );
-
-    // Close revision
+    },
+    // Refresh highlighters on open/close revision
+    revisionContent: {
+      immediate: true,
+      handler() {
+        this.refreshHighlighters();
+      },
+    },
+  },
+  created() {
+    // Close revision on escape
     this.onKeyup = (evt) => {
       if (evt.which === 27) {
         // Esc key
@@ -273,10 +334,6 @@ export default {
 <style lang="scss">
 @import '../../styles/variables.scss';
 
-.history {
-  padding: 5px 5px 50px;
-}
-
 .history__button {
   font-size: 14px;
   margin-top: 0.5em;
@@ -291,7 +348,7 @@ export default {
     position: absolute;
     height: 100%;
     top: 0;
-    left: 24px;
+    left: 19px;
     border-left: 2px dotted $hr-color;
   }
 }
@@ -302,7 +359,7 @@ export default {
 
 .revision__button {
   text-align: left;
-  padding: 15px;
+  padding: 10px;
   height: auto;
   text-transform: none;
   position: relative;
@@ -312,7 +369,7 @@ export default {
     position: absolute;
     height: 100%;
     top: 0;
-    left: 24px;
+    left: 19px;
     border-left: 2px solid $hr-color;
   }
 
@@ -343,20 +400,21 @@ export default {
 .revision__header {
   font-size: 15px;
   width: 100%;
+  line-height: 1.33;
 }
 
 .revision__created {
   font-size: 0.75em;
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
 .layout--revision {
   .cledit-section *,
   .cl-preview-section * {
-    color: transparentize($editor-color-light, 0.67) !important;
+    color: transparentize($editor-color-light, 0.5) !important;
 
     .app--dark & {
-      color: transparentize($editor-color-dark, 0.67) !important;
+      color: transparentize($editor-color-dark, 0.5) !important;
     }
   }
 

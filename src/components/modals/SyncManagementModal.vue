@@ -23,7 +23,7 @@
           </div>
           <div class="sync-entry__row flex flex--row flex--align-center">
             <div class="sync-entry__url">
-              {{location.url || 'Workspace location'}}
+              {{location.url || 'Google Drive app data'}}
             </div>
             <div class="sync-entry__buttons flex flex--row flex--center" v-if="location.url">
               <button class="sync-entry__button button" v-clipboard="location.url" @click="info('Location URL copied to clipboard!')" v-title="'Copy URL'">
@@ -82,10 +82,6 @@ export default {
 
 <style lang="scss">
 @import '../../styles/variables.scss';
-
-.modal__inner-1--sync-management {
-  max-width: 560px;
-}
 
 .sync-entry {
   margin: 1.5em 0;

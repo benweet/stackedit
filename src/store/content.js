@@ -1,6 +1,6 @@
 import DiffMatchPatch from 'diff-match-patch';
 import moduleTemplate from './moduleTemplate';
-import empty from '../data/emptyContent';
+import empty from '../data/empties/emptyContent';
 import utils from '../services/utils';
 import cledit from '../services/editor/cledit';
 

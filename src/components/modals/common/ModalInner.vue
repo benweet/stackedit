@@ -54,8 +54,8 @@ export default {
   top: 7px;
   right: 7px;
   color: rgba(0, 0, 0, 0.5);
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   padding: 2px;
 
   &:active,

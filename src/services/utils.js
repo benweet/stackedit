@@ -1,8 +1,7 @@
 import yaml from 'js-yaml';
 import '../libs/clunderscore';
 import presets from '../data/presets';
-
-const origin = `${window.location.protocol}//${window.location.host}`;
+import constants from '../data/constants';
 
 // For utils.uid()
 const uidLength = 16;
@@ -16,7 +15,18 @@ const parseQueryParams = (params) => {
   const result = {};
   params.split('&').forEach((param) => {
     const [key, value] = param.split('=').map(decodeURIComponent);
-    if (key) {
+    if (key && value != null) {
+      result[key] = value;
+    }
+  });
+  return result;
+};
+
+// For utils.setQueryParams()
+const filterParams = (params = {}) => {
+  const result = {};
+  Object.entries(params).forEach(([key, value]) => {
+    if (key && value != null) {
       result[key] = value;
     }
   });
@@ -67,12 +77,9 @@ Object.keys(presets).forEach((key) => {
 
 export default {
   computedPresets,
-  cleanTrashAfter: 7 * 24 * 60 * 60 * 1000, // 7 days
-  origin,
-  oauth2RedirectUri: `${origin}/oauth2/callback`,
   queryParams: parseQueryParams(window.location.hash.slice(1)),
   setQueryParams(params = {}) {
-    this.queryParams = params;
+    this.queryParams = filterParams(params);
     const serializedParams = Object.entries(this.queryParams).map(([key, value]) =>
       `${encodeURIComponent(key)}=${encodeURIComponent(value)}`).join('&');
     const hash = `#${serializedParams}`;
@@ -80,39 +87,17 @@ export default {
       window.location.replace(hash);
     }
   },
-  types: [
-    'contentState',
-    'syncedContent',
-    'content',
-    'file',
-    'folder',
-    'syncLocation',
-    'publishLocation',
-    'data',
-  ],
-  localStorageDataIds: [
-    'workspaces',
-    'settings',
-    'layoutSettings',
-    'tokens',
-  ],
-  userIdPrefixes: {
-    go: 'google',
-    gh: 'github',
-  },
-  textMaxLength: 250000,
   sanitizeText(text) {
-    const result = `${text || ''}`.slice(0, this.textMaxLength);
+    const result = `${text || ''}`.slice(0, constants.textMaxLength);
     // last char must be a `\n`.
     return `${result}\n`.replace(/\n\n$/, '\n');
   },
-  defaultName: 'Untitled',
   sanitizeName(name) {
     return `${name || ''}`
       // Replace `/`, control characters and other kind of spaces with a space
       .replace(/[/\x00-\x1F\x7f-\xa0\s]+/g, ' ').trim() // eslint-disable-line no-control-regex
       // Keep only 250 characters
-      .slice(0, 250) || this.defaultName;
+      .slice(0, 250) || constants.defaultName;
   },
   deepCopy,
   serializeObject(obj) {

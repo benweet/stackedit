@@ -27,12 +27,12 @@
 </template>
 
 <script>
-import utils from '../../../services/utils';
 import modalTemplate from '../common/modalTemplate';
+import constants from '../../../data/constants';
 
 export default modalTemplate({
   data: () => ({
-    redirectUrl: utils.oauth2RedirectUri,
+    redirectUrl: constants.oauth2RedirectUri,
   }),
   computedLocalSettings: {
     siteUrl: 'zendeskSiteUrl',

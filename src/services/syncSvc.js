@@ -10,6 +10,7 @@ import './providers/githubWorkspaceProvider';
 import './providers/googleDriveWorkspaceProvider';
 import tempFileSvc from './tempFileSvc';
 import workspaceSvc from './workspaceSvc';
+import constants from '../data/constants';
 
 const minAutoSyncEvery = 60 * 1000; // 60 sec
 const inactivityThreshold = 3 * 1000; // 3 sec
@@ -128,7 +129,7 @@ const cleanSyncedContent = (syncedContent) => {
 };
 
 /**
- * Apply changes retrieved from the main provider. Update sync data accordingly.
+ * Apply changes retrieved from the workspace provider. Update sync data accordingly.
  */
 const applyChanges = (changes) => {
   const allItemsById = { ...store.getters.allItemsById };
@@ -138,10 +139,7 @@ const applyChanges = (changes) => {
   let getExistingItem;
   if (store.getters['workspace/currentWorkspaceIsGit']) {
     const itemsByGitPath = { ...store.getters.itemsByGitPath };
-    getExistingItem = (existingSyncData) => {
-      const items = existingSyncData && itemsByGitPath[existingSyncData.id];
-      return items ? items[0] : null;
-    };
+    getExistingItem = existingSyncData => existingSyncData && itemsByGitPath[existingSyncData.id];
   } else {
     getExistingItem = existingSyncData => existingSyncData && allItemsById[existingSyncData.itemId];
   }
@@ -476,6 +474,13 @@ const syncFile = async (fileId, syncContext = new SyncContext()) => {
           return;
         }
 
+        // If content is to be created, schedule a restart to create the file as well
+        if (provider === workspaceProvider &&
+          !store.getters['data/syncDataByItemId'][fileId]
+        ) {
+          syncContext.restartSkipContents = true;
+        }
+
         // Upload merged content
         const item = {
           ...mergedContent,
@@ -491,13 +496,7 @@ const syncFile = async (fileId, syncContext = new SyncContext()) => {
           utils.serializeObject(syncLocationToStore)
         ) {
           store.commit('syncLocation/patchItem', syncLocationToStore);
-        }
-
-        // If content was just created, restart sync to create the file as well
-        if (provider === workspaceProvider &&
-          !store.getters['data/syncDataByItemId'][fileId]
-        ) {
-          syncContext.restartSkipContents = true;
+          workspaceSvc.ensureUniqueLocations();
         }
       };
 
@@ -668,16 +667,13 @@ const syncWorkspace = async (skipContents = false) => {
 
       if (!changedItem) return false;
 
-      const resultSyncData = await workspaceProvider
-        .saveWorkspaceItem({
-          // Use deepCopy to freeze objects
-          item: utils.deepCopy(changedItem),
-          syncData: utils.deepCopy(syncDataToUpdate),
-          ifNotTooLate,
-        });
-      store.dispatch('data/patchSyncDataById', {
-        [resultSyncData.id]: resultSyncData,
-      });
+      updateSyncData(await workspaceProvider.saveWorkspaceItem({
+        // Use deepCopy to freeze objects
+        item: utils.deepCopy(changedItem),
+        syncData: utils.deepCopy(syncDataToUpdate),
+        ifNotTooLate,
+      }));
+
       return true;
     }));
 
@@ -819,7 +815,7 @@ const requestSync = () => {
 
         // Determine if we have to clean files
         const fileHashesToClean = {};
-        if (getLastStoredSyncActivity() + utils.cleanTrashAfter < Date.now()) {
+        if (getLastStoredSyncActivity() + constants.cleanTrashAfter < Date.now()) {
           // Last synchronization happened 7 days ago
           const syncDataByItemId = store.getters['data/syncDataByItemId'];
           store.getters['file/items'].forEach((file) => {

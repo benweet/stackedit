@@ -2,7 +2,7 @@
 
 If your workspace is not synced, your files are only stored inside your browser using the [IndexedDB API](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) and are not stored anywhere else.
 
-We recommend syncing your workspace to make sure files won't be lost in case your browser data is cleared.
+We recommend syncing your workspace to make sure files won't be lost in case your browser data is cleared. Self-hosted CouchDB backend is best suited for privacy.
 
 **Can StackEdit access my data without telling me?**
 

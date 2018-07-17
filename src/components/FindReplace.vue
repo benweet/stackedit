@@ -353,7 +353,7 @@ export default {
 .find-replace__find-stats {
   text-align: right;
   font-size: 0.75em;
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
 .find-replace-highlighting {

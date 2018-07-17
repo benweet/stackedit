@@ -64,10 +64,6 @@ export default {
 <style lang="scss">
 @import '../../styles/variables.scss';
 
-.modal__inner-1--publish-management {
-  max-width: 560px;
-}
-
 .publish-entry {
   padding: 0.5rem 0.25rem;
   border-bottom: 1px solid $hr-color;

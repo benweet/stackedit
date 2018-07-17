@@ -1,11 +1,13 @@
 import utils from './utils';
 import store from '../store';
+import constants from '../data/constants';
 
 const scriptLoadingPromises = Object.create(null);
-const oauth2AuthorizationTimeout = 120 * 1000; // 2 minutes
+const authorizeTimeout = 6 * 60 * 1000; // 2 minutes
+const silentAuthorizeTimeout = 15 * 1000; // 15 secondes (which will be reattempted)
 const networkTimeout = 30 * 1000; // 30 sec
 let isConnectionDown = false;
-const userInactiveAfter = 2 * 60 * 1000; // 2 minutes
+const userInactiveAfter = 3 * 60 * 1000; // 3 minutes (twice the default sync period)
 
 
 function parseHeaders(xhr) {
@@ -54,9 +56,9 @@ export default {
     // Check browser is online periodically
     const checkOffline = async () => {
       const isBrowserOffline = window.navigator.onLine === false;
-      if (!isBrowserOffline &&
-        store.state.lastOfflineCheck + networkTimeout + 5000 < Date.now() &&
-        this.isUserActive()
+      if (!isBrowserOffline
+        && store.state.lastOfflineCheck + networkTimeout + 5000 < Date.now()
+        && this.isUserActive()
       ) {
         store.commit('updateLastOfflineCheck');
         const script = document.createElement('script');
@@ -121,85 +123,98 @@ export default {
     }
     return scriptLoadingPromises[url];
   },
-  async startOauth2(url, params = {}, silent = false) {
-    // Build the authorize URL
-    const state = utils.uid();
-    params.state = state;
-    params.redirect_uri = utils.oauth2RedirectUri;
-    const authorizeUrl = utils.addQueryParams(url, params);
-
-    let iframeElt;
-    let wnd;
-    if (silent) {
-      // Use an iframe as wnd for silent mode
-      iframeElt = utils.createHiddenIframe(authorizeUrl);
-      document.body.appendChild(iframeElt);
-      wnd = iframeElt.contentWindow;
-    } else {
-      // Open a tab otherwise
-      wnd = window.open(authorizeUrl);
-      if (!wnd) {
-        return Promise.reject(new Error('The authorize window was blocked.'));
-      }
-    }
-
-    let checkClosedInterval;
-    let closeTimeout;
-    let msgHandler;
+  async startOauth2(url, params = {}, silent = false, reattempt = false) {
     try {
-      return await new Promise((resolve, reject) => {
-        if (silent) {
-          iframeElt.onerror = () => {
-            reject(new Error('Unknown error.'));
-          };
-          closeTimeout = setTimeout(() => {
-            isConnectionDown = true;
-            store.commit('setOffline', true);
-            store.commit('updateLastOfflineCheck');
-            reject(new Error('You are offline.'));
-          }, networkTimeout);
-        } else {
-          closeTimeout = setTimeout(() => {
-            reject(new Error('Timeout.'));
-          }, oauth2AuthorizationTimeout);
-        }
-
-        msgHandler = (event) => {
-          if (event.source === wnd && event.origin === utils.origin) {
-            const data = utils.parseQueryParams(`${event.data}`.slice(1));
-            if (data.error || data.state !== state) {
-              console.error(data); // eslint-disable-line no-console
-              reject(new Error('Could not get required authorization.'));
-            } else {
-              resolve({
-                accessToken: data.access_token,
-                code: data.code,
-                idToken: data.id_token,
-                expiresIn: data.expires_in,
-              });
-            }
-          }
-        };
-
-        window.addEventListener('message', msgHandler);
-        if (!silent) {
-          checkClosedInterval = setInterval(() => {
-            if (wnd.closed) {
-              reject(new Error('Authorize window was closed.'));
-            }
-          }, 250);
-        }
+      // Build the authorize URL
+      const state = utils.uid();
+      const authorizeUrl = utils.addQueryParams(url, {
+        ...params,
+        state,
+        redirect_uri: constants.oauth2RedirectUri,
       });
-    } finally {
-      clearInterval(checkClosedInterval);
-      if (!silent && !wnd.closed) {
-        wnd.close();
+
+      let iframeElt;
+      let wnd;
+      if (silent) {
+        // Use an iframe as wnd for silent mode
+        iframeElt = utils.createHiddenIframe(authorizeUrl);
+        document.body.appendChild(iframeElt);
+        wnd = iframeElt.contentWindow;
+      } else {
+        // Open a tab otherwise
+        wnd = window.open(authorizeUrl);
+        if (!wnd) {
+          throw new Error('The authorize window was blocked.');
+        }
       }
-      if (iframeElt) {
-        document.body.removeChild(iframeElt);
+
+      let checkClosedInterval;
+      let closeTimeout;
+      let msgHandler;
+      try {
+        return await new Promise((resolve, reject) => {
+          if (silent) {
+            iframeElt.onerror = () => {
+              reject(new Error('Unknown error.'));
+            };
+            closeTimeout = setTimeout(() => {
+              if (!reattempt) {
+                reject(new Error('REATTEMPT'));
+              } else {
+                isConnectionDown = true;
+                store.commit('setOffline', true);
+                store.commit('updateLastOfflineCheck');
+                reject(new Error('You are offline.'));
+              }
+            }, silentAuthorizeTimeout);
+          } else {
+            closeTimeout = setTimeout(() => {
+              reject(new Error('Timeout.'));
+            }, authorizeTimeout);
+          }
+
+          msgHandler = (event) => {
+            if (event.source === wnd && event.origin === constants.origin) {
+              const data = utils.parseQueryParams(`${event.data}`.slice(1));
+              if (data.error || data.state !== state) {
+                console.error(data); // eslint-disable-line no-console
+                reject(new Error('Could not get required authorization.'));
+              } else {
+                resolve({
+                  accessToken: data.access_token,
+                  code: data.code,
+                  idToken: data.id_token,
+                  expiresIn: data.expires_in,
+                });
+              }
+            }
+          };
+
+          window.addEventListener('message', msgHandler);
+          if (!silent) {
+            checkClosedInterval = setInterval(() => {
+              if (wnd.closed) {
+                reject(new Error('Authorize window was closed.'));
+              }
+            }, 250);
+          }
+        });
+      } finally {
+        clearInterval(checkClosedInterval);
+        if (!silent && !wnd.closed) {
+          wnd.close();
+        }
+        if (iframeElt) {
+          document.body.removeChild(iframeElt);
+        }
+        clearTimeout(closeTimeout);
+        window.removeEventListener('message', msgHandler);
       }
-      clearTimeout(closeTimeout);
-      window.removeEventListener('message', msgHandler);
+    } catch (e) {
+      if (e.message === 'REATTEMPT') {
+        return this.startOauth2(url, params, silent, true);
+      }
+      throw e;
     }
   },
   async request(configParam, offlineCheck = false) {

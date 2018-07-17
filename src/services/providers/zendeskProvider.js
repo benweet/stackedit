@@ -4,6 +4,7 @@ import Provider from './common/Provider';
 
 export default new Provider({
   id: 'zendesk',
+  name: 'Zendesk',
   getToken(location) {
     return store.getters['data/zendeskTokensBySub'][location.sub];
   },

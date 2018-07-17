@@ -10,12 +10,10 @@ export default {
   props: ['userId'],
   computed: {
     url() {
+      userSvc.getInfo(this.userId);
       const userInfo = this.$store.state.userInfo.itemsById[this.userId];
       return userInfo && userInfo.imageUrl && `url('${userInfo.imageUrl}')`;
     },
-  },
-  created() {
-    userSvc.getInfo(this.userId);
   },
 };
 </script>

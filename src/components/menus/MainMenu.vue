@@ -15,10 +15,13 @@
           <b>{{currentWorkspace.name}}</b> synced with your Google Drive app data folder.
         </span>
         <span v-else-if="currentWorkspace.providerId === 'googleDriveWorkspace'">
-          <b>{{currentWorkspace.name}}</b> synced with a <a :href="currentWorkspaceUrl" target="_blank">Google Drive folder</a>.
+          <b>{{currentWorkspace.name}}</b> synced with a <a :href="workspaceLocationUrl" target="_blank">Google Drive folder</a>.
         </span>
         <span v-else-if="currentWorkspace.providerId === 'couchdbWorkspace'">
-          <b>{{currentWorkspace.name}}</b> synced with a <a :href="currentWorkspaceUrl" target="_blank">CouchDB database</a>.
+          <b>{{currentWorkspace.name}}</b> synced with a <a :href="workspaceLocationUrl" target="_blank">CouchDB database</a>.
+        </span>
+        <span v-else-if="currentWorkspace.providerId === 'githubWorkspace'">
+          <b>{{currentWorkspace.name}}</b> synced with a <a :href="workspaceLocationUrl" target="_blank">GitHub repo</a>.
         </span>
       </div>
       <div class="menu-entry menu-entry--info flex flex--row flex--align-center" v-else>
@@ -108,7 +111,7 @@ export default {
       'loginToken',
       'userId',
     ]),
-    currentWorkspaceUrl() {
+    workspaceLocationUrl() {
       const provider = providerRegistry.providersById[this.currentWorkspace.providerId];
       return provider.getWorkspaceLocationUrl(this.currentWorkspace);
     },

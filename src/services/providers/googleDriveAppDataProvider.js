@@ -7,6 +7,7 @@ let syncStartPageToken;
 
 export default new Provider({
   id: 'googleDriveAppData',
+  name: 'Google Drive app data',
   getToken() {
     return store.getters['workspace/syncToken'];
   },
@@ -69,12 +70,15 @@ export default new Provider({
       fileId: syncData && syncData.id,
       ifNotTooLate,
     });
-    // Build sync data
+
+    // Build sync data to save
     return {
-      id: file.id,
-      itemId: item.id,
-      type: item.type,
-      hash: item.hash,
+      syncData: {
+        id: file.id,
+        itemId: item.id,
+        type: item.type,
+        hash: item.hash,
+      },
     };
   },
   removeWorkspaceItem({ syncData, ifNotTooLate }) {
@@ -163,19 +167,21 @@ export default new Provider({
       },
     };
   },
-  async listRevisions(token, fileId) {
-    const syncData = Provider.getContentSyncData(fileId);
-    const revisions = await googleHelper.getAppDataFileRevisions(token, syncData.id);
+  async listFileRevisions({ token, contentSyncData }) {
+    const revisions = await googleHelper.getAppDataFileRevisions(token, contentSyncData.id);
     return revisions.map(revision => ({
       id: revision.id,
       sub: `go:${revision.lastModifyingUser.permissionId}`,
       created: new Date(revision.modifiedTime).getTime(),
-    }))
-      .sort((revision1, revision2) => revision2.created - revision1.created);
+    }));
   },
-  async getRevisionContent(token, fileId, revisionId) {
-    const syncData = Provider.getContentSyncData(fileId);
-    const content = await googleHelper.downloadAppDataFileRevision(token, syncData.id, revisionId);
+  async loadFileRevision() {
+    // Revisions are already loaded
+    return false;
+  },
+  async getFileRevisionContent({ token, contentSyncData, revisionId }) {
+    const content = await googleHelper
+      .downloadAppDataFileRevision(token, contentSyncData.id, revisionId);
     return JSON.parse(content);
   },
 });

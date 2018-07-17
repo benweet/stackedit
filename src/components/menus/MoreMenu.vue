@@ -7,7 +7,7 @@
     </menu-entry>
     <menu-entry @click.native="templates">
       <icon-code-braces slot="icon"></icon-code-braces>
-      <div>Templates</div>
+      <div><div class="menu-entry__label menu-entry__label--count">{{templateCount}}</div> Templates</div>
       <span>Configure Handlebars templates for your exports.</span>
     </menu-entry>
     <menu-entry @click.native="reset">
@@ -49,6 +49,11 @@ import utils from '../../services/utils';
 export default {
   components: {
     MenuEntry,
+  },
+  computed: {
+    templateCount() {
+      return Object.keys(this.$store.getters['data/allTemplatesById']).length;
+    },
   },
   methods: {
     onImportBackup(evt) {

@@ -7,6 +7,7 @@ let syncLastSeq;
 
 export default new Provider({
   id: 'couchdbWorkspace',
+  name: 'CouchDB',
   getToken() {
     return store.getters['workspace/syncToken'];
   },
@@ -91,19 +92,22 @@ export default new Provider({
   },
   async saveWorkspaceItem({ item, syncData }) {
     const syncToken = store.getters['workspace/syncToken'];
-    const { id, rev } = couchdbHelper.uploadDocument({
+    const { id, rev } = await couchdbHelper.uploadDocument({
       token: syncToken,
       item,
       documentId: syncData && syncData.id,
       rev: syncData && syncData.rev,
     });
+
+    // Build sync data to save
     return {
-      // Build sync data
-      id,
-      itemId: item.id,
-      type: item.type,
-      hash: item.hash,
-      rev,
+      syncData: {
+        id,
+        itemId: item.id,
+        type: item.type,
+        hash: item.hash,
+        rev,
+      },
     };
   },
   removeWorkspaceItem({ syncData }) {
@@ -190,31 +194,34 @@ export default new Provider({
       },
     };
   },
-  async listRevisions(token, fileId) {
-    const syncData = Provider.getContentSyncData(fileId);
-    const body = await couchdbHelper.retrieveDocumentWithRevisions(token, syncData.id);
+  async listFileRevisions({ token, contentSyncData }) {
+    const body = await couchdbHelper.retrieveDocumentWithRevisions(token, contentSyncData.id);
     const revisions = [];
-    body._revs_info.forEach((revInfo) => { // eslint-disable-line no-underscore-dangle
+    body._revs_info.forEach((revInfo, idx) => { // eslint-disable-line no-underscore-dangle
       if (revInfo.status === 'available') {
         revisions.push({
           id: revInfo.rev,
           sub: null,
-          created: null,
+          created: idx,
+          loaded: false,
         });
       }
     });
     return revisions;
   },
-  async loadRevision(token, fileId, revision) {
-    const syncData = Provider.getContentSyncData(fileId);
-    const body = await couchdbHelper.retrieveDocument(token, syncData.id, revision.id);
+  async loadFileRevision({ token, contentSyncData, revision }) {
+    if (revision.loaded) {
+      return false;
+    }
+    const body = await couchdbHelper.retrieveDocument(token, contentSyncData.id, revision.id);
     revision.sub = body.sub;
-    revision.created = body.time || 1; // Has to be truthy to prevent from loading several times
+    revision.created = body.time;
+    revision.loaded = true;
+    return true;
   },
-  async getRevisionContent(token, fileId, revisionId) {
-    const syncData = Provider.getContentSyncData(fileId);
+  async getFileRevisionContent({ token, contentSyncData, revisionId }) {
     const body = await couchdbHelper
-      .retrieveDocumentWithAttachments(token, syncData.id, revisionId);
+      .retrieveDocumentWithAttachments(token, contentSyncData.id, revisionId);
     return Provider.parseContent(body.attachments.data, body.item.id);
   },
 });

@@ -11,14 +11,14 @@ const getAppKey = (fullAccess) => {
 const httpHeaderSafeJson = args => args && JSON.stringify(args)
   .replace(/[\u007f-\uffff]/g, c => `\\u${`000${c.charCodeAt(0).toString(16)}`.slice(-4)}`);
 
-const request = (token, options, args) => networkSvc.request({
+const request = ({ accessToken }, options, args) => networkSvc.request({
   ...options,
   headers: {
     ...options.headers || {},
     'Content-Type': options.body && (typeof options.body === 'string'
       ? 'application/octet-stream' : 'application/json; charset=utf-8'),
     'Dropbox-API-Arg': httpHeaderSafeJson(args),
-    Authorization: `Bearer ${token.accessToken}`,
+    Authorization: `Bearer ${accessToken}`,
   },
 });
 
@@ -65,6 +65,28 @@ export default {
   },
 
   /**
+   * https://www.dropbox.com/developers/documentation/http/documentation#users-get_account
+   */
+  async getAccount(token, userId) {
+    const { body } = await request(token, {
+      method: 'POST',
+      url: 'https://api.dropboxapi.com/2/users/get_account',
+      body: {
+        account_id: userId,
+      },
+    });
+
+    // Add user info to the store
+    store.commit('userInfo/addItem', {
+      id: `db:${body.account_id}`,
+      name: body.name.display_name,
+      imageUrl: body.profile_photo_url || '',
+    });
+
+    return body;
+  },
+
+  /**
    * https://www.dropbox.com/developers/documentation/http/documentation#files-upload
    */
   async uploadFile({
@@ -102,6 +124,22 @@ export default {
       id: JSON.parse(res.headers['dropbox-api-result']).id,
       content: res.body,
     };
+  },
+
+  /**
+   * https://www.dropbox.com/developers/documentation/http/documentation#list-revisions
+   */
+  async listRevisions(token, fileId) {
+    const res = await request(token, {
+      method: 'POST',
+      url: 'https://api.dropboxapi.com/2/files/list_revisions',
+      body: {
+        path: fileId,
+        mode: 'id',
+        limit: 100,
+      },
+    });
+    return res.body.entries;
   },
 
   /**

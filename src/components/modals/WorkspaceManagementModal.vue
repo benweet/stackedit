@@ -126,10 +126,6 @@ export default {
 <style lang="scss">
 @import '../../styles/variables.scss';
 
-.modal__inner-1--workspace-management {
-  max-width: 560px;
-}
-
 .workspace-entry {
   margin: 1.75em 0;
   height: auto;

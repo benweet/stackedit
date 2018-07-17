@@ -95,11 +95,14 @@ export default {
         t: Date.now(), // Prevent from caching
       },
     })).body;
+
+    // Add user info to the store
     store.commit('userInfo/addItem', {
       id: `gh:${user.id}`,
       name: user.login,
       imageUrl: user.avatar_url || '',
     });
+
     return user;
   },
 
@@ -257,6 +260,37 @@ export default {
   }) {
     const result = (await request(token, {
       url: `https://api.github.com/gists/${gistId}`,
+    })).body.files[filename];
+    if (!result) {
+      throw new Error('Gist file not found.');
+    }
+    return result.content;
+  },
+
+  /**
+   * https://developer.github.com/v3/gists/#list-gist-commits
+   */
+  async getGistCommits({
+    token,
+    gistId,
+  }) {
+    const { body } = await request(token, {
+      url: `https://api.github.com/gists/${gistId}/commits`,
+    });
+    return body;
+  },
+
+  /**
+   * https://developer.github.com/v3/gists/#get-a-specific-revision-of-a-gist
+   */
+  async downloadGistRevision({
+    token,
+    gistId,
+    filename,
+    sha,
+  }) {
+    const result = (await request(token, {
+      url: `https://api.github.com/gists/${gistId}/${sha}`,
     })).body.files[filename];
     if (!result) {
       throw new Error('Gist file not found.');

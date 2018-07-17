@@ -228,8 +228,8 @@ export default {
 <style lang="scss">
 @import '../../styles/variables.scss';
 
-.modal__inner-1--file-properties {
-  max-width: 540px;
+.modal__inner-1.modal__inner-1--file-properties {
+  max-width: 520px;
 }
 
 .modal__error--file-properties {

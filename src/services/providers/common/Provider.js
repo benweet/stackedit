@@ -1,10 +1,10 @@
 import providerRegistry from './providerRegistry';
-import emptyContent from '../../../data/emptyContent';
+import emptyContent from '../../../data/empties/emptyContent';
 import utils from '../../utils';
 import store from '../../../store';
 import workspaceSvc from '../../workspaceSvc';
 
-const dataExtractor = /<!--stackedit_data:([A-Za-z0-9+/=\s]+)-->$/;
+const dataExtractor = /<!--stackedit_data:([A-Za-z0-9+/=\s]+)-->\s*$/;
 
 export default class Provider {
   prepareChanges = changes => changes
@@ -68,14 +68,6 @@ export default class Provider {
       }
     }
     return utils.addItemHash(result);
-  }
-
-  static getContentSyncData(fileId) {
-    const syncData = store.getters['data/syncDataByItemId'][`${fileId}/content`];
-    if (!syncData) {
-      throw new Error(); // No need for a proper error message.
-    }
-    return syncData;
   }
 
   /**

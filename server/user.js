@@ -5,7 +5,7 @@ const verifier = require('google-id-token-verifier');
 const {
   USER_BUCKET_NAME = 'stackedit-users',
   PAYPAL_URI = 'https://www.paypal.com/cgi-bin/webscr',
-  PAYPAL_RECEIVER_EMAIL = 'stackedit.sales@gmail.com',
+  PAYPAL_RECEIVER_EMAIL = 'stackedit.project@gmail.com',
   GOOGLE_CLIENT_ID,
 } = process.env;
 const s3Client = new AWS.S3();

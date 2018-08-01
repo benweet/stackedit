@@ -1,5 +1,11 @@
 /* eslint-disable no-continue */
-import abcjs from 'abcjs';
+
+// a constant to hold the abc string
+const abc = [];
+// the callBack given from abcNotationExtension.js
+// to pass the abc string up to a point
+// where the DOM is already rendered
+let callbackFunc;
 
 function abcNotation(state, startLine, endLine, silent) {
   const validateParams = params => params.trim().match(/^abc$/);
@@ -92,25 +98,27 @@ function abcNotation(state, startLine, endLine, silent) {
   // this will prevent lazy continuations from ever going past our end marker
   state.lineMax = nextLine;
 
-  const token = state.push('fence_abc', 'div', 1);
+  const token = state.push('fence_abc_open', 'div', 1);
   token.info = params;
   token.markup = markup;
   token.block = true;
   token.map = [startLine, nextLine];
 
-  const abc = state.getLines(startLine + 1, nextLine, markerLength, true);
-  const renderedSvg = abcjs.parseOnly(abc);
-  console.error(renderedSvg);
+  abc.push(state.getLines(startLine + 1, nextLine, markerLength, true));
 
   state.parentType = oldParent;
   state.lineMax = oldLineMax;
   state.line = nextLine + (autoClosed ? 1 : 0);
 
+  callbackFunc(abc[0]);
   return true;
 }
 
-export default (md) => {
-  md.block.ruler.before('fence', 'fence_abc', abcNotation, {
-    alt: ['paragraph', 'reference', 'blockquote', 'list'],
-  });
+export default (md, callback) => {
+  callbackFunc = callback;
+  md.block.ruler.before('fence', 'fence_abc', abcNotation);
+  md.renderer.rules.fence_abc_open = (tokens, idx, _options, env, self) => {
+    tokens[idx].attrPush(['id', 'abcSheetPaper']);
+    return self.renderToken(tokens, idx, _options, env, self);
+  };
 };

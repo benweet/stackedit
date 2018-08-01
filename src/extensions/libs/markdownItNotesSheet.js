@@ -1,18 +1,13 @@
-/* eslint-disable */
+/* eslint-disable no-continue */
+import abcjs from 'abcjs';
+
 function abcNotation(state, startLine, endLine, silent) {
   const validateParams = params => params.trim().match(/^abc$/);
+  let nextLine;
+  let autoClosed = false;
 
-  let pos,
-    nextLine,
-    markup,
-    params,
-    token,
-    oldParent,
-    oldLineMax,
-    markerLength,
-    autoClosed = false,
-    start = state.bMarks[startLine] + state.tShift[startLine],
-    max = state.eMarks[startLine];
+  let start = state.bMarks[startLine] + state.tShift[startLine];
+  let max = state.eMarks[startLine];
 
   // Check out the first character quickly,
   // this filters out all non-codeblocks
@@ -22,15 +17,15 @@ function abcNotation(state, startLine, endLine, silent) {
   }
 
   // Check out the rest of the marker string
-  const markerStart = pos;
-  pos = state.skipChars(pos, marker);
-  markerLength = pos - markerStart;
+  const markerStart = start;
+  start = state.skipChars(start, marker);
+  const markerLength = start - markerStart;
   if (markerLength < 3) {
     return false;
   }
 
-  markup = state.src.slice(start, pos);
-  params = state.src.slice(pos, max);
+  const markup = state.src.slice(markerLength, start);
+  const params = state.src.slice(start, max);
   if (!validateParams(params)) {
     return false;
   }
@@ -70,16 +65,15 @@ function abcNotation(state, startLine, endLine, silent) {
       continue;
     }
 
-    pos = state.skipChars(pos, marker);
+    start = state.skipChars(start, marker);
     // closing fence must be at least as long as the opening one
-    if (pos - markerStart < markerLength) {
+    if (start - markerStart < markerLength) {
       continue;
     }
 
     // make sure tail has spaces only
-    pos = state.skipSpaces(pos);
-
-    if (pos < max) {
+    start = state.skipSpaces(start);
+    if (start < max) {
       continue;
     }
 
@@ -88,8 +82,8 @@ function abcNotation(state, startLine, endLine, silent) {
     break;
   }
 
-  old_parent = state.parentType;
-  old_line_max = state.lineMax;
+  const oldParent = state.parentType;
+  const oldLineMax = state.lineMax;
   state.parentType = 'container';
 
   // If a fence has heading spaces, they should be removed from its inner block
@@ -98,21 +92,24 @@ function abcNotation(state, startLine, endLine, silent) {
   // this will prevent lazy continuations from ever going past our end marker
   state.lineMax = nextLine;
 
-  token = state.push('fence_abc', 'div', 1);
+  const token = state.push('fence_abc', 'div', 1);
   token.info = params;
-  // token.content = state.getLines(startLine + 1, nextLine, markerLength, true);
   token.markup = markup;
   token.block = true;
   token.map = [startLine, nextLine];
 
-  state.parentType = old_parent;
-  state.lineMax = old_line_max;
+  const abc = state.getLines(startLine + 1, nextLine, markerLength, true);
+  const renderedSvg = abcjs.parseOnly(abc);
+  console.error(renderedSvg);
+
+  state.parentType = oldParent;
+  state.lineMax = oldLineMax;
   state.line = nextLine + (autoClosed ? 1 : 0);
 
   return true;
 }
 
-export default md => {
+export default (md) => {
   md.block.ruler.before('fence', 'fence_abc', abcNotation, {
     alt: ['paragraph', 'reference', 'blockquote', 'list'],
   });

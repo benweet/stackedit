@@ -53,61 +53,52 @@ const zero = {
 
 export default {
   zero: [zero],
-  commonmark: [
-    zero,
-    {
-      markdown: {
-        fence: true,
-      },
+  commonmark: [zero, {
+    markdown: {
+      fence: true,
     },
-  ],
-  gfm: [
-    zero,
-    {
-      markdown: {
-        breaks: true,
-        del: true,
-        fence: true,
-        linkify: true,
-        table: true,
-        tasklist: true,
-      },
-      emoji: {
-        enabled: true,
-      },
+  }],
+  gfm: [zero, {
+    markdown: {
+      breaks: true,
+      del: true,
+      fence: true,
+      linkify: true,
+      table: true,
+      tasklist: true,
     },
-  ],
-  default: [
-    zero,
-    {
-      markdown: {
-        abbr: true,
-        breaks: true,
-        deflist: true,
-        del: true,
-        fence: true,
-        footnote: true,
-        imgsize: true,
-        linkify: true,
-        mark: true,
-        sub: true,
-        sup: true,
-        table: true,
-        tasklist: true,
-        typographer: true,
-      },
-      emoji: {
-        enabled: true,
-      },
-      katex: {
-        enabled: true,
-      },
-      mermaid: {
-        enabled: true,
-      },
-      abc: {
-        enabled: true,
-      },
+    emoji: {
+      enabled: true,
     },
-  ],
+  }],
+  default: [zero, {
+    markdown: {
+      abbr: true,
+      breaks: true,
+      deflist: true,
+      del: true,
+      fence: true,
+      footnote: true,
+      imgsize: true,
+      linkify: true,
+      mark: true,
+      sub: true,
+      sup: true,
+      table: true,
+      tasklist: true,
+      typographer: true,
+    },
+    emoji: {
+      enabled: true,
+    },
+    katex: {
+      enabled: true,
+    },
+    mermaid: {
+      enabled: true,
+    },
+    abc: {
+      enabled: false,
+    },
+  }],
 };

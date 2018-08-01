@@ -22,6 +22,7 @@
     "major": "npm version major -m \"Tag v%s\""
   },
   "dependencies": {
+    "abcjs": "^5.2.0",
     "aws-sdk": "^2.133.0",
     "bezier-easing": "^1.1.0",
     "body-parser": "^1.18.2",

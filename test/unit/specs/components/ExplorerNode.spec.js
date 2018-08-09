@@ -81,16 +81,16 @@ describe('ExplorerNode.vue', () => {
     const wrapper = mount(node);
     wrapper.trigger('contextmenu');
     await specUtils.resolveContextMenu('New file');
-    expect(wrapper.contains('.explorer-node__new-child--file')).toBe(true);
+    expect(wrapper.contains('.explorer-node__new-child')).toBe(true);
     store.commit('explorer/setNewItemName', modifiedName);
-    wrapper.find('.explorer-node__new-child--file .text-input').trigger('blur');
+    wrapper.find('.explorer-node__new-child .text-input').trigger('blur');
     await new Promise(resolve => setTimeout(resolve, 1));
     expect(store.getters['explorer/selectedNode'].item).toMatchObject({
       name: modifiedName,
       type: 'file',
       parentId: node.item.id,
     });
-    expect(wrapper.contains('.explorer-node__new-child--file')).toBe(false);
+    expect(wrapper.contains('.explorer-node__new-child')).toBe(false);
   });
 
   it('should cancel a file creation on escape', async () => {
@@ -98,9 +98,9 @@ describe('ExplorerNode.vue', () => {
     const wrapper = mount(node);
     wrapper.trigger('contextmenu');
     await specUtils.resolveContextMenu('New file');
-    expect(wrapper.contains('.explorer-node__new-child--file')).toBe(true);
+    expect(wrapper.contains('.explorer-node__new-child')).toBe(true);
     store.commit('explorer/setNewItemName', modifiedName);
-    wrapper.find('.explorer-node__new-child--file .text-input').trigger('keydown', {
+    wrapper.find('.explorer-node__new-child .text-input').trigger('keydown', {
       keyCode: 27,
     });
     await new Promise(resolve => setTimeout(resolve, 1));
@@ -109,7 +109,7 @@ describe('ExplorerNode.vue', () => {
       type: 'file',
       parentId: node.item.id,
     });
-    expect(wrapper.contains('.explorer-node__new-child--file')).toBe(false);
+    expect(wrapper.contains('.explorer-node__new-child')).toBe(false);
   });
 
   it('should not create new files in a file', async () => {

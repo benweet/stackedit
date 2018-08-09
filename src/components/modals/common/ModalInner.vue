@@ -51,11 +51,11 @@ export default {
 
 .modal__close-button {
   position: absolute;
-  top: 7px;
-  right: 7px;
+  top: 8px;
+  right: 8px;
   color: rgba(0, 0, 0, 0.5);
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   padding: 2px;
 
   &:active,

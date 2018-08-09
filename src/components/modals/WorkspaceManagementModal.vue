@@ -51,7 +51,7 @@
         </div>
       </div>
       <div class="modal__info">
-        <b>ProTip:</b> Workspaces are accessible <b>offline</b> after their first use.
+        <b>ProTip:</b> A workspace is accessible <b>offline</b> once it has been opened for the first time.
       </div>
     </div>
     <div class="modal__button-bar">

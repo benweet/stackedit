@@ -144,11 +144,11 @@ export default new Provider({
       let itemId = idsByPath[path];
       if (!itemId) {
         const existingItemId = itemIdsByGitPath[path];
-        // We can replace the item only if it was already synced
         if (existingItemId
-          && (syncDataByPath[path]
-          // Content may have already be synced
-          || (isFile && syncDataByPath[`/${path}`]))
+          // Reuse a file ID only if it has already been synced
+          && (!isFile || syncDataByPath[path]
+          // Content may have already been synced
+          || syncDataByPath[`/${path}`])
         ) {
           itemId = existingItemId;
         } else {
@@ -332,7 +332,7 @@ export default new Provider({
 
     // Files and folders are not in git, only contents
     if (item.type === 'file' || item.type === 'folder') {
-      return syncData;
+      return { syncData };
     }
 
     // locations are stored as paths, so we upload an empty file
@@ -346,9 +346,7 @@ export default new Provider({
     });
 
     // Return sync data to save
-    return {
-      syncData,
-    };
+    return { syncData };
   },
   async removeWorkspaceItem({ syncData }) {
     if (treeShaMap[syncData.id]) {

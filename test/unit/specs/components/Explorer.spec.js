@@ -11,6 +11,7 @@ const select = (id) => {
 };
 const ensureExists = file => expect(store.getters.allItemsById).toHaveProperty(file.id);
 const ensureNotExists = file => expect(store.getters.allItemsById).not.toHaveProperty(file.id);
+const refreshItem = item => store.getters.allItemsById[item.id];
 
 describe('Explorer.vue', () => {
   it('should create new files in the root folder', () => {
@@ -25,7 +26,7 @@ describe('Explorer.vue', () => {
   });
 
   it('should create new files in a folder', async () => {
-    const folder = await fileSvc.storeItem({ type: 'folder' });
+    const folder = await workspaceSvc.storeItem({ type: 'folder' });
     const wrapper = mount();
     select(folder.id);
     wrapper.find('.side-title__button--new-file').trigger('click');
@@ -94,7 +95,7 @@ describe('Explorer.vue', () => {
     select(file.id);
     wrapper.find('.side-title__button--delete').trigger('click');
     ensureExists(file);
-    expect(file.parentId).toEqual('trash');
+    expect(refreshItem(file).parentId).toEqual('trash');
   });
 
   it('should not delete the trash folder', async () => {
@@ -142,7 +143,7 @@ describe('Explorer.vue', () => {
     ensureNotExists(folder);
     // Make sure file has been moved to Trash
     ensureExists(file);
-    expect(file.parentId).toEqual('trash');
+    expect(refreshItem(file).parentId).toEqual('trash');
   });
 
   it('should rename files', async () => {

@@ -649,19 +649,22 @@ const syncWorkspace = async (skipContents = false) => {
       };
 
       const syncDataByItemId = store.getters['data/syncDataByItemId'];
+      const isGit = !!store.getters['workspace/currentWorkspaceIsGit'];
       const [changedItem, syncDataToUpdate] = utils.someResult(
         Object.entries(storeItemMap),
         ([id, item]) => {
           const syncData = syncDataByItemId[id];
-          if ((!syncData || syncData.hash !== item.hash)
-            // Add file/folder if parent has been added
-            && (!storeItemMap[item.parentId] || syncDataByItemId[item.parentId])
-            // Add file if content has been added
-            && (item.type !== 'file' || syncDataByItemId[`${id}/content`])
+          if ((syncData && syncData.hash === item.hash)
+            // Add file/folder only if parent folder has been added
+            || (!isGit && storeItemMap[item.parentId] && !syncDataByItemId[item.parentId])
+            // Don't create folder if it's a git workspace
+            || (isGit && item.type === 'folder')
+            // Add file only if content has been added
+            || (item.type === 'file' && !syncDataByItemId[`${id}/content`])
           ) {
-            return [item, syncData];
+            return null;
           }
-          return null;
+          return [item, syncData];
         },
       ) || [];
 
@@ -695,16 +698,15 @@ const syncWorkspace = async (skipContents = false) => {
       const syncDataToRemove = utils.deepCopy(utils.someResult(
         Object.values(syncDataById),
         (syncData) => {
-          if (!getItem(syncData)
+          if (getItem(syncData)
             // We don't want to delete data items, especially on first sync
-            && syncData.type !== 'data'
+            || syncData.type === 'data'
             // Remove content only if file has been removed
-            && (syncData.type !== 'content'
-              || !getFileItem(syncData))
+            || (syncData.type === 'content' && getFileItem(syncData))
           ) {
-            return syncData;
+            return null;
           }
-          return null;
+          return syncData;
         },
       ));
 
@@ -714,9 +716,9 @@ const syncWorkspace = async (skipContents = false) => {
         syncData: syncDataToRemove,
         ifNotTooLate,
       });
-      const syncDataCopy = { ...store.getters['data/syncDataById'] };
-      delete syncDataCopy[syncDataToRemove.id];
-      store.dispatch('data/setSyncDataById', syncDataCopy);
+      const syncDataByIdCopy = { ...store.getters['data/syncDataById'] };
+      delete syncDataByIdCopy[syncDataToRemove.id];
+      store.dispatch('data/setSyncDataById', syncDataByIdCopy);
       return true;
     }));
 

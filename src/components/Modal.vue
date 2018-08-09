@@ -198,7 +198,7 @@ export default {
 .modal__inner-2 {
   margin: 40px 10px 100px;
   background-color: #f8f8f8;
-  padding: 40px 50px 30px;
+  padding: 50px 50px 40px;
   border-radius: $border-radius-base;
   position: relative;
   overflow: hidden;

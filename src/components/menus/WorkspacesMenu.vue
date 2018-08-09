@@ -10,7 +10,7 @@
     <menu-entry @click.native="addCouchdbWorkspace">
       <icon-provider slot="icon" provider-id="couchdbWorkspace"></icon-provider>
       <div>CouchDB workspace</div>
-      <span>Add a workspace synced with your CouchDB database.</span>
+      <span>Add a workspace synced with a CouchDB database.</span>
     </menu-entry>
     <menu-entry @click.native="addGithubWorkspace">
       <icon-provider slot="icon" provider-id="githubWorkspace"></icon-provider>

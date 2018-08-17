@@ -332,7 +332,6 @@ const localDbSvc = {
         // Clean data stored in localStorage
         localStorage.removeItem(`data/${id}`);
       });
-      window.location.reload();
       throw new Error('RELOAD');
     }
 
@@ -349,7 +348,7 @@ const localDbSvc = {
         type: 'text/plain;charset=utf-8',
       });
       FileSaver.saveAs(blob, 'StackEdit workspace.json');
-      return;
+      throw new Error('RELOAD');
     }
 
     // Watch workspace deletions and persist them as soon as possible

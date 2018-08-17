@@ -77,11 +77,8 @@ export default {
         ...utils.queryParams,
         exportWorkspace: true,
       }, true);
-      const iframeElt = utils.createHiddenIframe(url);
-      document.body.appendChild(iframeElt);
-      setTimeout(() => {
-        document.body.removeChild(iframeElt);
-      }, 60000);
+      window.location.href = url;
+      window.location.reload(true);
     },
     async settings() {
       try {

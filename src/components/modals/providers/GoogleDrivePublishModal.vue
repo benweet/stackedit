@@ -32,7 +32,7 @@
           </label>
         </div>
       </div>
-      <form-entry label="Template">
+      <form-entry label="Template" v-if="format === 'html'">
         <select slot="field" class="textfield" v-model="selectedTemplate" @keydown.enter="resolve()">
           <option v-for="(template, id) in allTemplatesById" :key="id" :value="id">
             {{ template.name }}
@@ -84,7 +84,7 @@ export default modalTemplate({
     resolve() {
       // Return new location
       const location = googleDriveProvider.makeLocation(this.config.token, this.fileId);
-      if (this.format) {
+      if (this.format === 'html') {
         location.templateId = this.selectedTemplate;
       }
       this.config.resolve(location);

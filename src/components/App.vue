@@ -53,7 +53,9 @@ export default {
       this.ready = true;
       tempFileSvc.setReady();
     } catch (err) {
-      if (err && err.message !== 'RELOAD') {
+      if (err && err.message === 'RELOAD') {
+        window.location.reload();
+      } else if (err && err.message !== 'RELOAD') {
         console.error(err); // eslint-disable-line no-console
         this.$store.dispatch('notification/error', err);
       }

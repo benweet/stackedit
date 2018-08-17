@@ -7,20 +7,32 @@
       <p v-if="publishLocations.length"><b>{{currentFileName}}</b> is published to the following location(s):</p>
       <p v-else><b>{{currentFileName}}</b> is not published yet.</p>
       <div>
-        <div class="publish-entry flex flex--row flex--align-center" v-for="location in publishLocations" :key="location.id">
-          <div class="publish-entry__icon flex flex--column flex--center">
-            <icon-provider :provider-id="location.providerId"></icon-provider>
+        <div class="publish-entry flex flex--column" v-for="location in publishLocations" :key="location.id">
+          <div class="publish-entry__header flex flex--row flex--align-center">
+            <div class="publish-entry__icon flex flex--column flex--center">
+              <icon-provider :provider-id="location.providerId"></icon-provider>
+            </div>
+            <div class="publish-entry__description">
+              {{location.description}}
+            </div>
+            <div class="publish-entry__buttons flex flex--row flex--center">
+              <button class="publish-entry__button button" @click="remove(location)" v-title="'Remove location'">
+                <icon-delete></icon-delete>
+              </button>
+            </div>
           </div>
-          <div class="publish-entry__description">
-            {{location.description}}
-          </div>
-          <div class="publish-entry__buttons flex flex--row flex--center">
-            <a class="publish-entry__button button" :href="location.url" target="_blank" v-title="'Open location'">
-              <icon-open-in-new></icon-open-in-new>
-            </a>
-            <button class="publish-entry__button button" @click="remove(location)" v-title="'Remove location'">
-              <icon-delete></icon-delete>
-            </button>
+          <div class="publish-entry__row flex flex--row flex--align-center">
+            <div class="publish-entry__url">
+              {{location.url}}
+            </div>
+            <div class="publish-entry__buttons flex flex--row flex--center" v-if="location.url">
+              <button class="publish-entry__button button" v-clipboard="location.url" @click="info('Location URL copied to clipboard!')" v-title="'Copy URL'">
+                <icon-content-copy></icon-content-copy>
+              </button>
+              <a class="publish-entry__button button" v-if="location.url" :href="location.url" target="_blank" v-title="'Open location'">
+                <icon-open-in-new></icon-open-in-new>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -35,7 +47,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import ModalInner from './common/ModalInner';
 
 export default {
@@ -54,6 +66,9 @@ export default {
     },
   },
   methods: {
+    ...mapActions('notification', [
+      'info',
+    ]),
     remove(location) {
       this.$store.commit('publishLocation/deleteItem', location.id);
     },
@@ -65,39 +80,69 @@ export default {
 @import '../../styles/variables.scss';
 
 .publish-entry {
-  padding: 0.5rem 0.25rem;
-  border-bottom: 1px solid $hr-color;
+  margin: 1.5em 0;
+  height: auto;
+  font-size: 17px;
+  line-height: 1.5;
+}
 
-  &:last-child {
-    border-bottom: none;
-  }
+$button-size: 30px;
+$small-button-size: 22px;
+
+.publish-entry__header {
+  line-height: $button-size;
+}
+
+.publish-entry__row {
+  margin-top: 1px;
+  padding-top: 1px;
+  border-top: 1px solid rgba(128, 128, 128, 0.15);
+  line-height: $small-button-size;
 }
 
 .publish-entry__icon {
-  height: 30px;
-  width: 30px;
+  height: 22px;
+  width: 22px;
   margin-right: 0.75rem;
   flex: none;
 }
 
 .publish-entry__description {
-  opacity: 0.5;
-  line-height: 1.4;
-  font-size: 0.9em;
   width: 100%;
   overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.publish-entry__url {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  opacity: 0.5;
+  font-size: 0.67em;
 }
 
 .publish-entry__buttons {
   margin-left: 0.75rem;
+
+  .publish-entry__row & {
+    margin-left: 0.5rem;
+  }
 }
 
 .publish-entry__button {
-  width: 38px;
-  height: 38px;
-  padding: 6px;
+  width: $button-size;
+  height: $button-size;
+  padding: 4px;
   background-color: transparent;
   opacity: 0.75;
+
+  .publish-entry__row & {
+    width: $small-button-size;
+    height: $small-button-size;
+    padding: 4px;
+  }
 
   &:active,
   &:focus,

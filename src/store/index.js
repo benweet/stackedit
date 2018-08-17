@@ -83,33 +83,25 @@ const store = new Vuex.Store({
     },
     pathsByItemId: (state, getters) => {
       const result = {};
-      const foldersById = state.folder.itemsById;
-      const getPath = (item) => {
-        let itemPath = result[item.id];
-        if (!itemPath) {
-          if (item.parentId === 'trash') {
-            itemPath = `.stackedit-trash/${item.name}`;
-          } else {
-            let { name } = item;
-            if (foldersById[item.id]) {
-              name += '/';
-            }
-            const parentFolder = foldersById[item.parentId];
-            if (parentFolder) {
-              itemPath = getPath(parentFolder) + name;
-            } else {
-              itemPath = name;
-            }
+      const processNode = (node, parentPath = '') => {
+        let path = parentPath;
+        if (node.item.id) {
+          path += node.item.name;
+          if (node.isTrash) {
+            path = '.stackedit-trash/';
+          } else if (node.isFolder) {
+            path += '/';
           }
+          result[node.item.id] = path;
         }
-        result[item.id] = itemPath;
-        return itemPath;
+
+        if (node.isFolder) {
+          node.folders.forEach(child => processNode(child, path));
+          node.files.forEach(child => processNode(child, path));
+        }
       };
 
-      [
-        ...getters['folder/items'],
-        ...getters['file/items'],
-      ].forEach(item => getPath(item));
+      processNode(getters['explorer/rootNode']);
       return result;
     },
     itemsByPath: (state, { allItemsById, pathsByItemId }) => {

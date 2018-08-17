@@ -24,7 +24,7 @@
   span {
     display: inline-block;
     font-size: 0.75rem;
-    opacity: 0.6;
+    opacity: 0.67;
     line-height: 1.3;
 
     .menu-entry__label {

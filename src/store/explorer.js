@@ -122,6 +122,7 @@ export default {
       });
 
       // Build the tree
+      const parentsMap = {};
       Object.entries(nodeMap).forEach(([, node]) => {
         let parentNode = nodeMap[node.item.parentId];
         if (!parentNode || !parentNode.isFolder) {
@@ -129,6 +130,18 @@ export default {
             return;
           }
           parentNode = rootNode;
+        } else if (node.isFolder) {
+          // Detect circular reference
+          const parentParents = parentsMap[node.item.parentId] || {};
+          if (parentParents[node.item.id]) {
+            // Node is already a parent of its supposed parent
+            parentNode = rootNode;
+          } else {
+            parentsMap[node.item.id] = {
+              ...parentParents,
+              [node.item.parentId]: true,
+            };
+          }
         }
         if (node.isFolder) {
           parentNode.folders.push(node);

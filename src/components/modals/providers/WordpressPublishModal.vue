@@ -9,7 +9,7 @@
         <input slot="field" class="textfield" type="text" v-model.trim="domain" @keydown.enter="resolve()">
         <div class="form-entry__info">
           <b>Example:</b> example.wordpress.com<br>
-          <b>Jetpack plugin</b> is required for self-hosted sites.
+          <b>Note:</b> Jetpack is required for self-hosted sites.
         </div>
       </form-entry>
       <form-entry label="Existing post ID" info="optional">

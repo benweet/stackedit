@@ -12,7 +12,7 @@
       </div>
       <div class="tour-step__inner" v-else-if="step === 'editor'">
         <h2>Your Markdown editor</h2>
-        <p>StackEdit renders your Markdown into HTML in real-time.</p>
+        <p>StackEdit converts your Markdown to HTML in real-time.</p>
         <p>Click <icon-side-preview></icon-side-preview> to toggle the side preview.</p>
         <div class="tour-step__button-bar">
           <button class="button" @click="finish">Skip</button>
@@ -144,7 +144,7 @@ $tour-step-width: 240px;
 .tour-step__inner {
   position: absolute;
   background-color: $tour-step-background;
-  padding: 1em;
+  padding: 1.5em;
   font-size: 0.9em;
   line-height: 1.33;
   width: $tour-step-width;
@@ -213,8 +213,10 @@ $tour-step-width: 240px;
 }
 
 .tour-step__button-bar {
-  margin-top: 1.75em;
-  text-align: right;
+  margin-top: 1.5em;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
 
   .button {
     font-size: 1.1em;

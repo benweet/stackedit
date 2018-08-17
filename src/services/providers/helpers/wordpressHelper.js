@@ -87,7 +87,7 @@ export default {
     date,
   }) {
     const refreshedToken = await this.refreshToken(token);
-    await request(refreshedToken, {
+    return request(refreshedToken, {
       method: 'POST',
       url: `https://public-api.wordpress.com/rest/v1.2/sites/${siteId || domain}/posts/${postId || 'new'}`,
       body: {

@@ -7,7 +7,7 @@
       </div>
       <div class="flex flex--column">
         <div>Import Markdown</div>
-        <span>Open a plain text file.</span>
+        <span>Import a plain text file.</span>
       </div>
     </label>
     <input class="hidden-file" id="import-html-file-input" type="file" @change="onImportHtml">

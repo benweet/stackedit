@@ -2,7 +2,7 @@
   <modal-inner class="modal__inner-1--about-modal" aria-label="About">
     <div class="modal__content">
       <div class="logo-background"></div>
-      <small>© 2013-2018 Dock5 Software<br>v{{version}}</small>
+      <small>© 2013-2018 Dock5 Software Ltd.<br>v{{version}}</small>
       <hr>
       StackEdit on <a target="_blank" href="https://github.com/benweet/stackedit/">GitHub</a>
       <br>
@@ -59,13 +59,11 @@ export default {
 
   .logo-background {
     height: 75px;
-    margin: 0;
+    margin: 0.5em 0;
   }
 
   small {
     display: block;
-    font-size: 0.75em;
-    opacity: 0.75;
   }
 
   hr {

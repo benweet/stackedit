@@ -191,9 +191,24 @@ export default {
     openDragTarget: debounceAction(({ state, dispatch }) => {
       dispatch('openNode', state.dragTargetId);
     }, 1000),
-    setDragTarget({ commit, dispatch }, id) {
-      commit('setDragTargetId', id);
-      dispatch('openDragTarget');
+    setDragTarget({ commit, getters, dispatch }, node) {
+      if (!node) {
+        commit('setDragTargetId');
+      } else {
+        // Make sure target node is not a child of source node
+        const folderNode = getFolder(node, getters);
+        const sourceId = getters.dragSourceNode.item.id;
+        const { nodeMap } = getters;
+        for (let parentNode = folderNode; parentNode; parentNode = nodeMap[node.item.parentId]) {
+          if (parentNode.item.id === sourceId) {
+            commit('setDragTargetId');
+            return;
+          }
+        }
+
+        commit('setDragTargetId', node.item.id);
+        dispatch('openDragTarget');
+      }
     },
   },
 };

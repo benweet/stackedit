@@ -1,9 +1,9 @@
 <template>
-  <div class="explorer-node" :class="{'explorer-node--selected': isSelected, 'explorer-node--folder': node.isFolder, 'explorer-node--open': isOpen, 'explorer-node--trash': node.isTrash, 'explorer-node--temp': node.isTemp, 'explorer-node--drag-target': isDragTargetFolder}" @dragover.prevent @dragenter.stop="node.noDrop || setDragTarget(node.item.id)" @dragleave.stop="isDragTarget && setDragTargetId()" @drop.prevent.stop="onDrop" @contextmenu="onContextMenu">
+  <div class="explorer-node" :class="{'explorer-node--selected': isSelected, 'explorer-node--folder': node.isFolder, 'explorer-node--open': isOpen, 'explorer-node--trash': node.isTrash, 'explorer-node--temp': node.isTemp, 'explorer-node--drag-target': isDragTargetFolder}" @dragover.prevent @dragenter.stop="node.noDrop || setDragTarget(node)" @dragleave.stop="isDragTarget && setDragTarget()" @drop.prevent.stop="onDrop" @contextmenu="onContextMenu">
     <div class="explorer-node__item-editor" v-if="isEditing" :style="{paddingLeft: leftPadding}" draggable="true" @dragstart.stop.prevent>
       <input type="text" class="text-input" v-focus @blur="submitEdit()" @keydown.stop @keydown.enter="submitEdit()" @keydown.esc="submitEdit(true)" v-model="editingNodeName">
     </div>
-    <div class="explorer-node__item" v-else :style="{paddingLeft: leftPadding}" @click="select()" draggable="true" @dragstart.stop="setDragSourceId" @dragend.stop="setDragTargetId()">
+    <div class="explorer-node__item" v-else :style="{paddingLeft: leftPadding}" @click="select()" draggable="true" @dragstart.stop="setDragSourceId" @dragend.stop="setDragTarget()">
       {{node.item.name}}
       <icon-provider class="explorer-node__location" v-for="location in node.locations" :key="location.id" :provider-id="location.providerId"></icon-provider>
     </div>
@@ -73,7 +73,6 @@ export default {
   },
   methods: {
     ...mapMutations('explorer', [
-      'setDragTargetId',
       'setEditingId',
     ]),
     ...mapActions('explorer', [
@@ -142,7 +141,7 @@ export default {
     onDrop() {
       const sourceNode = this.$store.getters['explorer/dragSourceNode'];
       const targetNode = this.$store.getters['explorer/dragTargetNodeFolder'];
-      this.setDragTargetId();
+      this.setDragTarget();
       if (!sourceNode.isNil
         && !targetNode.isNil
         && sourceNode.item.id !== targetNode.item.id

@@ -29,5 +29,8 @@ exports.githubToken = (req, res) => {
   githubToken(req.query.clientId, req.query.code)
     .then(
       token => res.send(token),
-      err => res.status(400).send(err ? err.message || err.toString() : 'bad_code'));
+      err => res
+        .status(400)
+        .send(err ? err.message || err.toString() : 'bad_code'),
+    );
 };

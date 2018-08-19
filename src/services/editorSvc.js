@@ -2,15 +2,15 @@ import Vue from 'vue';
 import DiffMatchPatch from 'diff-match-patch';
 import Prism from 'prismjs';
 import markdownItPandocRenderer from 'markdown-it-pandoc-renderer';
-import cledit from './cledit';
+import cledit from './editor/cledit';
 import pagedown from '../libs/pagedown';
 import htmlSanitizer from '../libs/htmlSanitizer';
 import markdownConversionSvc from './markdownConversionSvc';
 import markdownGrammarSvc from './markdownGrammarSvc';
-import sectionUtils from './sectionUtils';
+import sectionUtils from './editor/sectionUtils';
 import extensionSvc from './extensionSvc';
-import editorSvcDiscussions from './editorSvcDiscussions';
-import editorSvcUtils from './editorSvcUtils';
+import editorSvcDiscussions from './editor/editorSvcDiscussions';
+import editorSvcUtils from './editor/editorSvcUtils';
 import utils from './utils';
 import store from '../store';
 
@@ -91,8 +91,8 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
     this.previewCtxWithDiffs = null;
     editorSvc.$emit('previewCtxWithDiffs', null);
     const options = {
-      sectionHighlighter: section => Prism.highlight(
-        section.text, this.prismGrammars[section.data]),
+      sectionHighlighter: section => Prism
+        .highlight(section.text, this.prismGrammars[section.data]),
       sectionParser: (text) => {
         this.parsingCtx = markdownConversionSvc.parseSections(this.converter, text);
         return this.parsingCtx.sections;
@@ -114,13 +114,13 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
   convert() {
     this.conversionCtx = markdownConversionSvc.convert(this.parsingCtx, this.conversionCtx);
     this.$emit('conversionCtx', this.conversionCtx);
-    tokens = this.parsingCtx.markdownState.tokens;
+    ({ tokens } = this.parsingCtx.markdownState);
   },
 
   /**
    * Refresh the preview with the result of `convert()`
    */
-  refreshPreview() {
+  async refreshPreview() {
     const sectionDescList = [];
     let sectionPreviewElt;
     let sectionTocElt;
@@ -139,7 +139,11 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
           if (sectionDesc.editorElt !== section.elt) {
             // Force textToPreviewDiffs computation
             sectionDesc = new SectionDesc(
-              section, sectionDesc.previewElt, sectionDesc.tocElt, sectionDesc.html);
+              section,
+              sectionDesc.previewElt,
+              sectionDesc.tocElt,
+              sectionDesc.html,
+            );
           }
           sectionDescList.push(sectionDesc);
           previewHtml += sectionDesc.html;
@@ -218,10 +222,10 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
       img.onerror = resolve;
       img.src = imgElt.src;
     }));
+    await Promise.all(loadedPromises);
 
-    Promise.all(loadedPromises)
-      // Debounce if sections have already been measured
-      .then(() => this.measureSectionDimensions(!!this.previewCtxMeasured));
+    // Debounce if sections have already been measured
+    this.measureSectionDimensions(!!this.previewCtxMeasured);
   },
 
   /**
@@ -256,7 +260,9 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
                 sectionDesc.previewText = sectionDesc.previewElt.textContent;
               }
               sectionDesc.textToPreviewDiffs = diffMatchPatch.diff_main(
-                sectionDesc.section.text, sectionDesc.previewText);
+                sectionDesc.section.text,
+                sectionDesc.previewText,
+              );
               hasOne = true;
             }
             return false;
@@ -316,7 +322,9 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
         const editorEndOffset = editorSvc.getEditorOffset(previewSelectionEndOffset);
         if (editorStartOffset != null && editorEndOffset != null) {
           editorSvc.clEditor.selectionMgr.setSelectionStartEnd(
-            editorStartOffset, editorEndOffset);
+            editorStartOffset,
+            editorEndOffset,
+          );
         }
       }
       editorSvc.previewSelectionRange = range;
@@ -559,17 +567,21 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
         this.applyContent();
       }, {
         immediate: true,
-      });
+      },
+    );
 
     // Disable editor if hidden or if no content is loaded
     store.watch(
       () => store.getters['content/isCurrentEditable'],
       editable => this.clEditor.toggleEditable(!!editable), {
         immediate: true,
-      });
+      },
+    );
 
-    store.watch(() => utils.serializeObject(store.getters['layout/styles']),
-      () => this.measureSectionDimensions(false, true, true));
+    store.watch(
+      () => utils.serializeObject(store.getters['layout/styles']),
+      () => this.measureSectionDimensions(false, true, true),
+    );
 
     this.initHighlighters();
     this.$emit('inited');

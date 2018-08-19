@@ -2,20 +2,20 @@
   <div class="explorer flex flex--column">
     <div class="side-title flex flex--row flex--space-between">
       <div class="flex flex--row">
-        <button class="side-title__button button" @click="newItem()" v-title="'New file'">
+        <button class="side-title__button side-title__button--new-file button" @click="newItem()" v-title="'New file'">
           <icon-file-plus></icon-file-plus>
         </button>
-        <button class="side-title__button button" @click="newItem(true)" v-title="'New folder'">
+        <button class="side-title__button side-title__button--new-folder button" @click="newItem(true)" v-title="'New folder'">
           <icon-folder-plus></icon-folder-plus>
         </button>
-        <button class="side-title__button button" @click="deleteItem()" v-title="'Delete'">
+        <button class="side-title__button side-title__button--delete button" @click="deleteItem()" v-title="'Delete'">
           <icon-delete></icon-delete>
         </button>
-        <button class="side-title__button button" @click="editItem()" v-title="'Rename'">
+        <button class="side-title__button side-title__button--rename button" @click="editItem()" v-title="'Rename'">
           <icon-pen></icon-pen>
         </button>
       </div>
-      <button class="side-title__button button" @click="toggleExplorer(false)" v-title="'Close explorer'">
+      <button class="side-title__button side-title__button--close button" @click="toggleExplorer(false)" v-title="'Close explorer'">
         <icon-close></icon-close>
       </button>
     </div>
@@ -28,6 +28,7 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
 import ExplorerNode from './ExplorerNode';
+import explorerSvc from '../services/explorerSvc';
 
 export default {
   components: {
@@ -49,10 +50,8 @@ export default {
     ...mapActions('data', [
       'toggleExplorer',
     ]),
-    ...mapActions('explorer', [
-      'newItem',
-      'deleteItem',
-    ]),
+    newItem: isFolder => explorerSvc.newItem(isFolder),
+    deleteItem: () => explorerSvc.deleteItem(),
     editItem() {
       const node = this.selectedNode;
       if (!node.isTrash && !node.isTemp) {
@@ -68,7 +67,8 @@ export default {
         this.$store.dispatch('explorer/openNode', currentFileId);
       }, {
         immediate: true,
-      });
+      },
+    );
   },
 };
 </script>

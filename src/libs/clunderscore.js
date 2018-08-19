@@ -140,7 +140,8 @@ objectProperties.cl_extend = function (obj) {
 function build(properties) {
     return objectProperties.cl_reduce.call(properties, function (memo, value, key) {
         memo[key] = {
-            value: value
+            value: value,
+            configurable: true
         }
         return memo
     }, {})

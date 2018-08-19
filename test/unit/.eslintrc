@@ -1,0 +1,8 @@
+{
+  "env": {
+    "jest": true
+  },
+  "extends": [
+    "../../.eslintrc.js"
+  ]
+}

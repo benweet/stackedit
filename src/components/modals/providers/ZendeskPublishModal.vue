@@ -4,7 +4,7 @@
       <div class="modal__image">
         <icon-provider provider-id="zendesk"></icon-provider>
       </div>
-      <p>This will publish <b>{{currentFileName}}</b> to your <b>Zendesk Help Center</b>.</p>
+      <p>Publish <b>{{currentFileName}}</b> to your <b>Zendesk Help Center</b>.</p>
       <form-entry label="Section ID" error="sectionId">
         <input slot="field" class="textfield" type="text" v-model.trim="sectionId" @keydown.enter="resolve()">
         <div class="form-entry__info">
@@ -22,7 +22,7 @@
       </form-entry>
       <form-entry label="Template">
         <select slot="field" class="textfield" v-model="selectedTemplate" @keydown.enter="resolve()">
-          <option v-for="(template, id) in allTemplates" :key="id" :value="id">
+          <option v-for="(template, id) in allTemplatesById" :key="id" :value="id">
             {{ template.name }}
           </option>
         </select>
@@ -37,7 +37,7 @@
     </div>
     <div class="modal__button-bar">
       <button class="button" @click="config.reject()">Cancel</button>
-      <button class="button" @click="resolve()">Ok</button>
+      <button class="button button--resolve" @click="resolve()">Ok</button>
     </div>
   </modal-inner>
 </template>
@@ -62,7 +62,11 @@ export default modalTemplate({
       } else {
         // Return new location
         const location = zendeskProvider.makeLocation(
-          this.config.token, this.sectionId, this.locale || 'en-us', this.articleId);
+          this.config.token,
+          this.sectionId,
+          this.locale || 'en-us',
+          this.articleId,
+        );
         location.templateId = this.selectedTemplate;
         this.config.resolve(location);
       }

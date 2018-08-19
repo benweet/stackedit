@@ -2,17 +2,17 @@
   <modal-inner class="modal__inner-1--about-modal" aria-label="About">
     <div class="modal__content">
       <div class="logo-background"></div>
-      <small>v{{version}} — © 2018 Dock5 Software</small>
+      <small>© 2013-2018 Dock5 Software Ltd.<br>v{{version}}</small>
       <hr>
       StackEdit on <a target="_blank" href="https://github.com/benweet/stackedit/">GitHub</a>
       <br>
-      <a target="_blank" href="https://github.com/benweet/stackedit/issues">Issue tracker</a> — <a target="_blank" href="https://github.com/benweet/stackedit/blob/master/CHANGELOG.md">Changelog</a>
+      <a target="_blank" href="https://github.com/benweet/stackedit/issues">Issue tracker</a> — <a target="_blank" href="https://github.com/benweet/stackedit/releases">Changelog</a>
       <br>
       <a target="_blank" href="https://chrome.google.com/webstore/detail/iiooodelglhkcpgbajoejffhijaclcdg">Chrome app</a> — <a target="_blank" href="https://chrome.google.com/webstore/detail/ajehldoplanpchfokmeempkekhnhmoha">Chrome extension</a>
       <br>
-      StackEdit on <a target="_blank" href="https://twitter.com/stackedit/">Twitter</a>
+      <a target="_blank" href="https://community.stackedit.io/">Community</a> — <a target="_blank" href="https://community.stackedit.io/c/how-to">Tutos and How To</a>
       <br>
-      <a target="_blank" href="https://community.stackedit.io/">Community</a>
+      StackEdit on <a target="_blank" href="https://twitter.com/stackedit/">Twitter</a>
       <div class="modal__info">
       For commercial support or custom development, please <a href="mailto:stackedit.project@gmail.com">send us an email</a>.
       </div>
@@ -24,7 +24,7 @@
       <a target="_blank" href="privacy_policy.html">Privacy Policy</a>
     </div>
     <div class="modal__button-bar">
-      <button class="button" @click="config.resolve()">Close</button>
+      <button class="button button--resolve" @click="config.resolve()">Close</button>
     </div>
   </modal-inner>
 </template>
@@ -59,7 +59,7 @@ export default {
 
   .logo-background {
     height: 75px;
-    margin: 0.5rem 0;
+    margin: 0.5em 0;
   }
 
   small {

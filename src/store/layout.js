@@ -108,8 +108,8 @@ function computeStyles(state, getters, layoutSettings = getters['data/layoutSett
   styles.previewWidth = styles.showSidePreview ?
     panelWidth :
     doublePanelWidth;
-  const previewRightPadding = Math.max(
-    Math.floor((styles.previewWidth - styles.textWidth) / 2), minPadding);
+  const previewRightPadding = Math
+    .max(Math.floor((styles.previewWidth - styles.textWidth) / 2), minPadding);
   if (!styles.showSidePreview) {
     styles.previewWidth += constants.buttonBarWidth;
   }
@@ -122,8 +122,8 @@ function computeStyles(state, getters, layoutSettings = getters['data/layoutSett
   styles.editorWidth = styles.showSidePreview ?
     panelWidth :
     doublePanelWidth;
-  const editorRightPadding = Math.max(
-    Math.floor((styles.editorWidth - styles.textWidth) / 2), minPadding);
+  const editorRightPadding = Math
+    .max(Math.floor((styles.editorWidth - styles.textWidth) / 2), minPadding);
   styles.editorGutterWidth = showGutter && layoutSettings.showEditor
     ? constants.gutterWidth
     : 0;
@@ -146,8 +146,9 @@ function computeStyles(state, getters, layoutSettings = getters['data/layoutSett
       styles.hideLocations = true;
     }
   }
-  styles.titleMaxWidth = Math.max(minTitleMaxWidth,
-    Math.min(maxTitleMaxWidth, styles.titleMaxWidth));
+  styles.titleMaxWidth = Math
+    .max(minTitleMaxWidth, Math
+      .min(maxTitleMaxWidth, styles.titleMaxWidth));
   return styles;
 }
 

@@ -117,6 +117,6 @@ extensionSvc.onGetOptions((options, properties) => {
 });
 
 extensionSvc.onSectionPreview((elt) => {
-  elt.querySelectorAll('.prism.language-mermaid').cl_each(
-    diagramElt => render(diagramElt.parentNode));
+  elt.querySelectorAll('.prism.language-mermaid')
+    .cl_each(diagramElt => render(diagramElt.parentNode));
 });

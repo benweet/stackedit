@@ -14,7 +14,7 @@
     </div>
     <div class="modal__button-bar">
       <button class="button" @click="config.reject()">Cancel</button>
-      <button class="button" @click="resolve()">Ok</button>
+      <button class="button button--resolve" @click="resolve()">Ok</button>
     </div>
   </modal-inner>
 </template>
@@ -45,7 +45,7 @@ export default modalTemplate({
           name: this.name,
           password: this.password,
         };
-        this.$store.dispatch('data/setCouchdbToken', token);
+        this.$store.dispatch('data/addCouchdbToken', token);
         this.config.resolve();
       }
     },

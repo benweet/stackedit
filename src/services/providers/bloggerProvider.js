@@ -1,37 +1,35 @@
 import store from '../../store';
 import googleHelper from './helpers/googleHelper';
-import providerRegistry from './providerRegistry';
+import Provider from './common/Provider';
 
-export default providerRegistry.register({
+export default new Provider({
   id: 'blogger',
-  getToken(location) {
-    const token = store.getters['data/googleTokens'][location.sub];
+  name: 'Blogger',
+  getToken({ sub }) {
+    const token = store.getters['data/googleTokensBySub'][sub];
     return token && token.isBlogger ? token : null;
   },
-  getUrl(location) {
-    return `https://www.blogger.com/blogger.g?blogID=${location.blogId}#editor/target=post;postID=${location.postId}`;
+  getLocationUrl({ blogId, postId }) {
+    return `https://www.blogger.com/blogger.g?blogID=${blogId}#editor/target=post;postID=${postId}`;
   },
-  getDescription(location) {
-    const token = this.getToken(location);
-    return `${location.postId} — ${location.blogUrl} — ${token.name}`;
+  getLocationDescription({ postId }) {
+    return postId;
   },
-  publish(token, html, metadata, publishLocation) {
-    return googleHelper.uploadBlogger(
+  async publish(token, html, metadata, publishLocation) {
+    const post = await googleHelper.uploadBlogger({
+      ...publishLocation,
       token,
-      publishLocation.blogUrl,
-      publishLocation.blogId,
-      publishLocation.postId,
-      metadata.title,
-      html,
-      metadata.tags,
-      metadata.status === 'draft',
-      metadata.date,
-    )
-      .then(post => ({
-        ...publishLocation,
-        blogId: post.blog.id,
-        postId: post.id,
-      }));
+      title: metadata.title,
+      content: html,
+      labels: metadata.tags,
+      isDraft: metadata.status === 'draft',
+      published: metadata.date,
+    });
+    return {
+      ...publishLocation,
+      blogId: post.blog.id,
+      postId: post.id,
+    };
   },
   makeLocation(token, blogUrl, postId) {
     const location = {

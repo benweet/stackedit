@@ -1,38 +1,35 @@
 import store from '../../store';
 import googleHelper from './helpers/googleHelper';
-import providerRegistry from './providerRegistry';
+import Provider from './common/Provider';
 
-export default providerRegistry.register({
+export default new Provider({
   id: 'bloggerPage',
-  getToken(location) {
-    const token = store.getters['data/googleTokens'][location.sub];
+  name: 'Blogger Page',
+  getToken({ sub }) {
+    const token = store.getters['data/googleTokensBySub'][sub];
     return token && token.isBlogger ? token : null;
   },
-  getUrl(location) {
-    return `https://www.blogger.com/blogger.g?blogID=${location.blogId}#editor/target=page;pageID=${location.pageId}`;
+  getLocationUrl({ blogId, pageId }) {
+    return `https://www.blogger.com/blogger.g?blogID=${blogId}#editor/target=page;pageID=${pageId}`;
   },
-  getDescription(location) {
-    const token = this.getToken(location);
-    return `${location.pageId} — ${location.blogUrl} — ${token.name}`;
+  getLocationDescription({ pageId }) {
+    return pageId;
   },
-  publish(token, html, metadata, publishLocation) {
-    return googleHelper.uploadBlogger(
+  async publish(token, html, metadata, publishLocation) {
+    const page = await googleHelper.uploadBlogger({
       token,
-      publishLocation.blogUrl,
-      publishLocation.blogId,
-      publishLocation.pageId,
-      metadata.title,
-      html,
-      null,
-      null,
-      null,
-      true,
-    )
-      .then(page => ({
-        ...publishLocation,
-        blogId: page.blog.id,
-        pageId: page.id,
-      }));
+      blogUrl: publishLocation.blogUrl,
+      blogId: publishLocation.blogId,
+      postId: publishLocation.pageId,
+      title: metadata.title,
+      content: html,
+      isPage: true,
+    });
+    return {
+      ...publishLocation,
+      blogId: page.blog.id,
+      pageId: page.id,
+    };
   },
   makeLocation(token, blogUrl, pageId) {
     const location = {

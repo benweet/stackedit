@@ -92,7 +92,7 @@ export default {
         this.htmlSelection = true;
         if (!text) {
           this.htmlSelection = false;
-          text = editorSvc.previewCtx.text;
+          ({ text } = editorSvc.previewCtx);
         }
         if (text != null) {
           this.htmlStats.forEach((stat) => {

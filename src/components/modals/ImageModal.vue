@@ -17,7 +17,7 @@
     </div>
     <div class="modal__button-bar">
       <button class="button" @click="reject()">Cancel</button>
-      <button class="button" @click="resolve()">Ok</button>
+      <button class="button button--resolve" @click="resolve()">Ok</button>
     </div>
   </modal-inner>
 </template>
@@ -36,9 +36,8 @@ export default modalTemplate({
   }),
   computed: {
     googlePhotosTokens() {
-      const googleTokens = this.$store.getters['data/googleTokens'];
-      return Object.entries(googleTokens)
-        .map(([, token]) => token)
+      const googleTokensBySub = this.$store.getters['data/googleTokensBySub'];
+      return Object.values(googleTokensBySub)
         .filter(token => token.isPhotos)
         .sort((token1, token2) => token1.name.localeCompare(token2.name));
     },
@@ -48,28 +47,30 @@ export default modalTemplate({
       if (!this.url) {
         this.setError('url');
       } else {
-        const callback = this.config.callback;
+        const { callback } = this.config;
         this.config.resolve();
         callback(this.url);
       }
     },
     reject() {
-      const callback = this.config.callback;
+      const { callback } = this.config;
       this.config.reject();
       callback(null);
     },
     addGooglePhotosAccount() {
       return googleHelper.addPhotosAccount();
     },
-    openGooglePhotos(token) {
-      const callback = this.config.callback;
+    async openGooglePhotos(token) {
+      const { callback } = this.config;
       this.config.reject();
-      googleHelper.openPicker(token, 'img')
-        .then(res => res[0] && this.$store.dispatch('modal/open', {
+      const res = await googleHelper.openPicker(token, 'img');
+      if (res[0]) {
+        this.$store.dispatch('modal/open', {
           type: 'googlePhoto',
           url: res[0].url,
           callback,
-        }));
+        });
+      }
     },
   },
 });

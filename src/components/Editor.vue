@@ -66,13 +66,14 @@ export default {
           editorElt.querySelectorAll(`.discussion-editor-highlighting--${discussionId}`)
             .cl_each(elt => elt.classList.add('discussion-editor-highlighting--selected'));
         }
-      });
+      },
+    );
   },
 };
 </script>
 
 <style lang="scss">
-@import 'common/variables.scss';
+@import '../styles/variables.scss';
 
 .editor {
   position: absolute;

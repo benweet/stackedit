@@ -1,119 +1,110 @@
 import store from '../../store';
 import githubHelper from './helpers/githubHelper';
-import providerUtils from './providerUtils';
-import providerRegistry from './providerRegistry';
+import Provider from './common/Provider';
 import utils from '../utils';
+import workspaceSvc from '../workspaceSvc';
+import userSvc from '../userSvc';
 
 const savedSha = {};
 
-export default providerRegistry.register({
+export default new Provider({
   id: 'github',
-  getToken(location) {
-    return store.getters['data/githubTokens'][location.sub];
+  name: 'GitHub',
+  getToken({ sub }) {
+    return store.getters['data/githubTokensBySub'][sub];
   },
-  getUrl(location) {
-    return `https://github.com/${encodeURIComponent(location.owner)}/${encodeURIComponent(location.repo)}/blob/${encodeURIComponent(location.branch)}/${encodeURIComponent(location.path)}`;
+  getLocationUrl({
+    owner,
+    repo,
+    branch,
+    path,
+  }) {
+    return `https://github.com/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/tree/${encodeURIComponent(branch)}/${utils.encodeUrlPath(path)}`;
   },
-  getDescription(location) {
-    const token = this.getToken(location);
-    return `${location.path} — ${location.owner}/${location.repo} — ${token.name}`;
+  getLocationDescription({ path }) {
+    return path;
   },
-  downloadContent(token, syncLocation) {
-    return githubHelper.downloadFile(
-      token, syncLocation.owner, syncLocation.repo, syncLocation.branch, syncLocation.path,
-    )
-      .then(({ sha, content }) => {
-        savedSha[syncLocation.id] = sha;
-        return providerUtils.parseContent(content, `${syncLocation.fileId}/content`);
-      })
-      .catch(() => null); // Ignore error, without the sha upload is going to fail anyway
+  async downloadContent(token, syncLocation) {
+    const { sha, data } = await githubHelper.downloadFile({
+      ...syncLocation,
+      token,
+    });
+    savedSha[syncLocation.id] = sha;
+    return Provider.parseContent(data, `${syncLocation.fileId}/content`);
   },
-  uploadContent(token, content, syncLocation) {
-    let result = Promise.resolve();
+  async uploadContent(token, content, syncLocation) {
     if (!savedSha[syncLocation.id]) {
-      result = this.downloadContent(token, syncLocation); // Get the last sha
+      try {
+        // Get the last sha
+        await this.downloadContent(token, syncLocation);
+      } catch (e) {
+        // Ignore error
+      }
     }
-    return result
-      .then(() => {
-        const sha = savedSha[syncLocation.id];
-        delete savedSha[syncLocation.id];
-        return githubHelper.uploadFile(
-          token,
-          syncLocation.owner,
-          syncLocation.repo,
-          syncLocation.branch,
-          syncLocation.path,
-          providerUtils.serializeContent(content),
-          sha,
-        );
-      })
-      .then(() => syncLocation);
+    const sha = savedSha[syncLocation.id];
+    delete savedSha[syncLocation.id];
+    await githubHelper.uploadFile({
+      ...syncLocation,
+      token,
+      content: Provider.serializeContent(content),
+      sha,
+    });
+    return syncLocation;
   },
-  publish(token, html, metadata, publishLocation) {
-    return this.downloadContent(token, publishLocation) // Get the last sha
-      .then(() => {
-        const sha = savedSha[publishLocation.id];
-        delete savedSha[publishLocation.id];
-        return githubHelper.uploadFile(
-          token,
-          publishLocation.owner,
-          publishLocation.repo,
-          publishLocation.branch,
-          publishLocation.path,
-          html,
-          sha,
-        );
-      })
-      .then(() => publishLocation);
+  async publish(token, html, metadata, publishLocation) {
+    try {
+      // Get the last sha
+      await this.downloadContent(token, publishLocation);
+    } catch (e) {
+      // Ignore error
+    }
+    const sha = savedSha[publishLocation.id];
+    delete savedSha[publishLocation.id];
+    await githubHelper.uploadFile({
+      ...publishLocation,
+      token,
+      content: html,
+      sha,
+    });
+    return publishLocation;
   },
-  openFile(token, syncLocation) {
-    return Promise.resolve()
-      .then(() => {
-        if (providerUtils.openFileWithLocation(store.getters['syncLocation/items'], syncLocation)) {
-          // File exists and has just been opened. Next...
-          return null;
-        }
-        // Download content from GitHub and create the file
-        return this.downloadContent(token, syncLocation)
-          .then((content) => {
-            const id = utils.uid();
-            delete content.history;
-            store.commit('content/setItem', {
-              ...content,
-              id: `${id}/content`,
-            });
-            let name = syncLocation.path;
-            const slashPos = name.lastIndexOf('/');
-            if (slashPos > -1 && slashPos < name.length - 1) {
-              name = name.slice(slashPos + 1);
-            }
-            const dotPos = name.lastIndexOf('.');
-            if (dotPos > 0 && slashPos < name.length) {
-              name = name.slice(0, dotPos);
-            }
-            store.commit('file/setItem', {
-              id,
-              name: utils.sanitizeName(name),
-              parentId: store.getters['file/current'].parentId,
-            });
-            store.commit('syncLocation/setItem', {
-              ...syncLocation,
-              id: utils.uid(),
-              fileId: id,
-            });
-            store.commit('file/setCurrentId', id);
-            store.dispatch('notification/info', `${store.getters['file/current'].name} was imported from GitHub.`);
-          }, () => {
-            store.dispatch('notification/error', `Could not open file ${syncLocation.path}.`);
-          });
+  async openFile(token, syncLocation) {
+    // Check if the file exists and open it
+    if (!Provider.openFileWithLocation(syncLocation)) {
+      // Download content from GitHub
+      let content;
+      try {
+        content = await this.downloadContent(token, syncLocation);
+      } catch (e) {
+        store.dispatch('notification/error', `Could not open file ${syncLocation.path}.`);
+        return;
+      }
+
+      // Create the file
+      let name = syncLocation.path;
+      const slashPos = name.lastIndexOf('/');
+      if (slashPos > -1 && slashPos < name.length - 1) {
+        name = name.slice(slashPos + 1);
+      }
+      const dotPos = name.lastIndexOf('.');
+      if (dotPos > 0 && slashPos < name.length) {
+        name = name.slice(0, dotPos);
+      }
+      const item = await workspaceSvc.createFile({
+        name,
+        parentId: store.getters['file/current'].parentId,
+        text: content.text,
+        properties: content.properties,
+        discussions: content.discussions,
+        comments: content.comments,
+      }, true);
+      store.commit('file/setCurrentId', item.id);
+      workspaceSvc.addSyncLocation({
+        ...syncLocation,
+        fileId: item.id,
       });
-  },
-  parseRepoUrl(url) {
-    const parsedRepo = url.match(/[/:]?([^/:]+)\/([^/]+?)(?:\.git|\/)?$/);
-    return parsedRepo && {
-      owner: parsedRepo[1],
-      repo: parsedRepo[2],
-    };
+      store.dispatch('notification/info', `${store.getters['file/current'].name} was imported from GitHub.`);
+    }
   },
   makeLocation(token, owner, repo, branch, path) {
     return {
@@ -124,5 +115,51 @@ export default providerRegistry.register({
       branch,
       path,
     };
+  },
+  async listFileRevisions({ token, syncLocation }) {
+    const entries = await githubHelper.getCommits({
+      ...syncLocation,
+      token,
+    });
+
+    return entries.map(({
+      author,
+      committer,
+      commit,
+      sha,
+    }) => {
+      let user;
+      if (author && author.login) {
+        user = author;
+      } else if (committer && committer.login) {
+        user = committer;
+      }
+      const sub = `gh:${user.id}`;
+      userSvc.addInfo({ id: sub, name: user.login, imageUrl: user.avatar_url });
+      const date = (commit.author && commit.author.date)
+        || (commit.committer && commit.committer.date);
+      return {
+        id: sha,
+        sub,
+        created: date ? new Date(date).getTime() : 1,
+      };
+    });
+  },
+  async loadFileRevision() {
+    // Revision are already loaded
+    return false;
+  },
+  async getFileRevisionContent({
+    token,
+    contentId,
+    syncLocation,
+    revisionId,
+  }) {
+    const { data } = await githubHelper.downloadFile({
+      ...syncLocation,
+      token,
+      branch: revisionId,
+    });
+    return Provider.parseContent(data, contentId);
   },
 });

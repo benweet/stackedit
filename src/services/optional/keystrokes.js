@@ -1,8 +1,8 @@
-import cledit from '../cledit';
+import cledit from '../editor/cledit';
 import editorSvc from '../editorSvc';
 import store from '../../store';
 
-const Keystroke = cledit.Keystroke;
+const { Keystroke } = cledit;
 const indentRegexp = /^ {0,3}>[ ]*|^[ \t]*[*+-][ \t](?:\[[ xX]\][ \t])?|^([ \t]*)\d+\.[ \t](?:\[[ xX]\][ \t])?|^\s+/;
 let clearNewline;
 let lastSelection;
@@ -32,7 +32,9 @@ function fixNumberedList(state, indent) {
 
     lines.some((line) => {
       const match = line.replace(
-        /^[ \t]*/, wholeMatch => wholeMatch.replace(/\t/g, '    ')).match(indentRegex);
+        /^[ \t]*/,
+        wholeMatch => wholeMatch.replace(/\t/g, '    '),
+      ).match(indentRegex);
       if (!match || line.match(/^#+ /)) { // Line not empty, not indented, or title
         flush();
         return true;

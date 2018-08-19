@@ -21,7 +21,7 @@ export default {
     },
   },
   actions: {
-    open({ commit, state }, { type, findText }) {
+    open({ commit }, { type, findText }) {
       commit('setType', type);
       if (findText) {
         commit('setFindText', findText);

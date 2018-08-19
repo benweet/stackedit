@@ -1,8 +1,7 @@
 import yaml from 'js-yaml';
 import '../libs/clunderscore';
 import presets from '../data/presets';
-
-const origin = `${location.protocol}//${location.host}`;
+import constants from '../data/constants';
 
 // For utils.uid()
 const uidLength = 16;
@@ -16,7 +15,18 @@ const parseQueryParams = (params) => {
   const result = {};
   params.split('&').forEach((param) => {
     const [key, value] = param.split('=').map(decodeURIComponent);
-    if (key) {
+    if (key && value != null) {
+      result[key] = value;
+    }
+  });
+  return result;
+};
+
+// For utils.setQueryParams()
+const filterParams = (params = {}) => {
+  const result = {};
+  Object.entries(params).forEach(([key, value]) => {
+    if (key && value != null) {
       result[key] = value;
     }
   });
@@ -67,43 +77,27 @@ Object.keys(presets).forEach((key) => {
 
 export default {
   computedPresets,
-  cleanTrashAfter: 7 * 24 * 60 * 60 * 1000, // 7 days
-  origin,
-  oauth2RedirectUri: `${origin}/oauth2/callback`,
-  queryParams: parseQueryParams(location.hash.slice(1)),
+  queryParams: parseQueryParams(window.location.hash.slice(1)),
   setQueryParams(params = {}) {
-    this.queryParams = params;
+    this.queryParams = filterParams(params);
     const serializedParams = Object.entries(this.queryParams).map(([key, value]) =>
       `${encodeURIComponent(key)}=${encodeURIComponent(value)}`).join('&');
     const hash = `#${serializedParams}`;
-    if (location.hash !== hash) {
-      location.replace(hash);
+    if (window.location.hash !== hash) {
+      window.location.replace(hash);
     }
   },
-  types: [
-    'contentState',
-    'syncedContent',
-    'content',
-    'file',
-    'folder',
-    'syncLocation',
-    'publishLocation',
-    'data',
-  ],
-  localStorageDataIds: [
-    'workspaces',
-    'settings',
-    'layoutSettings',
-    'tokens',
-  ],
-  textMaxLength: 250000,
   sanitizeText(text) {
-    const result = `${text || ''}`.slice(0, this.textMaxLength);
+    const result = `${text || ''}`.slice(0, constants.textMaxLength);
     // last char must be a `\n`.
     return `${result}\n`.replace(/\n\n$/, '\n');
   },
   sanitizeName(name) {
-    return `${name || ''}`.slice(0, 250) || 'Untitled';
+    return `${name || ''}`
+      // Replace `/`, control characters and other kind of spaces with a space
+      .replace(/[/\x00-\x1F\x7f-\xa0\s]+/g, ' ').trim() // eslint-disable-line no-control-regex
+      // Keep only 250 characters
+      .slice(0, 250) || constants.defaultName;
   },
   deepCopy,
   serializeObject(obj) {
@@ -117,6 +111,17 @@ export default {
         return sorted;
       }, {});
     });
+  },
+  search(items, criteria) {
+    let result;
+    items.some((item) => {
+      // If every field fits the criteria
+      if (Object.entries(criteria).every(([key, value]) => value === item[key])) {
+        result = item;
+      }
+      return result;
+    });
+    return result;
   },
   uid() {
     crypto.getRandomValues(array);
@@ -132,27 +137,55 @@ export default {
     }
     return hash;
   },
+  getItemHash(item) {
+    return this.hash(this.serializeObject({
+      ...item,
+      // These properties must not be part of the hash
+      id: undefined,
+      hash: undefined,
+      history: undefined,
+    }));
+  },
   addItemHash(item) {
     return {
       ...item,
-      hash: this.hash(this.serializeObject({
-        ...item,
-        // These properties must not be part of the hash
-        history: undefined,
-        hash: undefined,
-      })),
+      hash: this.getItemHash(item),
     };
   },
   makeWorkspaceId(params) {
     return Math.abs(this.hash(this.serializeObject(params))).toString(36);
   },
-  encodeBase64(str) {
-    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
-      (match, p1) => String.fromCharCode(`0x${p1}`)));
+  getDbName(workspaceId) {
+    let dbName = 'stackedit-db';
+    if (workspaceId !== 'main') {
+      dbName += `-${workspaceId}`;
+    }
+    return dbName;
+  },
+  encodeBase64(str, urlSafe = false) {
+    const uriEncodedStr = encodeURIComponent(str);
+    const utf8Str = uriEncodedStr.replace(
+      /%([0-9A-F]{2})/g,
+      (match, p1) => String.fromCharCode(`0x${p1}`),
+    );
+    const result = btoa(utf8Str);
+    if (!urlSafe) {
+      return result;
+    }
+    return result
+      .replace(/\//g, '_') // Replace `/` with `_`
+      .replace(/\+/g, '-') // Replace `+` with `-`
+      .replace(/=+$/, ''); // Remove trailing `=`
   },
   decodeBase64(str) {
-    return decodeURIComponent(atob(str).split('').map(
-      c => `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`).join(''));
+    // In case of URL safe base64
+    const sanitizedStr = str.replace(/_/g, '/').replace(/-/g, '+');
+    const utf8Str = atob(sanitizedStr);
+    const uriEncodedStr = utf8Str
+      .split('')
+      .map(c => `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`)
+      .join('');
+    return decodeURIComponent(uriEncodedStr);
   },
   computeProperties(yamlProperties) {
     let properties = {};
@@ -173,6 +206,32 @@ export default {
   },
   setInterval(func, interval) {
     return setInterval(() => func(), this.randomize(interval));
+  },
+  async awaitSequence(values, asyncFunc) {
+    const results = [];
+    const valuesLeft = values.slice().reverse();
+    const runWithNextValue = async () => {
+      if (!valuesLeft.length) {
+        return results;
+      }
+      results.push(await asyncFunc(valuesLeft.pop()));
+      return runWithNextValue();
+    };
+    return runWithNextValue();
+  },
+  async awaitSome(asyncFunc) {
+    if (await asyncFunc()) {
+      return this.awaitSome(asyncFunc);
+    }
+    return null;
+  },
+  someResult(values, func) {
+    let result;
+    values.some((value) => {
+      result = func(value);
+      return result;
+    });
+    return result;
   },
   parseQueryParams,
   addQueryParams(url = '', params = {}, hash = false) {
@@ -218,10 +277,20 @@ export default {
     urlParser.href = url;
     return urlParser.hostname;
   },
+  encodeUrlPath(path) {
+    return path ? path.split('/').map(encodeURIComponent).join('/') : '';
+  },
+  parseGithubRepoUrl(url) {
+    const parsedRepo = url && url.match(/([^/:]+)\/([^/]+?)(?:\.git|\/)?$/);
+    return parsedRepo && {
+      owner: parsedRepo[1],
+      repo: parsedRepo[2],
+    };
+  },
   createHiddenIframe(url) {
     const iframeElt = document.createElement('iframe');
     iframeElt.style.position = 'absolute';
-    iframeElt.style.left = '-9999px';
+    iframeElt.style.left = '-99px';
     iframeElt.style.width = '1px';
     iframeElt.style.height = '1px';
     iframeElt.src = url;
@@ -230,9 +299,9 @@ export default {
   wrapRange(range, eltProperties) {
     const rangeLength = `${range}`.length;
     let wrappedLength = 0;
-    const treeWalker = document.createTreeWalker(
-      range.commonAncestorContainer, NodeFilter.SHOW_TEXT);
-    let startOffset = range.startOffset;
+    const treeWalker = document
+      .createTreeWalker(range.commonAncestorContainer, NodeFilter.SHOW_TEXT);
+    let { startOffset } = range;
     treeWalker.currentNode = range.startContainer;
     if (treeWalker.currentNode.nodeType === Node.TEXT_NODE || treeWalker.nextNode()) {
       do {

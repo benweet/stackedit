@@ -4,29 +4,29 @@
       <div class="modal__image">
         <icon-provider provider-id="github"></icon-provider>
       </div>
-      <p>This will publish <b>{{currentFileName}}</b> to your <b>GitHub</b> repository.</p>
+      <p>Publish <b>{{currentFileName}}</b> to your <b>GitHub</b> repository.</p>
       <form-entry label="Repository URL" error="repoUrl">
         <input slot="field" class="textfield" type="text" v-model.trim="repoUrl" @keydown.enter="resolve()">
         <div class="form-entry__info">
           <b>Example:</b> https://github.com/benweet/stackedit
         </div>
       </form-entry>
-      <form-entry label="Branch" info="optional">
-        <input slot="field" class="textfield" type="text" v-model.trim="branch" @keydown.enter="resolve()">
-        <div class="form-entry__info">
-          If not provided, the master branch will be used.
-        </div>
-      </form-entry>
       <form-entry label="File path" error="path">
         <input slot="field" class="textfield" type="text" v-model.trim="path" @keydown.enter="resolve()">
         <div class="form-entry__info">
-          <b>Example:</b> docs/README.md<br>
-          If the file exists, it will be replaced.
+          <b>Example:</b> path/to/README.md<br>
+          If the file exists, it will be overwritten.
+        </div>
+      </form-entry>
+      <form-entry label="Branch" info="optional">
+        <input slot="field" class="textfield" type="text" v-model.trim="branch" @keydown.enter="resolve()">
+        <div class="form-entry__info">
+          If not supplied, the <code>master</code> branch will be used.
         </div>
       </form-entry>
       <form-entry label="Template">
         <select slot="field" class="textfield" v-model="selectedTemplate" @keydown.enter="resolve()">
-          <option v-for="(template, id) in allTemplates" :key="id" :value="id">
+          <option v-for="(template, id) in allTemplatesById" :key="id" :value="id">
             {{ template.name }}
           </option>
         </select>
@@ -37,7 +37,7 @@
     </div>
     <div class="modal__button-bar">
       <button class="button" @click="config.reject()">Cancel</button>
-      <button class="button" @click="resolve()">Ok</button>
+      <button class="button button--resolve" @click="resolve()">Ok</button>
     </div>
   </modal-inner>
 </template>
@@ -73,7 +73,12 @@ export default modalTemplate({
         } else {
           // Return new location
           const location = githubProvider.makeLocation(
-            this.config.token, parsedRepo[1], parsedRepo[2], this.branch || 'master', this.path);
+            this.config.token,
+            parsedRepo[1],
+            parsedRepo[2],
+            this.branch || 'master',
+            this.path,
+          );
           location.templateId = this.selectedTemplate;
           this.config.resolve(location);
         }

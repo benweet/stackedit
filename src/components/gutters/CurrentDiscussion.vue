@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from 'vuex';
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
 import editorSvc from '../../services/editorSvc';
 import animationSvc from '../../services/animationSvc';
 import markdownConversionSvc from '../../services/markdownConversionSvc';
@@ -67,6 +67,9 @@ export default {
     ...mapMutations('discussion', [
       'setCurrentDiscussionId',
     ]),
+    ...mapActions('notification', [
+      'info',
+    ]),
     goToDiscussion(discussionId = this.currentDiscussionId) {
       this.setCurrentDiscussionId(discussionId);
       const layoutSettings = this.$store.getters['data/layoutSettings'];
@@ -75,7 +78,7 @@ export default {
         ? editorSvc.clEditor.selectionMgr.getCoordinates(discussion.end)
         : editorSvc.getPreviewOffsetCoordinates(editorSvc.getPreviewOffset(discussion.end));
       if (!coordinates) {
-        this.$store.dispatch('notification/info', "Discussion can't be located in the file.");
+        this.info("Discussion can't be located in the file.");
       } else {
         const scrollerElt = layoutSettings.showEditor
           ? editorSvc.editorElt.parentNode
@@ -93,20 +96,22 @@ export default {
           .start();
       }
     },
-    removeDiscussion() {
-      this.$store.dispatch('modal/discussionDeletion')
-        .then(
-          () => this.$store.dispatch('discussion/cleanCurrentFile', {
-            filterDiscussion: this.currentDiscussion,
-          }),
-          () => {}); // Cancel
+    async removeDiscussion() {
+      try {
+        await this.$store.dispatch('modal/open', 'discussionDeletion');
+        this.$store.dispatch('discussion/cleanCurrentFile', {
+          filterDiscussion: this.currentDiscussion,
+        });
+      } catch (e) {
+        // Cancel
+      }
     },
   },
 };
 </script>
 
 <style lang="scss">
-@import '../common/variables.scss';
+@import '../../styles/variables.scss';
 
 .current-discussion {
   position: absolute;

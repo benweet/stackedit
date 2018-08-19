@@ -199,7 +199,10 @@ export default {
         const folderNode = getFolder(node, getters);
         const sourceId = getters.dragSourceNode.item.id;
         const { nodeMap } = getters;
-        for (let parentNode = folderNode; parentNode; parentNode = nodeMap[node.item.parentId]) {
+        for (let parentNode = folderNode;
+          parentNode;
+          parentNode = nodeMap[parentNode.item.parentId]
+        ) {
           if (parentNode.item.id === sourceId) {
             commit('setDragTargetId');
             return;

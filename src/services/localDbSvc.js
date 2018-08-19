@@ -133,11 +133,15 @@ const localDbSvc = {
     return new Promise((resolve, reject) => {
       // Create the DB transaction
       this.connection.createTx((tx) => {
+        const { lastTx } = this;
+
         // Look for DB changes and apply them to the store
         this.readAll(tx, (storeItemMap) => {
-          // Sanitize the workspace
-          workspaceSvc.ensureUniquePaths();
-          workspaceSvc.ensureUniqueLocations();
+          // Sanitize the workspace if changes have been applied
+          if (lastTx !== this.lastTx) {
+            workspaceSvc.sanitizeWorkspace();
+          }
+
           // Persist all the store changes into the DB
           this.writeAll(storeItemMap, tx);
           // Sync the localStorage
@@ -156,7 +160,7 @@ const localDbSvc = {
     let { lastTx } = this;
     const dbStore = tx.objectStore(dbStoreName);
     const index = dbStore.index('tx');
-    const range = window.IDBKeyRange.lowerBound(this.lastTx, true);
+    const range = IDBKeyRange.lowerBound(this.lastTx, true);
     const changes = [];
     index.openCursor(range).onsuccess = (event) => {
       const cursor = event.target.result;
@@ -225,7 +229,7 @@ const localDbSvc = {
           tx: incrementedTx,
         });
         delete this.hashMap[type][id];
-        this.lastTx = incrementedTx; // No need to read what we just wrote
+        this.lastTx = incrementedTx;
       }));
     });
 
@@ -239,7 +243,7 @@ const localDbSvc = {
         };
         dbStore.put(item);
         this.hashMap[item.type][item.id] = item.hash;
-        this.lastTx = incrementedTx; // No need to read what we just wrote
+        this.lastTx = incrementedTx;
       }
     });
   },

@@ -134,6 +134,9 @@ export default {
     // Save item in the store
     store.commit(`${item.type}/setItem`, item);
 
+    // Remove circular reference
+    this.removeCircularReference(item);
+
     // Ensure path uniqueness
     if (store.getters['workspace/currentWorkspaceHasUniquePaths']) {
       this.makePathUnique(item.id);
@@ -160,6 +163,37 @@ export default {
     // Delete publish locations
     (store.getters['publishLocation/groupedByFileId'][fileId] || [])
       .forEach(item => store.commit('publishLocation/deleteItem', item.id));
+  },
+
+  /**
+   * Sanitize the whole workspace.
+   */
+  sanitizeWorkspace(idsToKeep) {
+    // Detect and remove circular references for all folders.
+    store.getters['folder/items'].forEach(folder => this.removeCircularReference(folder));
+
+    this.ensureUniquePaths(idsToKeep);
+    this.ensureUniqueLocations(idsToKeep);
+  },
+
+  /**
+   * Detect and remove circular reference for an item.
+   */
+  removeCircularReference(item) {
+    const foldersById = store.state.folder.itemsById;
+    for (
+      let parentFolder = foldersById[item.parentId];
+      parentFolder;
+      parentFolder = foldersById[parentFolder.parentId]
+    ) {
+      if (parentFolder.id === item.id) {
+        store.commit('folder/patchItem', {
+          id: item.id,
+          parentId: null,
+        });
+        break;
+      }
+    }
   },
 
   /**

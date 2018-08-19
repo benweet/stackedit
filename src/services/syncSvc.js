@@ -185,8 +185,7 @@ const applyChanges = (changes) => {
     store.dispatch('data/setSyncDataById', syncDataById);
 
     // Sanitize the workspace
-    workspaceSvc.ensureUniquePaths(idsToKeep);
-    workspaceSvc.ensureUniqueLocations(idsToKeep);
+    workspaceSvc.sanitizeWorkspace(idsToKeep);
   }
 };
 

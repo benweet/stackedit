@@ -8,7 +8,9 @@ ENV V4_VERSION 4.3.22
 RUN npm pack stackedit@$V4_VERSION \
   && tar xzf stackedit-*.tgz --strip 1 \
   && yarn \
-  && yarn cache clean
+  && yarn cache clean \
+  && rm -rf ~/.cache/bower \
+  && rm -rf ~/.local/share/bower
 
 WORKDIR /opt/stackedit
 

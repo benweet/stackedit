@@ -22,7 +22,7 @@ import { mapGetters, mapActions } from 'vuex';
 import CommentList from './gutters/CommentList';
 import PreviewNewDiscussionButton from './gutters/PreviewNewDiscussionButton';
 
-const appUri = `${location.protocol}//${location.host}`;
+const appUri = `${window.location.protocol}//${window.location.host}`;
 
 export default {
   components: {
@@ -98,13 +98,14 @@ export default {
           previewElt.querySelectorAll(`.discussion-preview-highlighting--${discussionId}`)
             .cl_each(elt => elt.classList.add('discussion-preview-highlighting--selected'));
         }
-      });
+      },
+    );
   },
 };
 </script>
 
 <style lang="scss">
-@import 'common/variables.scss';
+@import '../styles/variables.scss';
 
 .preview,
 .preview__inner-1 {

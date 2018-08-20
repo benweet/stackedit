@@ -4,12 +4,12 @@
       <div class="modal__image">
         <icon-provider provider-id="wordpress"></icon-provider>
       </div>
-      <p>This will publish <b>{{currentFileName}}</b> to your <b>WordPress</b> site.</p>
+      <p>Publish <b>{{currentFileName}}</b> to your <b>WordPress</b> site.</p>
       <form-entry label="Site domain" error="domain">
         <input slot="field" class="textfield" type="text" v-model.trim="domain" @keydown.enter="resolve()">
         <div class="form-entry__info">
           <b>Example:</b> example.wordpress.com<br>
-          <b>Jetpack plugin</b> is required for self-hosted sites.
+          <b>Note:</b> Jetpack is required for self-hosted sites.
         </div>
       </form-entry>
       <form-entry label="Existing post ID" info="optional">
@@ -17,7 +17,7 @@
       </form-entry>
       <form-entry label="Template">
         <select slot="field" class="textfield" v-model="selectedTemplate" @keydown.enter="resolve()">
-          <option v-for="(template, id) in allTemplates" :key="id" :value="id">
+          <option v-for="(template, id) in allTemplatesById" :key="id" :value="id">
             {{ template.name }}
           </option>
         </select>
@@ -33,7 +33,7 @@
     </div>
     <div class="modal__button-bar">
       <button class="button" @click="config.reject()">Cancel</button>
-      <button class="button" @click="resolve()">Ok</button>
+      <button class="button button--resolve" @click="resolve()">Ok</button>
     </div>
   </modal-inner>
 </template>
@@ -57,7 +57,10 @@ export default modalTemplate({
       } else {
         // Return new location
         const location = wordpressProvider.makeLocation(
-          this.config.token, this.domain, this.postId);
+          this.config.token,
+          this.domain,
+          this.postId,
+        );
         location.templateId = this.selectedTemplate;
         this.config.resolve(location);
       }

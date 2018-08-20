@@ -16,7 +16,7 @@
         </menu-entry>
         <menu-entry @click.native="managePublish">
           <icon-view-list slot="icon"></icon-view-list>
-          <div>File publication</div>
+          <div><div class="menu-entry__label menu-entry__label--count">{{locationCount}}</div> File publication</div>
           <span>Manage current file publication locations.</span>
         </menu-entry>
       </div>
@@ -113,15 +113,19 @@ import zendeskHelper from '../../services/providers/helpers/zendeskHelper';
 import publishSvc from '../../services/publishSvc';
 import store from '../../store';
 
-const tokensToArray = (tokens, filter = () => true) => Object.keys(tokens)
-  .map(sub => tokens[sub])
+const tokensToArray = (tokens, filter = () => true) => Object.values(tokens)
   .filter(token => filter(token))
   .sort((token1, token2) => token1.name.localeCompare(token2.name));
 
-const openPublishModal = (token, type) => store.dispatch('modal/open', {
-  type,
-  token,
-}).then(publishLocation => publishSvc.createPublishLocation(publishLocation));
+const publishModalOpener = type => async (token) => {
+  try {
+    const publishLocation = await store.dispatch('modal/open', {
+      type,
+      token,
+    });
+    publishSvc.createPublishLocation(publishLocation);
+  } catch (e) { /* cancel */ }
+};
 
 export default {
   components: {
@@ -137,26 +141,29 @@ export default {
     ...mapGetters('publishLocation', {
       publishLocations: 'current',
     }),
+    locationCount() {
+      return Object.keys(this.publishLocations).length;
+    },
     currentFileName() {
       return this.$store.getters['file/current'].name;
     },
     googleDriveTokens() {
-      return tokensToArray(this.$store.getters['data/googleTokens'], token => token.isDrive);
+      return tokensToArray(this.$store.getters['data/googleTokensBySub'], token => token.isDrive);
     },
     dropboxTokens() {
-      return tokensToArray(this.$store.getters['data/dropboxTokens']);
+      return tokensToArray(this.$store.getters['data/dropboxTokensBySub']);
     },
     githubTokens() {
-      return tokensToArray(this.$store.getters['data/githubTokens']);
+      return tokensToArray(this.$store.getters['data/githubTokensBySub']);
     },
     wordpressTokens() {
-      return tokensToArray(this.$store.getters['data/wordpressTokens']);
+      return tokensToArray(this.$store.getters['data/wordpressTokensBySub']);
     },
     bloggerTokens() {
-      return tokensToArray(this.$store.getters['data/googleTokens'], token => token.isBlogger);
+      return tokensToArray(this.$store.getters['data/googleTokensBySub'], token => token.isBlogger);
     },
     zendeskTokens() {
-      return tokensToArray(this.$store.getters['data/zendeskTokens']);
+      return tokensToArray(this.$store.getters['data/zendeskTokensBySub']);
     },
     noToken() {
       return !this.googleDriveTokens.length
@@ -173,77 +180,53 @@ export default {
         publishSvc.requestPublish();
       }
     },
-    managePublish() {
-      return this.$store.dispatch('modal/open', 'publishManagement');
+    async managePublish() {
+      try {
+        await this.$store.dispatch('modal/open', 'publishManagement');
+      } catch (e) { /* cancel */ }
     },
-    addGoogleDriveAccount() {
-      return this.$store.dispatch('modal/open', {
-        type: 'googleDriveAccount',
-        onResolve: () => googleHelper.addDriveAccount(!store.getters['data/localSettings'].googleDriveRestrictedAccess),
-      })
-        .catch(() => {}); // Cancel
+    async addGoogleDriveAccount() {
+      try {
+        await this.$store.dispatch('modal/open', { type: 'googleDriveAccount' });
+        await googleHelper.addDriveAccount(!store.getters['data/localSettings'].googleDriveRestrictedAccess);
+      } catch (e) { /* cancel */ }
     },
-    addDropboxAccount() {
-      return this.$store.dispatch('modal/open', {
-        type: 'dropboxAccount',
-        onResolve: () => dropboxHelper.addAccount(!store.getters['data/localSettings'].dropboxRestrictedAccess),
-      })
-        .catch(() => {}); // Cancel
+    async addDropboxAccount() {
+      try {
+        await this.$store.dispatch('modal/open', { type: 'dropboxAccount' });
+        await dropboxHelper.addAccount(!store.getters['data/localSettings'].dropboxRestrictedAccess);
+      } catch (e) { /* cancel */ }
     },
-    addGithubAccount() {
-      return this.$store.dispatch('modal/open', {
-        type: 'githubAccount',
-        onResolve: () => githubHelper.addAccount(store.getters['data/localSettings'].githubRepoFullAccess),
-      })
-        .catch(() => {}); // Cancel
+    async addGithubAccount() {
+      try {
+        await this.$store.dispatch('modal/open', { type: 'githubAccount' });
+        await githubHelper.addAccount(store.getters['data/localSettings'].githubRepoFullAccess);
+      } catch (e) { /* cancel */ }
     },
-    addWordpressAccount() {
-      return wordpressHelper.addAccount()
-        .catch(() => {}); // Cancel
+    async addWordpressAccount() {
+      try {
+        await wordpressHelper.addAccount();
+      } catch (e) { /* cancel */ }
     },
-    addBloggerAccount() {
-      return googleHelper.addBloggerAccount()
-        .catch(() => {}); // Cancel
+    async addBloggerAccount() {
+      try {
+        await googleHelper.addBloggerAccount();
+      } catch (e) { /* cancel */ }
     },
-    addZendeskAccount() {
-      return this.$store.dispatch('modal/open', {
-        type: 'zendeskAccount',
-        onResolve: ({ subdomain, clientId }) => zendeskHelper.addAccount(subdomain, clientId),
-      })
-        .catch(() => {}); // Cancel
+    async addZendeskAccount() {
+      try {
+        const { subdomain, clientId } = await this.$store.dispatch('modal/open', { type: 'zendeskAccount' });
+        await zendeskHelper.addAccount(subdomain, clientId);
+      } catch (e) { /* cancel */ }
     },
-    publishGoogleDrive(token) {
-      return openPublishModal(token, 'googleDrivePublish')
-        .catch(() => {}); // Cancel
-    },
-    publishDropbox(token) {
-      return openPublishModal(token, 'dropboxPublish')
-        .catch(() => {}); // Cancel
-    },
-    publishGithub(token) {
-      return openPublishModal(token, 'githubPublish')
-        .catch(() => {}); // Cancel
-    },
-    publishGist(token) {
-      return openPublishModal(token, 'gistPublish')
-        .catch(() => {}); // Cancel
-    },
-    publishWordpress(token) {
-      return openPublishModal(token, 'wordpressPublish')
-        .catch(() => {}); // Cancel
-    },
-    publishBlogger(token) {
-      return openPublishModal(token, 'bloggerPublish')
-        .catch(() => {}); // Cancel
-    },
-    publishBloggerPage(token) {
-      return openPublishModal(token, 'bloggerPagePublish')
-        .catch(() => {}); // Cancel
-    },
-    publishZendesk(token) {
-      return openPublishModal(token, 'zendeskPublish')
-        .catch(() => {}); // Cancel
-    },
+    publishGoogleDrive: publishModalOpener('googleDrivePublish'),
+    publishDropbox: publishModalOpener('dropboxPublish'),
+    publishGithub: publishModalOpener('githubPublish'),
+    publishGist: publishModalOpener('gistPublish'),
+    publishWordpress: publishModalOpener('wordpressPublish'),
+    publishBlogger: publishModalOpener('bloggerPublish'),
+    publishBloggerPage: publishModalOpener('bloggerPagePublish'),
+    publishZendesk: publishModalOpener('zendeskPublish'),
   },
 };
 </script>

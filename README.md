@@ -6,11 +6,12 @@
 
 https://stackedit.io/
 
-### NEW!!! Embed StackEdit in any website!
+### Ecosystem
 
-See https://github.com/benweet/stackedit.js
-
-Chrome extension: https://chrome.google.com/webstore/detail/ajehldoplanpchfokmeempkekhnhmoha
+- [Chrome app](https://chrome.google.com/webstore/detail/iiooodelglhkcpgbajoejffhijaclcdg)
+- NEW! Embed StackEdit in any website with [stackedit.js](https://github.com/benweet/stackedit.js)
+- NEW! [Chrome extension](https://chrome.google.com/webstore/detail/ajehldoplanpchfokmeempkekhnhmoha) that uses stackedit.js
+- [Community](https://community.stackedit.io/)
 
 ### Build Setup
 

@@ -1,40 +1,31 @@
 import store from '../../store';
 import wordpressHelper from './helpers/wordpressHelper';
-import providerRegistry from './providerRegistry';
+import Provider from './common/Provider';
 
-export default providerRegistry.register({
+export default new Provider({
   id: 'wordpress',
+  name: 'WordPress',
   getToken(location) {
-    return store.getters['data/wordpressTokens'][location.sub];
+    return store.getters['data/wordpressTokensBySub'][location.sub];
   },
-  getUrl(location) {
+  getLocationUrl(location) {
     return `https://wordpress.com/post/${location.siteId}/${location.postId}`;
   },
-  getDescription(location) {
-    const token = this.getToken(location);
-    return `${location.postId} — ${location.domain} — ${token.name}`;
+  getLocationDescription({ postId }) {
+    return postId;
   },
-  publish(token, html, metadata, publishLocation) {
-    return wordpressHelper.uploadPost(
+  async publish(token, html, metadata, publishLocation) {
+    const post = await wordpressHelper.uploadPost({
+      ...publishLocation,
+      ...metadata,
       token,
-      publishLocation.domain,
-      publishLocation.siteId,
-      publishLocation.postId,
-      metadata.title,
-      html,
-      metadata.tags,
-      metadata.categories,
-      metadata.excerpt,
-      metadata.author,
-      metadata.featuredImage,
-      metadata.status,
-      metadata.date,
-    )
-      .then(post => ({
-        ...publishLocation,
-        siteId: `${post.site_ID}`,
-        postId: `${post.ID}`,
-      }));
+      content: html,
+    });
+    return {
+      ...publishLocation,
+      siteId: `${post.site_ID}`,
+      postId: `${post.ID}`,
+    };
   },
   makeLocation(token, domain, postId) {
     const location = {

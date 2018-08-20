@@ -3,7 +3,7 @@
     <div class="comment__header flex flex--row flex--space-between flex--align-center">
       <div class="comment__user flex flex--row flex--align-center">
         <div class="comment__user-image">
-          <user-image :user-id="loginToken.sub"></user-image>
+          <user-image :user-id="userId"></user-image>
         </div>
         <span class="user-name">{{loginToken.name}}</span>
       </div>
@@ -24,7 +24,7 @@
 import { mapGetters, mapMutations, mapActions } from 'vuex';
 import Prism from 'prismjs';
 import UserImage from '../UserImage';
-import cledit from '../../services/cledit';
+import cledit from '../../services/editor/cledit';
 import editorSvc from '../../services/editorSvc';
 import markdownConversionSvc from '../../services/markdownConversionSvc';
 import utils from '../../services/utils';
@@ -33,9 +33,12 @@ export default {
   components: {
     UserImage,
   },
-  computed: mapGetters('workspace', [
-    'loginToken',
-  ]),
+  computed: {
+    ...mapGetters('workspace', [
+      'loginToken',
+      'userId',
+    ]),
+  },
   methods: {
     ...mapMutations('discussion', [
       'setNewCommentFocus',
@@ -53,7 +56,7 @@ export default {
           const discussionId = this.$store.state.discussion.currentDiscussionId;
           const comment = {
             discussionId,
-            sub: this.loginToken.sub,
+            sub: this.userId,
             text,
             created: Date.now(),
           };
@@ -83,9 +86,11 @@ export default {
     const clEditor = cledit(preElt, scrollerElt, true);
     clEditor.init({
       sectionHighlighter: section => Prism.highlight(
-        section.text, editorSvc.prismGrammars[section.data]),
-      sectionParser: text => markdownConversionSvc.parseSections(
-        editorSvc.converter, text).sections,
+        section.text,
+        editorSvc.prismGrammars[section.data],
+      ),
+      sectionParser: text => markdownConversionSvc
+        .parseSections(editorSvc.converter, text).sections,
       content: this.$store.state.discussion.newCommentText,
       selectionStart: this.$store.state.discussion.newCommentSelection.start,
       selectionEnd: this.$store.state.discussion.newCommentSelection.end,
@@ -111,14 +116,14 @@ export default {
           clEditor.focus();
         }
       }),
-      { immediate: true });
+      { immediate: true },
+    );
 
     if (isSticky) {
       let scrollerMirrorElt;
       const getScrollerMirrorElt = () => {
         if (!scrollerMirrorElt) {
-          scrollerMirrorElt = document.querySelector(
-            '.comment-list .comment--new .comment__text-inner');
+          scrollerMirrorElt = document.querySelector('.comment-list .comment--new .comment__text-inner');
         }
         return scrollerMirrorElt || { scrollTop: 0 };
       };
@@ -147,7 +152,7 @@ export default {
       );
       this.$watch(
         () => this.$store.state.discussion.newCommentText,
-          newCommentText => clEditor.setContent(newCommentText),
+        newCommentText => clEditor.setContent(newCommentText),
       );
     }
   },

@@ -47,11 +47,13 @@ export default {
     ...mapMutations('discussion', [
       'setIsCommenting',
     ]),
-    removeComment() {
-      this.$store.dispatch('modal/commentDeletion')
-        .then(
-          () => this.$store.dispatch('discussion/cleanCurrentFile', { filterComment: this.comment }),
-          () => {}); // Cancel
+    async removeComment() {
+      try {
+        await this.$store.dispatch('modal/open', 'commentDeletion');
+        this.$store.dispatch('discussion/cleanCurrentFile', { filterComment: this.comment });
+      } catch (e) {
+        // Cancel
+      }
     },
   },
   mounted() {
@@ -63,8 +65,7 @@ export default {
       let scrollerMirrorElt;
       const getScrollerMirrorElt = () => {
         if (!scrollerMirrorElt) {
-          scrollerMirrorElt = document.querySelector(
-            `.comment-list .comment--${commentId} .comment__text-inner`);
+          scrollerMirrorElt = document.querySelector(`.comment-list .comment--${commentId} .comment__text-inner`);
         }
         return scrollerMirrorElt || { scrollTop: 0 };
       };

@@ -1,224 +1,227 @@
 import store from '../../store';
 import couchdbHelper from './helpers/couchdbHelper';
-import providerRegistry from './providerRegistry';
-import providerUtils from './providerUtils';
+import Provider from './common/Provider';
 import utils from '../utils';
 
-const getSyncData = (fileId) => {
-  const syncData = store.getters['data/syncDataByItemId'][`${fileId}/content`];
-  return syncData
-    ? Promise.resolve(syncData)
-    : Promise.reject(); // No need for a proper error message.
-};
+let syncLastSeq;
 
-export default providerRegistry.register({
+export default new Provider({
   id: 'couchdbWorkspace',
+  name: 'CouchDB',
   getToken() {
     return store.getters['workspace/syncToken'];
   },
-  initWorkspace() {
-    const dbUrl = (utils.queryParams.dbUrl || '').replace(/\/?$/, ''); // Remove trailing /
-    const workspaceIdParams = {
+  getWorkspaceParams({ dbUrl }) {
+    return {
       providerId: this.id,
       dbUrl,
     };
-    const workspaceId = utils.makeWorkspaceId(workspaceIdParams);
-    const getToken = () => store.getters['data/couchdbTokens'][workspaceId];
-    const getWorkspace = () => store.getters['data/sanitizedWorkspaces'][workspaceId];
+  },
+  getWorkspaceLocationUrl({ dbUrl }) {
+    return dbUrl;
+  },
+  getSyncDataUrl(fileSyncData, { id }) {
+    const { dbUrl } = this.getToken();
+    return `${dbUrl}/${id}/data`;
+  },
+  getSyncDataDescription(fileSyncData, { id }) {
+    return id;
+  },
+  async initWorkspace() {
+    const dbUrl = (utils.queryParams.dbUrl || '').replace(/\/?$/, ''); // Remove trailing /
+    const workspaceParams = this.getWorkspaceParams({ dbUrl });
+    const workspaceId = utils.makeWorkspaceId(workspaceParams);
 
-    if (!getToken()) {
-      // Create token
-      store.dispatch('data/setCouchdbToken', {
+    // Create the token if it doesn't exist
+    if (!store.getters['data/couchdbTokensBySub'][workspaceId]) {
+      store.dispatch('data/addCouchdbToken', {
         sub: workspaceId,
         dbUrl,
       });
     }
 
-    return Promise.resolve()
-      .then(() => getWorkspace() || couchdbHelper.getDb(getToken())
-        .then((db) => {
-          store.dispatch('data/patchWorkspaces', {
-            [workspaceId]: {
-              id: workspaceId,
-              name: db.db_name,
-              providerId: this.id,
-              dbUrl,
-            },
-          });
-          return getWorkspace();
-        }, () => {
-          throw new Error(`${dbUrl} is not accessible. Make sure you have the right permissions.`);
-        }))
-      .then((workspace) => {
-        // Fix the URL hash
-        utils.setQueryParams(workspaceIdParams);
-        if (workspace.url !== location.href) {
-          store.dispatch('data/patchWorkspaces', {
-            [workspace.id]: {
-              ...workspace,
-              url: location.href,
-            },
-          });
-        }
-        return getWorkspace();
-      });
+    // Create the workspace if it doesn't exist
+    if (!store.getters['workspace/workspacesById'][workspaceId]) {
+      try {
+        // Make sure the database exists and retrieve its name
+        const db = await couchdbHelper.getDb(store.getters['data/couchdbTokensBySub'][workspaceId]);
+        store.dispatch('workspace/patchWorkspacesById', {
+          [workspaceId]: {
+            id: workspaceId,
+            name: db.db_name,
+            providerId: this.id,
+            dbUrl,
+          },
+        });
+      } catch (e) {
+        throw new Error(`${dbUrl} is not accessible. Make sure you have the proper permissions.`);
+      }
+    }
+
+    return store.getters['workspace/workspacesById'][workspaceId];
   },
-  getChanges() {
+  async getChanges() {
     const syncToken = store.getters['workspace/syncToken'];
     const lastSeq = store.getters['data/localSettings'].syncLastSeq;
-    return couchdbHelper.getChanges(syncToken, lastSeq)
-      .then((result) => {
-        const changes = result.changes.filter((change) => {
-          if (!change.deleted && change.doc) {
-            change.item = change.doc.item;
-            if (!change.item || !change.item.id || !change.item.type) {
-              return false;
-            }
-            // Build sync data
-            change.syncData = {
-              id: change.id,
-              itemId: change.item.id,
-              type: change.item.type,
-              hash: change.item.hash,
-              rev: change.doc._rev, // eslint-disable-line no-underscore-dangle
-            };
-          }
-          change.syncDataId = change.id;
-          return true;
-        });
-        changes.lastSeq = result.lastSeq;
-        return changes;
-      });
+    const result = await couchdbHelper.getChanges(syncToken, lastSeq);
+    const changes = result.changes.filter((change) => {
+      if (!change.deleted && change.doc) {
+        change.item = change.doc.item;
+        if (!change.item || !change.item.id || !change.item.type) {
+          return false;
+        }
+        // Build sync data
+        change.syncData = {
+          id: change.id,
+          itemId: change.item.id,
+          type: change.item.type,
+          hash: change.item.hash,
+          rev: change.doc._rev, // eslint-disable-line no-underscore-dangle
+        };
+      }
+      change.syncDataId = change.id;
+      return true;
+    });
+    syncLastSeq = result.lastSeq;
+    return changes;
   },
-  setAppliedChanges(changes) {
+  onChangesApplied() {
     store.dispatch('data/patchLocalSettings', {
-      syncLastSeq: changes.lastSeq,
+      syncLastSeq,
     });
   },
-  saveSimpleItem(item, syncData) {
+  async saveWorkspaceItem({ item, syncData }) {
     const syncToken = store.getters['workspace/syncToken'];
-    return couchdbHelper.uploadDocument(
-      syncToken,
+    const { id, rev } = await couchdbHelper.uploadDocument({
+      token: syncToken,
       item,
-      undefined,
-      undefined,
-      syncData && syncData.id,
-      syncData && syncData.rev,
-    )
-      .then(res => ({
-        // Build sync data
+      documentId: syncData && syncData.id,
+      rev: syncData && syncData.rev,
+    });
+
+    // Build sync data to save
+    return {
+      syncData: {
+        id,
+        itemId: item.id,
+        type: item.type,
+        hash: item.hash,
+        rev,
+      },
+    };
+  },
+  removeWorkspaceItem({ syncData }) {
+    const syncToken = store.getters['workspace/syncToken'];
+    return couchdbHelper.removeDocument(syncToken, syncData.id, syncData.rev);
+  },
+  async downloadWorkspaceContent({ token, contentSyncData }) {
+    const body = await couchdbHelper.retrieveDocumentWithAttachments(token, contentSyncData.id);
+    const rev = body._rev; // eslint-disable-line no-underscore-dangle
+    const content = Provider.parseContent(body.attachments.data, body.item.id);
+    return {
+      content,
+      contentSyncData: {
+        ...contentSyncData,
+        hash: content.hash,
+        rev,
+      },
+    };
+  },
+  async downloadWorkspaceData({ token, syncData }) {
+    if (!syncData) {
+      return {};
+    }
+
+    const body = await couchdbHelper.retrieveDocumentWithAttachments(token, syncData.id);
+    const item = utils.addItemHash(JSON.parse(body.attachments.data));
+    const rev = body._rev; // eslint-disable-line no-underscore-dangle
+    return {
+      item,
+      syncData: {
+        ...syncData,
+        hash: item.hash,
+        rev,
+      },
+    };
+  },
+  async uploadWorkspaceContent({ token, content, contentSyncData }) {
+    const res = await couchdbHelper.uploadDocument({
+      token,
+      item: {
+        id: content.id,
+        type: content.type,
+        hash: content.hash,
+      },
+      data: Provider.serializeContent(content),
+      dataType: 'text/plain',
+      documentId: contentSyncData && contentSyncData.id,
+      rev: contentSyncData && contentSyncData.rev,
+    });
+
+    // Return new sync data
+    return {
+      contentSyncData: {
+        id: res.id,
+        itemId: content.id,
+        type: content.type,
+        hash: content.hash,
+        rev: res.rev,
+      },
+    };
+  },
+  async uploadWorkspaceData({ token, item, syncData }) {
+    const res = await couchdbHelper.uploadDocument({
+      token,
+      item: {
+        id: item.id,
+        type: item.type,
+        hash: item.hash,
+      },
+      data: JSON.stringify(item),
+      dataType: 'application/json',
+      documentId: syncData && syncData.id,
+      rev: syncData && syncData.rev,
+    });
+
+    // Return new sync data
+    return {
+      syncData: {
         id: res.id,
         itemId: item.id,
         type: item.type,
         hash: item.hash,
         rev: res.rev,
-      }));
-  },
-  removeItem(syncData) {
-    const syncToken = store.getters['workspace/syncToken'];
-    return couchdbHelper.removeDocument(syncToken, syncData.id, syncData.rev);
-  },
-  downloadContent(token, syncLocation) {
-    return this.downloadData(`${syncLocation.fileId}/content`);
-  },
-  downloadData(dataId) {
-    const syncData = store.getters['data/syncDataByItemId'][dataId];
-    if (!syncData) {
-      return Promise.resolve();
-    }
-    const syncToken = store.getters['workspace/syncToken'];
-    return couchdbHelper.retrieveDocumentWithAttachments(syncToken, syncData.id)
-      .then((body) => {
-        let item;
-        if (body.item.type === 'content') {
-          item = providerUtils.parseContent(body.attachments.data, body.item.id);
-        } else {
-          item = JSON.parse(body.attachments.data);
-        }
-        const rev = body._rev; // eslint-disable-line no-underscore-dangle
-        if (item.hash !== syncData.hash || rev !== syncData.rev) {
-          store.dispatch('data/patchSyncData', {
-            [syncData.id]: {
-              ...syncData,
-              hash: item.hash,
-              rev,
-            },
-          });
-        }
-        return item;
-      });
-  },
-  uploadContent(token, content, syncLocation) {
-    return this.uploadData(content, `${syncLocation.fileId}/content`)
-      .then(() => syncLocation);
-  },
-  uploadData(item, dataId) {
-    const syncData = store.getters['data/syncDataByItemId'][dataId];
-    if (syncData && syncData.hash === item.hash) {
-      return Promise.resolve();
-    }
-    let data;
-    let dataType;
-    if (item.type === 'content') {
-      data = providerUtils.serializeContent(item);
-      dataType = 'text/plain';
-    } else {
-      data = JSON.stringify(item);
-      dataType = 'application/json';
-    }
-    const syncToken = store.getters['workspace/syncToken'];
-    return couchdbHelper.uploadDocument(
-      syncToken,
-      {
-        id: item.id,
-        type: item.type,
-        hash: item.hash,
       },
-      data,
-      dataType,
-      syncData && syncData.id,
-      syncData && syncData.rev,
-    )
-      .then(res => store.dispatch('data/patchSyncData', {
-        [res.id]: {
-          // Build sync data
-          id: res.id,
-          itemId: item.id,
-          type: item.type,
-          hash: item.hash,
-          rev: res.rev,
-        },
-      }));
+    };
   },
-  listRevisions(token, fileId) {
-    return getSyncData(fileId)
-      .then(syncData => couchdbHelper.retrieveDocumentWithRevisions(token, syncData.id))
-      .then((body) => {
-        const revisions = [];
-        body._revs_info.forEach((revInfo) => { // eslint-disable-line no-underscore-dangle
-          if (revInfo.status === 'available') {
-            revisions.push({
-              id: revInfo.rev,
-              sub: null,
-              created: null,
-            });
-          }
+  async listFileRevisions({ token, contentSyncData }) {
+    const body = await couchdbHelper.retrieveDocumentWithRevisions(token, contentSyncData.id);
+    const revisions = [];
+    body._revs_info.forEach((revInfo, idx) => { // eslint-disable-line no-underscore-dangle
+      if (revInfo.status === 'available') {
+        revisions.push({
+          id: revInfo.rev,
+          sub: null,
+          created: idx,
+          loaded: false,
         });
-        return revisions;
-      });
+      }
+    });
+    return revisions;
   },
-  loadRevision(token, fileId, revision) {
-    return getSyncData(fileId)
-      .then(syncData => couchdbHelper.retrieveDocument(token, syncData.id, revision.id))
-      .then((body) => {
-        revision.sub = body.sub;
-        revision.created = body.time || 1; // Has to be truthy to prevent from loading several times
-      });
+  async loadFileRevision({ token, contentSyncData, revision }) {
+    if (revision.loaded) {
+      return false;
+    }
+    const body = await couchdbHelper.retrieveDocument(token, contentSyncData.id, revision.id);
+    revision.sub = body.sub;
+    revision.created = body.time;
+    revision.loaded = true;
+    return true;
   },
-  getRevisionContent(token, fileId, revisionId) {
-    return getSyncData(fileId)
-      .then(syncData => couchdbHelper
-        .retrieveDocumentWithAttachments(token, syncData.id, revisionId))
-      .then(body => providerUtils.parseContent(body.attachments.data, body.item.id));
+  async getFileRevisionContent({ token, contentSyncData, revisionId }) {
+    const body = await couchdbHelper
+      .retrieveDocumentWithAttachments(token, contentSyncData.id, revisionId);
+    return Provider.parseContent(body.attachments.data, body.item.id);
   },
 });

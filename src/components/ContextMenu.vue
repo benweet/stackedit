@@ -4,7 +4,7 @@
       <div v-for="(item, idx) in items" :key="idx">
         <div class="context-menu__separator" v-if="item.type === 'separator'"></div>
         <div class="context-menu__item context-menu__item--disabled" v-else-if="item.disabled">{{item.name}}</div>
-        <a class="context-menu__item" href="javascript:void(0)" v-else @click.stop="close(item)">{{item.name}}</a>
+        <a class="context-menu__item" href="javascript:void(0)" v-else @click="close(item)">{{item.name}}</a>
       </div>
     </div>
   </div>
@@ -22,10 +22,8 @@ export default {
     ]),
   },
   methods: {
-    close(item) {
-      if (item) {
-        this.resolve(item);
-      }
+    close(item = null) {
+      this.resolve(item);
       this.$store.dispatch('contextMenu/close');
     },
   },

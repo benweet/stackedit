@@ -7,7 +7,7 @@
       </div>
       <div class="flex flex--column">
         <div>Import Markdown</div>
-        <span>Open a plain text file.</span>
+        <span>Import a plain text file.</span>
       </div>
     </label>
     <input class="hidden-file" id="import-html-file-input" type="file" @change="onImportHtml">
@@ -27,8 +27,9 @@
 import TurndownService from 'turndown/lib/turndown.browser.umd';
 import htmlSanitizer from '../../libs/htmlSanitizer';
 import MenuEntry from './common/MenuEntry';
-import providerUtils from '../../services/providers/providerUtils';
+import Provider from '../../services/providers/common/Provider';
 import store from '../../store';
+import workspaceSvc from '../../services/workspaceSvc';
 
 const turndownService = new TurndownService(store.getters['data/computedSettings'].turndown);
 
@@ -52,27 +53,25 @@ export default {
     MenuEntry,
   },
   methods: {
-    onImportMarkdown(evt) {
+    async onImportMarkdown(evt) {
       const file = evt.target.files[0];
-      readFile(file)
-        .then(content => this.$store.dispatch('createFile', {
-          ...providerUtils.parseContent(content),
-          name: file.name,
-        })
-          .then(item => this.$store.commit('file/setCurrentId', item.id)));
+      const content = await readFile(file);
+      const item = await workspaceSvc.createFile({
+        ...Provider.parseContent(content),
+        name: file.name,
+      });
+      this.$store.commit('file/setCurrentId', item.id);
     },
-    onImportHtml(evt) {
+    async onImportHtml(evt) {
       const file = evt.target.files[0];
-      readFile(file)
-        .then(content => this.$store.dispatch('createFile', {
-          ...providerUtils.parseContent(
-            turndownService.turndown(
-              htmlSanitizer.sanitizeHtml(content)
-                .replace(/&#160;/g, ' '), // Replace non-breaking spaces with classic spaces
-              )),
-          name: file.name,
-        }))
-        .then(item => this.$store.commit('file/setCurrentId', item.id));
+      const content = await readFile(file);
+      const sanitizedContent = htmlSanitizer.sanitizeHtml(content)
+        .replace(/&#160;/g, ' '); // Replace non-breaking spaces with classic spaces
+      const item = await workspaceSvc.createFile({
+        ...Provider.parseContent(turndownService.turndown(sanitizedContent)),
+        name: file.name,
+      });
+      this.$store.commit('file/setCurrentId', item.id);
     },
   },
 };

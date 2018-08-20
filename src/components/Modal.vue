@@ -1,11 +1,11 @@
 <template>
-  <div class="modal" @keydown.esc="onEscape" @keydown.tab="onTab">
+  <div class="modal" v-if="config" @keydown.esc="onEscape" @keydown.tab="onTab" @focusin="onFocusInOut" @focusout="onFocusInOut">
     <component v-if="currentModalComponent" :is="currentModalComponent"></component>
     <modal-inner v-else aria-label="Dialog">
-      <div class="modal__content" v-html="config.content"></div>
+      <div class="modal__content" v-html="simpleModal.contentHtml(config)"></div>
       <div class="modal__button-bar">
-        <button class="button" v-if="config.rejectText" @click="config.reject()">{{config.rejectText}}</button>
-        <button class="button" v-if="config.resolveText" @click="config.resolve()">{{config.resolveText}}</button>
+        <button class="button" v-if="simpleModal.rejectText" @click="config.reject()">{{simpleModal.rejectText}}</button>
+        <button class="button button--resolve" v-if="simpleModal.resolveText" @click="config.resolve()">{{simpleModal.resolveText}}</button>
       </div>
     </modal-inner>
   </div>
@@ -13,6 +13,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import simpleModals from '../data/simpleModals';
 import editorSvc from '../services/editorSvc';
 import ModalInner from './modals/common/ModalInner';
 import FilePropertiesModal from './modals/FilePropertiesModal';
@@ -41,6 +42,7 @@ import DropboxPublishModal from './modals/providers/DropboxPublishModal';
 import GithubAccountModal from './modals/providers/GithubAccountModal';
 import GithubOpenModal from './modals/providers/GithubOpenModal';
 import GithubSaveModal from './modals/providers/GithubSaveModal';
+import GithubWorkspaceModal from './modals/providers/GithubWorkspaceModal';
 import GithubPublishModal from './modals/providers/GithubPublishModal';
 import GistSyncModal from './modals/providers/GistSyncModal';
 import GistPublishModal from './modals/providers/GistPublishModal';
@@ -84,6 +86,7 @@ export default {
     GithubAccountModal,
     GithubOpenModal,
     GithubSaveModal,
+    GithubWorkspaceModal,
     GithubPublishModal,
     GistSyncModal,
     GistPublishModal,
@@ -110,6 +113,9 @@ export default {
       }
       return null;
     },
+    simpleModal() {
+      return simpleModals[this.config.type] || {};
+    },
   },
   methods: {
     onEscape() {
@@ -132,14 +138,14 @@ export default {
       const isFocusIn = evt.type === 'focusin';
       if (evt.target.parentNode && evt.target.parentNode.parentNode) {
         // Focus effect
-        if (evt.target.parentNode.classList.contains('form-entry__field') &&
-          evt.target.parentNode.parentNode.classList.contains('form-entry')) {
+        if (evt.target.parentNode.classList.contains('form-entry__field')
+          && evt.target.parentNode.parentNode.classList.contains('form-entry')) {
           evt.target.parentNode.parentNode.classList.toggle('form-entry--focused', isFocusIn);
         }
       }
       if (isFocusIn && this.config) {
         const modalInner = this.$el.querySelector('.modal__inner-2');
-        let target = evt.target;
+        let { target } = evt;
         while (target) {
           if (target === modalInner) {
             return;
@@ -151,20 +157,24 @@ export default {
     },
   },
   mounted() {
-    window.addEventListener('focusin', this.onFocusInOut);
-    window.addEventListener('focusout', this.onFocusInOut);
-    const tabbables = getTabbables(this.$el);
-    tabbables[0].focus();
-  },
-  destroyed() {
-    window.removeEventListener('focusin', this.onFocusInOut);
-    window.removeEventListener('focusout', this.onFocusInOut);
+    this.$watch(
+      () => this.config,
+      (isOpen) => {
+        if (isOpen) {
+          const tabbables = getTabbables(this.$el);
+          if (tabbables[0]) {
+            tabbables[0].focus();
+          }
+        }
+      },
+      { immediate: true },
+    );
   },
 };
 </script>
 
 <style lang="scss">
-@import 'common/variables.scss';
+@import '../styles/variables.scss';
 
 .modal {
   position: absolute;
@@ -173,8 +183,8 @@ export default {
   background-color: rgba(160, 160, 160, 0.5);
   overflow: auto;
 
-  hr {
-    margin: 0.5em 0;
+  p {
+    line-height: 1.5;
   }
 }
 
@@ -188,7 +198,7 @@ export default {
 .modal__inner-2 {
   margin: 40px 10px 100px;
   background-color: #f8f8f8;
-  padding: 40px 50px 30px;
+  padding: 50px 50px 40px;
   border-radius: $border-radius-base;
   position: relative;
   overflow: hidden;
@@ -221,9 +231,9 @@ export default {
 
 .modal__image {
   float: left;
-  width: 64px;
-  height: 64px;
-  margin: 1.5em 1.5em 0.5em 0;
+  width: 60px;
+  height: 60px;
+  margin: 1.5em 1.2em 0.5em 0;
 
   & + *::after {
     content: '';
@@ -240,7 +250,7 @@ export default {
 }
 
 .modal__sub-title {
-  opacity: 0.5;
+  opacity: 0.6;
   font-size: 0.75rem;
   margin-bottom: 1.5rem;
 }
@@ -262,9 +272,16 @@ export default {
   }
 }
 
+.modal__info--multiline {
+  padding-top: 0.1em;
+  padding-bottom: 0.1em;
+}
+
 .modal__button-bar {
-  margin-top: 1.75rem;
-  text-align: right;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
 }
 
 .form-entry {

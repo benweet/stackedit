@@ -1,4 +1,6 @@
-const itemTimeout = 5000;
+import providerRegistry from '../services/providers/common/providerRegistry';
+
+const defaultTimeout = 5000;
 
 export default {
   namespaced: true,
@@ -14,8 +16,10 @@ export default {
     showItem({ state, commit }, item) {
       if (state.items.every(other => other.type !== item.type || other.content !== item.content)) {
         commit('setItems', [...state.items, item]);
-        setTimeout(() =>
-          commit('setItems', state.items.filter(otherItem => otherItem !== item)), itemTimeout);
+        setTimeout(
+          () => commit('setItems', state.items.filter(otherItem => otherItem !== item)),
+          item.timeout || defaultTimeout,
+        );
       }
     },
     info({ dispatch }, info) {
@@ -25,16 +29,15 @@ export default {
       });
     },
     error({ dispatch, rootState }, error) {
-      const item = {
-        type: 'error',
-      };
+      const item = { type: 'error' };
       if (error) {
         if (error.message) {
           item.content = error.message;
         } else if (error.status) {
           const location = rootState.queue.currentLocation;
           if (location.providerId) {
-            item.content = `HTTP error ${error.status} on ${location.providerId} location.`;
+            const provider = providerRegistry.providersById[location.providerId];
+            item.content = `HTTP error ${error.status} on ${provider.name} location.`;
           } else {
             item.content = `HTTP error ${error.status}.`;
           }

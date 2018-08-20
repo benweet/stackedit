@@ -51,8 +51,8 @@ const inlineBaseRules2 = [
   'text_collapse',
 ];
 
-extensionSvc.onGetOptions(
-  (options, properties) => Object.assign(options, properties.extensions.markdown));
+extensionSvc.onGetOptions((options, properties) => Object
+  .assign(options, properties.extensions.markdown));
 
 extensionSvc.onInitConverter(0, (markdown, options) => {
   markdown.set({

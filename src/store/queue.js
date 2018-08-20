@@ -71,16 +71,13 @@ export default {
         }));
       }
     },
-    doWithLocation({ state, commit, dispatch }, { location, promise }) {
-      commit('setCurrentLocation', location);
-      return promise
-        .then((res) => {
-          commit('setCurrentLocation', {});
-          return res;
-        }, (err) => {
-          commit('setCurrentLocation', {});
-          throw err;
-        });
+    async doWithLocation({ commit }, { location, action }) {
+      try {
+        commit('setCurrentLocation', location);
+        return await action();
+      } finally {
+        commit('setCurrentLocation', {});
+      }
     },
   },
 };

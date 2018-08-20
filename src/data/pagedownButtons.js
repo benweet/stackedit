@@ -1,4 +1,5 @@
-export default [{}, {
+export default [{
+}, {
   method: 'bold',
   title: 'Bold',
   icon: 'format-bold',
@@ -14,7 +15,8 @@ export default [{}, {
   method: 'strikethrough',
   title: 'Strikethrough',
   icon: 'format-strikethrough',
-}, {}, {
+}, {
+}, {
   method: 'ulist',
   title: 'Unordered list',
   icon: 'format-list-bulleted',
@@ -26,7 +28,8 @@ export default [{}, {
   method: 'clist',
   title: 'Check list',
   icon: 'format-list-checks',
-}, {}, {
+}, {
+}, {
   method: 'quote',
   title: 'Blockquote',
   icon: 'format-quote-close',

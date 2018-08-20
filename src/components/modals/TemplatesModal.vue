@@ -45,7 +45,7 @@
     </div>
     <div class="modal__button-bar">
       <button class="button" @click="config.reject()">Cancel</button>
-      <button class="button" @click="resolve()">Ok</button>
+      <button class="button button--resolve" @click="resolve()">Ok</button>
     </div>
   </modal-inner>
 </template>
@@ -55,8 +55,8 @@ import { mapGetters } from 'vuex';
 import utils from '../../services/utils';
 import ModalInner from './common/ModalInner';
 import CodeEditor from '../CodeEditor';
-import emptyTemplateValue from '../../data/emptyTemplateValue.html';
-import emptyTemplateHelpers from '!raw-loader!../../data/emptyTemplateHelpers.js'; // eslint-disable-line
+import emptyTemplateValue from '../../data/empties/emptyTemplateValue.html';
+import emptyTemplateHelpers from '!raw-loader!../../data/empties/emptyTemplateHelpers.js'; // eslint-disable-line
 
 const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
 
@@ -91,11 +91,11 @@ export default {
   },
   created() {
     this.$watch(
-      () => this.$store.getters['data/allTemplates'],
-      (allTemplates) => {
+      () => this.$store.getters['data/allTemplatesById'],
+      (allTemplatesById) => {
         const templates = {};
         // Sort templates by name
-        Object.entries(allTemplates)
+        Object.entries(allTemplatesById)
           .sort(([, template1], [, template2]) => collator.compare(template1.name, template2.name))
           .forEach(([id, template]) => {
             const templateClone = utils.deepCopy(template);
@@ -105,10 +105,12 @@ export default {
         this.templates = templates;
         this.selectedId = this.config.selectedId;
         if (!templates[this.selectedId]) {
-          this.selectedId = Object.keys(templates)[0];
+          [this.selectedId] = Object.keys(templates);
         }
         this.isEditing = false;
-      }, { immediate: true });
+      },
+      { immediate: true },
+    );
     this.$watch('selectedId', (selectedId) => {
       const template = this.templates[selectedId];
       this.showHelpers = template.helpers !== emptyTemplateHelpers;
@@ -137,7 +139,7 @@ export default {
     },
     remove() {
       delete this.templates[this.selectedId];
-      this.selectedId = Object.keys(this.templates)[0];
+      [this.selectedId] = Object.keys(this.templates);
     },
     submitEdit(cancel) {
       const template = this.templates[this.selectedId];
@@ -161,7 +163,7 @@ export default {
 </script>
 
 <style lang="scss">
-.modal__inner-1--templates {
-  max-width: 680px;
+.modal__inner-1.modal__inner-1--templates {
+  max-width: 600px;
 }
 </style>

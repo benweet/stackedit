@@ -1,5 +1,5 @@
 import moduleTemplate from './moduleTemplate';
-import empty from '../data/emptyFile';
+import empty from '../data/empties/emptyFile';
 
 const module = moduleTemplate(empty);
 
@@ -10,10 +10,10 @@ module.state = {
 
 module.getters = {
   ...module.getters,
-  current: state => state.itemMap[state.currentId] || empty(),
-  isCurrentTemp: (state, getters) => getters.current.parentId === 'temp',
-  lastOpened: (state, getters, rootState, rootGetters) =>
-    state.itemMap[rootGetters['data/lastOpenedIds'][0]] || getters.items[0] || empty(),
+  current: ({ itemsById, currentId }) => itemsById[currentId] || empty(),
+  isCurrentTemp: (state, { current }) => current.parentId === 'temp',
+  lastOpened: ({ itemsById }, { items }, rootState, rootGetters) =>
+    itemsById[rootGetters['data/lastOpenedIds'][0]] || items[0] || empty(),
 };
 
 module.mutations = {

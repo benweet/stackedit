@@ -28,7 +28,7 @@ export default {
         ) {
           this.selection = editorSvc.getTrimmedSelection();
           if (this.selection) {
-            const text = editorSvc.previewCtxWithDiffs.text;
+            const { text } = editorSvc.previewCtxWithDiffs;
             offset = editorSvc.getPreviewOffset(this.selection.end);
             while (offset && text[offset - 1] === '\n') {
               offset -= 1;
@@ -46,7 +46,8 @@ export default {
       editorSvc.$on('previewSelectionRange', () => this.checkSelection());
       this.$watch(
         () => this.$store.getters['layout/styles'].previewWidth,
-        () => this.checkSelection());
+        () => this.checkSelection(),
+      );
       this.checkSelection();
     });
   },

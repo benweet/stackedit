@@ -12,18 +12,19 @@
     </menu-entry>
     <menu-entry @click.native="exportPdf">
       <icon-download slot="icon"></icon-download>
-      <div><div class="menu-entry__label">sponsor</div> Export as PDF</div>
+      <div><div class="menu-entry__label" :class="{'menu-entry__label--warning': !isSponsor}">sponsor</div> Export as PDF</div>
       <span>Produce a PDF from an HTML template.</span>
     </menu-entry>
     <menu-entry @click.native="exportPandoc">
       <icon-download slot="icon"></icon-download>
-      <div><div class="menu-entry__label">sponsor</div> Export with Pandoc</div>
+      <div><div class="menu-entry__label" :class="{'menu-entry__label--warning': !isSponsor}">sponsor</div> Export with Pandoc</div>
       <span>Convert to PDF, Word, EPUB...</span>
     </menu-entry>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import MenuEntry from './common/MenuEntry';
 import exportSvc from '../../services/exportSvc';
 
@@ -31,23 +32,24 @@ export default {
   components: {
     MenuEntry,
   },
+  computed: mapGetters(['isSponsor']),
   methods: {
     exportMarkdown() {
       const currentFile = this.$store.getters['file/current'];
       return exportSvc.exportToDisk(currentFile.id, 'md')
-        .catch(() => {}); // Cancel
+        .catch(() => { /* Cancel */ });
     },
     exportHtml() {
       return this.$store.dispatch('modal/open', 'htmlExport')
-        .catch(() => {}); // Cancel
+        .catch(() => { /* Cancel */ });
     },
     exportPdf() {
       return this.$store.dispatch('modal/open', 'pdfExport')
-        .catch(() => {}); // Cancel
+        .catch(() => { /* Cancel */ });
     },
     exportPandoc() {
       return this.$store.dispatch('modal/open', 'pandocExport')
-        .catch(() => {}); // Cancel
+        .catch(() => { /* Cancel */ });
     },
   },
 };

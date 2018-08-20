@@ -16,8 +16,8 @@ export default {
           return 'google-drive';
         case 'googlePhotos':
           return 'google-photos';
-        case 'dropboxRestricted':
-          return 'dropbox';
+        case 'githubWorkspace':
+          return 'github';
         case 'gist':
           return 'github';
         case 'bloggerPage':

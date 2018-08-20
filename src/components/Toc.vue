@@ -64,7 +64,7 @@ export default {
     const updateMaskY = () => {
       const scrollPosition = editorSvc.getScrollPosition();
       if (scrollPosition) {
-        const sectionDesc = editorSvc.previewCtx.sectionDescList[scrollPosition.sectionIdx];
+        const sectionDesc = editorSvc.previewCtxMeasured.sectionDescList[scrollPosition.sectionIdx];
         this.maskY = sectionDesc.tocDimension.startOffset +
           (scrollPosition.posInSection * sectionDesc.tocDimension.height);
       }

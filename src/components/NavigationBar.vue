@@ -3,7 +3,7 @@
     <!-- Explorer -->
     <div class="navigation-bar__inner navigation-bar__inner--left navigation-bar__inner--button">
       <button class="navigation-bar__button button" v-if="light" @click="close()" v-title="'Close StackEdit'"><icon-close-circle></icon-close-circle></button>
-      <button class="navigation-bar__button button" v-else tour-step-anchor="explorer" @click="toggleExplorer()" v-title="'Toggle explorer'"><icon-folder></icon-folder></button>
+      <button class="navigation-bar__button navigation-bar__button--explorer-toggler button" v-else tour-step-anchor="explorer" @click="toggleExplorer()" v-title="'Toggle explorer'"><icon-folder></icon-folder></button>
     </div>
     <!-- Side bar -->
     <div class="navigation-bar__inner navigation-bar__inner--right navigation-bar__inner--button">
@@ -19,7 +19,7 @@
       <!-- Title -->
       <div class="navigation-bar__title navigation-bar__title--fake text-input"></div>
       <div class="navigation-bar__title navigation-bar__title--text text-input" :style="{width: titleWidth + 'px'}">{{title}}</div>
-      <input class="navigation-bar__title navigation-bar__title--input text-input" :class="{'navigation-bar__title--focus': titleFocus, 'navigation-bar__title--scrolling': titleScrolling}" :style="{width: titleWidth + 'px'}" @focus="editTitle(true)" @blur="editTitle(false)" @keydown.enter="submitTitle()" @keydown.esc="submitTitle(true)" @mouseenter="titleHover = true" @mouseleave="titleHover = false" v-model="title">
+      <input class="navigation-bar__title navigation-bar__title--input text-input" :class="{'navigation-bar__title--focus': titleFocus, 'navigation-bar__title--scrolling': titleScrolling}" :style="{width: titleWidth + 'px'}" @focus="editTitle(true)" @blur="editTitle(false)" @keydown.enter="submitTitle(false)" @keydown.esc="submitTitle(true)" @mouseenter="titleHover = true" @mouseleave="titleHover = false" v-model="title">
       <!-- Sync/Publish -->
       <div class="flex flex--row" :class="{'navigation-bar__hidden': styles.hideLocations}">
         <a class="navigation-bar__button navigation-bar__button--location button" :class="{'navigation-bar__button--blink': location.id === currentLocation.id}" v-for="location in syncLocations" :key="location.id" :href="location.url" target="_blank" v-title="'Synchronized location'"><icon-provider :provider-id="location.providerId"></icon-provider></a>
@@ -56,6 +56,7 @@ import tempFileSvc from '../services/tempFileSvc';
 import utils from '../services/utils';
 import pagedownButtons from '../data/pagedownButtons';
 import store from '../store';
+import workspaceSvc from '../services/workspaceSvc';
 
 // According to mousetrap
 const mod = /Mac|iPod|iPhone|iPad/.test(navigator.platform) ? 'Meta' : 'Ctrl';
@@ -63,17 +64,16 @@ const mod = /Mac|iPod|iPhone|iPad/.test(navigator.platform) ? 'Meta' : 'Ctrl';
 const getShortcut = (method) => {
   let result = '';
   Object.entries(store.getters['data/computedSettings'].shortcuts).some(([keys, shortcut]) => {
-    if (`${shortcut.method || shortcut}` !== method) {
-      return false;
+    if (`${shortcut.method || shortcut}` === method) {
+      result = keys.split('+').map(key => key.toLowerCase()).map((key) => {
+        if (key === 'mod') {
+          return mod;
+        }
+        // Capitalize
+        return key && `${key[0].toUpperCase()}${key.slice(1)}`;
+      }).join('+');
     }
-    result = keys.split('+').map(key => key.toLowerCase()).map((key) => {
-      if (key === 'mod') {
-        return mod;
-      }
-      // Capitalize
-      return key && `${key[0].toUpperCase()}${key.slice(1)}`;
-    }).join('+');
-    return true;
+    return result;
   });
   return result && ` – ${result}`;
 };
@@ -151,6 +151,13 @@ export default {
       }
       return result;
     },
+    editCancelTrigger() {
+      const current = this.$store.getters['file/current'];
+      return utils.serializeObject([
+        current.id,
+        current.name,
+      ]);
+    },
   },
   methods: {
     ...mapMutations('content', [
@@ -184,16 +191,22 @@ export default {
         editorSvc.pagedownEditor.uiManager.doClick(name);
       }
     },
-    editTitle(toggle) {
+    async editTitle(toggle) {
       this.titleFocus = toggle;
       if (toggle) {
         this.titleInputElt.setSelectionRange(0, this.titleInputElt.value.length);
       } else {
         const title = this.title.trim();
+        this.title = this.$store.getters['file/current'].name;
         if (title) {
-          this.$store.dispatch('file/patchCurrent', { name: utils.sanitizeName(title) });
-        } else {
-          this.title = this.$store.getters['file/current'].name;
+          try {
+            await workspaceSvc.storeItem({
+              ...this.$store.getters['file/current'],
+              name: title,
+            });
+          } catch (e) {
+            // Cancel
+          }
         }
       }
     },
@@ -209,10 +222,13 @@ export default {
   },
   created() {
     this.$watch(
-      () => this.$store.getters['file/current'].name,
-      (name) => {
-        this.title = name;
-      }, { immediate: true });
+      () => this.editCancelTrigger,
+      () => {
+        this.title = '';
+        this.editTitle(false);
+      },
+      { immediate: true },
+    );
   },
   mounted() {
     this.titleFakeElt = this.$el.querySelector('.navigation-bar__title--fake');
@@ -223,7 +239,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import 'common/variables.scss';
+@import '../styles/variables.scss';
 
 .navigation-bar {
   position: absolute;

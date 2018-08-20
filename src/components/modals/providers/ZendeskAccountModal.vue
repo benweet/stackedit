@@ -4,7 +4,7 @@
       <div class="modal__image">
         <icon-provider provider-id="zendesk"></icon-provider>
       </div>
-      <p>This will link your <b>Zendesk</b> account to <b>StackEdit</b>.</p>
+      <p>Link your <b>Zendesk</b> account to <b>StackEdit</b>.</p>
       <form-entry label="Site URL" error="siteUrl">
         <input slot="field" class="textfield" type="text" v-model.trim="siteUrl" @keydown.enter="resolve()">
         <div class="form-entry__info">
@@ -21,18 +21,18 @@
     </div>
     <div class="modal__button-bar">
       <button class="button" @click="config.reject()">Cancel</button>
-      <button class="button" @click="resolve()">Ok</button>
+      <button class="button button--resolve" @click="resolve()">Ok</button>
     </div>
   </modal-inner>
 </template>
 
 <script>
-import utils from '../../../services/utils';
 import modalTemplate from '../common/modalTemplate';
+import constants from '../../../data/constants';
 
 export default modalTemplate({
   data: () => ({
-    redirectUrl: utils.oauth2RedirectUri,
+    redirectUrl: constants.oauth2RedirectUri,
   }),
   computedLocalSettings: {
     siteUrl: 'zendeskSiteUrl',

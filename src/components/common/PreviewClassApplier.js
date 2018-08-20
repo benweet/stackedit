@@ -1,4 +1,4 @@
-import cledit from '../../services/cledit';
+import cledit from '../../services/editor/cledit';
 import editorSvc from '../../services/editorSvc';
 import utils from '../../services/utils';
 
@@ -40,14 +40,22 @@ export default class PreviewClassApplier {
       const offset = this.offsetGetter();
       if (offset) {
         const offsetStart = editorSvc.getPreviewOffset(
-          offset.start, editorSvc.previewCtx.sectionDescList);
+          offset.start,
+          editorSvc.previewCtx.sectionDescList,
+        );
         const offsetEnd = editorSvc.getPreviewOffset(
-          offset.end, editorSvc.previewCtx.sectionDescList);
+          offset.end,
+          editorSvc.previewCtx.sectionDescList,
+        );
         if (offsetStart != null && offsetEnd != null && offsetStart !== offsetEnd) {
           const start = cledit.Utils.findContainer(
-            editorSvc.previewElt, Math.min(offsetStart, offsetEnd));
+            editorSvc.previewElt,
+            Math.min(offsetStart, offsetEnd),
+          );
           const end = cledit.Utils.findContainer(
-            editorSvc.previewElt, Math.max(offsetStart, offsetEnd));
+            editorSvc.previewElt,
+            Math.max(offsetStart, offsetEnd),
+          );
           const range = document.createRange();
           range.setStart(start.container, start.offsetInContainer);
           range.setEnd(end.container, end.offsetInContainer);

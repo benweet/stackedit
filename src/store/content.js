@@ -1,8 +1,8 @@
 import DiffMatchPatch from 'diff-match-patch';
 import moduleTemplate from './moduleTemplate';
-import empty from '../data/emptyContent';
+import empty from '../data/empties/emptyContent';
 import utils from '../services/utils';
-import cledit from '../services/cledit';
+import cledit from '../services/editor/cledit';
 
 const diffMatchPatch = new DiffMatchPatch();
 
@@ -31,31 +31,29 @@ module.mutations = {
 
 module.getters = {
   ...module.getters,
-  current: (state, getters, rootState, rootGetters) => {
-    if (state.revisionContent) {
-      return state.revisionContent;
+  current: ({ itemsById, revisionContent }, getters, rootState, rootGetters) => {
+    if (revisionContent) {
+      return revisionContent;
     }
-    return state.itemMap[`${rootGetters['file/current'].id}/content`] || empty();
+    return itemsById[`${rootGetters['file/current'].id}/content`] || empty();
   },
   currentChangeTrigger: (state, getters) => {
-    const current = getters.current;
+    const { current } = getters;
     return utils.serializeObject([
       current.id,
       current.text,
       current.hash,
     ]);
   },
-  currentProperties: (state, getters) => utils.computeProperties(getters.current.properties),
-  isCurrentEditable: (state, getters, rootState, rootGetters) =>
-    !state.revisionContent &&
-    getters.current.id &&
-    rootGetters['layout/styles'].showEditor,
+  currentProperties: (state, { current }) => utils.computeProperties(current.properties),
+  isCurrentEditable: ({ revisionContent }, { current }, rootState, rootGetters) =>
+    !revisionContent && current.id && rootGetters['layout/styles'].showEditor,
 };
 
 module.actions = {
   ...module.actions,
   patchCurrent({ state, getters, commit }, value) {
-    const id = getters.current.id;
+    const { id } = getters.current;
     if (id && !state.revisionContent) {
       commit('patchItem', {
         ...value,
@@ -65,7 +63,7 @@ module.actions = {
   },
   setRevisionContent({ state, rootGetters, commit }, value) {
     const currentFile = rootGetters['file/current'];
-    const currentContent = state.itemMap[`${currentFile.id}/content`];
+    const currentContent = state.itemsById[`${currentFile.id}/content`];
     if (currentContent) {
       const diffs = diffMatchPatch.diff_main(currentContent.text, value.text);
       diffMatchPatch.diff_cleanupSemantic(diffs);
@@ -76,34 +74,37 @@ module.actions = {
       });
     }
   },
-  restoreRevision({ state, getters, commit, dispatch }) {
-    const revisionContent = state.revisionContent;
+  async restoreRevision({
+    state,
+    getters,
+    commit,
+    dispatch,
+  }) {
+    const { revisionContent } = state;
     if (revisionContent) {
-      dispatch('modal/fileRestoration', null, { root: true })
-        .then(() => {
-          // Close revision
-          commit('setRevisionContent');
-          const currentContent = utils.deepCopy(getters.current);
-          if (currentContent) {
-            // Restore text and move discussions
-            const diffs = diffMatchPatch.diff_main(
-              currentContent.text, revisionContent.originalText);
-            diffMatchPatch.diff_cleanupSemantic(diffs);
-            Object.entries(currentContent.discussions).forEach(([, discussion]) => {
-              const adjustOffset = (offsetName) => {
-                const marker = new cledit.Marker(discussion[offsetName], offsetName === 'end');
-                marker.adjustOffset(diffs);
-                discussion[offsetName] = marker.offset;
-              };
-              adjustOffset('start');
-              adjustOffset('end');
-            });
-            dispatch('patchCurrent', {
-              ...currentContent,
-              text: revisionContent.originalText,
-            });
-          }
+      await dispatch('modal/open', 'fileRestoration', { root: true });
+      // Close revision
+      commit('setRevisionContent');
+      const currentContent = utils.deepCopy(getters.current);
+      if (currentContent) {
+        // Restore text and move discussions
+        const diffs = diffMatchPatch
+          .diff_main(currentContent.text, revisionContent.originalText);
+        diffMatchPatch.diff_cleanupSemantic(diffs);
+        Object.entries(currentContent.discussions).forEach(([, discussion]) => {
+          const adjustOffset = (offsetName) => {
+            const marker = new cledit.Marker(discussion[offsetName], offsetName === 'end');
+            marker.adjustOffset(diffs);
+            discussion[offsetName] = marker.offset;
+          };
+          adjustOffset('start');
+          adjustOffset('end');
         });
+        dispatch('patchCurrent', {
+          ...currentContent,
+          text: revisionContent.originalText,
+        });
+      }
     }
   },
 };

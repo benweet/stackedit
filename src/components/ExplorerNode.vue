@@ -1,15 +1,15 @@
 <template>
-  <div class="explorer-node" :class="{'explorer-node--selected': isSelected, 'explorer-node--open': isOpen, 'explorer-node--drag-target': isDragTargetFolder}" @dragover.prevent @dragenter.stop="node.noDrop || setDragTarget(node.item.id)" @dragleave.stop="isDragTarget && setDragTargetId()" @drop.prevent.stop="onDrop" @contextmenu="onContextMenu">
-    <div class="explorer-node__item-editor" v-if="isEditing" :class="['explorer-node__item-editor--' + node.item.type]" :style="{paddingLeft: leftPadding}" draggable="true" @dragstart.stop.prevent>
+  <div class="explorer-node" :class="{'explorer-node--selected': isSelected, 'explorer-node--folder': node.isFolder, 'explorer-node--open': isOpen, 'explorer-node--trash': node.isTrash, 'explorer-node--temp': node.isTemp, 'explorer-node--drag-target': isDragTargetFolder}" @dragover.prevent @dragenter.stop="node.noDrop || setDragTarget(node)" @dragleave.stop="isDragTarget && setDragTarget()" @drop.prevent.stop="onDrop" @contextmenu="onContextMenu">
+    <div class="explorer-node__item-editor" v-if="isEditing" :style="{paddingLeft: leftPadding}" draggable="true" @dragstart.stop.prevent>
       <input type="text" class="text-input" v-focus @blur="submitEdit()" @keydown.stop @keydown.enter="submitEdit()" @keydown.esc="submitEdit(true)" v-model="editingNodeName">
     </div>
-    <div class="explorer-node__item" v-else :class="['explorer-node__item--' + node.item.type]" :style="{paddingLeft: leftPadding}" @click="select()" draggable="true" @dragstart.stop="setDragSourceId" @dragend.stop="setDragTargetId()">
+    <div class="explorer-node__item" v-else :style="{paddingLeft: leftPadding}" @click="select()" draggable="true" @dragstart.stop="setDragSourceId" @dragend.stop="setDragTarget()">
       {{node.item.name}}
       <icon-provider class="explorer-node__location" v-for="location in node.locations" :key="location.id" :provider-id="location.providerId"></icon-provider>
     </div>
     <div class="explorer-node__children" v-if="node.isFolder && isOpen">
       <explorer-node v-for="node in node.folders" :key="node.item.id" :node="node" :depth="depth + 1"></explorer-node>
-      <div v-if="newChild" class="explorer-node__new-child" :class="['explorer-node__new-child--' + newChild.item.type]" :style="{paddingLeft: childLeftPadding}">
+      <div v-if="newChild" class="explorer-node__new-child" :class="{'explorer-node__new-child--folder': newChild.isFolder}" :style="{paddingLeft: childLeftPadding}">
         <input type="text" class="text-input" v-focus @blur="submitNewChild()" @keydown.stop @keydown.enter="submitNewChild()" @keydown.esc="submitNewChild(true)" v-model.trim="newChildName">
       </div>
       <explorer-node v-for="node in node.files" :key="node.item.id" :node="node" :depth="depth + 1"></explorer-node>
@@ -19,7 +19,8 @@
 
 <script>
 import { mapMutations, mapActions } from 'vuex';
-import utils from '../services/utils';
+import workspaceSvc from '../services/workspaceSvc';
+import explorerSvc from '../services/explorerSvc';
 
 export default {
   name: 'explorer-node', // Required for recursivity
@@ -72,13 +73,10 @@ export default {
   },
   methods: {
     ...mapMutations('explorer', [
-      'setDragTargetId',
       'setEditingId',
     ]),
     ...mapActions('explorer', [
       'setDragTarget',
-      'newItem',
-      'deleteItem',
     ]),
     select(id = this.node.item.id, doOpen = true) {
       const node = this.$store.getters['explorer/nodeMap'][id];
@@ -98,35 +96,37 @@ export default {
       }
       return true;
     },
-    submitNewChild(cancel) {
-      const newChildNode = this.$store.state.explorer.newChildNode;
+    async submitNewChild(cancel) {
+      const { newChildNode } = this.$store.state.explorer;
       if (!cancel && !newChildNode.isNil && newChildNode.item.name) {
-        if (newChildNode.isFolder) {
-          const id = utils.uid();
-          this.$store.commit('folder/setItem', {
-            ...newChildNode.item,
-            id,
-            name: utils.sanitizeName(newChildNode.item.name),
-          });
-          this.select(id);
-        } else {
-          this.$store.dispatch('createFile', newChildNode.item)
-            .then(file => this.select(file.id));
+        try {
+          if (newChildNode.isFolder) {
+            const item = await workspaceSvc.storeItem(newChildNode.item);
+            this.select(item.id);
+          } else {
+            const item = await workspaceSvc.createFile(newChildNode.item);
+            this.select(item.id);
+          }
+        } catch (e) {
+          // Cancel
         }
       }
       this.$store.commit('explorer/setNewItem', null);
     },
-    submitEdit(cancel) {
-      const editingNode = this.$store.getters['explorer/editingNode'];
-      const id = editingNode.item.id;
+    async submitEdit(cancel) {
+      const { item } = this.$store.getters['explorer/editingNode'];
       const value = this.editingValue;
-      if (!cancel && id && value) {
-        this.$store.commit(editingNode.isFolder ? 'folder/patchItem' : 'file/patchItem', {
-          id,
-          name: utils.sanitizeName(value),
-        });
-      }
       this.setEditingId(null);
+      if (!cancel && item.id && value) {
+        try {
+          await workspaceSvc.storeItem({
+            ...item,
+            name: value,
+          });
+        } catch (e) {
+          // Cancel
+        }
+      }
     },
     setDragSourceId(evt) {
       if (this.node.noDrag) {
@@ -141,27 +141,22 @@ export default {
     onDrop() {
       const sourceNode = this.$store.getters['explorer/dragSourceNode'];
       const targetNode = this.$store.getters['explorer/dragTargetNodeFolder'];
-      this.setDragTargetId();
+      this.setDragTarget();
       if (!sourceNode.isNil
         && !targetNode.isNil
         && sourceNode.item.id !== targetNode.item.id
       ) {
-        const patch = {
-          id: sourceNode.item.id,
+        workspaceSvc.storeItem({
+          ...sourceNode.item,
           parentId: targetNode.item.id,
-        };
-        if (sourceNode.isFolder) {
-          this.$store.commit('folder/patchItem', patch);
-        } else {
-          this.$store.commit('file/patchItem', patch);
-        }
+        });
       }
     },
-    onContextMenu(evt) {
+    async onContextMenu(evt) {
       if (this.select(undefined, false)) {
         evt.preventDefault();
         evt.stopPropagation();
-        this.$store.dispatch('contextMenu/open', {
+        const item = await this.$store.dispatch('contextMenu/open', {
           coordinates: {
             left: evt.clientX,
             top: evt.clientY,
@@ -169,11 +164,11 @@ export default {
           items: [{
             name: 'New file',
             disabled: !this.node.isFolder || this.node.isTrash,
-            perform: () => this.newItem(false),
+            perform: () => explorerSvc.newItem(false),
           }, {
             name: 'New folder',
             disabled: !this.node.isFolder || this.node.isTrash || this.node.isTemp,
-            perform: () => this.newItem(true),
+            perform: () => explorerSvc.newItem(true),
           }, {
             type: 'separator',
           }, {
@@ -182,10 +177,12 @@ export default {
             perform: () => this.setEditingId(this.node.item.id),
           }, {
             name: 'Delete',
-            perform: () => this.deleteItem(),
+            perform: () => explorerSvc.deleteItem(),
           }],
-        })
-          .then(item => item.perform());
+        });
+        if (item) {
+          item.perform();
+        }
       }
     },
   },
@@ -229,17 +226,25 @@ $item-font-size: 14px;
   }
 }
 
-.explorer-node__item--folder,
-.explorer-node__item-editor--folder,
+.explorer-node--trash,
+.explorer-node--temp {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.explorer-node--folder > .explorer-node__item,
+.explorer-node--folder > .explorer-node__item-editor,
 .explorer-node__new-child--folder {
   &::before {
     content: '▹';
     position: absolute;
     margin-left: -13px;
+  }
+}
 
-    .explorer-node--open > & {
-      content: '▾';
-    }
+.explorer-node--folder.explorer-node--open > .explorer-node__item,
+.explorer-node--folder.explorer-node--open > .explorer-node__item-editor {
+  &::before {
+    content: '▾';
   }
 }
 

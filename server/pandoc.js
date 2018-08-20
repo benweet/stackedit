@@ -1,5 +1,5 @@
 /* global window */
-const spawn = require('child_process').spawn;
+const { spawn } = require('child_process');
 const fs = require('fs');
 const tmp = require('tmp');
 const user = require('./user');
@@ -76,7 +76,7 @@ exports.generate = (req, res) => {
         params.push('--toc');
       }
       options.tocDepth = parseInt(options.tocDepth, 10);
-      if (!isNaN(options.tocDepth)) {
+      if (!Number.isNaN(options.tocDepth)) {
         params.push('--toc-depth', options.tocDepth);
       }
       options.highlightStyle = highlightStyles.indexOf(options.highlightStyle) !== -1 ? options.highlightStyle : 'kate';

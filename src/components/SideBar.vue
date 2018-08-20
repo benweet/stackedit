@@ -13,7 +13,7 @@
     </div>
     <div class="side-bar__inner">
       <main-menu v-if="panel === 'menu'"></main-menu>
-      <workspaces-menu v-if="panel === 'workspaces'"></workspaces-menu>
+      <workspaces-menu v-else-if="panel === 'workspaces'"></workspaces-menu>
       <sync-menu v-else-if="panel === 'sync'"></sync-menu>
       <publish-menu v-else-if="panel === 'publish'"></publish-menu>
       <history-menu v-else-if="panel === 'history'"></history-menu>
@@ -75,7 +75,11 @@ export default {
   }),
   computed: {
     panel() {
-      return !this.$store.state.light && this.$store.getters['data/layoutSettings'].sideBarPanel;
+      if (this.$store.state.light) {
+        return null; // No menu in light mode
+      }
+      const result = this.$store.getters['data/layoutSettings'].sideBarPanel;
+      return panelNames[result] ? result : 'menu';
     },
     panelName() {
       return panelNames[this.panel];
@@ -93,7 +97,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import 'common/variables.scss';
+@import '../styles/variables.scss';
 
 .side-bar {
   overflow: hidden;
@@ -111,6 +115,11 @@ export default {
 
   hr + hr {
     display: none;
+  }
+
+  .textfield {
+    font-size: 14px;
+    height: 26px;
   }
 }
 
@@ -164,7 +173,7 @@ export default {
   padding: 10px;
   margin: -10px -10px 10px;
   background-color: $info-bg;
-  font-size: 0.95em;
+  font-size: 0.9em;
 
   p {
     margin: 10px;

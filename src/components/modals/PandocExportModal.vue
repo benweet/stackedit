@@ -20,7 +20,7 @@
     </div>
     <div class="modal__button-bar">
       <button class="button" @click="config.reject()">Cancel</button>
-      <button class="button" @click="resolve()">Ok</button>
+      <button class="button button--resolve" @click="resolve()">Ok</button>
     </div>
   </modal-inner>
 </template>
@@ -38,19 +38,20 @@ export default modalTemplate({
     selectedFormat: 'pandocExportFormat',
   },
   methods: {
-    resolve() {
+    async resolve() {
       this.config.resolve();
       const currentFile = this.$store.getters['file/current'];
       const currentContent = this.$store.getters['content/current'];
-      const selectedFormat = this.selectedFormat;
-      this.$store.dispatch('queue/enqueue', () => Promise.all([
+      const { selectedFormat } = this;
+      const [sponsorToken, token] = await this.$store.dispatch('queue/enqueue', () => Promise.all([
         Promise.resolve().then(() => {
-          const sponsorToken = this.$store.getters['workspace/sponsorToken'];
-          return sponsorToken && googleHelper.refreshToken(sponsorToken);
+          const tokenToRefresh = this.$store.getters['workspace/sponsorToken'];
+          return tokenToRefresh && googleHelper.refreshToken(tokenToRefresh);
         }),
         sponsorSvc.getToken(),
-      ])
-        .then(([sponsorToken, token]) => networkSvc.request({
+      ]));
+      try {
+        const { body } = await networkSvc.request({
           method: 'POST',
           url: 'pandocExport',
           params: {
@@ -63,19 +64,16 @@ export default modalTemplate({
           body: JSON.stringify(editorSvc.getPandocAst()),
           blob: true,
           timeout: 60000,
-        })
-        .then((res) => {
-          FileSaver.saveAs(res.body, `${currentFile.name}.${selectedFormat}`);
-        }, (err) => {
-          if (err.status !== 401) {
-            throw err;
-          }
-          this.$store.dispatch('modal/sponsorOnly');
-        }))
-        .catch((err) => {
+        });
+        FileSaver.saveAs(body, `${currentFile.name}.${selectedFormat}`);
+      } catch (err) {
+        if (err.status === 401) {
+          this.$store.dispatch('modal/open', 'sponsorOnly');
+        } else {
           console.error(err); // eslint-disable-line no-console
           this.$store.dispatch('notification/error', err);
-        }));
+        }
+      }
     },
   },
 });

@@ -4,7 +4,7 @@
 
 <script>
 import Prism from 'prismjs';
-import cledit from '../services/cledit';
+import cledit from '../services/editor/cledit';
 
 export default {
   props: ['value', 'lang', 'disabled'],
@@ -28,7 +28,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import 'common/variables.scss';
+@import '../styles/variables.scss';
 
 .code-editor {
   margin: 0;

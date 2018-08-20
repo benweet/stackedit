@@ -224,7 +224,7 @@ export default {
       parsingCtx.markdownCoreRules.slice(2).forEach(rule => rule(parsingCtx.markdownState));
       parsingCtx.markdownState.isConverted = true;
     }
-    const tokens = parsingCtx.markdownState.tokens;
+    const { tokens } = parsingCtx.markdownState;
     const html = parsingCtx.converter.renderer.render(
       tokens,
       parsingCtx.converter.options,
@@ -240,7 +240,10 @@ export default {
     let htmlSectionDiff;
     if (previousConversionCtx) {
       const oldSectionHash = hashArray(
-        previousConversionCtx.htmlSectionList, valueHash, valueArray);
+        previousConversionCtx.htmlSectionList,
+        valueHash,
+        valueArray,
+      );
       htmlSectionDiff = diffMatchPatch.diff_main(oldSectionHash, newSectionHash, false);
     } else {
       htmlSectionDiff = [
@@ -264,8 +267,7 @@ export default {
    */
   highlight(markdown, converter = this.defaultConverter, grammars = this.defaultPrismGrammars) {
     const parsingCtx = this.parseSections(converter, markdown);
-    return parsingCtx.sections.map(
-      section => Prism.highlight(section.text, grammars[section.data]),
-    ).join('');
+    return parsingCtx.sections
+      .map(section => Prism.highlight(section.text, grammars[section.data])).join('');
   },
 };

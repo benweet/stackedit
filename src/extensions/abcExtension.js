@@ -3,8 +3,7 @@ import extensionSvc from '../services/extensionSvc';
 
 const render = (elt) => {
   const abcContent = elt.textContent;
-  elt.parentNode.parentNode.id = 'abcSheetPaper';
-  abcjs.renderAbc('abcSheetPaper', abcContent, {});
+  abcjs.renderAbc(elt.parentNode.parentNode, abcContent, {});
 };
 
 extensionSvc.onGetOptions((options, properties) => {

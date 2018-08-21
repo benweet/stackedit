@@ -28,7 +28,7 @@ const zero = {
   See https://abcjs.net/
   */
   abc: {
-    enabled: true,
+    enabled: false,
   },
   /*
   Katex extension

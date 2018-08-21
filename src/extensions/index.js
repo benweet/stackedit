@@ -1,5 +1,5 @@
 import './emojiExtension';
-import './abcNotationExtension';
+import './abcExtension';
 import './katexExtension';
 import './markdownExtension';
 import './mermaidExtension';

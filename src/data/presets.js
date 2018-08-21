@@ -1,7 +1,7 @@
 const zero = {
   // Markdown extensions
   markdown: {
-    abbr: false,
+    abbr: true,
     breaks: false,
     deflist: false,
     del: false,
@@ -28,7 +28,7 @@ const zero = {
   See https://abcjs.net/
   */
   abc: {
-    enabled: false,
+    enabled: true,
   },
   /*
   Katex extension
@@ -98,7 +98,7 @@ export default {
       enabled: true,
     },
     abc: {
-      enabled: false,
+      enabled: true,
     },
   }],
 };

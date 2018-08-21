@@ -43,37 +43,40 @@ export default modalTemplate({
       const currentFile = this.$store.getters['file/current'];
       const currentContent = this.$store.getters['content/current'];
       const { selectedFormat } = this;
-      const [sponsorToken, token] = await this.$store.dispatch('queue/enqueue', () => Promise.all([
-        Promise.resolve().then(() => {
-          const tokenToRefresh = this.$store.getters['workspace/sponsorToken'];
-          return tokenToRefresh && googleHelper.refreshToken(tokenToRefresh);
-        }),
-        sponsorSvc.getToken(),
-      ]));
-      try {
-        const { body } = await networkSvc.request({
-          method: 'POST',
-          url: 'pandocExport',
-          params: {
-            token,
-            idToken: sponsorToken && sponsorToken.idToken,
-            format: selectedFormat,
-            options: JSON.stringify(this.$store.getters['data/computedSettings'].pandoc),
-            metadata: JSON.stringify(currentContent.properties),
-          },
-          body: JSON.stringify(editorSvc.getPandocAst()),
-          blob: true,
-          timeout: 60000,
-        });
-        FileSaver.saveAs(body, `${currentFile.name}.${selectedFormat}`);
-      } catch (err) {
-        if (err.status === 401) {
-          this.$store.dispatch('modal/open', 'sponsorOnly');
-        } else {
-          console.error(err); // eslint-disable-line no-console
-          this.$store.dispatch('notification/error', err);
+      this.$store.dispatch('queue/enqueue', async () => {
+        const [sponsorToken, token] = await Promise.all([
+          Promise.resolve().then(() => {
+            const tokenToRefresh = this.$store.getters['workspace/sponsorToken'];
+            return tokenToRefresh && googleHelper.refreshToken(tokenToRefresh);
+          }),
+          sponsorSvc.getToken(),
+        ]);
+
+        try {
+          const { body } = await networkSvc.request({
+            method: 'POST',
+            url: 'pandocExport',
+            params: {
+              token,
+              idToken: sponsorToken && sponsorToken.idToken,
+              format: selectedFormat,
+              options: JSON.stringify(this.$store.getters['data/computedSettings'].pandoc),
+              metadata: JSON.stringify(currentContent.properties),
+            },
+            body: JSON.stringify(editorSvc.getPandocAst()),
+            blob: true,
+            timeout: 60000,
+          });
+          FileSaver.saveAs(body, `${currentFile.name}.${selectedFormat}`);
+        } catch (err) {
+          if (err.status === 401) {
+            this.$store.dispatch('modal/open', 'sponsorOnly');
+          } else {
+            console.error(err); // eslint-disable-line no-console
+            this.$store.dispatch('notification/error', err);
+          }
         }
-      }
+      });
     },
   },
 });

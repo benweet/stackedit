@@ -36,8 +36,8 @@ export default modalTemplate({
     async resolve() {
       this.config.resolve();
       const currentFile = this.$store.getters['file/current'];
-      const [sponsorToken, token, html] = await this.$store
-        .dispatch('queue/enqueue', () => Promise.all([
+      this.$store.dispatch('queue/enqueue', async () => {
+        const [sponsorToken, token, html] = await Promise.all([
           Promise.resolve().then(() => {
             const tokenToRefresh = this.$store.getters['workspace/sponsorToken'];
             return tokenToRefresh && googleHelper.refreshToken(tokenToRefresh);
@@ -48,29 +48,31 @@ export default modalTemplate({
             this.allTemplatesById[this.selectedTemplate],
             true,
           ),
-        ]));
-      try {
-        const { body } = await networkSvc.request({
-          method: 'POST',
-          url: 'pdfExport',
-          params: {
-            token,
-            idToken: sponsorToken && sponsorToken.idToken,
-            options: JSON.stringify(this.$store.getters['data/computedSettings'].wkhtmltopdf),
-          },
-          body: html,
-          blob: true,
-          timeout: 60000,
-        });
-        FileSaver.saveAs(body, `${currentFile.name}.pdf`);
-      } catch (err) {
-        if (err.status === 401) {
-          this.$store.dispatch('modal/open', 'sponsorOnly');
-        } else {
-          console.error(err); // eslint-disable-line no-console
-          this.$store.dispatch('notification/error', err);
+        ]);
+
+        try {
+          const { body } = await networkSvc.request({
+            method: 'POST',
+            url: 'pdfExport',
+            params: {
+              token,
+              idToken: sponsorToken && sponsorToken.idToken,
+              options: JSON.stringify(this.$store.getters['data/computedSettings'].wkhtmltopdf),
+            },
+            body: html,
+            blob: true,
+            timeout: 60000,
+          });
+          FileSaver.saveAs(body, `${currentFile.name}.pdf`);
+        } catch (err) {
+          if (err.status === 401) {
+            this.$store.dispatch('modal/open', 'sponsorOnly');
+          } else {
+            console.error(err); // eslint-disable-line no-console
+            this.$store.dispatch('notification/error', err);
+          }
         }
-      }
+      });
     },
   },
 });

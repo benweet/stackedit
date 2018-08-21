@@ -6,7 +6,7 @@ extensionSvc.onGetOptions((options, properties) => {
   options.math = properties.extensions.katex.enabled;
 });
 
-extensionSvc.onInitConverter(3, (markdown, options) => {
+extensionSvc.onInitConverter(2, (markdown, options) => {
   if (options.math) {
     markdown.use(markdownItMath);
     markdown.renderer.rules.inline_math = (tokens, idx) =>

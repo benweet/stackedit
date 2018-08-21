@@ -1,7 +1,7 @@
 const zero = {
   // Markdown extensions
   markdown: {
-    abbr: true,
+    abbr: false,
     breaks: false,
     deflist: false,
     del: false,

@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@vue/test-utils": "^1.0.0-beta.16",
+    "abcjs": "git+https://git@github.com/flxwu/abcjs.git",
     "aws-sdk": "^2.133.0",
     "babel-runtime": "^6.26.0",
     "bezier-easing": "^1.1.0",

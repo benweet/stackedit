@@ -2,8 +2,13 @@ import abcjs from 'abcjs';
 import extensionSvc from '../services/extensionSvc';
 
 const render = (elt) => {
-  const abcContent = elt.textContent;
-  abcjs.renderAbc(elt.parentNode.parentNode, abcContent, {});
+  const content = elt.textContent;
+  // Create a div element
+  const divElt = document.createElement('div');
+  divElt.className = 'abc-notation-block';
+  // Replace the pre element with the div
+  elt.parentNode.parentNode.replaceChild(divElt, elt.parentNode);
+  abcjs.renderAbc(divElt, content, {});
 };
 
 extensionSvc.onGetOptions((options, properties) => {

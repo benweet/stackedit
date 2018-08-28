@@ -6,6 +6,7 @@ const user = require('./user');
 const github = require('./github');
 const pdf = require('./pdf');
 const pandoc = require('./pandoc');
+const assets = require('./assets')
 
 const resolvePath = pathToResolve => path.join(__dirname, '..', pathToResolve);
 
@@ -30,6 +31,8 @@ module.exports = (app, serveV4) => {
   app.post('/paypalIpn', bodyParser.urlencoded({
     extended: false,
   }), user.paypalIpn);
+    // List external assets
+  app.get('/assets', assets.listAssets);
 
   if (serveV4) {
     /* eslint-disable global-require, import/no-unresolved */
@@ -38,6 +41,7 @@ module.exports = (app, serveV4) => {
     app.get('/downloadImport', require('../stackedit_v4/app/download').importPublic);
     /* eslint-enable global-require, import/no-unresolved */
   }
+
 
   // Serve landing.html
   app.get('/', (req, res) => res.sendFile(resolvePath('static/landing/index.html')));

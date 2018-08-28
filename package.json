@@ -22,7 +22,7 @@
     "major": "npm version major -m \"Tag v%s\""
   },
   "dependencies": {
-    "aws-sdk": "^2.133.0",
+    "aws-sdk": "^2.303.0",
     "bezier-easing": "^1.1.0",
     "body-parser": "^1.18.2",
     "clipboard": "^1.7.1",
@@ -34,6 +34,7 @@
     "indexeddbshim": "^3.0.4",
     "js-yaml": "^3.9.1",
     "katex": "^0.9.0-alpha1",
+    "lodash": "^4.17.10",
     "markdown-it": "^8.3.1",
     "markdown-it-abbr": "^1.0.4",
     "markdown-it-deflist": "^2.0.2",

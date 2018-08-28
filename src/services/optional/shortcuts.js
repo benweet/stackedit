@@ -23,6 +23,7 @@ const findReplaceOpener = type => () => {
 const methods = {
   bold: pagedownHandler('bold'),
   italic: pagedownHandler('italic'),
+  strikethrough: pagedownHandler('strikethrough'),
   link: pagedownHandler('link'),
   quote: pagedownHandler('quote'),
   code: pagedownHandler('code'),

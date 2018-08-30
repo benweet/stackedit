@@ -8,3 +8,4 @@ yarn-error.log*
 .vscode
 stackedit_v4
 chrome-app/*.zip
+config/

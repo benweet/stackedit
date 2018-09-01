@@ -1,4 +1,4 @@
-import abcjs from 'abcjs';
+import renderAbc from 'abcjs/src/api/abc_tunebook_svg';
 import extensionSvc from '../services/extensionSvc';
 
 const render = (elt) => {
@@ -8,7 +8,7 @@ const render = (elt) => {
   divElt.className = 'abc-notation-block';
   // Replace the pre element with the div
   elt.parentNode.parentNode.replaceChild(divElt, elt.parentNode);
-  abcjs.renderAbc(divElt, content, {});
+  renderAbc(divElt, content, {});
 };
 
 extensionSvc.onGetOptions((options, properties) => {

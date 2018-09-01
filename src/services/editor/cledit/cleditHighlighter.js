@@ -62,10 +62,11 @@ function Highlighter(editor) {
   }
 
   this.parseSections = (content, isInit) => {
-    if (this.isComposing) {
+    if (this.isComposing && !this.cancelComposition) {
       return sectionList;
     }
 
+    this.cancelComposition = false;
     const newSectionList = (editor.options.sectionParser
       ? editor.options.sectionParser(content)
       : [content])

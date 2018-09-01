@@ -286,6 +286,7 @@ function cledit(contentElt, scrollEltOpt, isMarkdown = false) {
         editor.setContent(newContent, false, min);
         contentChanging = true;
         skipSaveSelection = true;
+        highlighter.cancelComposition = true;
       }
       min = state.before.length;
       max = min + state.selection.length;

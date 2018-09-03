@@ -2,6 +2,7 @@ import createLogger from 'vuex/dist/logger';
 import Vue from 'vue';
 import Vuex from 'vuex';
 import utils from '../services/utils';
+import assets from './assets';
 import content from './content';
 import contentState from './contentState';
 import contextMenu from './contextMenu';
@@ -27,6 +28,7 @@ const debug = NODE_ENV !== 'production';
 
 const store = new Vuex.Store({
   modules: {
+    assets,
     content,
     contentState,
     contextMenu,

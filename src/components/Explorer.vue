@@ -22,16 +22,19 @@
     <div class="explorer__tree" :class="{'explorer__tree--new-item': !newChildNode.isNil}" v-if="!light" tabindex="0" @keydown.delete="deleteItem()">
       <explorer-node :node="rootNode" :depth="0"></explorer-node>
     </div>
+    <asset-list></asset-list>
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
 import ExplorerNode from './ExplorerNode';
+import AssetList from './AssetList';
 
 export default {
   components: {
     ExplorerNode,
+    AssetList,
   },
   computed: {
     ...mapState([
@@ -74,9 +77,13 @@ export default {
 </script>
 
 <style lang="scss">
-.explorer,
-.explorer__tree {
+.explorer {
   height: 100%;
+}
+
+.explorer__tree {
+  height: 50%;
+  overflow-y: scroll;
 }
 
 .explorer__tree {
@@ -88,4 +95,5 @@ export default {
     cursor: auto;
   }
 }
+
 </style>

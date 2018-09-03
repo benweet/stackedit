@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.303.0",
+    "axios": "^0.18.0",
     "bezier-easing": "^1.1.0",
     "body-parser": "^1.18.2",
     "clipboard": "^1.7.1",

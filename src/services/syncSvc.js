@@ -7,6 +7,7 @@ import providerRegistry from './providers/common/providerRegistry';
 import googleDriveAppDataProvider from './providers/googleDriveAppDataProvider';
 import './providers/couchdbWorkspaceProvider';
 import './providers/githubWorkspaceProvider';
+import './providers/gitlabWorkspaceProvider';
 import './providers/googleDriveWorkspaceProvider';
 import tempFileSvc from './tempFileSvc';
 import workspaceSvc from './workspaceSvc';

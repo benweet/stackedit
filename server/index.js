@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const user = require('./user');
 const github = require('./github');
+const gitlab = require('./gitlab');
 const pdf = require('./pdf');
 const pandoc = require('./pandoc');
 
@@ -24,6 +25,7 @@ module.exports = (app, serveV4) => {
   }
 
   app.get('/oauth2/githubToken', github.githubToken);
+  app.get('/oauth2/gitlabToken', gitlab.gitlabToken);
   app.get('/userInfo', user.userInfo);
   app.post('/pdfExport', pdf.generate);
   app.post('/pandocExport', pandoc.generate);

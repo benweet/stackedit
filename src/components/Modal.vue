@@ -46,6 +46,11 @@ import GithubWorkspaceModal from './modals/providers/GithubWorkspaceModal';
 import GithubPublishModal from './modals/providers/GithubPublishModal';
 import GistSyncModal from './modals/providers/GistSyncModal';
 import GistPublishModal from './modals/providers/GistPublishModal';
+import GitlabAccountModal from './modals/providers/GitlabAccountModal';
+import GitlabOpenModal from './modals/providers/GitlabOpenModal';
+import GitlabSaveModal from './modals/providers/GitlabSaveModal';
+import GitlabWorkspaceModal from './modals/providers/GitlabWorkspaceModal';
+import GitlabPublishModal from './modals/providers/GitlabPublishModal';
 import WordpressPublishModal from './modals/providers/WordpressPublishModal';
 import BloggerPublishModal from './modals/providers/BloggerPublishModal';
 import BloggerPagePublishModal from './modals/providers/BloggerPagePublishModal';
@@ -90,6 +95,11 @@ export default {
     GithubPublishModal,
     GistSyncModal,
     GistPublishModal,
+    GitlabAccountModal,
+    GitlabOpenModal,
+    GitlabSaveModal,
+    GitlabWorkspaceModal,
+    GitlabPublishModal,
     WordpressPublishModal,
     BloggerPublishModal,
     BloggerPagePublishModal,

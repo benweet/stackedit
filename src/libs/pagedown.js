@@ -141,7 +141,6 @@ function Pagedown(options) {
 
     that.uiManager = uiManager;
   };
-
 }
 
 // before: contains all the text in the input box BEFORE the selection.
@@ -395,6 +394,21 @@ function UIManager(input, commandManager) {
   makeSpritedButtonRow();
 
   // Perform the button's action.
+
+  function doAssetReference(assetReference) {
+    var state = new TextareaState(input);
+    if (!state) {
+      return;
+    }
+
+    inputBox.focus();
+    var chunks = state.getChunks()
+    let chunk = commandManager.addAssetReference(chunks, assetReference);
+    debugger;
+    state.setChunks(chunk);
+    state.restore();
+  }
+
   function doClick(buttonName) {
     var button = buttons[buttonName];
     if (!button) {
@@ -486,7 +500,7 @@ function UIManager(input, commandManager) {
   }
 
   this.doClick = doClick;
-
+  this.doAssetReference = doAssetReference;
 }
 
 function CommandManager(pluginHooks, getString) {
@@ -1366,6 +1380,16 @@ commandProto.doHorizontalRule = function (chunk) {
   chunk.selection = "";
   chunk.skipLines(2, 1, true);
 };
+
+commandProto.addAssetReference = function (chunk, asset) {
+  if (chunk.before.slice(-1) !== '\n') {
+    chunk.before += '\n';
+  }
+  chunk.before = chunk.before + ":: [" + asset + "](";
+  chunk.selection = "00:00";
+  chunk.after = ")\n" + chunk.after;
+  return chunk;
+}
 
 export default function (options) {
   return new Pagedown(options);

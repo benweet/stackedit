@@ -111,6 +111,7 @@ export default {
           ...rootGetters['data/workspaces'],
           ...workspaces,
         })
+        .filter(workspace => workspace.id)
         .forEach((workspace) => {
           sanitizedWorkspaces[workspace.id] = {
             ...workspace,

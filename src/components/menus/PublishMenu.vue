@@ -47,6 +47,13 @@
           <span>{{token.name}}</span>
         </menu-entry>
       </div>
+      <div v-for="token in gitlabTokens" :key="token.sub">
+        <menu-entry @click.native="publishGitlab(token)">
+          <icon-provider slot="icon" provider-id="gitlab"></icon-provider>
+          <div>Publish to GitLab</div>
+          <span>{{token.name}}</span>
+        </menu-entry>
+      </div>
       <div v-for="token in wordpressTokens" :key="token.sub">
         <menu-entry @click.native="publishWordpress(token)">
           <icon-provider slot="icon" provider-id="wordpress"></icon-provider>
@@ -86,6 +93,10 @@
         <icon-provider slot="icon" provider-id="github"></icon-provider>
         <span>Add GitHub account</span>
       </menu-entry>
+      <menu-entry @click.native="addGitlabAccount">
+        <icon-provider slot="icon" provider-id="gitlab"></icon-provider>
+        <span>Add GitLab account</span>
+      </menu-entry>
       <menu-entry @click.native="addWordpressAccount">
         <icon-provider slot="icon" provider-id="wordpress"></icon-provider>
         <span>Add WordPress account</span>
@@ -108,6 +119,7 @@ import MenuEntry from './common/MenuEntry';
 import googleHelper from '../../services/providers/helpers/googleHelper';
 import dropboxHelper from '../../services/providers/helpers/dropboxHelper';
 import githubHelper from '../../services/providers/helpers/githubHelper';
+import gitlabHelper from '../../services/providers/helpers/gitlabHelper';
 import wordpressHelper from '../../services/providers/helpers/wordpressHelper';
 import zendeskHelper from '../../services/providers/helpers/zendeskHelper';
 import publishSvc from '../../services/publishSvc';
@@ -156,6 +168,9 @@ export default {
     githubTokens() {
       return tokensToArray(this.$store.getters['data/githubTokensBySub']);
     },
+    gitlabTokens() {
+      return tokensToArray(this.$store.getters['data/gitlabTokensBySub']);
+    },
     wordpressTokens() {
       return tokensToArray(this.$store.getters['data/wordpressTokensBySub']);
     },
@@ -203,6 +218,12 @@ export default {
         await githubHelper.addAccount(store.getters['data/localSettings'].githubRepoFullAccess);
       } catch (e) { /* cancel */ }
     },
+    async addGitlabAccount() {
+      try {
+        await this.$store.dispatch('modal/open', { type: 'gitlabAccount' });
+        await gitlabHelper.addAccount(store.getters['data/localSettings'].githubRepoFullAccess);
+      } catch (e) { /* cancel */ }
+    },
     async addWordpressAccount() {
       try {
         await wordpressHelper.addAccount();
@@ -223,6 +244,7 @@ export default {
     publishDropbox: publishModalOpener('dropboxPublish'),
     publishGithub: publishModalOpener('githubPublish'),
     publishGist: publishModalOpener('gistPublish'),
+    publishGitlab: publishModalOpener('gitlabPublish'),
     publishWordpress: publishModalOpener('wordpressPublish'),
     publishBlogger: publishModalOpener('bloggerPublish'),
     publishBloggerPage: publishModalOpener('bloggerPagePublish'),

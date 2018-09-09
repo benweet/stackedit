@@ -23,6 +23,9 @@
         <span v-else-if="currentWorkspace.providerId === 'githubWorkspace'">
           <b>{{currentWorkspace.name}}</b> synced with a <a :href="workspaceLocationUrl" target="_blank">GitHub repo</a>.
         </span>
+        <span v-else-if="currentWorkspace.providerId === 'gitlabWorkspace'">
+          <b>{{currentWorkspace.name}}</b> synced with a <a :href="workspaceLocationUrl" target="_blank">GitLab repo</a>.
+        </span>
       </div>
       <div class="menu-entry menu-entry--info flex flex--row flex--align-center" v-else>
         <div class="menu-entry__icon menu-entry__icon--disabled">

@@ -17,6 +17,11 @@
       <div>GitHub workspace</div>
       <span>Add a workspace synced with a GitHub repository.</span>
     </menu-entry>
+    <menu-entry @click.native="addGitlabWorkspace">
+      <icon-provider slot="icon" provider-id="gitlabWorkspace"></icon-provider>
+      <div>GitLab workspace</div>
+      <span>Add a workspace synced with a GitLab repository.</span>
+    </menu-entry>
     <menu-entry @click.native="addGoogleDriveWorkspace">
       <icon-provider slot="icon" provider-id="googleDriveWorkspace"></icon-provider>
       <div>Google Drive workspace</div>
@@ -61,6 +66,15 @@ export default {
       try {
         this.$store.dispatch('modal/open', {
           type: 'githubWorkspace',
+        });
+      } catch (e) {
+        // Cancel
+      }
+    },
+    async addGitlabWorkspace() {
+      try {
+        this.$store.dispatch('modal/open', {
+          type: 'gitlabWorkspace',
         });
       } catch (e) {
         // Cancel

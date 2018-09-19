@@ -21,6 +21,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import CommentList from './gutters/CommentList';
 import PreviewNewDiscussionButton from './gutters/PreviewNewDiscussionButton';
+import store from '../store';
 
 const appUri = `${window.location.protocol}//${window.location.host}`;
 
@@ -84,11 +85,11 @@ export default {
     previewElt.addEventListener('mouseover', onDiscussionEvt(classToggler(true)));
     previewElt.addEventListener('mouseout', onDiscussionEvt(classToggler(false)));
     previewElt.addEventListener('click', onDiscussionEvt((discussionId) => {
-      this.$store.commit('discussion/setCurrentDiscussionId', discussionId);
+      store.commit('discussion/setCurrentDiscussionId', discussionId);
     }));
 
     this.$watch(
-      () => this.$store.state.discussion.currentDiscussionId,
+      () => store.state.discussion.currentDiscussionId,
       (discussionId, oldDiscussionId) => {
         if (oldDiscussionId) {
           previewElt.querySelectorAll(`.discussion-preview-highlighting--${oldDiscussionId}`)

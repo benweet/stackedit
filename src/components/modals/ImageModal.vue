@@ -26,6 +26,7 @@
 import modalTemplate from './common/modalTemplate';
 import MenuEntry from '../menus/common/MenuEntry';
 import googleHelper from '../../services/providers/helpers/googleHelper';
+import store from '../../store';
 
 export default modalTemplate({
   components: {
@@ -36,7 +37,7 @@ export default modalTemplate({
   }),
   computed: {
     googlePhotosTokens() {
-      const googleTokensBySub = this.$store.getters['data/googleTokensBySub'];
+      const googleTokensBySub = store.getters['data/googleTokensBySub'];
       return Object.values(googleTokensBySub)
         .filter(token => token.isPhotos)
         .sort((token1, token2) => token1.name.localeCompare(token2.name));
@@ -65,7 +66,7 @@ export default modalTemplate({
       this.config.reject();
       const res = await googleHelper.openPicker(token, 'img');
       if (res[0]) {
-        this.$store.dispatch('modal/open', {
+        store.dispatch('modal/open', {
           type: 'googlePhoto',
           url: res[0].url,
           callback,

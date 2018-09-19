@@ -119,11 +119,11 @@ export default {
       }));
     },
     isSyncPossible() {
-      return this.$store.getters['workspace/syncToken'] ||
-        this.$store.getters['syncLocation/current'].length;
+      return store.getters['workspace/syncToken'] ||
+        store.getters['syncLocation/current'].length;
     },
     showSpinner() {
-      return !this.$store.state.queue.isEmpty;
+      return !store.state.queue.isEmpty;
     },
     titleWidth() {
       if (!this.mounted) {
@@ -152,7 +152,7 @@ export default {
       return result;
     },
     editCancelTrigger() {
-      const current = this.$store.getters['file/current'];
+      const current = store.getters['file/current'];
       return utils.serializeObject([
         current.id,
         current.name,
@@ -187,7 +187,7 @@ export default {
       }
     },
     pagedownClick(name) {
-      if (this.$store.getters['content/isCurrentEditable']) {
+      if (store.getters['content/isCurrentEditable']) {
         editorSvc.pagedownEditor.uiManager.doClick(name);
       }
     },
@@ -197,11 +197,11 @@ export default {
         this.titleInputElt.setSelectionRange(0, this.titleInputElt.value.length);
       } else {
         const title = this.title.trim();
-        this.title = this.$store.getters['file/current'].name;
+        this.title = store.getters['file/current'].name;
         if (title) {
           try {
             await workspaceSvc.storeItem({
-              ...this.$store.getters['file/current'],
+              ...store.getters['file/current'],
               name: title,
             });
           } catch (e) {

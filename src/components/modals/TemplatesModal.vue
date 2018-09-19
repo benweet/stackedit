@@ -57,6 +57,7 @@ import ModalInner from './common/ModalInner';
 import CodeEditor from '../CodeEditor';
 import emptyTemplateValue from '../../data/empties/emptyTemplateValue.html';
 import emptyTemplateHelpers from '!raw-loader!../../data/empties/emptyTemplateHelpers.js'; // eslint-disable-line
+import store from '../../store';
 
 const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
 
@@ -91,7 +92,7 @@ export default {
   },
   created() {
     this.$watch(
-      () => this.$store.getters['data/allTemplatesById'],
+      () => store.getters['data/allTemplatesById'],
       (allTemplatesById) => {
         const templates = {};
         // Sort templates by name

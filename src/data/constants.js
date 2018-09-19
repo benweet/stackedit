@@ -20,11 +20,6 @@ export default {
     'layoutSettings',
     'tokens',
   ],
-  userIdPrefixes: {
-    db: 'dropbox',
-    gh: 'github',
-    go: 'google',
-  },
   textMaxLength: 250000,
   defaultName: 'Untitled',
 };

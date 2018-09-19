@@ -45,6 +45,7 @@
 import MenuEntry from './common/MenuEntry';
 import backupSvc from '../../services/backupSvc';
 import utils from '../../services/utils';
+import store from '../../store';
 
 export default {
   components: {
@@ -52,7 +53,7 @@ export default {
   },
   computed: {
     templateCount() {
-      return Object.keys(this.$store.getters['data/allTemplatesById']).length;
+      return Object.keys(store.getters['data/allTemplatesById']).length;
     },
   },
   methods: {
@@ -63,7 +64,7 @@ export default {
         reader.onload = (e) => {
           const text = e.target.result;
           if (text.match(/\uFFFD/)) {
-            this.$store.dispatch('notification/error', 'File is not readable.');
+            store.dispatch('notification/error', 'File is not readable.');
           } else {
             backupSvc.importBackup(text);
           }
@@ -82,23 +83,23 @@ export default {
     },
     async settings() {
       try {
-        const settings = await this.$store.dispatch('modal/open', 'settings');
-        this.$store.dispatch('data/setSettings', settings);
+        const settings = await store.dispatch('modal/open', 'settings');
+        store.dispatch('data/setSettings', settings);
       } catch (e) {
         // Cancel
       }
     },
     async templates() {
       try {
-        const { templates } = await this.$store.dispatch('modal/open', 'templates');
-        this.$store.dispatch('data/setTemplatesById', templates);
+        const { templates } = await store.dispatch('modal/open', 'templates');
+        store.dispatch('data/setTemplatesById', templates);
       } catch (e) {
         // Cancel
       }
     },
     async reset() {
       try {
-        await this.$store.dispatch('modal/open', 'reset');
+        await store.dispatch('modal/open', 'reset');
         window.location.href = '#reset=true';
         window.location.reload();
       } catch (e) {
@@ -106,7 +107,7 @@ export default {
       }
     },
     about() {
-      this.$store.dispatch('modal/open', 'about');
+      store.dispatch('modal/open', 'about');
     },
   },
 };

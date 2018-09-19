@@ -33,6 +33,7 @@ import editorSvc from '../../services/editorSvc';
 import animationSvc from '../../services/animationSvc';
 import markdownConversionSvc from '../../services/markdownConversionSvc';
 import StickyComment from './StickyComment';
+import store from '../../store';
 
 export default {
   components: {
@@ -72,7 +73,7 @@ export default {
     ]),
     goToDiscussion(discussionId = this.currentDiscussionId) {
       this.setCurrentDiscussionId(discussionId);
-      const layoutSettings = this.$store.getters['data/layoutSettings'];
+      const layoutSettings = store.getters['data/layoutSettings'];
       const discussion = this.currentFileDiscussions[discussionId];
       const coordinates = layoutSettings.showEditor
         ? editorSvc.clEditor.selectionMgr.getCoordinates(discussion.end)
@@ -98,8 +99,8 @@ export default {
     },
     async removeDiscussion() {
       try {
-        await this.$store.dispatch('modal/open', 'discussionDeletion');
-        this.$store.dispatch('discussion/cleanCurrentFile', {
+        await store.dispatch('modal/open', 'discussionDeletion');
+        store.dispatch('discussion/cleanCurrentFile', {
           filterDiscussion: this.currentDiscussion,
         });
       } catch (e) {

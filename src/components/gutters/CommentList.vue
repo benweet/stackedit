@@ -13,6 +13,7 @@ import { mapState, mapGetters, mapMutations } from 'vuex';
 import Comment from './Comment';
 import NewComment from './NewComment';
 import editorSvc from '../../services/editorSvc';
+import store from '../../store';
 import utils from '../../services/utils';
 
 export default {
@@ -63,7 +64,7 @@ export default {
       'setCurrentDiscussionId',
     ]),
     updateTops() {
-      const layoutSettings = this.$store.getters['data/layoutSettings'];
+      const layoutSettings = store.getters['data/layoutSettings'];
       const minTop = -2;
       let minCommentTop = minTop;
       const getTop = (discussion, commentElt1, commentElt2, isCurrent) => {
@@ -126,15 +127,15 @@ export default {
       { immediate: true },
     );
 
-    const layoutSettings = this.$store.getters['data/layoutSettings'];
+    const layoutSettings = store.getters['data/layoutSettings'];
     this.scrollerElt = layoutSettings.showEditor
       ? editorSvc.editorElt.parentNode
       : editorSvc.previewElt.parentNode;
 
     this.updateSticky = () => {
       const commitIfDifferent = (value) => {
-        if (this.$store.state.discussion.stickyComment !== value) {
-          this.$store.commit('discussion/setStickyComment', value);
+        if (store.state.discussion.stickyComment !== value) {
+          store.commit('discussion/setStickyComment', value);
         }
       };
       let height = 0;

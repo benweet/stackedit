@@ -29,6 +29,7 @@
 import { mapState, mapGetters, mapActions } from 'vuex';
 import ExplorerNode from './ExplorerNode';
 import explorerSvc from '../services/explorerSvc';
+import store from '../store';
 
 export default {
   components: {
@@ -55,16 +56,16 @@ export default {
     editItem() {
       const node = this.selectedNode;
       if (!node.isTrash && !node.isTemp) {
-        this.$store.commit('explorer/setEditingId', node.item.id);
+        store.commit('explorer/setEditingId', node.item.id);
       }
     },
   },
   created() {
     this.$watch(
-      () => this.$store.getters['file/current'].id,
+      () => store.getters['file/current'].id,
       (currentFileId) => {
-        this.$store.commit('explorer/setSelectedId', currentFileId);
-        this.$store.dispatch('explorer/openNode', currentFileId);
+        store.commit('explorer/setSelectedId', currentFileId);
+        store.dispatch('explorer/openNode', currentFileId);
       }, {
         immediate: true,
       },

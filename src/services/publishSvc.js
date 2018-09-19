@@ -129,7 +129,8 @@ const createPublishLocation = (publishLocation) => {
   store.dispatch(
     'queue/enqueue',
     async () => {
-      workspaceSvc.addPublishLocation(await publish(publishLocation));
+      const publishLocationToStore = await publish(publishLocation);
+      workspaceSvc.addPublishLocation(publishLocationToStore);
       store.dispatch('notification/info', `A new publication location was added to "${currentFile.name}".`);
     },
   );

@@ -49,6 +49,10 @@ body {
   outline: none;
 }
 
+input[type=checkbox] {
+  outline: #349be8 auto 5px;
+}
+
 .icon {
   width: 100%;
   height: 100%;
@@ -153,6 +157,7 @@ textarea {
   color: #fff;
   margin: -2px 0 -2px 4px;
   padding: 10px 20px;
+  font-size: 18px;
 
   &:active,
   &:focus,

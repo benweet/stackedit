@@ -21,6 +21,7 @@ import syncSvc from '../services/syncSvc';
 import networkSvc from '../services/networkSvc';
 import sponsorSvc from '../services/sponsorSvc';
 import tempFileSvc from '../services/tempFileSvc';
+import store from '../store';
 import './common/vueGlobals';
 
 const themeClasses = {
@@ -41,7 +42,7 @@ export default {
   }),
   computed: {
     classes() {
-      const result = themeClasses[this.$store.getters['data/computedSettings'].colorTheme];
+      const result = themeClasses[store.getters['data/computedSettings'].colorTheme];
       return Array.isArray(result) ? result : themeClasses.light;
     },
   },
@@ -57,7 +58,7 @@ export default {
         window.location.reload();
       } else if (err && err.message !== 'RELOAD') {
         console.error(err); // eslint-disable-line no-console
-        this.$store.dispatch('notification/error', err);
+        store.dispatch('notification/error', err);
       }
     }
   },

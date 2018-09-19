@@ -1,6 +1,7 @@
 import utils from '../../utils';
 import networkSvc from '../../networkSvc';
 import store from '../../../store';
+import userSvc from '../../userSvc';
 
 const clientId = GITHUB_CLIENT_ID;
 const getScopes = token => [token.repoFullAccess ? 'repo' : 'public_repo', 'gist'];
@@ -24,11 +25,39 @@ const repoRequest = (token, owner, repo, options) => request(token, {
   .then(res => res.body);
 
 const getCommitMessage = (name, path) => {
-  const message = store.getters['data/computedSettings'].github[name];
+  const message = store.getters['data/computedSettings'].git[name];
   return message.replace(/{{path}}/g, path);
 };
 
+/**
+ * Getting a user from its userId is not feasible with API v3.
+ * Using an undocumented endpoint...
+ */
+const subPrefix = 'gh';
+userSvc.setInfoResolver('github', subPrefix, async (sub) => {
+  try {
+    const user = (await networkSvc.request({
+      url: `https://api.github.com/user/${sub}`,
+      params: {
+        t: Date.now(), // Prevent from caching
+      },
+    })).body;
+
+    return {
+      id: `${subPrefix}:${user.id}`,
+      name: user.login,
+      imageUrl: user.avatar_url || '',
+    };
+  } catch (err) {
+    if (err.status !== 404) {
+      throw new Error('RETRY');
+    }
+    throw err;
+  }
+});
+
 export default {
+  subPrefix,
 
   /**
    * https://developer.github.com/apps/building-oauth-apps/authorization-options-for-oauth-apps/
@@ -61,6 +90,11 @@ export default {
         access_token: accessToken,
       },
     })).body;
+    userSvc.addInfo({
+      id: `${subPrefix}:${user.id}`,
+      name: user.login,
+      imageUrl: user.avatar_url || '',
+    });
 
     // Check the returned sub consistency
     if (sub && `${user.id}` !== sub) {
@@ -82,28 +116,6 @@ export default {
   },
   async addAccount(repoFullAccess = false) {
     return this.startOauth2(getScopes({ repoFullAccess }));
-  },
-
-  /**
-   * Getting a user from its userId is not feasible with API v3.
-   * Using an undocumented endpoint...
-   */
-  async getUser(userId) {
-    const user = (await networkSvc.request({
-      url: `https://api.github.com/user/${userId}`,
-      params: {
-        t: Date.now(), // Prevent from caching
-      },
-    })).body;
-
-    // Add user info to the store
-    store.commit('userInfo/addItem', {
-      id: `gh:${user.id}`,
-      name: user.login,
-      imageUrl: user.avatar_url || '',
-    });
-
-    return user;
   },
 
   /**

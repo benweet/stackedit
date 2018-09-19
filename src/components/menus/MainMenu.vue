@@ -23,6 +23,9 @@
         <span v-else-if="currentWorkspace.providerId === 'githubWorkspace'">
           <b>{{currentWorkspace.name}}</b> synced with a <a :href="workspaceLocationUrl" target="_blank">GitHub repo</a>.
         </span>
+        <span v-else-if="currentWorkspace.providerId === 'gitlabWorkspace'">
+          <b>{{currentWorkspace.name}}</b> synced with a <a :href="workspaceLocationUrl" target="_blank">GitLab project</a>.
+        </span>
       </div>
       <div class="menu-entry menu-entry--info flex flex--row flex--align-center" v-else>
         <div class="menu-entry__icon menu-entry__icon--disabled">
@@ -38,18 +41,18 @@
     </menu-entry>
     <menu-entry @click.native="setPanel('workspaces')">
       <icon-database slot="icon"></icon-database>
-      <div><div class="menu-entry__label menu-entry__label--warning">new</div> Workspaces</div>
+      <div><div class="menu-entry__label menu-entry__label--count" v-if="workspaceCount">{{workspaceCount}}</div> Workspaces</div>
       <span>Switch to another workspace.</span>
     </menu-entry>
     <hr>
     <menu-entry @click.native="setPanel('sync')">
       <icon-sync slot="icon"></icon-sync>
-      <div>Synchronize</div>
+      <div><div class="menu-entry__label menu-entry__label--count" v-if="syncLocationCount">{{syncLocationCount}}</div> Synchronize</div>
       <span>Sync your files in the Cloud.</span>
     </menu-entry>
     <menu-entry @click.native="setPanel('publish')">
       <icon-upload slot="icon"></icon-upload>
-      <div>Publish</div>
+      <div><div class="menu-entry__label menu-entry__label--count" v-if="publishLocationCount">{{publishLocationCount}}</div>Publish</div>
       <span>Export your files to the web.</span>
     </menu-entry>
     <menu-entry @click.native="setPanel('history')">
@@ -98,6 +101,8 @@ import providerRegistry from '../../services/providers/common/providerRegistry';
 import UserImage from '../UserImage';
 import googleHelper from '../../services/providers/helpers/googleHelper';
 import syncSvc from '../../services/syncSvc';
+import userSvc from '../../services/userSvc';
+import store from '../../store';
 
 export default {
   components: {
@@ -109,11 +114,22 @@ export default {
       'currentWorkspace',
       'syncToken',
       'loginToken',
-      'userId',
     ]),
+    userId() {
+      return userSvc.getCurrentUserId();
+    },
     workspaceLocationUrl() {
       const provider = providerRegistry.providersById[this.currentWorkspace.providerId];
       return provider.getWorkspaceLocationUrl(this.currentWorkspace);
+    },
+    workspaceCount() {
+      return Object.keys(store.getters['workspace/workspacesById']).length;
+    },
+    syncLocationCount() {
+      return Object.keys(store.getters['syncLocation/currentWithWorkspaceSyncLocation']).length;
+    },
+    publishLocationCount() {
+      return Object.keys(store.getters['publishLocation/current']).length;
     },
   },
   methods: {
@@ -130,7 +146,7 @@ export default {
     },
     async fileProperties() {
       try {
-        await this.$store.dispatch('modal/open', 'fileProperties');
+        await store.dispatch('modal/open', 'fileProperties');
       } catch (e) {
         // Cancel
       }

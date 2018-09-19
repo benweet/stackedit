@@ -5,12 +5,12 @@ import Provider from './common/Provider';
 export default new Provider({
   id: 'zendesk',
   name: 'Zendesk',
-  getToken(location) {
-    return store.getters['data/zendeskTokensBySub'][location.sub];
+  getToken({ sub }) {
+    return store.getters['data/zendeskTokensBySub'][sub];
   },
-  getLocationUrl(location) {
-    const token = this.getToken(location);
-    return `https://${token.subdomain}.zendesk.com/hc/${location.locale}/articles/${location.articleId}`;
+  getLocationUrl({ sub, locale, articleId }) {
+    const token = this.getToken({ sub });
+    return `https://${token.subdomain}.zendesk.com/hc/${locale}/articles/${articleId}`;
   },
   getLocationDescription({ articleId }) {
     return articleId;

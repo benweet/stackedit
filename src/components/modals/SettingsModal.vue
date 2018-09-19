@@ -37,6 +37,7 @@ import ModalInner from './common/ModalInner';
 import Tab from './common/Tab';
 import CodeEditor from '../CodeEditor';
 import defaultSettings from '../../data/defaults/defaultSettings.yml';
+import store from '../../store';
 
 const emptySettings = `# Add your custom settings here to override the
 # default settings.
@@ -63,7 +64,7 @@ export default {
     },
   },
   created() {
-    const settings = this.$store.getters['data/settings'];
+    const settings = store.getters['data/settings'];
     this.setCustomSettings(settings === '\n' ? emptySettings : settings);
   },
   methods: {

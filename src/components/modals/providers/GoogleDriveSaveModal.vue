@@ -32,6 +32,7 @@
 import googleHelper from '../../../services/providers/helpers/googleHelper';
 import googleDriveProvider from '../../../services/providers/googleDriveProvider';
 import modalTemplate from '../common/modalTemplate';
+import store from '../../../store';
 
 export default modalTemplate({
   data: () => ({
@@ -42,12 +43,12 @@ export default modalTemplate({
   },
   methods: {
     openFolder() {
-      return this.$store.dispatch(
+      return store.dispatch(
         'modal/hideUntil',
         googleHelper.openPicker(this.config.token, 'folder')
           .then((folders) => {
             if (folders[0]) {
-              this.$store.dispatch('data/patchLocalSettings', {
+              store.dispatch('data/patchLocalSettings', {
                 googleDriveFolderId: folders[0].id,
               });
             }

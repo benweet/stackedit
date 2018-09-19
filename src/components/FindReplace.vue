@@ -223,7 +223,7 @@ export default {
       }
     },
     close() {
-      this.$store.commit('findReplace/setType');
+      store.commit('findReplace/setType');
     },
     onEscape() {
       editorSvc.clEditor.focus();
@@ -260,7 +260,7 @@ export default {
     this.onKeyup = (evt) => {
       if (evt.which === 27) {
         // Esc key
-        this.$store.commit('findReplace/setType');
+        store.commit('findReplace/setType');
       }
     };
     window.addEventListener('keyup', this.onKeyup);

@@ -21,6 +21,7 @@
 import { mapMutations, mapActions } from 'vuex';
 import workspaceSvc from '../services/workspaceSvc';
 import explorerSvc from '../services/explorerSvc';
+import store from '../store';
 
 export default {
   name: 'explorer-node', // Required for recursivity
@@ -36,35 +37,35 @@ export default {
       return `${(this.depth + 1) * 15}px`;
     },
     isSelected() {
-      return this.$store.getters['explorer/selectedNode'] === this.node;
+      return store.getters['explorer/selectedNode'] === this.node;
     },
     isEditing() {
-      return this.$store.getters['explorer/editingNode'] === this.node;
+      return store.getters['explorer/editingNode'] === this.node;
     },
     isDragTarget() {
-      return this.$store.getters['explorer/dragTargetNode'] === this.node;
+      return store.getters['explorer/dragTargetNode'] === this.node;
     },
     isDragTargetFolder() {
-      return this.$store.getters['explorer/dragTargetNodeFolder'] === this.node;
+      return store.getters['explorer/dragTargetNodeFolder'] === this.node;
     },
     isOpen() {
-      return this.$store.state.explorer.openNodes[this.node.item.id] || this.node.isRoot;
+      return store.state.explorer.openNodes[this.node.item.id] || this.node.isRoot;
     },
     newChild() {
-      return this.$store.getters['explorer/newChildNodeParent'] === this.node
-        && this.$store.state.explorer.newChildNode;
+      return store.getters['explorer/newChildNodeParent'] === this.node
+        && store.state.explorer.newChildNode;
     },
     newChildName: {
       get() {
-        return this.$store.state.explorer.newChildNode.item.name;
+        return store.state.explorer.newChildNode.item.name;
       },
       set(value) {
-        this.$store.commit('explorer/setNewItemName', value);
+        store.commit('explorer/setNewItemName', value);
       },
     },
     editingNodeName: {
       get() {
-        return this.$store.getters['explorer/editingNode'].item.name;
+        return store.getters['explorer/editingNode'].item.name;
       },
       set(value) {
         this.editingValue = value.trim();
@@ -79,25 +80,25 @@ export default {
       'setDragTarget',
     ]),
     select(id = this.node.item.id, doOpen = true) {
-      const node = this.$store.getters['explorer/nodeMap'][id];
+      const node = store.getters['explorer/nodeMap'][id];
       if (!node) {
         return false;
       }
-      this.$store.commit('explorer/setSelectedId', id);
+      store.commit('explorer/setSelectedId', id);
       if (doOpen) {
         // Prevent from freezing the UI while loading the file
         setTimeout(() => {
           if (node.isFolder) {
-            this.$store.commit('explorer/toggleOpenNode', id);
+            store.commit('explorer/toggleOpenNode', id);
           } else {
-            this.$store.commit('file/setCurrentId', id);
+            store.commit('file/setCurrentId', id);
           }
         }, 10);
       }
       return true;
     },
     async submitNewChild(cancel) {
-      const { newChildNode } = this.$store.state.explorer;
+      const { newChildNode } = store.state.explorer;
       if (!cancel && !newChildNode.isNil && newChildNode.item.name) {
         try {
           if (newChildNode.isFolder) {
@@ -111,10 +112,10 @@ export default {
           // Cancel
         }
       }
-      this.$store.commit('explorer/setNewItem', null);
+      store.commit('explorer/setNewItem', null);
     },
     async submitEdit(cancel) {
-      const { item } = this.$store.getters['explorer/editingNode'];
+      const { item } = store.getters['explorer/editingNode'];
       const value = this.editingValue;
       this.setEditingId(null);
       if (!cancel && item.id && value) {
@@ -133,14 +134,14 @@ export default {
         evt.preventDefault();
         return;
       }
-      this.$store.commit('explorer/setDragSourceId', this.node.item.id);
+      store.commit('explorer/setDragSourceId', this.node.item.id);
       // Fix for Firefox
       // See https://stackoverflow.com/a/3977637/1333165
       evt.dataTransfer.setData('Text', '');
     },
     onDrop() {
-      const sourceNode = this.$store.getters['explorer/dragSourceNode'];
-      const targetNode = this.$store.getters['explorer/dragTargetNodeFolder'];
+      const sourceNode = store.getters['explorer/dragSourceNode'];
+      const targetNode = store.getters['explorer/dragTargetNodeFolder'];
       this.setDragTarget();
       if (!sourceNode.isNil
         && !targetNode.isNil
@@ -156,7 +157,7 @@ export default {
       if (this.select(undefined, false)) {
         evt.preventDefault();
         evt.stopPropagation();
-        const item = await this.$store.dispatch('contextMenu/open', {
+        const item = await store.dispatch('contextMenu/open', {
           coordinates: {
             left: evt.clientX,
             top: evt.clientY,

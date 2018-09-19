@@ -27,6 +27,7 @@ import sponsorSvc from '../../services/sponsorSvc';
 import networkSvc from '../../services/networkSvc';
 import googleHelper from '../../services/providers/helpers/googleHelper';
 import modalTemplate from './common/modalTemplate';
+import store from '../../store';
 
 export default modalTemplate({
   computedLocalSettings: {
@@ -35,11 +36,11 @@ export default modalTemplate({
   methods: {
     async resolve() {
       this.config.resolve();
-      const currentFile = this.$store.getters['file/current'];
-      this.$store.dispatch('queue/enqueue', async () => {
+      const currentFile = store.getters['file/current'];
+      store.dispatch('queue/enqueue', async () => {
         const [sponsorToken, token, html] = await Promise.all([
           Promise.resolve().then(() => {
-            const tokenToRefresh = this.$store.getters['workspace/sponsorToken'];
+            const tokenToRefresh = store.getters['workspace/sponsorToken'];
             return tokenToRefresh && googleHelper.refreshToken(tokenToRefresh);
           }),
           sponsorSvc.getToken(),
@@ -57,7 +58,7 @@ export default modalTemplate({
             params: {
               token,
               idToken: sponsorToken && sponsorToken.idToken,
-              options: JSON.stringify(this.$store.getters['data/computedSettings'].wkhtmltopdf),
+              options: JSON.stringify(store.getters['data/computedSettings'].wkhtmltopdf),
             },
             body: html,
             blob: true,
@@ -66,10 +67,10 @@ export default modalTemplate({
           FileSaver.saveAs(body, `${currentFile.name}.pdf`);
         } catch (err) {
           if (err.status === 401) {
-            this.$store.dispatch('modal/open', 'sponsorOnly');
+            store.dispatch('modal/open', 'sponsorOnly');
           } else {
             console.error(err); // eslint-disable-line no-console
-            this.$store.dispatch('notification/error', err);
+            store.dispatch('notification/error', err);
           }
         }
       });

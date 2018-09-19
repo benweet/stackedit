@@ -92,6 +92,7 @@ import FormEntry from './common/FormEntry';
 import CodeEditor from '../CodeEditor';
 import utils from '../../services/utils';
 import presets from '../../data/presets';
+import store from '../../store';
 
 const simpleProperties = {
   title: '',
@@ -125,17 +126,17 @@ export default {
     presets: () => Object.keys(presets).sort(),
     tab: {
       get() {
-        return this.$store.getters['data/localSettings'].filePropertiesTab;
+        return store.getters['data/localSettings'].filePropertiesTab;
       },
       set(value) {
-        this.$store.dispatch('data/patchLocalSettings', {
+        store.dispatch('data/patchLocalSettings', {
           filePropertiesTab: value,
         });
       },
     },
   },
   created() {
-    const content = this.$store.getters['content/current'];
+    const content = store.getters['content/current'];
     this.contentId = content.id;
     this.setYamlProperties(content.properties);
     if (this.tab !== 'yaml') {
@@ -214,7 +215,7 @@ export default {
       if (this.error) {
         this.setYamlTab();
       } else {
-        this.$store.commit('content/patchItem', {
+        store.commit('content/patchItem', {
           id: this.contentId,
           properties: utils.sanitizeText(this.yamlProperties),
         });

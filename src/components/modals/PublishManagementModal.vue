@@ -49,6 +49,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import ModalInner from './common/ModalInner';
+import store from '../../store';
 
 export default {
   components: {
@@ -62,7 +63,7 @@ export default {
       publishLocations: 'current',
     }),
     currentFileName() {
-      return this.$store.getters['file/current'].name;
+      return store.getters['file/current'].name;
     },
   },
   methods: {
@@ -70,7 +71,7 @@ export default {
       'info',
     ]),
     remove(location) {
-      this.$store.commit('publishLocation/deleteItem', location.id);
+      store.commit('publishLocation/deleteItem', location.id);
     },
   },
 };

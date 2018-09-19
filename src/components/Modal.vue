@@ -1,5 +1,9 @@
 <template>
   <div class="modal" v-if="config" @keydown.esc="onEscape" @keydown.tab="onTab" @focusin="onFocusInOut" @focusout="onFocusInOut">
+    <div class="modal__sponsor-banner" v-if="!isSponsor">
+      StackEdit is <a class="not-tabbable" target="_blank" href="https://github.com/benweet/stackedit/">open source</a>, please consider
+      <a class="not-tabbable" href="javascript:void(0)" @click="sponsor">sponsoring</a> for just $5.
+    </div>
     <component v-if="currentModalComponent" :is="currentModalComponent"></component>
     <modal-inner v-else aria-label="Dialog">
       <div class="modal__content" v-html="simpleModal.contentHtml(config)"></div>
@@ -15,6 +19,10 @@
 import { mapGetters } from 'vuex';
 import simpleModals from '../data/simpleModals';
 import editorSvc from '../services/editorSvc';
+import syncSvc from '../services/syncSvc';
+import googleHelper from '../services/providers/helpers/googleHelper';
+import store from '../store';
+
 import ModalInner from './modals/common/ModalInner';
 import FilePropertiesModal from './modals/FilePropertiesModal';
 import SettingsModal from './modals/SettingsModal';
@@ -46,6 +54,11 @@ import GithubWorkspaceModal from './modals/providers/GithubWorkspaceModal';
 import GithubPublishModal from './modals/providers/GithubPublishModal';
 import GistSyncModal from './modals/providers/GistSyncModal';
 import GistPublishModal from './modals/providers/GistPublishModal';
+import GitlabAccountModal from './modals/providers/GitlabAccountModal';
+import GitlabOpenModal from './modals/providers/GitlabOpenModal';
+import GitlabPublishModal from './modals/providers/GitlabPublishModal';
+import GitlabSaveModal from './modals/providers/GitlabSaveModal';
+import GitlabWorkspaceModal from './modals/providers/GitlabWorkspaceModal';
 import WordpressPublishModal from './modals/providers/WordpressPublishModal';
 import BloggerPublishModal from './modals/providers/BloggerPublishModal';
 import BloggerPagePublishModal from './modals/providers/BloggerPagePublishModal';
@@ -54,7 +67,7 @@ import ZendeskPublishModal from './modals/providers/ZendeskPublishModal';
 import CouchdbWorkspaceModal from './modals/providers/CouchdbWorkspaceModal';
 import CouchdbCredentialsModal from './modals/providers/CouchdbCredentialsModal';
 
-const getTabbables = container => container.querySelectorAll('a[href], button, .textfield')
+const getTabbables = container => container.querySelectorAll('a[href], button, .textfield, input[type=checkbox]')
   // Filter enabled and visible element
   .cl_filter(el => !el.disabled && el.offsetParent !== null && !el.classList.contains('not-tabbable'));
 
@@ -90,6 +103,11 @@ export default {
     GithubPublishModal,
     GistSyncModal,
     GistPublishModal,
+    GitlabAccountModal,
+    GitlabOpenModal,
+    GitlabPublishModal,
+    GitlabSaveModal,
+    GitlabWorkspaceModal,
     WordpressPublishModal,
     BloggerPublishModal,
     BloggerPagePublishModal,
@@ -99,6 +117,9 @@ export default {
     CouchdbCredentialsModal,
   },
   computed: {
+    ...mapGetters([
+      'isSponsor',
+    ]),
     ...mapGetters('modal', [
       'config',
     ]),
@@ -118,6 +139,19 @@ export default {
     },
   },
   methods: {
+    async sponsor() {
+      try {
+        if (!store.getters['workspace/sponsorToken']) {
+          // User has to sign in
+          await store.dispatch('modal/open', 'signInForSponsorship');
+          await googleHelper.signin();
+          syncSvc.requestSync();
+        }
+        if (!store.getters.isSponsor) {
+          await store.dispatch('modal/open', 'sponsor');
+        }
+      } catch (e) { /* cancel */ }
+    },
     onEscape() {
       this.config.reject();
       editorSvc.clEditor.focus();
@@ -135,24 +169,16 @@ export default {
       }
     },
     onFocusInOut(evt) {
-      const isFocusIn = evt.type === 'focusin';
-      if (evt.target.parentNode && evt.target.parentNode.parentNode) {
+      const { parentNode } = evt.target;
+      if (parentNode && parentNode.parentNode) {
         // Focus effect
-        if (evt.target.parentNode.classList.contains('form-entry__field')
-          && evt.target.parentNode.parentNode.classList.contains('form-entry')) {
-          evt.target.parentNode.parentNode.classList.toggle('form-entry--focused', isFocusIn);
+        if (parentNode.classList.contains('form-entry__field')
+          && parentNode.parentNode.classList.contains('form-entry')) {
+          parentNode.parentNode.classList.toggle(
+            'form-entry--focused',
+            evt.type === 'focusin',
+          );
         }
-      }
-      if (isFocusIn && this.config) {
-        const modalInner = this.$el.querySelector('.modal__inner-2');
-        let { target } = evt;
-        while (target) {
-          if (target === modalInner) {
-            return;
-          }
-          target = target.parentNode;
-        }
-        this.config.reject();
       }
     },
   },
@@ -186,6 +212,18 @@ export default {
   p {
     line-height: 1.5;
   }
+}
+
+.modal__sponsor-banner {
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  color: darken($error-color, 10%);
+  background-color: transparentize(lighten($error-color, 33%), 0.1);
+  font-size: 0.9em;
+  line-height: 1.33;
+  text-align: center;
+  padding: 0.25em 1em;
 }
 
 .modal__inner-1 {
@@ -291,7 +329,7 @@ export default {
 .form-entry__label {
   display: block;
   font-size: 0.9rem;
-  color: #a0a0a0;
+  color: #808080;
 
   .form-entry--focused & {
     color: darken($link-color, 10%);
@@ -307,17 +345,19 @@ export default {
 }
 
 .form-entry__field {
-  border: 1px solid #d8d8d8;
+  border: 1px solid #b0b0b0;
   border-radius: $border-radius-base;
   position: relative;
   overflow: hidden;
 
   .form-entry--focused & {
     border-color: $link-color;
+    box-shadow: 0 0 0 2.5px transparentize($link-color, 0.67);
   }
 
   .form-entry--error & {
     border-color: $error-color;
+    box-shadow: 0 0 0 2.5px transparentize($error-color, 0.67);
   }
 }
 
@@ -353,7 +393,7 @@ export default {
 
 .form-entry__info {
   font-size: 0.75em;
-  opacity: 0.5;
+  opacity: 0.67;
   line-height: 1.4;
   margin: 0.25em 0;
 }

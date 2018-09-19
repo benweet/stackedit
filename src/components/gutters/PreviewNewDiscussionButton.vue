@@ -7,6 +7,7 @@
 <script>
 import { mapActions } from 'vuex';
 import editorSvc from '../../services/editorSvc';
+import store from '../../store';
 
 export default {
   data: () => ({
@@ -23,7 +24,7 @@ export default {
         let offset;
         // Show the button if content is not a revision and preview selection is not empty
         if (
-          !this.$store.state.content.revisionContent &&
+          !store.state.content.revisionContent &&
           editorSvc.previewSelectionRange
         ) {
           this.selection = editorSvc.getTrimmedSelection();
@@ -45,7 +46,7 @@ export default {
     this.$nextTick(() => {
       editorSvc.$on('previewSelectionRange', () => this.checkSelection());
       this.$watch(
-        () => this.$store.getters['layout/styles'].previewWidth,
+        () => store.getters['layout/styles'].previewWidth,
         () => this.checkSelection(),
       );
       this.checkSelection();

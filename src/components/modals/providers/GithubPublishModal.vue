@@ -45,6 +45,7 @@
 <script>
 import githubProvider from '../../../services/providers/githubProvider';
 import modalTemplate from '../common/modalTemplate';
+import utils from '../../../services/utils';
 
 export default modalTemplate({
   data: () => ({
@@ -60,28 +61,24 @@ export default modalTemplate({
   },
   methods: {
     resolve() {
-      if (!this.repoUrl) {
+      const parsedRepo = utils.parseGithubRepoUrl(this.repoUrl);
+      if (!parsedRepo) {
         this.setError('repoUrl');
       }
       if (!this.path) {
         this.setError('path');
       }
-      if (this.repoUrl && this.path) {
-        const parsedRepo = this.repoUrl.match(/[/:]?([^/:]+)\/([^/]+?)(?:\.git|\/)?$/);
-        if (!parsedRepo) {
-          this.setError('repoUrl');
-        } else {
-          // Return new location
-          const location = githubProvider.makeLocation(
-            this.config.token,
-            parsedRepo[1],
-            parsedRepo[2],
-            this.branch || 'master',
-            this.path,
-          );
-          location.templateId = this.selectedTemplate;
-          this.config.resolve(location);
-        }
+      if (parsedRepo && this.path) {
+        // Return new location
+        const location = githubProvider.makeLocation(
+          this.config.token,
+          parsedRepo.owner,
+          parsedRepo.repo,
+          this.branch || 'master',
+          this.path,
+        );
+        location.templateId = this.selectedTemplate;
+        this.config.resolve(location);
       }
     },
   },

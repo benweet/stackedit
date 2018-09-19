@@ -39,7 +39,7 @@ const readFile = file => new Promise((resolve) => {
     reader.onload = (e) => {
       const content = e.target.result;
       if (content.match(/\uFFFD/)) {
-        this.$store.dispatch('notification/error', 'File is not readable.');
+        store.dispatch('notification/error', 'File is not readable.');
       } else {
         resolve(content);
       }
@@ -60,7 +60,7 @@ export default {
         ...Provider.parseContent(content),
         name: file.name,
       });
-      this.$store.commit('file/setCurrentId', item.id);
+      store.commit('file/setCurrentId', item.id);
     },
     async onImportHtml(evt) {
       const file = evt.target.files[0];
@@ -71,7 +71,7 @@ export default {
         ...Provider.parseContent(turndownService.turndown(sanitizedContent)),
         name: file.name,
       });
-      this.$store.commit('file/setCurrentId', item.id);
+      store.commit('file/setCurrentId', item.id);
     },
   },
 };

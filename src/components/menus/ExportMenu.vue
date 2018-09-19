@@ -27,6 +27,7 @@
 import { mapGetters } from 'vuex';
 import MenuEntry from './common/MenuEntry';
 import exportSvc from '../../services/exportSvc';
+import store from '../../store';
 
 export default {
   components: {
@@ -35,20 +36,20 @@ export default {
   computed: mapGetters(['isSponsor']),
   methods: {
     exportMarkdown() {
-      const currentFile = this.$store.getters['file/current'];
+      const currentFile = store.getters['file/current'];
       return exportSvc.exportToDisk(currentFile.id, 'md')
         .catch(() => { /* Cancel */ });
     },
     exportHtml() {
-      return this.$store.dispatch('modal/open', 'htmlExport')
+      return store.dispatch('modal/open', 'htmlExport')
         .catch(() => { /* Cancel */ });
     },
     exportPdf() {
-      return this.$store.dispatch('modal/open', 'pdfExport')
+      return store.dispatch('modal/open', 'pdfExport')
         .catch(() => { /* Cancel */ });
     },
     exportPandoc() {
-      return this.$store.dispatch('modal/open', 'pandocExport')
+      return store.dispatch('modal/open', 'pandocExport')
         .catch(() => { /* Cancel */ });
     },
   },

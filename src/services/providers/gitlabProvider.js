@@ -1,5 +1,5 @@
 import store from '../../store';
-import githubHelper from './helpers/githubHelper';
+import gitlabHelper from './helpers/gitlabHelper';
 import Provider from './common/Provider';
 import utils from '../utils';
 import workspaceSvc from '../workspaceSvc';
@@ -8,24 +8,25 @@ import userSvc from '../userSvc';
 const savedSha = {};
 
 export default new Provider({
-  id: 'github',
-  name: 'GitHub',
+  id: 'gitlab',
+  name: 'GitLab',
   getToken({ sub }) {
-    return store.getters['data/githubTokensBySub'][sub];
+    return store.getters['data/gitlabTokensBySub'][sub];
   },
   getLocationUrl({
-    owner,
-    repo,
+    sub,
+    projectPath,
     branch,
     path,
   }) {
-    return `https://github.com/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/tree/${encodeURIComponent(branch)}/${utils.encodeUrlPath(path)}`;
+    const token = this.getToken({ sub });
+    return `${token.serverUrl}/${projectPath}/blob/${encodeURIComponent(branch)}/${utils.encodeUrlPath(path)}`;
   },
   getLocationDescription({ path }) {
     return path;
   },
   async downloadContent(token, syncLocation) {
-    const { sha, data } = await githubHelper.downloadFile({
+    const { sha, data } = await gitlabHelper.downloadFile({
       ...syncLocation,
       token,
     });
@@ -33,55 +34,68 @@ export default new Provider({
     return Provider.parseContent(data, `${syncLocation.fileId}/content`);
   },
   async uploadContent(token, content, syncLocation) {
-    if (!savedSha[syncLocation.id]) {
+    const updatedSyncLocation = {
+      ...syncLocation,
+      projectId: await gitlabHelper.getProjectId(token, syncLocation),
+    };
+    if (!savedSha[updatedSyncLocation.id]) {
       try {
         // Get the last sha
-        await this.downloadContent(token, syncLocation);
+        await this.downloadContent(token, updatedSyncLocation);
       } catch (e) {
         // Ignore error
       }
     }
-    const sha = savedSha[syncLocation.id];
-    delete savedSha[syncLocation.id];
-    await githubHelper.uploadFile({
-      ...syncLocation,
+    const sha = savedSha[updatedSyncLocation.id];
+    delete savedSha[updatedSyncLocation.id];
+    await gitlabHelper.uploadFile({
+      ...updatedSyncLocation,
       token,
       content: Provider.serializeContent(content),
       sha,
     });
-    return syncLocation;
+    return updatedSyncLocation;
   },
   async publish(token, html, metadata, publishLocation) {
+    const updatedPublishLocation = {
+      ...publishLocation,
+      projectId: await gitlabHelper.getProjectId(token, publishLocation),
+    };
     try {
       // Get the last sha
-      await this.downloadContent(token, publishLocation);
+      await this.downloadContent(token, updatedPublishLocation);
     } catch (e) {
       // Ignore error
     }
-    const sha = savedSha[publishLocation.id];
-    delete savedSha[publishLocation.id];
-    await githubHelper.uploadFile({
-      ...publishLocation,
+    const sha = savedSha[updatedPublishLocation.id];
+    delete savedSha[updatedPublishLocation.id];
+    await gitlabHelper.uploadFile({
+      ...updatedPublishLocation,
       token,
       content: html,
       sha,
     });
-    return publishLocation;
+    return updatedPublishLocation;
   },
   async openFile(token, syncLocation) {
+    const updatedSyncLocation = {
+      ...syncLocation,
+      projectId: await gitlabHelper.getProjectId(token, syncLocation),
+    };
+
     // Check if the file exists and open it
-    if (!Provider.openFileWithLocation(syncLocation)) {
-      // Download content from GitHub
+    if (!Provider.openFileWithLocation(updatedSyncLocation)) {
+      // Download content from GitLab
       let content;
       try {
-        content = await this.downloadContent(token, syncLocation);
+        content = await this.downloadContent(token, updatedSyncLocation);
       } catch (e) {
-        store.dispatch('notification/error', `Could not open file ${syncLocation.path}.`);
+        store.dispatch('notification/error', `Could not open file ${updatedSyncLocation.path}.`);
         return;
       }
 
       // Create the file
-      let name = syncLocation.path;
+      let name = updatedSyncLocation.path;
       const slashPos = name.lastIndexOf('/');
       if (slashPos > -1 && slashPos < name.length - 1) {
         name = name.slice(slashPos + 1);
@@ -100,24 +114,23 @@ export default new Provider({
       }, true);
       store.commit('file/setCurrentId', item.id);
       workspaceSvc.addSyncLocation({
-        ...syncLocation,
+        ...updatedSyncLocation,
         fileId: item.id,
       });
-      store.dispatch('notification/info', `${store.getters['file/current'].name} was imported from GitHub.`);
+      store.dispatch('notification/info', `${store.getters['file/current'].name} was imported from GitLab.`);
     }
   },
-  makeLocation(token, owner, repo, branch, path) {
+  makeLocation(token, projectPath, branch, path) {
     return {
       providerId: this.id,
       sub: token.sub,
-      owner,
-      repo,
+      projectPath,
       branch,
       path,
     };
   },
   async listFileRevisions({ token, syncLocation }) {
-    const entries = await githubHelper.getCommits({
+    const entries = await gitlabHelper.getCommits({
       ...syncLocation,
       token,
     });
@@ -134,7 +147,7 @@ export default new Provider({
       } else if (committer && committer.login) {
         user = committer;
       }
-      const sub = `${githubHelper.subPrefix}:${user.id}`;
+      const sub = `${gitlabHelper.subPrefix}:${user.id}`;
       userSvc.addInfo({ id: sub, name: user.login, imageUrl: user.avatar_url });
       const date = (commit.author && commit.author.date)
         || (commit.committer && commit.committer.date);
@@ -155,7 +168,7 @@ export default new Provider({
     syncLocation,
     revisionId,
   }) {
-    const { data } = await githubHelper.downloadFile({
+    const { data } = await gitlabHelper.downloadFile({
       ...syncLocation,
       token,
       branch: revisionId,

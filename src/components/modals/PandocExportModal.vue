@@ -32,6 +32,7 @@ import networkSvc from '../../services/networkSvc';
 import editorSvc from '../../services/editorSvc';
 import googleHelper from '../../services/providers/helpers/googleHelper';
 import modalTemplate from './common/modalTemplate';
+import store from '../../store';
 
 export default modalTemplate({
   computedLocalSettings: {
@@ -40,13 +41,13 @@ export default modalTemplate({
   methods: {
     async resolve() {
       this.config.resolve();
-      const currentFile = this.$store.getters['file/current'];
-      const currentContent = this.$store.getters['content/current'];
+      const currentFile = store.getters['file/current'];
+      const currentContent = store.getters['content/current'];
       const { selectedFormat } = this;
-      this.$store.dispatch('queue/enqueue', async () => {
+      store.dispatch('queue/enqueue', async () => {
         const [sponsorToken, token] = await Promise.all([
           Promise.resolve().then(() => {
-            const tokenToRefresh = this.$store.getters['workspace/sponsorToken'];
+            const tokenToRefresh = store.getters['workspace/sponsorToken'];
             return tokenToRefresh && googleHelper.refreshToken(tokenToRefresh);
           }),
           sponsorSvc.getToken(),
@@ -60,7 +61,7 @@ export default modalTemplate({
               token,
               idToken: sponsorToken && sponsorToken.idToken,
               format: selectedFormat,
-              options: JSON.stringify(this.$store.getters['data/computedSettings'].pandoc),
+              options: JSON.stringify(store.getters['data/computedSettings'].pandoc),
               metadata: JSON.stringify(currentContent.properties),
             },
             body: JSON.stringify(editorSvc.getPandocAst()),
@@ -70,10 +71,10 @@ export default modalTemplate({
           FileSaver.saveAs(body, `${currentFile.name}.${selectedFormat}`);
         } catch (err) {
           if (err.status === 401) {
-            this.$store.dispatch('modal/open', 'sponsorOnly');
+            store.dispatch('modal/open', 'sponsorOnly');
           } else {
             console.error(err); // eslint-disable-line no-console
-            this.$store.dispatch('notification/error', err);
+            store.dispatch('notification/error', err);
           }
         }
       });

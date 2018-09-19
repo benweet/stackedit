@@ -1,6 +1,7 @@
 import utils from '../../utils';
 import networkSvc from '../../networkSvc';
 import store from '../../../store';
+import userSvc from '../../userSvc';
 
 const clientId = GOOGLE_CLIENT_ID;
 const apiKey = 'AIzaSyC_M4RA9pY6XmM9pmFxlT59UPMO7aHr9kk';
@@ -34,7 +35,45 @@ if (utils.queryParams.providerId === 'googleDrive') {
   }
 }
 
+/**
+ * https://developers.google.com/+/web/api/rest/latest/people/get
+ */
+const getUser = async (sub, token) => {
+  const { body } = await networkSvc.request(token
+    ? {
+      method: 'GET',
+      url: `https://www.googleapis.com/plus/v1/people/${sub}`,
+      headers: {
+        Authorization: `Bearer ${token.accessToken}`,
+      },
+    }
+    : {
+      method: 'GET',
+      url: `https://www.googleapis.com/plus/v1/people/${sub}?key=${apiKey}`,
+    }, true);
+  return body;
+};
+
+const subPrefix = 'go';
+userSvc.setInfoResolver('google', subPrefix, async (sub) => {
+  try {
+    const googleToken = Object.values(store.getters['data/googleTokensBySub'])[0];
+    const body = await getUser(sub, googleToken);
+    return {
+      id: `${subPrefix}:${body.id}`,
+      name: body.displayName,
+      imageUrl: (body.image.url || '').replace(/\bsz?=\d+$/, 'sz=40'),
+    };
+  } catch (err) {
+    if (err.status !== 404) {
+      throw new Error('RETRY');
+    }
+    throw err;
+  }
+});
+
 export default {
+  subPrefix,
   folderMimeType: 'application/vnd.google-apps.folder',
   driveState,
   driveActionFolder: null,
@@ -119,16 +158,14 @@ export default {
       driveFullAccess: scopes.indexOf('https://www.googleapis.com/auth/drive') !== -1,
     };
 
-    try {
-      // Call the user info endpoint
-      token.name = (await this.getUser(token.sub)).displayName;
-    } catch (err) {
-      if (err.status === 404) {
-        store.dispatch('notification/info', 'Please activate Google Plus to change your account name and photo.');
-      } else {
-        throw err;
-      }
-    }
+    // Call the user info endpoint
+    const user = await getUser('me', token);
+    token.name = user.displayName;
+    userSvc.addInfo({
+      id: `${subPrefix}:${user.id}`,
+      name: user.displayName,
+      imageUrl: (user.image.url || '').replace(/\bsz?=\d+$/, 'sz=40'),
+    });
 
     if (existingToken) {
       // We probably retrieved a new token with restricted scopes.
@@ -413,7 +450,7 @@ export default {
       });
       revisions.forEach((revision) => {
         store.commit('userInfo/addItem', {
-          id: `go:${revision.lastModifyingUser.permissionId}`,
+          id: `${subPrefix}:${revision.lastModifyingUser.permissionId}`,
           name: revision.lastModifyingUser.displayName,
           imageUrl: revision.lastModifyingUser.photoLink,
         });
@@ -452,22 +489,6 @@ export default {
   async downloadAppDataFileRevision(token, fileId, revisionId) {
     const refreshedToken = await this.refreshToken(token, driveAppDataScopes);
     return this.$downloadFileRevision(refreshedToken, fileId, revisionId);
-  },
-
-  /**
-   * https://developers.google.com/+/web/api/rest/latest/people/get
-   */
-  async getUser(userId) {
-    const { body } = await networkSvc.request({
-      method: 'GET',
-      url: `https://www.googleapis.com/plus/v1/people/${userId}?key=${apiKey}`,
-    }, true);
-    store.commit('userInfo/addItem', {
-      id: `go:${body.id}`,
-      name: body.displayName,
-      imageUrl: (body.image.url || '').replace(/\bsz?=\d+$/, 'sz=40'),
-    });
-    return body;
   },
 
   /**

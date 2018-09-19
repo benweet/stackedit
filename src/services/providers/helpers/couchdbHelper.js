@@ -1,6 +1,7 @@
 import networkSvc from '../../networkSvc';
 import utils from '../../utils';
 import store from '../../../store';
+import userSvc from '../../userSvc';
 
 const request = async (token, options = {}) => {
   const baseUrl = `${token.dbUrl}/`;
@@ -117,7 +118,7 @@ export default {
       method: 'POST',
       body: { item, time: Date.now() },
     };
-    const userId = store.getters['workspace/userId'];
+    const userId = userSvc.getCurrentUserId();
     if (userId) {
       options.body.sub = userId;
     }

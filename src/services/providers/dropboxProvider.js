@@ -127,7 +127,7 @@ export default new Provider({
     const entries = await dropboxHelper.listRevisions(token, syncLocation.dropboxFileId);
     return entries.map(entry => ({
       id: entry.rev,
-      sub: `db:${(entry.sharing_info || {}).modified_by || token.sub}`,
+      sub: `${dropboxHelper.subPrefix}:${(entry.sharing_info || {}).modified_by || token.sub}`,
       created: new Date(entry.server_modified).getTime(),
     }));
   },

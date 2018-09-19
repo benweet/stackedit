@@ -77,8 +77,8 @@ turndown:
   linkStyle: inlined
   linkReferenceStyle: full
 
-# GitHub commit messages
-github:
+# GitHub/GitLab commit messages
+git:
   createFileMessage: '{{path}} created from https://stackedit.io/'
   updateFileMessage: '{{path}} updated from https://stackedit.io/'
   deleteFileMessage: '{{path}} deleted from https://stackedit.io/'

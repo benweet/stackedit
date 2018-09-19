@@ -19,13 +19,14 @@
 import { mapGetters } from 'vuex';
 import ModalInner from './common/ModalInner';
 import utils from '../../services/utils';
+import store from '../../store';
 
 export default {
   components: {
     ModalInner,
   },
   data() {
-    const sponsorToken = this.$store.getters['workspace/sponsorToken'];
+    const sponsorToken = store.getters['workspace/sponsorToken'];
     const makeButton = (id, price, description, offer) => {
       const params = {
         cmd: '_s-xclick',

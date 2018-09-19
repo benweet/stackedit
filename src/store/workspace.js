@@ -1,6 +1,5 @@
 import utils from '../services/utils';
 import providerRegistry from '../services/providers/common/providerRegistry';
-import constants from '../data/constants';
 
 export default {
   namespaced: true,
@@ -44,9 +43,11 @@ export default {
     currentWorkspace: ({ currentWorkspaceId }, { workspacesById, mainWorkspace }) =>
       workspacesById[currentWorkspaceId] || mainWorkspace,
     currentWorkspaceIsGit: (state, { currentWorkspace }) =>
-      currentWorkspace.providerId === 'githubWorkspace',
+      currentWorkspace.providerId === 'githubWorkspace'
+      || currentWorkspace.providerId === 'gitlabWorkspace',
     currentWorkspaceHasUniquePaths: (state, { currentWorkspace }) =>
-      currentWorkspace.providerId === 'githubWorkspace',
+      currentWorkspace.providerId === 'githubWorkspace'
+      || currentWorkspace.providerId === 'gitlabWorkspace',
     lastSyncActivityKey: (state, { currentWorkspace }) => `${currentWorkspace.id}/lastSyncActivity`,
     lastFocusKey: (state, { currentWorkspace }) => `${currentWorkspace.id}/lastWindowFocus`,
     mainWorkspaceToken: (state, getters, rootState, rootGetters) =>
@@ -62,33 +63,28 @@ export default {
           return rootGetters['data/googleTokensBySub'][currentWorkspace.sub];
         case 'githubWorkspace':
           return rootGetters['data/githubTokensBySub'][currentWorkspace.sub];
+        case 'gitlabWorkspace':
+          return rootGetters['data/gitlabTokensBySub'][currentWorkspace.sub];
         case 'couchdbWorkspace':
           return rootGetters['data/couchdbTokensBySub'][currentWorkspace.id];
         default:
           return mainWorkspaceToken;
       }
     },
-    loginToken: (state, { currentWorkspace, mainWorkspaceToken }, rootState, rootGetters) => {
+    loginType: (state, { currentWorkspace }) => {
       switch (currentWorkspace.providerId) {
         case 'googleDriveWorkspace':
-          return rootGetters['data/googleTokensBySub'][currentWorkspace.sub];
-        case 'githubWorkspace':
-          return rootGetters['data/githubTokensBySub'][currentWorkspace.sub];
         default:
-          return mainWorkspaceToken;
+          return 'google';
+        case 'githubWorkspace':
+          return 'github';
+        case 'gitlabWorkspace':
+          return 'gitlab';
       }
     },
-    userId: (state, { loginToken }, rootState, rootGetters) => {
-      if (!loginToken) {
-        return null;
-      }
-      const prefix = utils.someResult(Object.entries(constants.userIdPrefixes), ([key, value]) => {
-        if (rootGetters[`data/${value}TokensBySub`][loginToken.sub]) {
-          return key;
-        }
-        return null;
-      });
-      return prefix ? `${prefix}:${loginToken.sub}` : loginToken.sub;
+    loginToken: (state, { loginType, currentWorkspace }, rootState, rootGetters) => {
+      const tokensBySub = rootGetters['data/tokensByType'][loginType];
+      return tokensBySub && tokensBySub[currentWorkspace.sub];
     },
     sponsorToken: (state, { mainWorkspaceToken }) => mainWorkspaceToken,
   },

@@ -51,6 +51,7 @@
 
 <script>
 import Vue from 'vue';
+import store from '../store';
 
 const steps = [
   'welcome',
@@ -106,7 +107,7 @@ export default {
       });
     },
     finish() {
-      this.$store.dispatch('data/patchLayoutSettings', {
+      store.dispatch('data/patchLayoutSettings', {
         welcomeTourFinished: true,
       });
     },
@@ -116,7 +117,7 @@ export default {
   },
   mounted() {
     this.$watch(
-      () => this.$store.getters['layout/styles'],
+      () => store.getters['layout/styles'],
       () => this.updatePositions(),
       { immediate: true },
     );

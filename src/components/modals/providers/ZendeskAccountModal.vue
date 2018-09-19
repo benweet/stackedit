@@ -14,8 +14,10 @@
       <form-entry label="Client Unique Identifier" error="clientId">
         <input slot="field" class="textfield" type="text" v-model.trim="clientId" @keydown.enter="resolve()">
         <div class="form-entry__info">
-          You have to configure an OAuth Client with redirect URL <b>{{redirectUrl}}</b><br>
-          <a href="https://support.zendesk.com/hc/en-us/articles/203663836" target="_blank"><b>More info</b></a>
+          You have to configure an OAuth Client with redirect URL <b>{{redirectUrl}}</b>
+        </div>
+        <div class="form-entry__actions">
+          <a href="https://support.zendesk.com/hc/en-us/articles/203663836" target="_blank">More info</a>
         </div>
       </form-entry>
     </div>

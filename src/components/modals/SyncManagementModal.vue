@@ -49,6 +49,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import ModalInner from './common/ModalInner';
+import store from '../../store';
 
 export default {
   components: {
@@ -62,7 +63,7 @@ export default {
       syncLocations: 'currentWithWorkspaceSyncLocation',
     }),
     currentFileName() {
-      return this.$store.getters['file/current'].name;
+      return store.getters['file/current'].name;
     },
   },
   methods: {
@@ -73,7 +74,7 @@ export default {
       if (location.id === 'main') {
         this.info('This location can not be removed.');
       } else {
-        this.$store.commit('syncLocation/deleteItem', location.id);
+        store.commit('syncLocation/deleteItem', location.id);
       }
     },
   },

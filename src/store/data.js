@@ -85,7 +85,7 @@ const additionalTemplates = {
 
 // For tokens
 const tokenAdder = providerId => ({ getters, dispatch }, token) => {
-  dispatch('patchTokensByProviderId', {
+  dispatch('patchTokensByType', {
     [providerId]: {
       ...getters[`${providerId}TokensBySub`],
       [token.sub]: token,
@@ -188,13 +188,14 @@ export default {
       return result;
     },
     dataSyncDataById: getter('dataSyncData'),
-    tokensByProviderId: getter('tokens'),
-    googleTokensBySub: (state, { tokensByProviderId }) => tokensByProviderId.google || {},
-    couchdbTokensBySub: (state, { tokensByProviderId }) => tokensByProviderId.couchdb || {},
-    dropboxTokensBySub: (state, { tokensByProviderId }) => tokensByProviderId.dropbox || {},
-    githubTokensBySub: (state, { tokensByProviderId }) => tokensByProviderId.github || {},
-    wordpressTokensBySub: (state, { tokensByProviderId }) => tokensByProviderId.wordpress || {},
-    zendeskTokensBySub: (state, { tokensByProviderId }) => tokensByProviderId.zendesk || {},
+    tokensByType: getter('tokens'),
+    googleTokensBySub: (state, { tokensByType }) => tokensByType.google || {},
+    couchdbTokensBySub: (state, { tokensByType }) => tokensByType.couchdb || {},
+    dropboxTokensBySub: (state, { tokensByType }) => tokensByType.dropbox || {},
+    githubTokensBySub: (state, { tokensByType }) => tokensByType.github || {},
+    gitlabTokensBySub: (state, { tokensByType }) => tokensByType.gitlab || {},
+    wordpressTokensBySub: (state, { tokensByType }) => tokensByType.wordpress || {},
+    zendeskTokensBySub: (state, { tokensByType }) => tokensByType.zendesk || {},
   },
   actions: {
     setSettings: setter('settings'),
@@ -258,11 +259,12 @@ export default {
     setSyncDataById: setter('syncData'),
     patchSyncDataById: patcher('syncData'),
     patchDataSyncDataById: patcher('dataSyncData'),
-    patchTokensByProviderId: patcher('tokens'),
+    patchTokensByType: patcher('tokens'),
     addGoogleToken: tokenAdder('google'),
     addCouchdbToken: tokenAdder('couchdb'),
     addDropboxToken: tokenAdder('dropbox'),
     addGithubToken: tokenAdder('github'),
+    addGitlabToken: tokenAdder('gitlab'),
     addWordpressToken: tokenAdder('wordpress'),
     addZendeskToken: tokenAdder('zendesk'),
   },

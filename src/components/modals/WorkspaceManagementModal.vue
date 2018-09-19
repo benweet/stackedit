@@ -64,6 +64,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import ModalInner from './common/ModalInner';
 import workspaceSvc from '../../services/workspaceSvc';
+import store from '../../store';
 
 export default {
   components: {
@@ -95,7 +96,7 @@ export default {
       const workspace = this.workspacesById[this.editedId];
       if (workspace) {
         if (!cancel && this.editingName) {
-          this.$store.dispatch('workspace/patchWorkspacesById', {
+          store.dispatch('workspace/patchWorkspacesById', {
             [this.editedId]: {
               ...workspace,
               name: this.editingName,
@@ -114,7 +115,7 @@ export default {
         this.info('Please close the workspace before removing it.');
       } else {
         try {
-          await this.$store.dispatch('modal/open', 'removeWorkspace');
+          await store.dispatch('modal/open', 'removeWorkspace');
           workspaceSvc.removeWorkspace(id);
         } catch (e) { /* Cancel */ }
       }

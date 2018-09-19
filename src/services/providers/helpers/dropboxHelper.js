@@ -1,4 +1,5 @@
 import networkSvc from '../../networkSvc';
+import userSvc from '../../userSvc';
 import store from '../../../store';
 
 const getAppKey = (fullAccess) => {
@@ -22,10 +23,40 @@ const request = ({ accessToken }, options, args) => networkSvc.request({
   },
 });
 
+/**
+ * https://www.dropbox.com/developers/documentation/http/documentation#users-get_account
+ */
+const subPrefix = 'db';
+userSvc.setInfoResolver('dropbox', subPrefix, async (sub) => {
+  const dropboxToken = Object.values(store.getters['data/dropboxTokensBySub'])[0];
+  try {
+    const { body } = await request(dropboxToken, {
+      method: 'POST',
+      url: 'https://api.dropboxapi.com/2/users/get_account',
+      body: {
+        account_id: sub,
+      },
+    });
+
+    return {
+      id: `${subPrefix}:${body.account_id}`,
+      name: body.name.display_name,
+      imageUrl: body.profile_photo_url || '',
+    };
+  } catch (err) {
+    if (!dropboxToken || err.status !== 404) {
+      throw new Error('RETRY');
+    }
+    throw err;
+  }
+});
+
 export default {
+  subPrefix,
 
   /**
    * https://www.dropbox.com/developers/documentation/http/documentation#oauth2-authorize
+   * https://www.dropbox.com/developers/documentation/http/documentation#users-get_current_account
    */
   async startOauth2(fullAccess, sub = null, silent = false) {
     const { accessToken } = await networkSvc.startOauth2(
@@ -41,6 +72,11 @@ export default {
     const { body } = await request({ accessToken }, {
       method: 'POST',
       url: 'https://api.dropboxapi.com/2/users/get_current_account',
+    });
+    userSvc.addInfo({
+      id: `${subPrefix}:${body.account_id}`,
+      name: body.name.display_name,
+      imageUrl: body.profile_photo_url || '',
     });
 
     // Check the returned sub consistency
@@ -62,28 +98,6 @@ export default {
   },
   addAccount(fullAccess = false) {
     return this.startOauth2(fullAccess);
-  },
-
-  /**
-   * https://www.dropbox.com/developers/documentation/http/documentation#users-get_account
-   */
-  async getAccount(token, userId) {
-    const { body } = await request(token, {
-      method: 'POST',
-      url: 'https://api.dropboxapi.com/2/users/get_account',
-      body: {
-        account_id: userId,
-      },
-    });
-
-    // Add user info to the store
-    store.commit('userInfo/addItem', {
-      id: `db:${body.account_id}`,
-      name: body.name.display_name,
-      imageUrl: body.profile_photo_url || '',
-    });
-
-    return body;
   },
 
   /**

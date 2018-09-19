@@ -21,6 +21,7 @@
 
 <script>
 import modalTemplate from '../common/modalTemplate';
+import store from '../../../store';
 
 export default modalTemplate({
   data: () => ({
@@ -45,7 +46,7 @@ export default modalTemplate({
           name: this.name,
           password: this.password,
         };
-        this.$store.dispatch('data/addCouchdbToken', token);
+        store.dispatch('data/addCouchdbToken', token);
         this.config.resolve();
       }
     },

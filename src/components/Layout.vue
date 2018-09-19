@@ -63,6 +63,7 @@ import CurrentDiscussion from './gutters/CurrentDiscussion';
 import FindReplace from './FindReplace';
 import editorSvc from '../services/editorSvc';
 import markdownConversionSvc from '../services/markdownConversionSvc';
+import store from '../store';
 
 export default {
   components: {
@@ -96,7 +97,7 @@ export default {
       'layoutSettings',
     ]),
     showFindReplace() {
-      return !!this.$store.state.findReplace.type;
+      return !!store.state.findReplace.type;
     },
   },
   methods: {

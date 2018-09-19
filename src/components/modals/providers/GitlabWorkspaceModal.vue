@@ -1,14 +1,14 @@
 <template>
-  <modal-inner aria-label="Synchronize with GitHub">
+  <modal-inner aria-label="Synchronize with GitLab">
     <div class="modal__content">
       <div class="modal__image">
-        <icon-provider provider-id="github"></icon-provider>
+        <icon-provider provider-id="gitlab"></icon-provider>
       </div>
-      <p>Create a workspace synced with a <b>GitHub</b> repository folder.</p>
-      <form-entry label="Repository URL" error="repoUrl">
-        <input slot="field" class="textfield" type="text" v-model.trim="repoUrl" @keydown.enter="resolve()">
+      <p>Create a workspace synced with a <b>GitLab</b> project folder.</p>
+      <form-entry label="Project URL" error="projectUrl">
+        <input slot="field" class="textfield" type="text" v-model.trim="projectUrl" @keydown.enter="resolve()">
         <div class="form-entry__info">
-          <b>Example:</b> https://github.com/benweet/stackedit
+          <b>Example:</b> {{config.token.serverUrl}}/path/to/project
         </div>
       </form-entry>
       <form-entry label="Folder path" info="optional">
@@ -41,20 +41,22 @@ export default modalTemplate({
     path: '',
   }),
   computedLocalSettings: {
-    repoUrl: 'githubWorkspaceRepoUrl',
+    projectUrl: 'gitlabWorkspaceProjectUrl',
   },
   methods: {
     resolve() {
-      const parsedRepo = utils.parseGithubRepoUrl(this.repoUrl);
-      if (!parsedRepo) {
-        this.setError('repoUrl');
+      const projectPath = utils.parseGitlabProjectPath(this.projectUrl);
+      if (!projectPath) {
+        this.setError('projectUrl');
       } else {
         const path = this.path && this.path.replace(/^\//, '');
         const url = utils.addQueryParams('app', {
-          ...parsedRepo,
-          providerId: 'githubWorkspace',
+          providerId: 'gitlabWorkspace',
+          serverUrl: this.config.token.serverUrl,
+          projectPath,
           branch: this.branch || 'master',
           path: path || undefined,
+          sub: this.config.token.sub,
         }, true);
         this.config.resolve();
         window.open(url);

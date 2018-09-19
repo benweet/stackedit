@@ -17,6 +17,11 @@
       <div>GitHub workspace</div>
       <span>Add a workspace synced with a GitHub repository.</span>
     </menu-entry>
+    <menu-entry @click.native="addGitlabWorkspace">
+      <icon-provider slot="icon" provider-id="gitlabWorkspace"></icon-provider>
+      <div>GitLab workspace</div>
+      <span>Add a workspace synced with a GitLab project.</span>
+    </menu-entry>
     <menu-entry @click.native="addGoogleDriveWorkspace">
       <icon-provider slot="icon" provider-id="googleDriveWorkspace"></icon-provider>
       <div>Google Drive workspace</div>
@@ -33,6 +38,8 @@
 import { mapGetters } from 'vuex';
 import MenuEntry from './common/MenuEntry';
 import googleHelper from '../../services/providers/helpers/googleHelper';
+import gitlabHelper from '../../services/providers/helpers/gitlabHelper';
+import store from '../../store';
 
 export default {
   components: {
@@ -50,7 +57,7 @@ export default {
   methods: {
     async addCouchdbWorkspace() {
       try {
-        this.$store.dispatch('modal/open', {
+        store.dispatch('modal/open', {
           type: 'couchdbWorkspace',
         });
       } catch (e) {
@@ -59,8 +66,20 @@ export default {
     },
     async addGithubWorkspace() {
       try {
-        this.$store.dispatch('modal/open', {
+        store.dispatch('modal/open', {
           type: 'githubWorkspace',
+        });
+      } catch (e) {
+        // Cancel
+      }
+    },
+    async addGitlabWorkspace() {
+      try {
+        const { serverUrl, applicationId } = await store.dispatch('modal/open', { type: 'gitlabAccount' });
+        const token = await gitlabHelper.addAccount(serverUrl, applicationId);
+        store.dispatch('modal/open', {
+          type: 'gitlabWorkspace',
+          token,
         });
       } catch (e) {
         // Cancel
@@ -69,7 +88,7 @@ export default {
     async addGoogleDriveWorkspace() {
       try {
         const token = await googleHelper.addDriveAccount(true);
-        this.$store.dispatch('modal/open', {
+        store.dispatch('modal/open', {
           type: 'googleDriveWorkspace',
           token,
         });
@@ -78,7 +97,7 @@ export default {
       }
     },
     manageWorkspaces() {
-      this.$store.dispatch('modal/open', 'workspaceManagement');
+      store.dispatch('modal/open', 'workspaceManagement');
     },
   },
 };

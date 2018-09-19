@@ -55,6 +55,7 @@ import PreviewClassApplier from '../common/PreviewClassApplier';
 import utils from '../../services/utils';
 import googleHelper from '../../services/providers/helpers/googleHelper';
 import syncSvc from '../../services/syncSvc';
+import store from '../../store';
 
 let editorClassAppliers = [];
 let previewClassAppliers = [];
@@ -102,14 +103,14 @@ export default {
       return providerRegistry.providersById[this.syncLocation.providerId].name;
     },
     currentFileName() {
-      return this.$store.getters['file/current'].name;
+      return store.getters['file/current'].name;
     },
     historyContext() {
       const { syncLocation } = this;
       if (syncLocation) {
         const provider = providerRegistry.providersById[syncLocation.providerId];
         const token = provider.getToken(syncLocation);
-        const fileId = this.$store.getters['file/current'].id;
+        const fileId = store.getters['file/current'].id;
         const contentId = `${fileId}/content`;
         const historyContext = {
           token,
@@ -171,7 +172,7 @@ export default {
       }
     },
     close() {
-      this.$store.dispatch('data/setSideBarPanel', 'menu');
+      store.dispatch('data/setSideBarPanel', 'menu');
     },
     showMore() {
       this.showCount += pageSize;
@@ -182,7 +183,7 @@ export default {
         const historyContext = utils.deepCopy(this.historyContext);
         if (historyContext) {
           const provider = providerRegistry.providersById[this.syncLocation.providerId];
-          revisionContentPromise = new Promise((resolve, reject) => this.$store.dispatch(
+          revisionContentPromise = new Promise((resolve, reject) => store.dispatch(
             'queue/enqueue',
             () => provider.getFileRevisionContent({
               ...historyContext,
@@ -192,14 +193,14 @@ export default {
           ));
           revisionContentPromises[revision.id] = revisionContentPromise;
           revisionContentPromise.catch((err) => {
-            this.$store.dispatch('notification/error', err);
+            store.dispatch('notification/error', err);
             revisionContentPromises[revision.id] = null;
           });
         }
       }
       if (revisionContentPromise) {
         revisionContentPromise.then(revisionContent =>
-          this.$store.dispatch('content/setRevisionContent', revisionContent));
+          store.dispatch('content/setRevisionContent', revisionContent));
       }
     },
     refreshHighlighters() {
@@ -256,14 +257,14 @@ export default {
             cachedHistoryContextHash = this.historyContextHash;
             revisionContentPromises = {};
             const provider = providerRegistry.providersById[this.syncLocation.providerId];
-            revisionsPromise = new Promise((resolve, reject) => this.$store.dispatch(
+            revisionsPromise = new Promise((resolve, reject) => store.dispatch(
               'queue/enqueue',
               () => provider
                 .listFileRevisions(historyContext)
                 .then(resolve, reject),
             ))
               .catch((err) => {
-                this.$store.dispatch('notification/error', err);
+                store.dispatch('notification/error', err);
                 cachedHistoryContextHash = null;
                 return [];
               });
@@ -282,7 +283,7 @@ export default {
     revisions(revisions) {
       const { historyContext } = this;
       if (historyContext) {
-        this.$store.dispatch(
+        store.dispatch(
           'queue/enqueue',
           () => utils.awaitSequence(revisions, async (revision) => {
             // Make sure revisions and historyContext haven't changed

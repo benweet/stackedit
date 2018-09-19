@@ -1,70 +1,79 @@
-import googleHelper from './providers/helpers/googleHelper';
-import githubHelper from './providers/helpers/githubHelper';
 import store from '../store';
-import dropboxHelper from './providers/helpers/dropboxHelper';
-import constants from '../data/constants';
 
-const promised = {};
+const infoPromisesByUserId = {};
+const infoResolversByType = {};
+const subPrefixesByType = {};
+const typesBySubPrefix = {};
 
 const parseUserId = (userId) => {
   const prefix = userId[2] === ':' && userId.slice(0, 2);
-  const type = prefix && constants.userIdPrefixes[prefix];
+  const type = typesBySubPrefix[prefix];
   return type ? [type, userId.slice(3)] : ['google', userId];
 };
 
+
 export default {
-  addInfo({ id, name, imageUrl }) {
-    promised[id] = true;
-    store.commit('userInfo/addItem', { id, name, imageUrl });
+  setInfoResolver(type, subPrefix, resolver) {
+    infoResolversByType[type] = resolver;
+    subPrefixesByType[type] = subPrefix;
+    typesBySubPrefix[subPrefix] = type;
+  },
+  getCurrentUserId() {
+    const loginToken = store.getters['workspace/loginToken'];
+    if (!loginToken) {
+      return null;
+    }
+    const loginType = store.getters['workspace/loginToken'];
+    const prefix = subPrefixesByType[loginType];
+    return prefix ? `${prefix}:${loginToken.sub}` : loginToken.sub;
+  },
+  addInfo(info) {
+    infoPromisesByUserId[info.id] = Promise.resolve(info);
+    store.commit('userInfo/addItem', info);
   },
   async getInfo(userId) {
-    if (userId && !promised[userId]) {
-      const [type, sub] = parseUserId(userId);
+    if (!userId) {
+      return {};
+    }
 
-      // Try to find a token with this sub
-      const token = store.getters[`data/${type}TokensBySub`][sub];
-      if (token) {
-        store.commit('userInfo/addItem', {
-          id: userId,
-          name: token.name,
-        });
-      }
+    let infoPromise = infoPromisesByUserId[userId];
+    if (infoPromise) {
+      return infoPromise;
+    }
 
-      // Get user info from provider
-      if (!store.state.offline) {
-        promised[userId] = true;
-        switch (type) {
-          case 'dropbox': {
-            const dropboxToken = Object.values(store.getters['data/dropboxTokensBySub'])[0];
-            try {
-              await dropboxHelper.getAccount(dropboxToken, sub);
-            } catch (err) {
-              if (!token || err.status !== 404) {
-                promised[userId] = false;
-              }
-            }
-            break;
+    const [type, sub] = parseUserId(userId);
+
+    // Try to find a token with this sub to resolve name as soon as possible
+    const token = store.getters[`data/${type}TokensBySub`][sub];
+    if (token) {
+      store.commit('userInfo/addItem', {
+        id: userId,
+        name: token.name,
+      });
+    }
+
+    if (store.state.offline) {
+      return {};
+    }
+
+    // Get user info from helper
+    infoPromise = new Promise(async (resolve) => {
+      const infoResolver = infoResolversByType[type];
+      if (infoResolver) {
+        try {
+          const userInfo = await infoResolver(sub);
+          this.addInfo(userInfo);
+          resolve(userInfo);
+        } catch (err) {
+          if (err && err.message === 'RETRY') {
+            infoPromisesByUserId[userId] = null;
           }
-          case 'github':
-            try {
-              await githubHelper.getUser(sub);
-            } catch (err) {
-              if (err.status !== 404) {
-                promised[userId] = false;
-              }
-            }
-            break;
-          case 'google':
-          default:
-            try {
-              await googleHelper.getUser(sub);
-            } catch (err) {
-              if (err.status !== 404) {
-                promised[userId] = false;
-              }
-            }
+          resolve({});
         }
       }
-    }
+    });
+
+    infoPromisesByUserId[userId] = infoPromise;
+    return infoPromise;
   },
 };

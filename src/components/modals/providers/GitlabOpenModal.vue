@@ -1,14 +1,14 @@
 <template>
-  <modal-inner aria-label="Synchronize with GitHub">
+  <modal-inner aria-label="Synchronize with GitLab">
     <div class="modal__content">
       <div class="modal__image">
-        <icon-provider provider-id="github"></icon-provider>
+        <icon-provider provider-id="gitlab"></icon-provider>
       </div>
-      <p>Open a file from your <b>GitHub</b> repository and keep it synced.</p>
-      <form-entry label="Repository URL" error="repoUrl">
-        <input slot="field" class="textfield" type="text" v-model.trim="repoUrl" @keydown.enter="resolve()">
+      <p>Open a file from your <b>GitLab</b> project and keep it synced.</p>
+      <form-entry label="Project URL" error="projectUrl">
+        <input slot="field" class="textfield" type="text" v-model.trim="projectUrl" @keydown.enter="resolve()">
         <div class="form-entry__info">
-          <b>Example:</b> https://github.com/benweet/stackedit
+          <b>Example:</b> {{config.token.serverUrl}}path/to/project
         </div>
       </form-entry>
       <form-entry label="File path" error="path">
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import githubProvider from '../../../services/providers/githubProvider';
+import gitlabProvider from '../../../services/providers/gitlabProvider';
 import modalTemplate from '../common/modalTemplate';
 import utils from '../../../services/utils';
 
@@ -42,23 +42,22 @@ export default modalTemplate({
     path: '',
   }),
   computedLocalSettings: {
-    repoUrl: 'githubRepoUrl',
+    projectUrl: 'gitlabProjectUrl',
   },
   methods: {
     resolve() {
-      const parsedRepo = utils.parseGithubRepoUrl(this.repoUrl);
-      if (!parsedRepo) {
-        this.setError('repoUrl');
+      const projectPath = utils.parseGitlabProjectPath(this.projectUrl);
+      if (!projectPath) {
+        this.setError('projectUrl');
       }
       if (!this.path) {
         this.setError('path');
       }
-      if (parsedRepo && this.path) {
+      if (projectPath && this.path) {
         // Return new location
-        const location = githubProvider.makeLocation(
+        const location = gitlabProvider.makeLocation(
           this.config.token,
-          parsedRepo.owner,
-          parsedRepo.repo,
+          projectPath,
           this.branch || 'master',
           this.path,
         );

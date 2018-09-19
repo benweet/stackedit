@@ -44,6 +44,7 @@ import ImportMenu from './menus/ImportMenu';
 import MoreMenu from './menus/MoreMenu';
 import markdownSample from '../data/markdownSample.md';
 import markdownConversionSvc from '../services/markdownConversionSvc';
+import store from '../store';
 
 const panelNames = {
   menu: 'Menu',
@@ -75,10 +76,10 @@ export default {
   }),
   computed: {
     panel() {
-      if (this.$store.state.light) {
+      if (store.state.light) {
         return null; // No menu in light mode
       }
-      const result = this.$store.getters['data/layoutSettings'].sideBarPanel;
+      const result = store.getters['data/layoutSettings'].sideBarPanel;
       return panelNames[result] ? result : 'menu';
     },
     panelName() {
@@ -173,7 +174,7 @@ export default {
   padding: 10px;
   margin: -10px -10px 10px;
   background-color: $info-bg;
-  font-size: 0.9em;
+  font-size: 0.95em;
 
   p {
     margin: 10px;

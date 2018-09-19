@@ -287,6 +287,10 @@ export default {
       repo: parsedRepo[2],
     };
   },
+  parseGitlabProjectPath(url) {
+    const parsedProject = url && url.match(/^https:\/\/[^/]+\/(.+?)(?:\.git|\/)?$/);
+    return parsedProject && parsedProject[1];
+  },
   createHiddenIframe(url) {
     const iframeElt = document.createElement('iframe');
     iframeElt.style.position = 'absolute';

@@ -1,5 +1,5 @@
 import store from '../../store';
-import githubHelper from './helpers/githubHelper';
+import gitlabHelper from './helpers/gitlabHelper';
 import Provider from './common/Provider';
 import utils from '../utils';
 import userSvc from '../userSvc';
@@ -9,43 +9,44 @@ const getAbsolutePath = ({ id }) =>
   `${store.getters['workspace/currentWorkspace'].path || ''}${id}`;
 
 export default new Provider({
-  id: 'githubWorkspace',
-  name: 'GitHub',
+  id: 'gitlabWorkspace',
+  name: 'GitLab',
   getToken() {
     return store.getters['workspace/syncToken'];
   },
   getWorkspaceParams({
-    owner,
-    repo,
+    serverUrl,
+    projectPath,
     branch,
     path,
   }) {
     return {
       providerId: this.id,
-      owner,
-      repo,
+      serverUrl,
+      projectPath,
       branch,
       path,
     };
   },
   getWorkspaceLocationUrl({
-    owner,
-    repo,
+    serverUrl,
+    projectPath,
     branch,
     path,
   }) {
-    return `https://github.com/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/tree/${encodeURIComponent(branch)}/${utils.encodeUrlPath(path)}`;
+    return `${serverUrl}/${projectPath}/blob/${encodeURIComponent(branch)}/${utils.encodeUrlPath(path)}`;
   },
   getSyncDataUrl({ id }) {
-    const { owner, repo, branch } = store.getters['workspace/currentWorkspace'];
-    return `https://github.com/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/tree/${encodeURIComponent(branch)}/${utils.encodeUrlPath(getAbsolutePath({ id }))}`;
+    const { projectPath, branch } = store.getters['workspace/currentWorkspace'];
+    const { serverUrl } = this.getToken();
+    return `${serverUrl}/${projectPath}/blob/${encodeURIComponent(branch)}/${utils.encodeUrlPath(getAbsolutePath({ id }))}`;
   },
   getSyncDataDescription({ id }) {
     return getAbsolutePath({ id });
   },
   async initWorkspace() {
-    const { owner, repo, branch } = utils.queryParams;
-    const workspaceParams = this.getWorkspaceParams({ owner, repo, branch });
+    const { projectPath, branch } = utils.queryParams;
+    const workspaceParams = this.getWorkspaceParams({ projectPath, branch });
     const path = (utils.queryParams.path || '')
       .replace(/^\/*/, '') // Remove leading `/`
       .replace(/\/*$/, '/'); // Add trailing `/`
@@ -59,16 +60,18 @@ export default new Provider({
     let token;
     if (workspace) {
       // Token sub is in the workspace
-      token = store.getters['data/githubTokensBySub'][workspace.sub];
+      token = store.getters['data/gitlabTokensBySub'][workspace.sub];
     }
     if (!token) {
-      await store.dispatch('modal/open', { type: 'githubAccount' });
-      token = await githubHelper.addAccount(store.getters['data/localSettings'].githubRepoFullAccess);
+      const { serverUrl, applicationId } = await store.dispatch('modal/open', { type: 'gitlabAccount' });
+      token = await gitlabHelper.addAccount(serverUrl, applicationId);
     }
 
     if (!workspace) {
       const pathEntries = (path || '').split('/');
-      const name = pathEntries[pathEntries.length - 2] || repo; // path ends with `/`
+      const projectPathEntries = (projectPath || '').split('/');
+      const name = pathEntries[pathEntries.length - 2] // path ends with `/`
+        || projectPathEntries[projectPathEntries.length - 1];
       store.dispatch('workspace/patchWorkspacesById', {
         [workspaceId]: {
           ...workspaceParams,
@@ -82,13 +85,16 @@ export default new Provider({
     return store.getters['workspace/workspacesById'][workspaceId];
   },
   getChanges() {
-    return githubHelper.getTree({
+    return gitlabHelper.getTree({
       ...store.getters['workspace/currentWorkspace'],
       token: this.getToken(),
     });
   },
   prepareChanges(tree) {
-    return gitWorkspaceSvc.makeChanges(tree);
+    return gitWorkspaceSvc.makeChanges(tree.map(entry => ({
+      ...entry,
+      sha: entry.id,
+    })));
   },
   async saveWorkspaceItem({ item }) {
     const syncData = {
@@ -104,7 +110,7 @@ export default new Provider({
 
     // locations are stored as paths, so we upload an empty file
     const syncToken = store.getters['workspace/syncToken'];
-    await githubHelper.uploadFile({
+    await gitlabHelper.uploadFile({
       ...store.getters['workspace/currentWorkspace'],
       token: syncToken,
       path: getAbsolutePath(syncData),
@@ -118,7 +124,7 @@ export default new Provider({
   async removeWorkspaceItem({ syncData }) {
     if (gitWorkspaceSvc.shaByPath[syncData.id]) {
       const syncToken = store.getters['workspace/syncToken'];
-      await githubHelper.removeFile({
+      await gitlabHelper.removeFile({
         ...store.getters['workspace/currentWorkspace'],
         token: syncToken,
         path: getAbsolutePath(syncData),
@@ -132,7 +138,7 @@ export default new Provider({
     contentSyncData,
     fileSyncData,
   }) {
-    const { sha, data } = await githubHelper.downloadFile({
+    const { sha, data } = await gitlabHelper.downloadFile({
       ...store.getters['workspace/currentWorkspace'],
       token,
       path: getAbsolutePath(fileSyncData),
@@ -153,7 +159,7 @@ export default new Provider({
       return {};
     }
 
-    const { sha, data } = await githubHelper.downloadFile({
+    const { sha, data } = await gitlabHelper.downloadFile({
       ...store.getters['workspace/currentWorkspace'],
       token,
       path: getAbsolutePath(syncData),
@@ -172,7 +178,7 @@ export default new Provider({
   async uploadWorkspaceContent({ token, content, file }) {
     const path = store.getters.gitPathsByItemId[file.id];
     const absolutePath = `${store.getters['workspace/currentWorkspace'].path || ''}${path}`;
-    const res = await githubHelper.uploadFile({
+    const res = await gitlabHelper.uploadFile({
       ...store.getters['workspace/currentWorkspace'],
       token,
       path: absolutePath,
@@ -202,7 +208,7 @@ export default new Provider({
       type: item.type,
       hash: item.hash,
     };
-    const res = await githubHelper.uploadFile({
+    const res = await gitlabHelper.uploadFile({
       ...store.getters['workspace/currentWorkspace'],
       token,
       path: getAbsolutePath(syncData),
@@ -218,11 +224,10 @@ export default new Provider({
     };
   },
   async listFileRevisions({ token, fileSyncData }) {
-    const { owner, repo, branch } = store.getters['workspace/currentWorkspace'];
-    const entries = await githubHelper.getCommits({
+    const { projectId, branch } = store.getters['workspace/currentWorkspace'];
+    const entries = await gitlabHelper.getCommits({
       token,
-      owner,
-      repo,
+      projectId,
       sha: branch,
       path: getAbsolutePath(fileSyncData),
     });
@@ -239,7 +244,7 @@ export default new Provider({
       } else if (committer && committer.login) {
         user = committer;
       }
-      const sub = `${githubHelper.subPrefix}:${user.id}`;
+      const sub = `${gitlabHelper.subPrefix}:${user.id}`;
       userSvc.addInfo({ id: sub, name: user.login, imageUrl: user.avatar_url });
       const date = (commit.author && commit.author.date)
         || (commit.committer && commit.committer.date);
@@ -260,7 +265,7 @@ export default new Provider({
     fileSyncData,
     revisionId,
   }) {
-    const { data } = await githubHelper.downloadFile({
+    const { data } = await gitlabHelper.downloadFile({
       ...store.getters['workspace/currentWorkspace'],
       token,
       branch: revisionId,

@@ -25,6 +25,7 @@
 import { mapActions } from 'vuex';
 import exportSvc from '../../services/exportSvc';
 import modalTemplate from './common/modalTemplate';
+import store from '../../store';
 
 export default modalTemplate({
   data: () => ({
@@ -38,7 +39,7 @@ export default modalTemplate({
     this.$watch('selectedTemplate', (selectedTemplate) => {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(async () => {
-        const currentFile = this.$store.getters['file/current'];
+        const currentFile = store.getters['file/current'];
         const html = await exportSvc.applyTemplate(
           currentFile.id,
           this.allTemplatesById[selectedTemplate],
@@ -55,7 +56,7 @@ export default modalTemplate({
     ]),
     resolve() {
       const { config } = this;
-      const currentFile = this.$store.getters['file/current'];
+      const currentFile = store.getters['file/current'];
       config.resolve();
       exportSvc.exportToDisk(currentFile.id, 'html', this.allTemplatesById[this.selectedTemplate]);
     },

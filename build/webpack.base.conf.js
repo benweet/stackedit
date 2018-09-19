@@ -53,11 +53,11 @@ module.exports = {
         loader: 'babel-loader',
         include: [resolve('src'), resolve('test'), resolve('node_modules/mermaid/src')],
         exclude: [
-          resolve('node_modules/mermaid/src/diagrams/classDiagram/parser'),
+          resolve('node_modules/mermaid/src/diagrams/class/parser'),
           resolve('node_modules/mermaid/src/diagrams/flowchart/parser'),
           resolve('node_modules/mermaid/src/diagrams/gantt/parser'),
-          resolve('node_modules/mermaid/src/diagrams/gitGraph/parser'),
-          resolve('node_modules/mermaid/src/diagrams/sequenceDiagram/parser'),
+          resolve('node_modules/mermaid/src/diagrams/git/parser'),
+          resolve('node_modules/mermaid/src/diagrams/sequence/parser'),
         ],
       },
       {

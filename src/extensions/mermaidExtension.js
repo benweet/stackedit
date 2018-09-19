@@ -1,10 +1,9 @@
 import mermaidUtils from 'mermaid/src/utils';
 import flowRenderer from 'mermaid/src/diagrams/flowchart/flowRenderer';
-import seq from 'mermaid/src/diagrams/sequenceDiagram/sequenceRenderer';
-import info from 'mermaid/src/diagrams/example/exampleRenderer';
-import gantt from 'mermaid/src/diagrams/gantt/ganttRenderer';
-import classRenderer from 'mermaid/src/diagrams/classDiagram/classRenderer';
-import gitGraphRenderer from 'mermaid/src/diagrams/gitGraph/gitGraphRenderer';
+import sequenceRenderer from 'mermaid/src/diagrams/sequence/sequenceRenderer';
+import ganttRenderer from 'mermaid/src/diagrams/gantt/ganttRenderer';
+import classRenderer from 'mermaid/src/diagrams/class/classRenderer';
+import gitGraphRenderer from 'mermaid/src/diagrams/git/gitGraphRenderer';
 import extensionSvc from '../services/extensionSvc';
 import utils from '../services/utils';
 
@@ -14,9 +13,9 @@ const config = {
   arrowMarkerAbsolute: false,
   flowchart: {
     htmlLabels: true,
-    useMaxWidth: true,
+    curve: 'linear',
   },
-  sequenceDiagram: {
+  sequence: {
     diagramMarginX: 50,
     diagramMarginY: 10,
     actorMargin: 50,
@@ -39,23 +38,11 @@ const config = {
     gridLineStartPadding: 35,
     fontSize: 11,
     fontFamily: '"Open-Sans", "sans-serif"',
-    numberSectionStyles: 3,
-    axisFormatter: [
-      // Within a day
-      ['%I:%M', d => d.getHours()],
-      // Monday a week
-      ['w. %U', d => d.getDay() === 1],
-      // Day within a week (not monday)
-      ['%a %d', d => d.getDay() && d.getDate() !== 1],
-      // within a month
-      ['%b %d', d => d.getDate() !== 1],
-      // Month
-      ['%m-%y', d => d.getMonth()],
-    ],
+    numberSectionStyles: 4,
+    axisFormat: '%Y-%m-%d',
   },
-  classDiagram: {},
-  gitGraph: {},
-  info: {},
+  class: {},
+  git: {},
 };
 
 const containerElt = document.createElement('div');
@@ -70,41 +57,33 @@ const render = (elt) => {
   try {
     const graphType = mermaidUtils.detectType(txt);
     switch (graphType) {
-      case 'gitGraph':
+      case 'git':
         config.flowchart.arrowMarkerAbsolute = config.arrowMarkerAbsolute;
-        gitGraphRenderer.setConf(config.gitGraph);
+        gitGraphRenderer.setConf(config.git);
         gitGraphRenderer.draw(txt, svgId, false);
         break;
-      case 'graph':
+      case 'flowchart':
         config.flowchart.arrowMarkerAbsolute = config.arrowMarkerAbsolute;
         flowRenderer.setConf(config.flowchart);
         flowRenderer.draw(txt, svgId, false);
         break;
-      case 'dotGraph':
-        config.flowchart.arrowMarkerAbsolute = config.arrowMarkerAbsolute;
-        flowRenderer.setConf(config.flowchart);
-        flowRenderer.draw(txt, svgId, true);
-        break;
-      case 'sequenceDiagram':
-        config.sequenceDiagram.arrowMarkerAbsolute = config.arrowMarkerAbsolute;
-        seq.setConf(config.sequenceDiagram);
-        seq.draw(txt, svgId);
+      case 'sequence':
+        config.sequence.arrowMarkerAbsolute = config.arrowMarkerAbsolute;
+        sequenceRenderer.setConf(config.sequence);
+        sequenceRenderer.draw(txt, svgId);
         break;
       case 'gantt':
         config.gantt.arrowMarkerAbsolute = config.arrowMarkerAbsolute;
-        gantt.setConf(config.gantt);
-        gantt.draw(txt, svgId);
+        ganttRenderer.setConf(config.gantt);
+        ganttRenderer.draw(txt, svgId);
         break;
-      case 'classDiagram':
-        config.classDiagram.arrowMarkerAbsolute = config.arrowMarkerAbsolute;
-        classRenderer.setConf(config.classDiagram);
+      case 'class':
+        config.class.arrowMarkerAbsolute = config.arrowMarkerAbsolute;
+        classRenderer.setConf(config.class);
         classRenderer.draw(txt, svgId);
         break;
-      case 'info':
       default:
-        config.info.arrowMarkerAbsolute = config.arrowMarkerAbsolute;
-        info.draw(txt, svgId, 'Unknown');
-        break;
+        throw new Error('Invalid graph type.');
     }
     elt.parentNode.replaceChild(containerElt.firstChild, elt);
   } catch (e) {

@@ -1,5 +1,5 @@
 <template>
-  <div class="app" :class="classes">
+  <div class="app" :class="classes" @keydown.esc="close">
     <splash-screen v-if="!ready"></splash-screen>
     <layout v-else></layout>
     <modal></modal>
@@ -44,6 +44,11 @@ export default {
     classes() {
       const result = themeClasses[store.getters['data/computedSettings'].colorTheme];
       return Array.isArray(result) ? result : themeClasses.light;
+    },
+  },
+  methods: {
+    close() {
+      tempFileSvc.close();
     },
   },
   async created() {

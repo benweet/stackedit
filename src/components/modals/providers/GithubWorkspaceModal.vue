@@ -8,7 +8,7 @@
       <form-entry label="Repository URL" error="repoUrl">
         <input slot="field" class="textfield" type="text" v-model.trim="repoUrl" @keydown.enter="resolve()">
         <div class="form-entry__info">
-          <b>Example:</b> https://github.com/benweet/stackedit
+          <b>Example:</b> https://github.com/owner/my-repo
         </div>
       </form-entry>
       <form-entry label="Folder path" info="optional">

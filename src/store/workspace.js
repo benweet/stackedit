@@ -103,18 +103,20 @@ export default {
     patchWorkspacesById: ({ commit, rootGetters }, workspaces) => {
       const sanitizedWorkspaces = {};
       Object
-        .values({
+        .entries({
           ...rootGetters['data/workspaces'],
           ...workspaces,
         })
-        .forEach((workspace) => {
-          sanitizedWorkspaces[workspace.id] = {
+        .forEach(([id, workspace]) => {
+          sanitizedWorkspaces[id] = {
             ...workspace,
+            id,
             // Do not store urls
             url: undefined,
             locationUrl: undefined,
           };
         });
+
       commit(
         'data/setItem',
         { id: 'workspaces', data: sanitizedWorkspaces },

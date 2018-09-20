@@ -10,23 +10,26 @@ const {
   contentText,
   contentProperties,
 } = utils.queryParams;
+const isLight = origin && window.parent;
 
 export default {
   setReady() {
-    if (origin && window.parent) {
+    if (isLight) {
       // Wait for the editor to init
       setTimeout(() => window.parent.postMessage({ type: 'ready' }, origin), 1);
     }
   },
   closed: false,
   close() {
-    if (!this.closed && origin && window.parent) {
-      window.parent.postMessage({ type: 'close' }, origin);
+    if (isLight) {
+      if (!this.closed) {
+        window.parent.postMessage({ type: 'close' }, origin);
+      }
+      this.closed = true;
     }
-    this.closed = true;
   },
   async init() {
-    if (!origin || !window.parent) {
+    if (!isLight) {
       return;
     }
     store.commit('setLight', true);

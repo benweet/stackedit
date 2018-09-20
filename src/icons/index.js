@@ -49,7 +49,7 @@ import History from './History';
 import Database from './Database';
 import Magnify from './Magnify';
 import FormatListChecks from './FormatListChecks';
-import CloseCircle from './CloseCircle';
+import CheckCircle from './CheckCircle';
 import ContentCopy from './ContentCopy';
 
 Vue.component('iconProvider', Provider);
@@ -102,5 +102,5 @@ Vue.component('iconHistory', History);
 Vue.component('iconDatabase', Database);
 Vue.component('iconMagnify', Magnify);
 Vue.component('iconFormatListChecks', FormatListChecks);
-Vue.component('iconCloseCircle', CloseCircle);
+Vue.component('iconCheckCircle', CheckCircle);
 Vue.component('iconContentCopy', ContentCopy);

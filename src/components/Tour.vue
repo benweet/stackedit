@@ -1,5 +1,5 @@
 <template>
-  <div class="tour" @keydown.esc="skip">
+  <div class="tour" @keydown.esc.stop="skip">
     <div class="tour-step" :class="'tour-step--' + step" :style="stepStyle">
       <div class="tour-step__inner" v-if="step === 'welcome'">
         <h2>Welcome back!</h2>
@@ -139,7 +139,7 @@ export default {
   position: absolute;
 }
 
-$tour-step-background: mix(#f3f3f3, $selection-highlighting-color, 75%);
+$tour-step-background: transparentize(mix(#f3f3f3, $selection-highlighting-color, 75%), 0.025);
 $tour-step-width: 240px;
 
 .tour-step__inner {

@@ -136,6 +136,7 @@ const store = new Vuex.Store({
             id: undefined,
             type: undefined,
             fileId: undefined,
+            hash: undefined,
           }), true);
           const extension = item.type === 'syncLocation' ? 'sync' : 'publish';
           result[id] = `${pathsByItemId[item.fileId]}.${encodedItem}.${extension}`;

@@ -219,7 +219,7 @@ export default {
   z-index: 1;
   width: 100%;
   color: darken($error-color, 10%);
-  background-color: transparentize(lighten($error-color, 33%), 0.1);
+  background-color: transparentize(lighten($error-color, 33%), 0.075);
   font-size: 0.9em;
   line-height: 1.33;
   text-align: center;

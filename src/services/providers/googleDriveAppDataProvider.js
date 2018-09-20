@@ -167,8 +167,8 @@ export default new Provider({
       },
     };
   },
-  async listFileRevisions({ token, contentSyncData }) {
-    const revisions = await googleHelper.getAppDataFileRevisions(token, contentSyncData.id);
+  async listFileRevisions({ token, contentSyncDataId }) {
+    const revisions = await googleHelper.getAppDataFileRevisions(token, contentSyncDataId);
     return revisions.map(revision => ({
       id: revision.id,
       sub: `${googleHelper.subPrefix}:${revision.lastModifyingUser.permissionId}`,
@@ -179,9 +179,9 @@ export default new Provider({
     // Revisions are already loaded
     return false;
   },
-  async getFileRevisionContent({ token, contentSyncData, revisionId }) {
+  async getFileRevisionContent({ token, contentSyncDataId, revisionId }) {
     const content = await googleHelper
-      .downloadAppDataFileRevision(token, contentSyncData.id, revisionId);
+      .downloadAppDataFileRevision(token, contentSyncDataId, revisionId);
     return JSON.parse(content);
   },
 });

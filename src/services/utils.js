@@ -94,10 +94,14 @@ export default {
   },
   sanitizeName(name) {
     return `${name || ''}`
-      // Replace `/`, control characters and other kind of spaces with a space
-      .replace(/[/\x00-\x1F\x7f-\xa0\s]+/g, ' ').trim() // eslint-disable-line no-control-regex
       // Keep only 250 characters
       .slice(0, 250) || constants.defaultName;
+  },
+  sanitizeFilename(name) {
+    return this.sanitizeName(`${name || ''}`
+      // Replace `/`, control characters and other kind of spaces with a space
+      .replace(/[/\x00-\x1F\x7f-\xa0\s]+/g, ' ') // eslint-disable-line no-control-regex
+      .trim()) || constants.defaultName;
   },
   deepCopy,
   serializeObject(obj) {
@@ -128,6 +132,7 @@ export default {
     return array.cl_map(value => alphabet[value % radix]).join('');
   },
   hash(str) {
+    // https://stackoverflow.com/a/7616484/1333165
     let hash = 0;
     if (!str) return hash;
     for (let i = 0; i < str.length; i += 1) {

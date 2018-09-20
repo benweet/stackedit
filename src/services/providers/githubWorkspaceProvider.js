@@ -46,12 +46,19 @@ export default new Provider({
   async initWorkspace() {
     const { owner, repo, branch } = utils.queryParams;
     const workspaceParams = this.getWorkspaceParams({ owner, repo, branch });
+    if (!branch) {
+      workspaceParams.branch = 'master';
+    }
+
+    // Extract path param
     const path = (utils.queryParams.path || '')
+      .trim()
       .replace(/^\/*/, '') // Remove leading `/`
       .replace(/\/*$/, '/'); // Add trailing `/`
     if (path !== '/') {
       workspaceParams.path = path;
     }
+
     const workspaceId = utils.makeWorkspaceId(workspaceParams);
     const workspace = store.getters['workspace/workspacesById'][workspaceId];
 
@@ -217,14 +224,14 @@ export default new Provider({
       },
     };
   },
-  async listFileRevisions({ token, fileSyncData }) {
+  async listFileRevisions({ token, fileSyncDataId }) {
     const { owner, repo, branch } = store.getters['workspace/currentWorkspace'];
     const entries = await githubHelper.getCommits({
       token,
       owner,
       repo,
       sha: branch,
-      path: getAbsolutePath(fileSyncData),
+      path: getAbsolutePath({ id: fileSyncDataId }),
     });
 
     return entries.map(({
@@ -242,11 +249,12 @@ export default new Provider({
       const sub = `${githubHelper.subPrefix}:${user.id}`;
       userSvc.addInfo({ id: sub, name: user.login, imageUrl: user.avatar_url });
       const date = (commit.author && commit.author.date)
-        || (commit.committer && commit.committer.date);
+        || (commit.committer && commit.committer.date)
+        || 1;
       return {
         id: sha,
         sub,
-        created: date ? new Date(date).getTime() : 1,
+        created: new Date(date).getTime(),
       };
     });
   },
@@ -257,14 +265,14 @@ export default new Provider({
   async getFileRevisionContent({
     token,
     contentId,
-    fileSyncData,
+    fileSyncDataId,
     revisionId,
   }) {
     const { data } = await githubHelper.downloadFile({
       ...store.getters['workspace/currentWorkspace'],
       token,
       branch: revisionId,
-      path: getAbsolutePath(fileSyncData),
+      path: getAbsolutePath({ id: fileSyncDataId }),
     });
     return Provider.parseContent(data, contentId);
   },

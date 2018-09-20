@@ -44,15 +44,18 @@ export default class Provider {
    * Parse content serialized with serializeContent()
    */
   static parseContent(serializedContent, id) {
-    const result = utils.deepCopy(store.state.content.itemsById[id]) || emptyContent(id);
-    result.text = utils.sanitizeText(serializedContent);
-    result.history = [];
+    let text = serializedContent;
     const extractedData = dataExtractor.exec(serializedContent);
-    if (extractedData) {
+    let result;
+    if (!extractedData) {
+      // In case stackedit's data has been manually removed, try to restore them
+      result = utils.deepCopy(store.state.content.itemsById[id]) || emptyContent(id);
+    } else {
+      result = emptyContent(id);
       try {
         const serializedData = extractedData[1].replace(/\s/g, '');
         const parsedData = JSON.parse(utils.decodeBase64(serializedData));
-        result.text = utils.sanitizeText(serializedContent.slice(0, extractedData.index));
+        text = text.slice(0, extractedData.index);
         if (parsedData.properties) {
           result.properties = utils.sanitizeText(parsedData.properties);
         }
@@ -62,10 +65,14 @@ export default class Provider {
         if (parsedData.comments) {
           result.comments = parsedData.comments;
         }
-        result.history = parsedData.history || [];
+        result.history = parsedData.history;
       } catch (e) {
         // Ignore
       }
+    }
+    result.text = utils.sanitizeText(text);
+    if (!result.history) {
+      result.history = [];
     }
     return utils.addItemHash(result);
   }

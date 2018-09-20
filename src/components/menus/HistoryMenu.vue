@@ -64,7 +64,7 @@ let cachedHistoryContextHash;
 let revisionsPromise;
 let revisionContentPromises;
 const pageSize = 30;
-const spacerThreshold = 60 * 60 * 1000; // 1h
+const spacerThreshold = 6 * 60 * 60 * 1000; // 6h
 
 export default {
   components: {
@@ -129,8 +129,8 @@ export default {
         if (fileSyncData && contentSyncData) {
           return {
             ...historyContext,
-            fileSyncData,
-            contentSyncData,
+            fileSyncDataId: fileSyncData.id,
+            contentSyncDataId: contentSyncData.id,
           };
         }
       }

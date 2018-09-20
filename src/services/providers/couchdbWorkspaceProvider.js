@@ -194,8 +194,8 @@ export default new Provider({
       },
     };
   },
-  async listFileRevisions({ token, contentSyncData }) {
-    const body = await couchdbHelper.retrieveDocumentWithRevisions(token, contentSyncData.id);
+  async listFileRevisions({ token, contentSyncDataId }) {
+    const body = await couchdbHelper.retrieveDocumentWithRevisions(token, contentSyncDataId);
     const revisions = [];
     body._revs_info.forEach((revInfo, idx) => { // eslint-disable-line no-underscore-dangle
       if (revInfo.status === 'available') {
@@ -209,19 +209,19 @@ export default new Provider({
     });
     return revisions;
   },
-  async loadFileRevision({ token, contentSyncData, revision }) {
+  async loadFileRevision({ token, contentSyncDataId, revision }) {
     if (revision.loaded) {
       return false;
     }
-    const body = await couchdbHelper.retrieveDocument(token, contentSyncData.id, revision.id);
+    const body = await couchdbHelper.retrieveDocument(token, contentSyncDataId, revision.id);
     revision.sub = body.sub;
     revision.created = body.time;
     revision.loaded = true;
     return true;
   },
-  async getFileRevisionContent({ token, contentSyncData, revisionId }) {
+  async getFileRevisionContent({ token, contentSyncDataId, revisionId }) {
     const body = await couchdbHelper
-      .retrieveDocumentWithAttachments(token, contentSyncData.id, revisionId);
+      .retrieveDocumentWithAttachments(token, contentSyncDataId, revisionId);
     return Provider.parseContent(body.attachments.data, body.item.id);
   },
 });

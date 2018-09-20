@@ -23,7 +23,7 @@ export default {
     if (!loginToken) {
       return null;
     }
-    const loginType = store.getters['workspace/loginToken'];
+    const loginType = store.getters['workspace/loginType'];
     const prefix = subPrefixesByType[loginType];
     return prefix ? `${prefix}:${loginToken.sub}` : loginToken.sub;
   },
@@ -44,7 +44,7 @@ export default {
     const [type, sub] = parseUserId(userId);
 
     // Try to find a token with this sub to resolve name as soon as possible
-    const token = store.getters[`data/${type}TokensBySub`][sub];
+    const token = store.getters['data/tokensByType'][type][sub];
     if (token) {
       store.commit('userInfo/addItem', {
         id: userId,

@@ -508,8 +508,8 @@ export default new Provider({
       },
     };
   },
-  async listFileRevisions({ token, fileSyncData }) {
-    const revisions = await googleHelper.getFileRevisions(token, fileSyncData.id);
+  async listFileRevisions({ token, fileSyncDataId }) {
+    const revisions = await googleHelper.getFileRevisions(token, fileSyncDataId);
     return revisions.map(revision => ({
       id: revision.id,
       sub: `${googleHelper.subPrefix}:${revision.lastModifyingUser.permissionId}`,
@@ -523,10 +523,10 @@ export default new Provider({
   async getFileRevisionContent({
     token,
     contentId,
-    fileSyncData,
+    fileSyncDataId,
     revisionId,
   }) {
-    const content = await googleHelper.downloadFileRevision(token, fileSyncData.id, revisionId);
+    const content = await googleHelper.downloadFileRevision(token, fileSyncDataId, revisionId);
     return Provider.parseContent(content, contentId);
   },
 });

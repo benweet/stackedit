@@ -88,8 +88,8 @@ export default {
     store.dispatch('data/addGitlabToken', token);
     return token;
   },
-  addAccount(serverUrl, applicationId) {
-    return this.startOauth2(serverUrl, applicationId);
+  addAccount(serverUrl, applicationId, sub = null) {
+    return this.startOauth2(serverUrl, applicationId, sub);
   },
 
   /**
@@ -133,7 +133,7 @@ export default {
     path,
   }) {
     return request(token, {
-      url: `projects/${encodeURIComponent(projectId)}/repository/tree`,
+      url: `projects/${encodeURIComponent(projectId)}/repository/commits`,
       params: {
         ref_name: branch,
         path,

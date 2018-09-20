@@ -20,7 +20,7 @@ export default {
     const id = utils.uid();
     const item = {
       id,
-      name: utils.sanitizeName(name),
+      name: utils.sanitizeFilename(name),
       parentId: parentId || null,
     };
     const content = {
@@ -72,7 +72,7 @@ export default {
    */
   async storeItem(item) {
     const id = item.id || utils.uid();
-    const sanitizedName = utils.sanitizeName(item.name);
+    const sanitizedName = utils.sanitizeFilename(item.name);
 
     if (item.type === 'folder' && forbiddenFolderNameMatcher.exec(sanitizedName)) {
       await store.dispatch('modal/open', {
@@ -125,7 +125,7 @@ export default {
       item.parentId = patch.parentId || null;
     }
     if (patch.name) {
-      const sanitizedName = utils.sanitizeName(patch.name);
+      const sanitizedName = utils.sanitizeFilename(patch.name);
       if (item.type !== 'folder' || !forbiddenFolderNameMatcher.exec(sanitizedName)) {
         item.name = sanitizedName;
       }

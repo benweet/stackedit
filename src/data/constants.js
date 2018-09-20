@@ -1,7 +1,7 @@
 const origin = `${window.location.protocol}//${window.location.host}`;
 
 export default {
-  cleanTrashAfter: 0 * 24 * 60 * 60 * 1000, // 7 days
+  cleanTrashAfter: 7 * 24 * 60 * 60 * 1000, // 7 days
   origin,
   oauth2RedirectUri: `${origin}/oauth2/callback`,
   types: [

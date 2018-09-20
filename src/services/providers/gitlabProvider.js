@@ -135,24 +135,17 @@ export default new Provider({
       token,
     });
 
-    return entries.map(({
-      author,
-      committer,
-      commit,
-      sha,
-    }) => {
-      let user;
-      if (author && author.login) {
-        user = author;
-      } else if (committer && committer.login) {
-        user = committer;
-      }
-      const sub = `${gitlabHelper.subPrefix}:${user.id}`;
-      userSvc.addInfo({ id: sub, name: user.login, imageUrl: user.avatar_url });
-      const date = (commit.author && commit.author.date)
-        || (commit.committer && commit.committer.date);
+    return entries.map((entry) => {
+      const email = entry.author_email || entry.committer_email;
+      const sub = `${gitlabHelper.subPrefix}:${token.serverUrl}/${email}`;
+      userSvc.addInfo({
+        id: sub,
+        name: entry.author_name || entry.committer_name,
+        imageUrl: '',
+      });
+      const date = entry.authored_date || entry.committed_date || 1;
       return {
-        id: sha,
+        id: entry.id,
         sub,
         created: date ? new Date(date).getTime() : 1,
       };

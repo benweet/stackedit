@@ -85,12 +85,12 @@ samp {
 blockquote {
   color: rgba(0, 0, 0, 0.5);
   padding-left: 1.5em;
-  border-left: 5px solid rgba(0, 0, 0, 0.075);
+  border-left: 5px solid rgba(0, 0, 0, 0.1);
 
   .app--dark .layout__panel--editor &,
   .app--dark .layout__panel--preview & {
     color: rgba(255, 255, 255, 0.4);
-    border-left-color: rgba(255, 255, 255, 0.075);
+    border-left-color: rgba(255, 255, 255, 0.1);
   }
 }
 

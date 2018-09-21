@@ -33,6 +33,22 @@ if (localStorage.updated) {
   setTimeout(() => localStorage.removeItem('updated'), 2000);
 }
 
+if (!localStorage.installPrompted) {
+  window.addEventListener('beforeinstallprompt', async (promptEvent) => {
+    // Prevent Chrome 67 and earlier from automatically showing the prompt
+    promptEvent.preventDefault();
+
+    try {
+      await store.dispatch('notification/confirm', 'Add StackEdit to your home screen?');
+      promptEvent.prompt();
+      await promptEvent.userChoice;
+    } catch (err) {
+      // Cancel
+    }
+    localStorage.installPrompted = true;
+  });
+}
+
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */

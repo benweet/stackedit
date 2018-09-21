@@ -9,6 +9,12 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 var OfflinePlugin = require('offline-plugin');
+var WebpackPwaManifest = require('webpack-pwa-manifest')
+var FaviconsWebpackPlugin = require('favicons-webpack-plugin')
+
+function resolve (dir) {
+  return path.join(__dirname, '..', dir)
+}
 
 var env = config.build.env
 
@@ -94,6 +100,22 @@ var webpackConfig = merge(baseWebpackConfig, {
         ignore: ['.*']
       }
     ]),
+    new FaviconsWebpackPlugin({
+      logo: resolve('src/assets/favicon.png'),
+      title: 'StackEdit',
+    }),
+    new WebpackPwaManifest({
+      name: 'StackEdit',
+      description: 'Full-featured, open-source Markdown editor',
+      display: 'standalone',
+      start_url: 'app',
+      background_color: '#ffffff',
+      crossorigin: 'use-credentials',
+      icons: [{
+        src: resolve('src/assets/favicon.png'),
+        sizes: [96, 128, 192, 256, 384, 512]
+      }]
+    }),
     new OfflinePlugin({
       ServiceWorker: {
         events: true
@@ -101,7 +123,7 @@ var webpackConfig = merge(baseWebpackConfig, {
       AppCache: true,
       excludes: ['**/.*', '**/*.map', '**/index.html', '**/static/oauth2/callback.html', '**/icons-*/*.png', '**/static/fonts/KaTeX_*'],
       externals: ['/', '/app', '/oauth2/callback']
-    })
+    }),
   ]
 })
 

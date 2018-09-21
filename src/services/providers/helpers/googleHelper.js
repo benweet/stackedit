@@ -7,6 +7,7 @@ const clientId = GOOGLE_CLIENT_ID;
 const apiKey = 'AIzaSyC_M4RA9pY6XmM9pmFxlT59UPMO7aHr9kk';
 const appsDomain = null;
 const tokenExpirationMargin = 5 * 60 * 1000; // 5 min (Google tokens expire after 1h)
+let googlePlusNotification = true;
 
 const driveAppDataScopes = ['https://www.googleapis.com/auth/drive.appdata'];
 const getDriveScopes = token => [token.driveFullAccess
@@ -160,7 +161,12 @@ export default {
 
     // Call the user info endpoint
     const user = await getUser('me', token);
-    token.name = user.displayName;
+    if (user.displayName) {
+      token.name = user.displayName;
+    } else if (googlePlusNotification) {
+      store.dispatch('notification/info', 'Please activate Google Plus to change your account name and photo.');
+      googlePlusNotification = false;
+    }
     userSvc.addInfo({
       id: `${subPrefix}:${user.id}`,
       name: user.displayName,
@@ -449,10 +455,10 @@ export default {
         },
       });
       revisions.forEach((revision) => {
-        store.commit('userInfo/addItem', {
+        userSvc.addInfo({
           id: `${subPrefix}:${revision.lastModifyingUser.permissionId}`,
           name: revision.lastModifyingUser.displayName,
-          imageUrl: revision.lastModifyingUser.photoLink,
+          imageUrl: revision.lastModifyingUser.photoLink || '',
         });
         allRevisions.push(revision);
       });

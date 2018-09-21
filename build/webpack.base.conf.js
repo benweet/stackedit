@@ -5,7 +5,6 @@ var config = require('../config')
 var VueLoaderPlugin = require('vue-loader/lib/plugin')
 var vueLoaderConfig = require('./vue-loader.conf')
 var StylelintPlugin = require('stylelint-webpack-plugin')
-var FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -48,16 +47,33 @@ module.exports = {
         loader: 'vue-loader',
         options: vueLoaderConfig
       },
+      // We can't pass graphlibrary to babel
+      {
+        test: /\.js$/,
+        loader: 'string-replace-loader',
+        include: [
+          resolve('node_modules/graphlibrary')
+        ],
+        options: {
+          search: '^\\s*(?:let|const) ',
+          replace: 'var ',
+          flags: 'gm'
+        }
+      },
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test'), resolve('node_modules/mermaid/src')],
+        include: [
+          resolve('src'),
+          resolve('test'),
+          resolve('node_modules/mermaid')
+        ],
         exclude: [
           resolve('node_modules/mermaid/src/diagrams/class/parser'),
           resolve('node_modules/mermaid/src/diagrams/flowchart/parser'),
           resolve('node_modules/mermaid/src/diagrams/gantt/parser'),
           resolve('node_modules/mermaid/src/diagrams/git/parser'),
-          resolve('node_modules/mermaid/src/diagrams/sequence/parser'),
+          resolve('node_modules/mermaid/src/diagrams/sequence/parser')
         ],
       },
       {
@@ -85,10 +101,6 @@ module.exports = {
     new VueLoaderPlugin(),
     new StylelintPlugin({
       files: ['**/*.vue', '**/*.scss']
-    }),
-    new FaviconsWebpackPlugin({
-      logo: resolve('src/assets/favicon.png'),
-      title: 'StackEdit',
     }),
     new webpack.DefinePlugin({
       VERSION: JSON.stringify(require('../package.json').version)

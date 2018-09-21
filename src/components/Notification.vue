@@ -2,12 +2,18 @@
   <div class="notification">
     <div class="notification__item flex flex--row flex--align-center" v-for="(item, idx) in items" :key="idx">
       <div class="notification__icon flex flex--column flex--center">
-        <icon-information v-if="item.type === 'info'"></icon-information>
-        <icon-alert v-else-if="item.type === 'error'"></icon-alert>
+        <icon-alert v-if="item.type === 'error'"></icon-alert>
+        <icon-information v-else></icon-information>
       </div>
       <div class="notification__content">
         {{item.content}}
       </div>
+      <button class="notification__button button" v-if="item.type === 'confirm'" @click="item.reject">
+        No
+      </button>
+      <button class="notification__button button" v-if="item.type === 'confirm'" @click="item.resolve">
+        Yes
+      </button>
     </div>
   </div>
 </template>
@@ -48,5 +54,18 @@ export default {
   width: 20px;
   margin-right: 12px;
   flex: none;
+}
+
+.notification__button {
+  color: $navbar-color;
+  padding: 8px;
+  flex: none;
+
+  &:active,
+  &:focus,
+  &:hover {
+    color: $navbar-hover-color;
+    background-color: $navbar-hover-background;
+  }
 }
 </style>

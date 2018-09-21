@@ -110,6 +110,7 @@
     "sass-loader": "^7.0.1",
     "semver": "^5.5.0",
     "shelljs": "^0.8.1",
+    "string-replace-loader": "^2.1.1",
     "stylelint": "^9.2.0",
     "stylelint-config-standard": "^16.0.0",
     "stylelint-processor-html": "^1.0.0",
@@ -124,6 +125,7 @@
     "webpack-dev-middleware": "^1.10.0",
     "webpack-hot-middleware": "^2.18.0",
     "webpack-merge": "^4.1.2",
+    "webpack-pwa-manifest": "^3.7.1",
     "worker-loader": "^1.1.1"
   },
   "engines": {

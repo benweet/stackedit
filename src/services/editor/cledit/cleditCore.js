@@ -357,7 +357,10 @@ function cledit(contentElt, scrollEltOpt, isMarkdown = false) {
             const sanitizedHtml = htmlSanitizer.sanitizeHtml(html)
               .replace(/&#160;/g, ' '); // Replace non-breaking spaces with classic spaces
             if (sanitizedHtml) {
-              data = turndownService.turndown(sanitizedHtml);
+              const htmlAsMarkdown = turndownService.turndown(sanitizedHtml);
+              if (htmlAsMarkdown.replace(/\s+/g, '') !== data.replace(/\s+/g, '')) {
+                data = htmlAsMarkdown;
+              }
             }
           }
         } catch (e) {

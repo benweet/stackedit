@@ -15,6 +15,9 @@ editor:
   inlineImages: true
   # Use monospaced font only
   monospacedFontOnly: false
+  # Change preview direction to 'rtl' or 'ltr'.
+  # Note: After change the value, refresh the page.
+  previewDirection: 'ltr'
 
 # Keyboard shortcuts
 # See https://craig.is/killing/mice

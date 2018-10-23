@@ -164,6 +164,9 @@ const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils,
 
           // Create preview section element
           sectionPreviewElt = document.createElement('div');
+          if (!html.startsWith('<pre>')) {
+            sectionPreviewElt.style.direction = store.getters['data/computedSettings'].editor.previewDirection;
+          }
           sectionPreviewElt.className = 'cl-preview-section';
           sectionPreviewElt.innerHTML = html;
           if (insertBeforePreviewElt) {

@@ -108,6 +108,7 @@ var webpackConfig = merge(baseWebpackConfig, {
       name: 'StackEdit',
       description: 'Full-featured, open-source Markdown editor',
       display: 'standalone',
+      orientation: 'any',
       start_url: 'app',
       background_color: '#ffffff',
       crossorigin: 'use-credentials',

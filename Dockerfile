@@ -1,4 +1,4 @@
-FROM benweet/stackedit-base
+FROM benweet/stackedit-base AS builder
 
 RUN mkdir -p /opt/stackedit/stackedit_v4
 WORKDIR /opt/stackedit/stackedit_v4
@@ -21,6 +21,11 @@ RUN npm install --unsafe-perm \
 COPY . /opt/stackedit
 ENV NODE_ENV production
 RUN npm run build
+
+FROM mhart/alpine-node:base
+
+COPY --from=builder /opt/stackedit /opt/stackedit
+WORKDIR /opt/stackedit
 
 EXPOSE 8080
 

@@ -1,7 +1,7 @@
 <template>
   <modal-inner class="modal__inner-1--sponsor" aria-label="Sponsor">
     <div class="modal__content">
-      <p>Please choose a <b>PayPal</b> option.</p>
+      <p>Please choose a <b>PayPal</b> option:</p>
       <a class="paypal-option button flex flex--row flex--center" v-for="button in buttons" :key="button.id" :href="button.link">
         <div class="flex flex--column">
           <div>{{button.price}}<div class="paypal-option__offer" v-if="button.offer">{{button.offer}}</div></div>
@@ -19,13 +19,14 @@
 import { mapGetters } from 'vuex';
 import ModalInner from './common/ModalInner';
 import utils from '../../services/utils';
+import store from '../../store';
 
 export default {
   components: {
     ModalInner,
   },
   data() {
-    const sponsorToken = this.$store.getters['workspace/sponsorToken'];
+    const sponsorToken = store.getters['workspace/sponsorToken'];
     const makeButton = (id, price, description, offer) => {
       const params = {
         cmd: '_s-xclick',
@@ -43,10 +44,10 @@ export default {
 
     return {
       buttons: sponsorToken ? [
-        makeButton('EZM658LWLLG6C', '$5', '3 months sponsorship'),
-        makeButton('EL2GN2LPZGBJ4', '$15', '1 year sponsorship', '-25%'),
-        makeButton('3FH26ATC3M48A', '$25', '2 years sponsorship', '-37%'),
-        makeButton('PY8WT7L3M4KSY', '$50', '5 years sponsorship', '-50%'),
+        makeButton('QD7SFZS79D2AL', '$5', '3 months sponsorship'),
+        makeButton('WG64NCFL9TQZJ', '$15', '1 year sponsorship', '-25%'),
+        makeButton('G2E7MN873EQ3U', '$25', '2 years sponsorship', '-37%'),
+        makeButton('JQJT7ARKYC7FC', '$50', '5 years sponsorship', '-50%'),
       ] : [],
     };
   },
@@ -63,10 +64,10 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../common/variables.scss';
+@import '../../styles/variables.scss';
 
-.modal__inner-1--sponsor {
-  max-width: 380px;
+.modal__inner-1.modal__inner-1--sponsor {
+  max-width: 400px;
 }
 
 .paypal-option {
@@ -81,7 +82,7 @@ export default {
   span {
     display: inline-block;
     font-size: 0.75rem;
-    opacity: 0.5;
+    opacity: 0.6;
     white-space: normal;
     line-height: 1.5;
   }

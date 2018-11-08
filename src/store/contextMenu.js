@@ -26,21 +26,23 @@ export default {
       setTimeout(() => {
         // Take the size of the context menu and place it
         const elt = document.querySelector('.context-menu__inner');
-        const height = elt.offsetHeight;
-        if (coordinates.top + height > rootState.layout.bodyHeight) {
-          coordinates.top -= height;
+        if (elt) {
+          const height = elt.offsetHeight;
+          if (coordinates.top + height > rootState.layout.bodyHeight) {
+            coordinates.top -= height;
+          }
+          if (coordinates.top < 0) {
+            coordinates.top = 0;
+          }
+          const width = elt.offsetWidth;
+          if (coordinates.left + width > rootState.layout.bodyWidth) {
+            coordinates.left -= width;
+          }
+          if (coordinates.left < 0) {
+            coordinates.left = 0;
+          }
+          commit('setCoordinates', coordinates);
         }
-        if (coordinates.top < 0) {
-          coordinates.top = 0;
-        }
-        const width = elt.offsetWidth;
-        if (coordinates.left + width > rootState.layout.bodyWidth) {
-          coordinates.left -= width;
-        }
-        if (coordinates.left < 0) {
-          coordinates.left = 0;
-        }
-        commit('setCoordinates', coordinates);
       }, 1);
 
       return new Promise(resolve => commit('setResolve', resolve));

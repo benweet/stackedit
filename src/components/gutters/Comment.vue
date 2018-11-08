@@ -27,6 +27,7 @@ import UserImage from '../UserImage';
 import UserName from '../UserName';
 import editorSvc from '../../services/editorSvc';
 import htmlSanitizer from '../../libs/htmlSanitizer';
+import store from '../../store';
 
 export default {
   components: {
@@ -36,8 +37,8 @@ export default {
   props: ['comment'],
   computed: {
     showReply() {
-      return this.comment === this.$store.getters['discussion/currentDiscussionLastComment'] &&
-        !this.$store.state.discussion.isCommenting;
+      return this.comment === store.getters['discussion/currentDiscussionLastComment'] &&
+        !store.state.discussion.isCommenting;
     },
     text() {
       return htmlSanitizer.sanitizeHtml(editorSvc.converter.render(this.comment.text));
@@ -47,24 +48,25 @@ export default {
     ...mapMutations('discussion', [
       'setIsCommenting',
     ]),
-    removeComment() {
-      this.$store.dispatch('modal/commentDeletion')
-        .then(
-          () => this.$store.dispatch('discussion/cleanCurrentFile', { filterComment: this.comment }),
-          () => {}); // Cancel
+    async removeComment() {
+      try {
+        await store.dispatch('modal/open', 'commentDeletion');
+        store.dispatch('discussion/cleanCurrentFile', { filterComment: this.comment });
+      } catch (e) {
+        // Cancel
+      }
     },
   },
   mounted() {
     const isSticky = this.$el.parentNode.classList.contains('sticky-comment');
     if (isSticky) {
-      const commentId = this.$store.getters['discussion/currentDiscussionLastCommentId'];
+      const commentId = store.getters['discussion/currentDiscussionLastCommentId'];
       const scrollerElt = this.$el.querySelector('.comment__text-inner');
 
       let scrollerMirrorElt;
       const getScrollerMirrorElt = () => {
         if (!scrollerMirrorElt) {
-          scrollerMirrorElt = document.querySelector(
-            `.comment-list .comment--${commentId} .comment__text-inner`);
+          scrollerMirrorElt = document.querySelector(`.comment-list .comment--${commentId} .comment__text-inner`);
         }
         return scrollerMirrorElt || { scrollTop: 0 };
       };

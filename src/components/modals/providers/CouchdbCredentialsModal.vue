@@ -14,13 +14,14 @@
     </div>
     <div class="modal__button-bar">
       <button class="button" @click="config.reject()">Cancel</button>
-      <button class="button" @click="resolve()">Ok</button>
+      <button class="button button--resolve" @click="resolve()">Ok</button>
     </div>
   </modal-inner>
 </template>
 
 <script>
 import modalTemplate from '../common/modalTemplate';
+import store from '../../../store';
 
 export default modalTemplate({
   data: () => ({
@@ -45,7 +46,7 @@ export default modalTemplate({
           name: this.name,
           password: this.password,
         };
-        this.$store.dispatch('data/setCouchdbToken', token);
+        store.dispatch('data/addCouchdbToken', token);
         this.config.resolve();
       }
     },

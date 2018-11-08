@@ -21,8 +21,9 @@
 import { mapGetters, mapActions } from 'vuex';
 import CommentList from './gutters/CommentList';
 import PreviewNewDiscussionButton from './gutters/PreviewNewDiscussionButton';
+import store from '../store';
 
-const appUri = `${location.protocol}//${location.host}`;
+const appUri = `${window.location.protocol}//${window.location.host}`;
 
 export default {
   components: {
@@ -84,11 +85,11 @@ export default {
     previewElt.addEventListener('mouseover', onDiscussionEvt(classToggler(true)));
     previewElt.addEventListener('mouseout', onDiscussionEvt(classToggler(false)));
     previewElt.addEventListener('click', onDiscussionEvt((discussionId) => {
-      this.$store.commit('discussion/setCurrentDiscussionId', discussionId);
+      store.commit('discussion/setCurrentDiscussionId', discussionId);
     }));
 
     this.$watch(
-      () => this.$store.state.discussion.currentDiscussionId,
+      () => store.state.discussion.currentDiscussionId,
       (discussionId, oldDiscussionId) => {
         if (oldDiscussionId) {
           previewElt.querySelectorAll(`.discussion-preview-highlighting--${oldDiscussionId}`)
@@ -98,13 +99,14 @@ export default {
           previewElt.querySelectorAll(`.discussion-preview-highlighting--${discussionId}`)
             .cl_each(elt => elt.classList.add('discussion-preview-highlighting--selected'));
         }
-      });
+      },
+    );
   },
 };
 </script>
 
 <style lang="scss">
-@import 'common/variables.scss';
+@import '../styles/variables.scss';
 
 .preview,
 .preview__inner-1 {

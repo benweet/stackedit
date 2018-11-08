@@ -1,0 +1,97 @@
+# light or dark
+colorTheme: light
+# Adjust font size in editor and preview
+fontSizeFactor: 1
+# Adjust maximum text width in editor and preview
+maxWidthFactor: 1
+# Auto-sync frequency (in ms). Minimum is 60000.
+autoSyncEvery: 90000
+
+# Editor settings
+editor:
+  # Automatic list numbering
+  listAutoNumber: true
+  # Display images in the editor
+  inlineImages: true
+  # Use monospaced font only
+  monospacedFontOnly: false
+
+# Keyboard shortcuts
+# See https://craig.is/killing/mice
+shortcuts:
+  mod+s: sync
+  mod+f: find
+  mod+alt+f: replace
+  mod+g: replace
+  mod+shift+b: bold
+  mod+shift+c: clist
+  mod+shift+k: code
+  mod+shift+h: heading
+  mod+shift+r: hr
+  mod+shift+g: image
+  mod+shift+i: italic
+  mod+shift+l: link
+  mod+shift+o: olist
+  mod+shift+q: quote
+  mod+shift+s: strikethrough
+  mod+shift+t: table
+  mod+shift+u: ulist
+  '= = > space':
+    method: expand
+    params:
+    - '==> '
+    - '⇒ '
+  '< = = space':
+    method: expand
+    params:
+    - '<== '
+    - '⇐ '
+
+# Options passed to wkhtmltopdf
+# See https://wkhtmltopdf.org/usage/wkhtmltopdf.txt
+wkhtmltopdf:
+  marginTop: 25
+  marginRight: 25
+  marginBottom: 25
+  marginLeft: 25
+  # A3, A4, Legal or Letter
+  pageSize: A4
+
+# Options passed to pandoc
+# See https://pandoc.org/MANUAL.html
+pandoc:
+  highlightStyle: kate
+  toc: true
+  tocDepth: 3
+
+# HTML to Markdown converter options
+# See https://github.com/domchristie/turndown
+turndown:
+  headingStyle: atx
+  hr: ----------
+  bulletListMarker: '-'
+  codeBlockStyle: fenced
+  fence: '```'
+  emDelimiter: _
+  strongDelimiter: '**'
+  linkStyle: inlined
+  linkReferenceStyle: full
+
+# GitHub/GitLab commit messages
+git:
+  createFileMessage: '{{path}} created from https://stackedit.io/'
+  updateFileMessage: '{{path}} updated from https://stackedit.io/'
+  deleteFileMessage: '{{path}} deleted from https://stackedit.io/'
+
+# Default content for new files
+newFileContent: |
+
+
+
+  > Written with [StackEdit](https://stackedit.io/).
+
+# Default properties for new files
+newFileProperties: |
+#  extensions:
+#    preset: gfm
+

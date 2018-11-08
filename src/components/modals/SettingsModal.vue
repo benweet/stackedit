@@ -25,7 +25,7 @@
     </div>
     <div class="modal__button-bar">
       <button class="button" @click="config.reject()">Cancel</button>
-      <button class="button" @click="!error && config.resolve(strippedCustomSettings)">Ok</button>
+      <button class="button button--resolve" @click="!error && config.resolve(strippedCustomSettings)">Ok</button>
     </div>
   </modal-inner>
 </template>
@@ -36,7 +36,8 @@ import { mapGetters } from 'vuex';
 import ModalInner from './common/ModalInner';
 import Tab from './common/Tab';
 import CodeEditor from '../CodeEditor';
-import defaultSettings from '../../data/defaultSettings.yml';
+import defaultSettings from '../../data/defaults/defaultSettings.yml';
+import store from '../../store';
 
 const emptySettings = `# Add your custom settings here to override the
 # default settings.
@@ -63,7 +64,7 @@ export default {
     },
   },
   created() {
-    const settings = this.$store.getters['data/settings'];
+    const settings = store.getters['data/settings'];
     this.setCustomSettings(settings === '\n' ? emptySettings : settings);
   },
   methods: {
@@ -81,10 +82,10 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../common/variables.scss';
+@import '../../styles/variables.scss';
 
-.modal__inner-1--settings {
-  max-width: 600px;
+.modal__inner-1.modal__inner-1--settings {
+  max-width: 560px;
 }
 
 .modal__error--settings {

@@ -7,7 +7,7 @@
     </menu-entry>
     <menu-entry @click.native="templates">
       <icon-code-braces slot="icon"></icon-code-braces>
-      <div>Templates</div>
+      <div><div class="menu-entry__label menu-entry__label--count">{{templateCount}}</div> Templates</div>
       <span>Configure Handlebars templates for your exports.</span>
     </menu-entry>
     <menu-entry @click.native="reset">
@@ -45,10 +45,16 @@
 import MenuEntry from './common/MenuEntry';
 import backupSvc from '../../services/backupSvc';
 import utils from '../../services/utils';
+import store from '../../store';
 
 export default {
   components: {
     MenuEntry,
+  },
+  computed: {
+    templateCount() {
+      return Object.keys(store.getters['data/allTemplatesById']).length;
+    },
   },
   methods: {
     onImportBackup(evt) {
@@ -58,7 +64,7 @@ export default {
         reader.onload = (e) => {
           const text = e.target.result;
           if (text.match(/\uFFFD/)) {
-            this.$store.dispatch('notification/error', 'File is not readable.');
+            store.dispatch('notification/error', 'File is not readable.');
           } else {
             backupSvc.importBackup(text);
           }
@@ -72,35 +78,36 @@ export default {
         ...utils.queryParams,
         exportWorkspace: true,
       }, true);
-      const iframeElt = utils.createHiddenIframe(url);
-      document.body.appendChild(iframeElt);
-      setTimeout(() => {
-        document.body.removeChild(iframeElt);
-      }, 60000);
+      window.location.href = url;
+      window.location.reload(true);
     },
-    settings() {
-      return this.$store.dispatch('modal/open', 'settings')
-        .then(
-          settings => this.$store.dispatch('data/setSettings', settings),
-          () => {}, // Cancel
-        );
+    async settings() {
+      try {
+        const settings = await store.dispatch('modal/open', 'settings');
+        store.dispatch('data/setSettings', settings);
+      } catch (e) {
+        // Cancel
+      }
     },
-    templates() {
-      return this.$store.dispatch('modal/open', 'templates')
-        .then(
-          ({ templates }) => this.$store.dispatch('data/setTemplates', templates),
-          () => {}, // Cancel
-        );
+    async templates() {
+      try {
+        const { templates } = await store.dispatch('modal/open', 'templates');
+        store.dispatch('data/setTemplatesById', templates);
+      } catch (e) {
+        // Cancel
+      }
     },
-    reset() {
-      return this.$store.dispatch('modal/reset')
-        .then(() => {
-          location.href = '#reset=true';
-          location.reload();
-        });
+    async reset() {
+      try {
+        await store.dispatch('modal/open', 'reset');
+        window.location.href = '#reset=true';
+        window.location.reload();
+      } catch (e) {
+        // Cancel
+      }
     },
     about() {
-      return this.$store.dispatch('modal/open', 'about');
+      store.dispatch('modal/open', 'about');
     },
   },
 };

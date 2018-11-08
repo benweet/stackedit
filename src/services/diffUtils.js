@@ -78,7 +78,8 @@ function restoreDiscussionOffsets(content, markerKeys) {
         }
         count += 1;
         return '';
-      });
+      },
+    );
     // Sanitize offsets
     Object.keys(content.discussions).forEach((discussionId) => {
       const discussion = content.discussions[discussionId];

@@ -1,4 +1,7 @@
-const itemTimeout = 5000;
+import providerRegistry from '../services/providers/common/providerRegistry';
+import utils from '../services/utils';
+
+const defaultTimeout = 5000; // 5 sec
 
 export default {
   namespaced: true,
@@ -12,29 +15,59 @@ export default {
   },
   actions: {
     showItem({ state, commit }, item) {
-      if (state.items.every(other => other.type !== item.type || other.content !== item.content)) {
-        commit('setItems', [...state.items, item]);
-        setTimeout(() =>
-          commit('setItems', state.items.filter(otherItem => otherItem !== item)), itemTimeout);
+      const existingItem = utils.someResult(
+        state.items,
+        other => other.type === item.type && other.content === item.content && item,
+      );
+      if (existingItem) {
+        return existingItem.promise;
       }
+
+      item.promise = new Promise((resolve, reject) => {
+        commit('setItems', [...state.items, item]);
+        const removeItem = () => commit(
+          'setItems',
+          state.items.filter(otherItem => otherItem !== item),
+        );
+        setTimeout(
+          () => removeItem(),
+          item.timeout || defaultTimeout,
+        );
+        item.resolve = (res) => {
+          removeItem();
+          resolve(res);
+        };
+        item.reject = (err) => {
+          removeItem();
+          reject(err);
+        };
+      });
+
+      return item.promise;
     },
     info({ dispatch }, info) {
-      dispatch('showItem', {
+      return dispatch('showItem', {
         type: 'info',
         content: info,
       });
     },
+    confirm({ dispatch }, question) {
+      return dispatch('showItem', {
+        type: 'confirm',
+        content: question,
+        timeout: 10000, // 10 sec
+      });
+    },
     error({ dispatch, rootState }, error) {
-      const item = {
-        type: 'error',
-      };
+      const item = { type: 'error' };
       if (error) {
         if (error.message) {
           item.content = error.message;
         } else if (error.status) {
           const location = rootState.queue.currentLocation;
           if (location.providerId) {
-            item.content = `HTTP error ${error.status} on ${location.providerId} location.`;
+            const provider = providerRegistry.providersById[location.providerId];
+            item.content = `HTTP error ${error.status} on ${provider.name} location.`;
           } else {
             item.content = `HTTP error ${error.status}.`;
           }
@@ -45,7 +78,7 @@ export default {
       if (!item.content || item.content === '[object Object]') {
         item.content = 'Unknown error.';
       }
-      dispatch('showItem', item);
+      return dispatch('showItem', item);
     },
   },
 };

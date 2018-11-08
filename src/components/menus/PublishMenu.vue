@@ -16,44 +16,11 @@
         </menu-entry>
         <menu-entry @click.native="managePublish">
           <icon-view-list slot="icon"></icon-view-list>
-          <div>File publication</div>
+          <div><div class="menu-entry__label menu-entry__label--count">{{locationCount}}</div> File publication</div>
           <span>Manage current file publication locations.</span>
         </menu-entry>
       </div>
       <hr>
-      <div v-for="token in googleDriveTokens" :key="token.sub">
-        <menu-entry @click.native="publishGoogleDrive(token)">
-          <icon-provider slot="icon" provider-id="googleDrive"></icon-provider>
-          <div>Publish to Google Drive</div>
-          <span>{{token.name}}</span>
-        </menu-entry>
-      </div>
-      <div v-for="token in dropboxTokens" :key="token.sub">
-        <menu-entry @click.native="publishDropbox(token)">
-          <icon-provider slot="icon" provider-id="dropbox"></icon-provider>
-          <div>Publish to Dropbox</div>
-          <span>{{token.name}}</span>
-        </menu-entry>
-      </div>
-      <div v-for="token in githubTokens" :key="token.sub">
-        <menu-entry @click.native="publishGithub(token)">
-          <icon-provider slot="icon" provider-id="github"></icon-provider>
-          <div>Publish to GitHub</div>
-          <span>{{token.name}}</span>
-        </menu-entry>
-        <menu-entry @click.native="publishGist(token)">
-          <icon-provider slot="icon" provider-id="gist"></icon-provider>
-          <div>Publish to Gist</div>
-          <span>{{token.name}}</span>
-        </menu-entry>
-      </div>
-      <div v-for="token in wordpressTokens" :key="token.sub">
-        <menu-entry @click.native="publishWordpress(token)">
-          <icon-provider slot="icon" provider-id="wordpress"></icon-provider>
-          <div>Publish to WordPress</div>
-          <span>{{token.name}}</span>
-        </menu-entry>
-      </div>
       <div v-for="token in bloggerTokens" :key="token.sub">
         <menu-entry @click.native="publishBlogger(token)">
           <icon-provider slot="icon" provider-id="blogger"></icon-provider>
@@ -66,6 +33,46 @@
           <span>{{token.name}}</span>
         </menu-entry>
       </div>
+      <div v-for="token in dropboxTokens" :key="token.sub">
+        <menu-entry @click.native="publishDropbox(token)">
+          <icon-provider slot="icon" provider-id="dropbox"></icon-provider>
+          <div>Publish to Dropbox</div>
+          <span>{{token.name}}</span>
+        </menu-entry>
+      </div>
+      <div v-for="token in githubTokens" :key="token.sub">
+        <menu-entry @click.native="publishGist(token)">
+          <icon-provider slot="icon" provider-id="gist"></icon-provider>
+          <div>Publish to Gist</div>
+          <span>{{token.name}}</span>
+        </menu-entry>
+        <menu-entry @click.native="publishGithub(token)">
+          <icon-provider slot="icon" provider-id="github"></icon-provider>
+          <div>Publish to GitHub</div>
+          <span>{{token.name}}</span>
+        </menu-entry>
+      </div>
+      <div v-for="token in gitlabTokens" :key="token.sub">
+        <menu-entry @click.native="publishGitlab(token)">
+          <icon-provider slot="icon" provider-id="gitlab"></icon-provider>
+          <div>Publish to GitLab</div>
+          <span>{{token.name}}</span>
+        </menu-entry>
+      </div>
+      <div v-for="token in googleDriveTokens" :key="token.sub">
+        <menu-entry @click.native="publishGoogleDrive(token)">
+          <icon-provider slot="icon" provider-id="googleDrive"></icon-provider>
+          <div>Publish to Google Drive</div>
+          <span>{{token.name}}</span>
+        </menu-entry>
+      </div>
+      <div v-for="token in wordpressTokens" :key="token.sub">
+        <menu-entry @click.native="publishWordpress(token)">
+          <icon-provider slot="icon" provider-id="wordpress"></icon-provider>
+          <div>Publish to WordPress</div>
+          <span>{{token.name}}</span>
+        </menu-entry>
+      </div>
       <div v-for="token in zendeskTokens" :key="token.sub">
         <menu-entry @click.native="publishZendesk(token)">
           <icon-provider slot="icon" provider-id="zendesk"></icon-provider>
@@ -74,9 +81,9 @@
         </menu-entry>
       </div>
       <hr>
-      <menu-entry @click.native="addGoogleDriveAccount">
-        <icon-provider slot="icon" provider-id="googleDrive"></icon-provider>
-        <span>Add Google Drive account</span>
+      <menu-entry @click.native="addBloggerAccount">
+        <icon-provider slot="icon" provider-id="blogger"></icon-provider>
+        <span>Add Blogger account</span>
       </menu-entry>
       <menu-entry @click.native="addDropboxAccount">
         <icon-provider slot="icon" provider-id="dropbox"></icon-provider>
@@ -86,13 +93,17 @@
         <icon-provider slot="icon" provider-id="github"></icon-provider>
         <span>Add GitHub account</span>
       </menu-entry>
+      <menu-entry @click.native="addGitlabAccount">
+        <icon-provider slot="icon" provider-id="gitlab"></icon-provider>
+        <span>Add GitLab account</span>
+      </menu-entry>
+      <menu-entry @click.native="addGoogleDriveAccount">
+        <icon-provider slot="icon" provider-id="googleDrive"></icon-provider>
+        <span>Add Google Drive account</span>
+      </menu-entry>
       <menu-entry @click.native="addWordpressAccount">
         <icon-provider slot="icon" provider-id="wordpress"></icon-provider>
         <span>Add WordPress account</span>
-      </menu-entry>
-      <menu-entry @click.native="addBloggerAccount">
-        <icon-provider slot="icon" provider-id="blogger"></icon-provider>
-        <span>Add Blogger account</span>
       </menu-entry>
       <menu-entry @click.native="addZendeskAccount">
         <icon-provider slot="icon" provider-id="zendesk"></icon-provider>
@@ -108,20 +119,25 @@ import MenuEntry from './common/MenuEntry';
 import googleHelper from '../../services/providers/helpers/googleHelper';
 import dropboxHelper from '../../services/providers/helpers/dropboxHelper';
 import githubHelper from '../../services/providers/helpers/githubHelper';
+import gitlabHelper from '../../services/providers/helpers/gitlabHelper';
 import wordpressHelper from '../../services/providers/helpers/wordpressHelper';
 import zendeskHelper from '../../services/providers/helpers/zendeskHelper';
 import publishSvc from '../../services/publishSvc';
 import store from '../../store';
 
-const tokensToArray = (tokens, filter = () => true) => Object.keys(tokens)
-  .map(sub => tokens[sub])
+const tokensToArray = (tokens, filter = () => true) => Object.values(tokens)
   .filter(token => filter(token))
   .sort((token1, token2) => token1.name.localeCompare(token2.name));
 
-const openPublishModal = (token, type) => store.dispatch('modal/open', {
-  type,
-  token,
-}).then(publishLocation => publishSvc.createPublishLocation(publishLocation));
+const publishModalOpener = type => async (token) => {
+  try {
+    const publishLocation = await store.dispatch('modal/open', {
+      type,
+      token,
+    });
+    publishSvc.createPublishLocation(publishLocation);
+  } catch (e) { /* cancel */ }
+};
 
 export default {
   components: {
@@ -137,34 +153,36 @@ export default {
     ...mapGetters('publishLocation', {
       publishLocations: 'current',
     }),
+    locationCount() {
+      return Object.keys(this.publishLocations).length;
+    },
     currentFileName() {
-      return this.$store.getters['file/current'].name;
-    },
-    googleDriveTokens() {
-      return tokensToArray(this.$store.getters['data/googleTokens'], token => token.isDrive);
-    },
-    dropboxTokens() {
-      return tokensToArray(this.$store.getters['data/dropboxTokens']);
-    },
-    githubTokens() {
-      return tokensToArray(this.$store.getters['data/githubTokens']);
-    },
-    wordpressTokens() {
-      return tokensToArray(this.$store.getters['data/wordpressTokens']);
+      return store.getters['file/current'].name;
     },
     bloggerTokens() {
-      return tokensToArray(this.$store.getters['data/googleTokens'], token => token.isBlogger);
+      return tokensToArray(store.getters['data/googleTokensBySub'], token => token.isBlogger);
+    },
+    dropboxTokens() {
+      return tokensToArray(store.getters['data/dropboxTokensBySub']);
+    },
+    githubTokens() {
+      return tokensToArray(store.getters['data/githubTokensBySub']);
+    },
+    gitlabTokens() {
+      return tokensToArray(store.getters['data/gitlabTokensBySub']);
+    },
+    googleDriveTokens() {
+      return tokensToArray(store.getters['data/googleTokensBySub'], token => token.isDrive);
+    },
+    wordpressTokens() {
+      return tokensToArray(store.getters['data/wordpressTokensBySub']);
     },
     zendeskTokens() {
-      return tokensToArray(this.$store.getters['data/zendeskTokens']);
+      return tokensToArray(store.getters['data/zendeskTokensBySub']);
     },
     noToken() {
-      return !this.googleDriveTokens.length
-        && !this.dropboxTokens.length
-        && !this.githubTokens.length
-        && !this.wordpressTokens.length
-        && !this.bloggerTokens.length
-        && !this.zendeskTokens.length;
+      return Object.values(store.getters['data/tokensByType'])
+        .every(tokens => !Object.keys(tokens).length);
     },
   },
   methods: {
@@ -173,77 +191,60 @@ export default {
         publishSvc.requestPublish();
       }
     },
-    managePublish() {
-      return this.$store.dispatch('modal/open', 'publishManagement');
+    async managePublish() {
+      try {
+        await store.dispatch('modal/open', 'publishManagement');
+      } catch (e) { /* cancel */ }
     },
-    addGoogleDriveAccount() {
-      return this.$store.dispatch('modal/open', {
-        type: 'googleDriveAccount',
-        onResolve: () => googleHelper.addDriveAccount(!store.getters['data/localSettings'].googleDriveRestrictedAccess),
-      })
-        .catch(() => {}); // Cancel
+    async addBloggerAccount() {
+      try {
+        await googleHelper.addBloggerAccount();
+      } catch (e) { /* cancel */ }
     },
-    addDropboxAccount() {
-      return this.$store.dispatch('modal/open', {
-        type: 'dropboxAccount',
-        onResolve: () => dropboxHelper.addAccount(!store.getters['data/localSettings'].dropboxRestrictedAccess),
-      })
-        .catch(() => {}); // Cancel
+    async addDropboxAccount() {
+      try {
+        await store.dispatch('modal/open', { type: 'dropboxAccount' });
+        await dropboxHelper.addAccount(!store.getters['data/localSettings'].dropboxRestrictedAccess);
+      } catch (e) { /* cancel */ }
     },
-    addGithubAccount() {
-      return this.$store.dispatch('modal/open', {
-        type: 'githubAccount',
-        onResolve: () => githubHelper.addAccount(store.getters['data/localSettings'].githubRepoFullAccess),
-      })
-        .catch(() => {}); // Cancel
+    async addGithubAccount() {
+      try {
+        await store.dispatch('modal/open', { type: 'githubAccount' });
+        await githubHelper.addAccount(store.getters['data/localSettings'].githubRepoFullAccess);
+      } catch (e) { /* cancel */ }
     },
-    addWordpressAccount() {
-      return wordpressHelper.addAccount()
-        .catch(() => {}); // Cancel
+    async addGitlabAccount() {
+      try {
+        const { serverUrl, applicationId } = await store.dispatch('modal/open', { type: 'gitlabAccount' });
+        await gitlabHelper.addAccount(serverUrl, applicationId);
+      } catch (e) { /* cancel */ }
     },
-    addBloggerAccount() {
-      return googleHelper.addBloggerAccount()
-        .catch(() => {}); // Cancel
+    async addGoogleDriveAccount() {
+      try {
+        await store.dispatch('modal/open', { type: 'googleDriveAccount' });
+        await googleHelper.addDriveAccount(!store.getters['data/localSettings'].googleDriveRestrictedAccess);
+      } catch (e) { /* cancel */ }
     },
-    addZendeskAccount() {
-      return this.$store.dispatch('modal/open', {
-        type: 'zendeskAccount',
-        onResolve: ({ subdomain, clientId }) => zendeskHelper.addAccount(subdomain, clientId),
-      })
-        .catch(() => {}); // Cancel
+    async addWordpressAccount() {
+      try {
+        await wordpressHelper.addAccount();
+      } catch (e) { /* cancel */ }
     },
-    publishGoogleDrive(token) {
-      return openPublishModal(token, 'googleDrivePublish')
-        .catch(() => {}); // Cancel
+    async addZendeskAccount() {
+      try {
+        const { subdomain, clientId } = await store.dispatch('modal/open', { type: 'zendeskAccount' });
+        await zendeskHelper.addAccount(subdomain, clientId);
+      } catch (e) { /* cancel */ }
     },
-    publishDropbox(token) {
-      return openPublishModal(token, 'dropboxPublish')
-        .catch(() => {}); // Cancel
-    },
-    publishGithub(token) {
-      return openPublishModal(token, 'githubPublish')
-        .catch(() => {}); // Cancel
-    },
-    publishGist(token) {
-      return openPublishModal(token, 'gistPublish')
-        .catch(() => {}); // Cancel
-    },
-    publishWordpress(token) {
-      return openPublishModal(token, 'wordpressPublish')
-        .catch(() => {}); // Cancel
-    },
-    publishBlogger(token) {
-      return openPublishModal(token, 'bloggerPublish')
-        .catch(() => {}); // Cancel
-    },
-    publishBloggerPage(token) {
-      return openPublishModal(token, 'bloggerPagePublish')
-        .catch(() => {}); // Cancel
-    },
-    publishZendesk(token) {
-      return openPublishModal(token, 'zendeskPublish')
-        .catch(() => {}); // Cancel
-    },
+    publishBlogger: publishModalOpener('bloggerPublish'),
+    publishBloggerPage: publishModalOpener('bloggerPagePublish'),
+    publishDropbox: publishModalOpener('dropboxPublish'),
+    publishGithub: publishModalOpener('githubPublish'),
+    publishGist: publishModalOpener('gistPublish'),
+    publishGitlab: publishModalOpener('gitlabPublish'),
+    publishGoogleDrive: publishModalOpener('googleDrivePublish'),
+    publishWordpress: publishModalOpener('wordpressPublish'),
+    publishZendesk: publishModalOpener('zendeskPublish'),
   },
 };
 </script>

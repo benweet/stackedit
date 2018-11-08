@@ -4,17 +4,17 @@
       <div class="modal__image">
         <icon-provider provider-id="dropbox"></icon-provider>
       </div>
-      <p>This will publish <b>{{currentFileName}}</b> to your <b>Dropbox</b>.</p>
+      <p>Publish <b>{{currentFileName}}</b> to your <b>Dropbox</b>.</p>
       <form-entry label="File path" error="path">
         <input slot="field" class="textfield" type="text" v-model.trim="path" @keydown.enter="resolve()">
         <div class="form-entry__info">
           <b>Example:</b> {{config.token.fullAccess ? '' : '/Applications/StackEdit (restricted)'}}/path/to/My Document.html<br>
-          If the file exists, it will be replaced.
+          If the file exists, it will be overwritten.
         </div>
       </form-entry>
       <form-entry label="Template">
         <select slot="field" class="textfield" v-model="selectedTemplate" @keydown.enter="resolve()">
-          <option v-for="(template, id) in allTemplates" :key="id" :value="id">
+          <option v-for="(template, id) in allTemplatesById" :key="id" :value="id">
             {{ template.name }}
           </option>
         </select>
@@ -25,7 +25,7 @@
     </div>
     <div class="modal__button-bar">
       <button class="button" @click="config.reject()">Cancel</button>
-      <button class="button" @click="resolve()">Ok</button>
+      <button class="button button--resolve" @click="resolve()">Ok</button>
     </div>
   </modal-inner>
 </template>

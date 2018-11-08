@@ -16,10 +16,12 @@ export default {
           return 'google-drive';
         case 'googlePhotos':
           return 'google-photos';
-        case 'dropboxRestricted':
-          return 'dropbox';
+        case 'githubWorkspace':
+          return 'github';
         case 'gist':
           return 'github';
+        case 'gitlabWorkspace':
+          return 'gitlab';
         case 'bloggerPage':
           return 'blogger';
         case 'couchdbWorkspace':
@@ -55,6 +57,10 @@ export default {
 
 .icon-provider--github {
   background-image: url(../assets/iconGithub.svg);
+}
+
+.icon-provider--gitlab {
+  background-image: url(../assets/iconGitlab.svg);
 }
 
 .icon-provider--dropbox {

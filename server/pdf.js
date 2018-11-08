@@ -1,5 +1,5 @@
 /* global window,MathJax */
-const spawn = require('child_process').spawn;
+const { spawn } = require('child_process');
 const fs = require('fs');
 const tmp = require('tmp');
 const user = require('./user');
@@ -84,13 +84,13 @@ exports.generate = (req, res) => {
 
       // Margins
       const marginTop = parseInt(`${options.marginTop}`, 10);
-      params.push('-T', isNaN(marginTop) ? 25 : marginTop);
+      params.push('-T', Number.isNaN(marginTop) ? 25 : marginTop);
       const marginRight = parseInt(`${options.marginRight}`, 10);
-      params.push('-R', isNaN(marginRight) ? 25 : marginRight);
+      params.push('-R', Number.isNaN(marginRight) ? 25 : marginRight);
       const marginBottom = parseInt(`${options.marginBottom}`, 10);
-      params.push('-B', isNaN(marginBottom) ? 25 : marginBottom);
+      params.push('-B', Number.isNaN(marginBottom) ? 25 : marginBottom);
       const marginLeft = parseInt(`${options.marginLeft}`, 10);
-      params.push('-L', isNaN(marginLeft) ? 25 : marginLeft);
+      params.push('-L', Number.isNaN(marginLeft) ? 25 : marginLeft);
 
       // Header
       if (options.headerCenter) {

@@ -5,17 +5,21 @@
 
 <script>
 import userSvc from '../services/userSvc';
+import store from '../store';
 
 export default {
   props: ['userId'],
   computed: {
     url() {
-      const userInfo = this.$store.state.userInfo.itemMap[this.userId];
+      const userInfo = store.state.userInfo.itemsById[this.userId];
       return userInfo && userInfo.imageUrl && `url('${userInfo.imageUrl}')`;
     },
   },
-  created() {
-    userSvc.getInfo(this.userId);
+  watch: {
+    userId: {
+      handler: userId => userSvc.getInfo(userId),
+      immediate: true,
+    },
   },
 };
 </script>

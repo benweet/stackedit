@@ -1,0 +1,849 @@
+/* stylelint-disable color-hex-case, color-hex-length, rule-empty-line-before, comment-empty-line-before, comment-whitespace-inside, comment-no-empty */
+@import './variables';
+
+// neutral for light theme
+// dark for dark theme
+
+.mermaid {
+  font-size: 16px;
+
+  svg {
+    color: rgba(0, 0, 0, 0.75);
+    width: 100%;
+    max-width: 100%;
+
+    .app--dark & {
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    * {
+      font-family: $font-family-main;
+    }
+  }
+
+  .mermaid .label {
+    color: #333;
+  }
+
+  .node rect,
+  .node circle,
+  .node ellipse,
+  .node polygon {
+    fill: #eee;
+    stroke: #999;
+    stroke-width: 1px;
+  }
+
+  .node.clickable {
+    cursor: pointer;
+  }
+
+  .arrowheadPath {
+    fill: #333333;
+  }
+
+  .edgePath .path {
+    stroke: #666;
+    stroke-width: 1.5px;
+  }
+
+  .edgeLabel {
+    background-color: white;
+  }
+
+  .cluster rect {
+    fill: #eaf2fb !important;
+    stroke: #26a !important;
+    stroke-width: 1px !important;
+  }
+
+  .cluster text {
+    fill: #333;
+  }
+
+  div.mermaidTooltip {
+    position: absolute;
+    text-align: center;
+    max-width: 200px;
+    padding: 2px;
+    font-family: 'trebuchet ms', verdana, arial;
+    font-size: 12px;
+    background: #eaf2fb;
+    border: 1px solid #26a;
+    border-radius: 2px;
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  .actor {
+    stroke: #999;
+    fill: #eee;
+  }
+
+  text.actor {
+    fill: #333;
+    stroke: none;
+  }
+
+  .actor-line {
+    stroke: #666;
+  }
+
+  .messageLine0 {
+    stroke-width: 1.5;
+    stroke-dasharray: '2 2';
+    marker-end: 'url(#arrowhead)';
+    stroke: #333;
+  }
+
+  .messageLine1 {
+    stroke-width: 1.5;
+    stroke-dasharray: '2 2';
+    stroke: #333;
+  }
+
+  #arrowhead {
+    fill: #333;
+  }
+
+  #crosshead path {
+    fill: #333 !important;
+    stroke: #333 !important;
+  }
+
+  .messageText {
+    fill: #333;
+    stroke: none;
+  }
+
+  .labelBox {
+    stroke: #999;
+    fill: #eee;
+  }
+
+  .labelText {
+    fill: white;
+    stroke: none;
+  }
+
+  .loopText {
+    fill: white;
+    stroke: none;
+  }
+
+  .loopLine {
+    stroke-width: 2;
+    stroke-dasharray: '2 2';
+    marker-end: 'url(#arrowhead)';
+    stroke: #999;
+  }
+
+  .note {
+    stroke: #777700;
+    fill: #ffa;
+  }
+
+  .noteText {
+    fill: black;
+    stroke: none;
+    font-family: 'trebuchet ms', verdana, arial;
+    font-size: 14px;
+  }
+
+  /** Section styling */
+  .section {
+    stroke: none;
+    opacity: 0.2;
+  }
+
+  .section0 {
+    fill: #80b3e6;
+  }
+
+  .section2 {
+    fill: #80b3e6;
+  }
+
+  .section1,
+  .section3 {
+    fill: white;
+    opacity: 0.2;
+  }
+
+  .sectionTitle0 {
+    fill: #333;
+  }
+
+  .sectionTitle1 {
+    fill: #333;
+  }
+
+  .sectionTitle2 {
+    fill: #333;
+  }
+
+  .sectionTitle3 {
+    fill: #333;
+  }
+
+  .sectionTitle {
+    text-anchor: start;
+    font-size: 11px;
+  }
+
+  /* Grid and axis */
+  .grid .tick {
+    stroke: #e6e6e6;
+    opacity: 0.3;
+    shape-rendering: crispEdges;
+  }
+
+  .grid path {
+    stroke-width: 0;
+  }
+
+  /* Today line */
+  .today {
+    fill: none;
+    stroke: #d42;
+    stroke-width: 2px;
+  }
+
+  /* Task styling */
+  /* Default task */
+  .task {
+    stroke-width: 2;
+  }
+
+  .taskText {
+    text-anchor: middle;
+    font-size: 11px;
+  }
+
+  .taskTextOutsideRight {
+    fill: #333;
+    text-anchor: start;
+    font-size: 11px;
+  }
+
+  .taskTextOutsideLeft {
+    fill: #333;
+    text-anchor: end;
+    font-size: 11px;
+  }
+
+  /* Specific task settings for the sections*/
+  .taskText0,
+  .taskText1,
+  .taskText2,
+  .taskText3 {
+    fill: white;
+  }
+
+  .task0,
+  .task1,
+  .task2,
+  .task3 {
+    fill: #26a;
+    stroke: #1a4d80;
+  }
+
+  .taskTextOutside0,
+  .taskTextOutside2 {
+    fill: #333;
+  }
+
+  .taskTextOutside1,
+  .taskTextOutside3 {
+    fill: #333;
+  }
+
+  /* Active task */
+  .active0,
+  .active1,
+  .active2,
+  .active3 {
+    fill: #eee;
+    stroke: #1a4d80;
+  }
+
+  .activeText0,
+  .activeText1,
+  .activeText2,
+  .activeText3 {
+    fill: #333 !important;
+  }
+
+  /* Completed task */
+  .done0,
+  .done1,
+  .done2,
+  .done3 {
+    stroke: #666;
+    fill: #bbb;
+    stroke-width: 2;
+  }
+
+  .doneText0,
+  .doneText1,
+  .doneText2,
+  .doneText3 {
+    fill: #333 !important;
+  }
+
+  /* Tasks on the critical line */
+  .crit0,
+  .crit1,
+  .crit2,
+  .crit3 {
+    stroke: #b1361b;
+    fill: #d42;
+    stroke-width: 2;
+  }
+
+  .activeCrit0,
+  .activeCrit1,
+  .activeCrit2,
+  .activeCrit3 {
+    stroke: #b1361b;
+    fill: #eee;
+    stroke-width: 2;
+  }
+
+  .doneCrit0,
+  .doneCrit1,
+  .doneCrit2,
+  .doneCrit3 {
+    stroke: #b1361b;
+    fill: #bbb;
+    stroke-width: 2;
+    cursor: pointer;
+    shape-rendering: crispEdges;
+  }
+
+  .doneCritText0,
+  .doneCritText1,
+  .doneCritText2,
+  .doneCritText3 {
+    fill: #333 !important;
+  }
+
+  .activeCritText0,
+  .activeCritText1,
+  .activeCritText2,
+  .activeCritText3 {
+    fill: #333 !important;
+  }
+
+  .titleText {
+    text-anchor: middle;
+    font-size: 18px;
+    fill: #333;
+  }
+
+  g.classGroup text {
+    fill: #999;
+    stroke: none;
+    font-family: 'trebuchet ms', verdana, arial;
+    font-size: 10px;
+  }
+
+  g.classGroup rect {
+    fill: #eee;
+    stroke: #999;
+  }
+
+  g.classGroup line {
+    stroke: #999;
+    stroke-width: 1;
+  }
+
+  .classLabel .box {
+    stroke: none;
+    stroke-width: 0;
+    fill: #eee;
+    opacity: 0.5;
+  }
+
+  .classLabel .label {
+    fill: #999;
+    font-size: 10px;
+  }
+
+  .relation {
+    stroke: #999;
+    stroke-width: 1;
+    fill: none;
+  }
+
+  #compositionStart {
+    fill: #999;
+    stroke: #999;
+    stroke-width: 1;
+  }
+
+  #compositionEnd {
+    fill: #999;
+    stroke: #999;
+    stroke-width: 1;
+  }
+
+  #aggregationStart {
+    fill: #eee;
+    stroke: #999;
+    stroke-width: 1;
+  }
+
+  #aggregationEnd {
+    fill: #eee;
+    stroke: #999;
+    stroke-width: 1;
+  }
+
+  #dependencyStart {
+    fill: #999;
+    stroke: #999;
+    stroke-width: 1;
+  }
+
+  #dependencyEnd {
+    fill: #999;
+    stroke: #999;
+    stroke-width: 1;
+  }
+
+  #extensionStart {
+    fill: #999;
+    stroke: #999;
+    stroke-width: 1;
+  }
+
+  #extensionEnd {
+    fill: #999;
+    stroke: #999;
+    stroke-width: 1;
+  }
+
+  .commit-id,
+  .commit-msg,
+  .branch-label {
+    fill: lightgrey;
+    color: lightgrey;
+  }
+}
+
+.app--dark .mermaid {
+
+  /* Flowchart variables */
+  /* Sequence Diagram variables */
+  /* Gantt chart variables */
+  .label {
+    color: #323D47;
+  }
+
+  .node rect,
+  .node circle,
+  .node ellipse,
+  .node polygon {
+    fill: #BDD5EA;
+    stroke: purple;
+    stroke-width: 1px;
+  }
+
+  .node.clickable {
+    cursor: pointer;
+  }
+
+  .arrowheadPath {
+    fill: lightgrey;
+  }
+
+  .edgePath .path {
+    stroke: lightgrey;
+    stroke-width: 1.5px;
+  }
+
+  .edgeLabel {
+    background-color: #e8e8e8;
+  }
+
+  .cluster rect {
+    fill: #6D6D65 !important;
+    stroke: rgba(255, 255, 255, 0.25) !important;
+    stroke-width: 1px !important;
+  }
+
+  .cluster text {
+    fill: #F9FFFE;
+  }
+
+  div.mermaidTooltip {
+    position: absolute;
+    text-align: center;
+    max-width: 200px;
+    padding: 2px;
+    font-family: 'trebuchet ms', verdana, arial;
+    font-size: 12px;
+    background: #6D6D65;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 2px;
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  .actor {
+    stroke: #81B1DB;
+    fill: #BDD5EA;
+  }
+
+  text.actor {
+    fill: black;
+    stroke: none;
+  }
+
+  .actor-line {
+    stroke: lightgrey;
+  }
+
+  .messageLine0 {
+    stroke-width: 1.5;
+    stroke-dasharray: '2 2';
+    marker-end: 'url(#arrowhead)';
+    stroke: lightgrey;
+  }
+
+  .messageLine1 {
+    stroke-width: 1.5;
+    stroke-dasharray: '2 2';
+    stroke: lightgrey;
+  }
+
+  #arrowhead {
+    fill: lightgrey;
+  }
+
+  #crosshead path {
+    fill: lightgrey !important;
+    stroke: lightgrey !important;
+  }
+
+  .messageText {
+    fill: lightgrey;
+    stroke: none;
+  }
+
+  .labelBox {
+    stroke: #81B1DB;
+    fill: #BDD5EA;
+  }
+
+  .labelText {
+    fill: lightgrey;
+    stroke: none;
+  }
+
+  .loopText {
+    fill: lightgrey;
+    stroke: none;
+  }
+
+  .loopLine {
+    stroke-width: 2;
+    stroke-dasharray: '2 2';
+    marker-end: 'url(#arrowhead)';
+    stroke: #81B1DB;
+  }
+
+  .note {
+    stroke: rgba(255, 255, 255, 0.25);
+    fill: #fff5ad;
+  }
+
+  .noteText {
+    fill: black;
+    stroke: none;
+    font-family: 'trebuchet ms', verdana, arial;
+    font-size: 14px;
+  }
+
+  /** Section styling */
+  .section {
+    stroke: none;
+    opacity: 0.2;
+  }
+
+  .section0 {
+    fill: rgba(255, 255, 255, 0.3);
+  }
+
+  .section2 {
+    fill: #EAE8B9;
+  }
+
+  .section1,
+  .section3 {
+    fill: white;
+    opacity: 0.2;
+  }
+
+  .sectionTitle0 {
+    fill: #F9FFFE;
+  }
+
+  .sectionTitle1 {
+    fill: #F9FFFE;
+  }
+
+  .sectionTitle2 {
+    fill: #F9FFFE;
+  }
+
+  .sectionTitle3 {
+    fill: #F9FFFE;
+  }
+
+  .sectionTitle {
+    text-anchor: start;
+    font-size: 11px;
+  }
+
+  /* Grid and axis */
+  .grid .tick {
+    stroke: lightgrey;
+    opacity: 0.3;
+    shape-rendering: crispEdges;
+  }
+
+  .grid path {
+    stroke-width: 0;
+  }
+
+  /* Today line */
+  .today {
+    fill: none;
+    stroke: #DB5757;
+    stroke-width: 2px;
+  }
+
+  /* Task styling */
+  /* Default task */
+  .task {
+    stroke-width: 2;
+  }
+
+  .taskText {
+    text-anchor: middle;
+    font-size: 11px;
+  }
+
+  .taskTextOutsideRight {
+    fill: #323D47;
+    text-anchor: start;
+    font-size: 11px;
+  }
+
+  .taskTextOutsideLeft {
+    fill: #323D47;
+    text-anchor: end;
+    font-size: 11px;
+  }
+
+  /* Specific task settings for the sections*/
+  .taskText0,
+  .taskText1,
+  .taskText2,
+  .taskText3 {
+    fill: #323D47;
+  }
+
+  .task0,
+  .task1,
+  .task2,
+  .task3 {
+    fill: #BDD5EA;
+    stroke: rgba(255, 255, 255, 0.5);
+  }
+
+  .taskTextOutside0,
+  .taskTextOutside2 {
+    fill: lightgrey;
+  }
+
+  .taskTextOutside1,
+  .taskTextOutside3 {
+    fill: lightgrey;
+  }
+
+  /* Active task */
+  .active0,
+  .active1,
+  .active2,
+  .active3 {
+    fill: #81B1DB;
+    stroke: rgba(255, 255, 255, 0.5);
+  }
+
+  .activeText0,
+  .activeText1,
+  .activeText2,
+  .activeText3 {
+    fill: #323D47 !important;
+  }
+
+  /* Completed task */
+  .done0,
+  .done1,
+  .done2,
+  .done3 {
+    stroke: grey;
+    fill: lightgrey;
+    stroke-width: 2;
+  }
+
+  .doneText0,
+  .doneText1,
+  .doneText2,
+  .doneText3 {
+    fill: #323D47 !important;
+  }
+
+  /* Tasks on the critical line */
+  .crit0,
+  .crit1,
+  .crit2,
+  .crit3 {
+    stroke: #E83737;
+    fill: #E83737;
+    stroke-width: 2;
+  }
+
+  .activeCrit0,
+  .activeCrit1,
+  .activeCrit2,
+  .activeCrit3 {
+    stroke: #E83737;
+    fill: #81B1DB;
+    stroke-width: 2;
+  }
+
+  .doneCrit0,
+  .doneCrit1,
+  .doneCrit2,
+  .doneCrit3 {
+    stroke: #E83737;
+    fill: lightgrey;
+    stroke-width: 2;
+    cursor: pointer;
+    shape-rendering: crispEdges;
+  }
+
+  .doneCritText0,
+  .doneCritText1,
+  .doneCritText2,
+  .doneCritText3 {
+    fill: #323D47 !important;
+  }
+
+  .activeCritText0,
+  .activeCritText1,
+  .activeCritText2,
+  .activeCritText3 {
+    fill: #323D47 !important;
+  }
+
+  .titleText {
+    text-anchor: middle;
+    font-size: 18px;
+    fill: #323D47;
+  }
+
+  g.classGroup text {
+    fill: purple;
+    stroke: none;
+    font-family: 'trebuchet ms', verdana, arial;
+    font-size: 10px;
+  }
+
+  g.classGroup rect {
+    fill: #BDD5EA;
+    stroke: purple;
+  }
+
+  g.classGroup line {
+    stroke: purple;
+    stroke-width: 1;
+  }
+
+  .classLabel .box {
+    stroke: none;
+    stroke-width: 0;
+    fill: #BDD5EA;
+    opacity: 0.5;
+  }
+
+  .classLabel .label {
+    fill: purple;
+    font-size: 10px;
+  }
+
+  .relation {
+    stroke: purple;
+    stroke-width: 1;
+    fill: none;
+  }
+
+  #compositionStart {
+    fill: purple;
+    stroke: purple;
+    stroke-width: 1;
+  }
+
+  #compositionEnd {
+    fill: purple;
+    stroke: purple;
+    stroke-width: 1;
+  }
+
+  #aggregationStart {
+    fill: #BDD5EA;
+    stroke: purple;
+    stroke-width: 1;
+  }
+
+  #aggregationEnd {
+    fill: #BDD5EA;
+    stroke: purple;
+    stroke-width: 1;
+  }
+
+  #dependencyStart {
+    fill: purple;
+    stroke: purple;
+    stroke-width: 1;
+  }
+
+  #dependencyEnd {
+    fill: purple;
+    stroke: purple;
+    stroke-width: 1;
+  }
+
+  #extensionStart {
+    fill: purple;
+    stroke: purple;
+    stroke-width: 1;
+  }
+
+  #extensionEnd {
+    fill: purple;
+    stroke: purple;
+    stroke-width: 1;
+  }
+
+  .commit-id,
+  .commit-msg,
+  .branch-label {
+    fill: lightgrey;
+    color: lightgrey;
+  }
+}

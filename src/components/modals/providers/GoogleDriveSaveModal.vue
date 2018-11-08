@@ -4,7 +4,7 @@
       <div class="modal__image">
         <icon-provider provider-id="googleDrive"></icon-provider>
       </div>
-      <p>This will save <b>{{currentFileName}}</b> to your <b>Google Drive</b> account and keep it synchronized.</p>
+      <p>Save <b>{{currentFileName}}</b> to your <b>Google Drive</b> account and keep it synced.</p>
       <form-entry label="Folder ID" info="optional">
         <input slot="field" class="textfield" type="text" v-model.trim="folderId" @keydown.enter="resolve()">
         <div class="form-entry__info">
@@ -23,7 +23,7 @@
     </div>
     <div class="modal__button-bar">
       <button class="button" @click="config.reject()">Cancel</button>
-      <button class="button" @click="resolve()">Ok</button>
+      <button class="button button--resolve" @click="resolve()">Ok</button>
     </div>
   </modal-inner>
 </template>
@@ -32,6 +32,7 @@
 import googleHelper from '../../../services/providers/helpers/googleHelper';
 import googleDriveProvider from '../../../services/providers/googleDriveProvider';
 import modalTemplate from '../common/modalTemplate';
+import store from '../../../store';
 
 export default modalTemplate({
   data: () => ({
@@ -42,19 +43,25 @@ export default modalTemplate({
   },
   methods: {
     openFolder() {
-      return this.$store.dispatch(
+      return store.dispatch(
         'modal/hideUntil',
         googleHelper.openPicker(this.config.token, 'folder')
           .then((folders) => {
-            this.$store.dispatch('data/patchLocalSettings', {
-              googleDriveFolderId: folders[0].id,
-            });
-          }));
+            if (folders[0]) {
+              store.dispatch('data/patchLocalSettings', {
+                googleDriveFolderId: folders[0].id,
+              });
+            }
+          }),
+      );
     },
     resolve() {
       // Return new location
       const location = googleDriveProvider.makeLocation(
-        this.config.token, this.fileId, this.folderId);
+        this.config.token,
+        this.fileId,
+        this.folderId,
+      );
       this.config.resolve(location);
     },
   },

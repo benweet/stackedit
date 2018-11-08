@@ -1,9 +1,9 @@
 <template>
-  <div class="comment comment--new" @keydown.esc="cancelNewComment">
+  <div class="comment comment--new" @keydown.esc.stop="cancelNewComment">
     <div class="comment__header flex flex--row flex--space-between flex--align-center">
       <div class="comment__user flex flex--row flex--align-center">
         <div class="comment__user-image">
-          <user-image :user-id="loginToken.sub"></user-image>
+          <user-image :user-id="userId"></user-image>
         </div>
         <span class="user-name">{{loginToken.name}}</span>
       </div>
@@ -24,18 +24,25 @@
 import { mapGetters, mapMutations, mapActions } from 'vuex';
 import Prism from 'prismjs';
 import UserImage from '../UserImage';
-import cledit from '../../services/cledit';
+import cledit from '../../services/editor/cledit';
 import editorSvc from '../../services/editorSvc';
 import markdownConversionSvc from '../../services/markdownConversionSvc';
 import utils from '../../services/utils';
+import userSvc from '../../services/userSvc';
+import store from '../../store';
 
 export default {
   components: {
     UserImage,
   },
-  computed: mapGetters('workspace', [
-    'loginToken',
-  ]),
+  computed: {
+    ...mapGetters('workspace', [
+      'loginToken',
+    ]),
+    userId() {
+      return userSvc.getCurrentUserId();
+    },
+  },
   methods: {
     ...mapMutations('discussion', [
       'setNewCommentFocus',
@@ -44,35 +51,35 @@ export default {
       'cancelNewComment',
     ]),
     addComment() {
-      const text = this.$store.state.discussion.newCommentText.trim();
+      const text = store.state.discussion.newCommentText.trim();
       if (text.length) {
         if (text.length > 2000) {
-          this.$store.dispatch('notification/error', 'Comment is too long.');
+          store.dispatch('notification/error', 'Comment is too long.');
         } else {
           // Create comment
-          const discussionId = this.$store.state.discussion.currentDiscussionId;
+          const discussionId = store.state.discussion.currentDiscussionId;
           const comment = {
             discussionId,
-            sub: this.loginToken.sub,
+            sub: this.userId,
             text,
             created: Date.now(),
           };
           const patch = {
             comments: {
-              ...this.$store.getters['content/current'].comments,
+              ...store.getters['content/current'].comments,
               [utils.uid()]: comment,
             },
           };
           // Create discussion
-          if (discussionId === this.$store.state.discussion.newDiscussionId) {
+          if (discussionId === store.state.discussion.newDiscussionId) {
             patch.discussions = {
-              ...this.$store.getters['content/current'].discussions,
-              [discussionId]: this.$store.getters['discussion/newDiscussion'],
+              ...store.getters['content/current'].discussions,
+              [discussionId]: store.getters['discussion/newDiscussion'],
             };
           }
-          this.$store.dispatch('content/patchCurrent', patch);
-          this.$store.commit('discussion/setNewCommentText');
-          this.$store.commit('discussion/setIsCommenting');
+          store.dispatch('content/patchCurrent', patch);
+          store.commit('discussion/setNewCommentText');
+          store.commit('discussion/setIsCommenting');
         }
       }
     },
@@ -83,42 +90,44 @@ export default {
     const clEditor = cledit(preElt, scrollerElt, true);
     clEditor.init({
       sectionHighlighter: section => Prism.highlight(
-        section.text, editorSvc.prismGrammars[section.data]),
-      sectionParser: text => markdownConversionSvc.parseSections(
-        editorSvc.converter, text).sections,
-      content: this.$store.state.discussion.newCommentText,
-      selectionStart: this.$store.state.discussion.newCommentSelection.start,
-      selectionEnd: this.$store.state.discussion.newCommentSelection.end,
+        section.text,
+        editorSvc.prismGrammars[section.data],
+      ),
+      sectionParser: text => markdownConversionSvc
+        .parseSections(editorSvc.converter, text).sections,
+      content: store.state.discussion.newCommentText,
+      selectionStart: store.state.discussion.newCommentSelection.start,
+      selectionEnd: store.state.discussion.newCommentSelection.end,
       getCursorFocusRatio: () => 0.2,
     });
     clEditor.on('focus', () => this.setNewCommentFocus(true));
 
     // Save typed content and selection
     clEditor.on('contentChanged', value =>
-      this.$store.commit('discussion/setNewCommentText', value));
+      store.commit('discussion/setNewCommentText', value));
     clEditor.selectionMgr.on('selectionChanged', (start, end) =>
-      this.$store.commit('discussion/setNewCommentSelection', {
+      store.commit('discussion/setNewCommentSelection', {
         start, end,
       }));
 
     const isSticky = this.$el.parentNode.classList.contains('sticky-comment');
-    const isVisible = () => isSticky || this.$store.state.discussion.stickyComment === null;
+    const isVisible = () => isSticky || store.state.discussion.stickyComment === null;
 
     this.$watch(
-      () => this.$store.state.discussion.currentDiscussionId,
+      () => store.state.discussion.currentDiscussionId,
       () => this.$nextTick(() => {
-        if (isVisible() && this.$store.state.discussion.newCommentFocus) {
+        if (isVisible() && store.state.discussion.newCommentFocus) {
           clEditor.focus();
         }
       }),
-      { immediate: true });
+      { immediate: true },
+    );
 
     if (isSticky) {
       let scrollerMirrorElt;
       const getScrollerMirrorElt = () => {
         if (!scrollerMirrorElt) {
-          scrollerMirrorElt = document.querySelector(
-            '.comment-list .comment--new .comment__text-inner');
+          scrollerMirrorElt = document.querySelector('.comment-list .comment--new .comment__text-inner');
         }
         return scrollerMirrorElt || { scrollTop: 0 };
       };
@@ -134,11 +143,11 @@ export default {
         (visible) => {
           clEditor.toggleEditable(visible);
           if (visible) {
-            const text = this.$store.state.discussion.newCommentText;
+            const text = store.state.discussion.newCommentText;
             clEditor.setContent(text);
-            const selection = this.$store.state.discussion.newCommentSelection;
+            const selection = store.state.discussion.newCommentSelection;
             clEditor.selectionMgr.setSelectionStartEnd(selection.start, selection.end);
-            if (this.$store.state.discussion.newCommentFocus) {
+            if (store.state.discussion.newCommentFocus) {
               clEditor.focus();
             }
           }
@@ -146,8 +155,8 @@ export default {
         { immediate: true },
       );
       this.$watch(
-        () => this.$store.state.discussion.newCommentText,
-          newCommentText => clEditor.setContent(newCommentText),
+        () => store.state.discussion.newCommentText,
+        newCommentText => clEditor.setContent(newCommentText),
       );
     }
   },

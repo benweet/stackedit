@@ -4,20 +4,20 @@
       <div class="modal__image">
         <icon-provider provider-id="couchdb"></icon-provider>
       </div>
-      <p>This will create a workspace synchronized with a <b>CouchDB</b> database.</p>
+      <p>Create a workspace synced with a <b>CouchDB</b> database.</p>
       <form-entry label="Database URL" error="dbUrl">
         <input slot="field" class="textfield" type="text" v-model.trim="dbUrl" @keydown.enter="resolve()">
         <div class="form-entry__info">
           <b>Example:</b> https://instance.smileupps.com/stackedit-workspace
         </div>
         <div class="form-entry__actions">
-          <a href="https://community.stackedit.io/t/couchdb-workspace-setup/" target="_blank">More info</a>
+          <a href="https://community.stackedit.io/t/couchdb-workspace-setup/" target="_blank">How to setup?</a>
         </div>
       </form-entry>
     </div>
     <div class="modal__button-bar">
       <button class="button" @click="config.reject()">Cancel</button>
-      <button class="button" @click="resolve()">Ok</button>
+      <button class="button button--resolve" @click="resolve()">Ok</button>
     </div>
   </modal-inner>
 </template>

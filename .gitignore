@@ -3,9 +3,11 @@ node_modules/
 dist/
 .history
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 .vscode
 stackedit_v4
 chrome-app/*.zip
+<<<<<<< HEAD
 config/
+=======
+/test/unit/coverage/
+>>>>>>> daadae17205aec63148a392f8e6ef30ff9922e87

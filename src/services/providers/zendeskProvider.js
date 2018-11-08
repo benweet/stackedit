@@ -1,35 +1,33 @@
 import store from '../../store';
 import zendeskHelper from './helpers/zendeskHelper';
-import providerRegistry from './providerRegistry';
+import Provider from './common/Provider';
 
-export default providerRegistry.register({
+export default new Provider({
   id: 'zendesk',
-  getToken(location) {
-    return store.getters['data/zendeskTokens'][location.sub];
+  name: 'Zendesk',
+  getToken({ sub }) {
+    return store.getters['data/zendeskTokensBySub'][sub];
   },
-  getUrl(location) {
-    const token = this.getToken(location);
-    return `https://${token.subdomain}.zendesk.com/hc/${location.locale}/articles/${location.articleId}`;
+  getLocationUrl({ sub, locale, articleId }) {
+    const token = this.getToken({ sub });
+    return `https://${token.subdomain}.zendesk.com/hc/${locale}/articles/${articleId}`;
   },
-  getDescription(location) {
-    const token = this.getToken(location);
-    return `${location.articleId} — ${token.name} — ${token.subdomain}`;
+  getLocationDescription({ articleId }) {
+    return articleId;
   },
-  publish(token, html, metadata, publishLocation) {
-    return zendeskHelper.uploadArticle(
+  async publish(token, html, metadata, publishLocation) {
+    const articleId = await zendeskHelper.uploadArticle({
+      ...publishLocation,
       token,
-      publishLocation.sectionId,
-      publishLocation.articleId,
-      metadata.title,
-      html,
-      metadata.tags,
-      publishLocation.locale,
-      metadata.status === 'draft',
-    )
-      .then(articleId => ({
-        ...publishLocation,
-        articleId,
-      }));
+      title: metadata.title,
+      content: html,
+      labels: metadata.tags,
+      isDraft: metadata.status === 'draft',
+    });
+    return {
+      ...publishLocation,
+      articleId,
+    };
   },
   makeLocation(token, sectionId, locale, articleId) {
     const location = {

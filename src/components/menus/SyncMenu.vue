@@ -1,7 +1,7 @@
 <template>
   <div class="side-bar__panel side-bar__panel--menu">
     <div class="side-bar__info" v-if="isCurrentTemp">
-      <p><b>{{currentFileName}}</b> can not be synchronized as it's a temporary file.</p>
+      <p><b>{{currentFileName}}</b> can not be synced as it's a temporary file.</p>
     </div>
     <div v-else>
       <div class="side-bar__info" v-if="noToken">
@@ -16,23 +16,11 @@
         </menu-entry>
         <menu-entry @click.native="manageSync">
           <icon-view-list slot="icon"></icon-view-list>
-          <div>File synchronization</div>
+          <div><div class="menu-entry__label menu-entry__label--count">{{locationCount}}</div> File synchronization</div>
           <span>Manage current file synchronized locations.</span>
         </menu-entry>
       </div>
       <hr>
-      <div v-for="token in googleDriveTokens" :key="token.sub">
-        <menu-entry @click.native="openGoogleDrive(token)">
-          <icon-provider slot="icon" provider-id="googleDrive"></icon-provider>
-          <div>Open from Google Drive</div>
-          <span>{{token.name}}</span>
-        </menu-entry>
-        <menu-entry @click.native="saveGoogleDrive(token)">
-          <icon-provider slot="icon" provider-id="googleDrive"></icon-provider>
-          <div>Save on Google Drive</div>
-          <span>{{token.name}}</span>
-        </menu-entry>
-      </div>
       <div v-for="token in dropboxTokens" :key="token.sub">
         <menu-entry @click.native="openDropbox(token)">
           <icon-provider slot="icon" provider-id="dropbox"></icon-provider>
@@ -62,11 +50,31 @@
           <span>{{token.name}}</span>
         </menu-entry>
       </div>
+      <div v-for="token in gitlabTokens" :key="token.sub">
+        <menu-entry @click.native="openGitlab(token)">
+          <icon-provider slot="icon" provider-id="gitlab"></icon-provider>
+          <div>Open from GitLab</div>
+          <span>{{token.name}}</span>
+        </menu-entry>
+        <menu-entry @click.native="saveGitlab(token)">
+          <icon-provider slot="icon" provider-id="gitlab"></icon-provider>
+          <div>Save on GitLab</div>
+          <span>{{token.name}}</span>
+        </menu-entry>
+      </div>
+      <div v-for="token in googleDriveTokens" :key="token.sub">
+        <menu-entry @click.native="openGoogleDrive(token)">
+          <icon-provider slot="icon" provider-id="googleDrive"></icon-provider>
+          <div>Open from Google Drive</div>
+          <span>{{token.name}}</span>
+        </menu-entry>
+        <menu-entry @click.native="saveGoogleDrive(token)">
+          <icon-provider slot="icon" provider-id="googleDrive"></icon-provider>
+          <div>Save on Google Drive</div>
+          <span>{{token.name}}</span>
+        </menu-entry>
+      </div>
       <hr>
-      <menu-entry @click.native="addGoogleDriveAccount">
-        <icon-provider slot="icon" provider-id="googleDrive"></icon-provider>
-        <span>Add Google Drive account</span>
-      </menu-entry>
       <menu-entry @click.native="addDropboxAccount">
         <icon-provider slot="icon" provider-id="dropbox"></icon-provider>
         <span>Add Dropbox account</span>
@@ -74,6 +82,14 @@
       <menu-entry @click.native="addGithubAccount">
         <icon-provider slot="icon" provider-id="github"></icon-provider>
         <span>Add GitHub account</span>
+      </menu-entry>
+      <menu-entry @click.native="addGitlabAccount">
+        <icon-provider slot="icon" provider-id="gitlab"></icon-provider>
+        <span>Add GitLab account</span>
+      </menu-entry>
+      <menu-entry @click.native="addGoogleDriveAccount">
+        <icon-provider slot="icon" provider-id="googleDrive"></icon-provider>
+        <span>Add Google Drive account</span>
       </menu-entry>
     </div>
   </div>
@@ -85,14 +101,15 @@ import MenuEntry from './common/MenuEntry';
 import googleHelper from '../../services/providers/helpers/googleHelper';
 import dropboxHelper from '../../services/providers/helpers/dropboxHelper';
 import githubHelper from '../../services/providers/helpers/githubHelper';
+import gitlabHelper from '../../services/providers/helpers/gitlabHelper';
 import googleDriveProvider from '../../services/providers/googleDriveProvider';
 import dropboxProvider from '../../services/providers/dropboxProvider';
 import githubProvider from '../../services/providers/githubProvider';
+import gitlabProvider from '../../services/providers/gitlabProvider';
 import syncSvc from '../../services/syncSvc';
 import store from '../../store';
 
-const tokensToArray = (tokens, filter = () => true) => Object.keys(tokens)
-  .map(sub => tokens[sub])
+const tokensToArray = (tokens, filter = () => true) => Object.values(tokens)
   .filter(token => filter(token))
   .sort((token1, token2) => token1.name.localeCompare(token2.name));
 
@@ -116,19 +133,25 @@ export default {
       'isCurrentTemp',
     ]),
     ...mapGetters('syncLocation', {
-      syncLocations: 'current',
+      syncLocations: 'currentWithWorkspaceSyncLocation',
     }),
-    currentFileName() {
-      return this.$store.getters['file/current'].name;
+    locationCount() {
+      return Object.keys(this.syncLocations).length;
     },
-    googleDriveTokens() {
-      return tokensToArray(this.$store.getters['data/googleTokens'], token => token.isDrive);
+    currentFileName() {
+      return store.getters['file/current'].name;
     },
     dropboxTokens() {
-      return tokensToArray(this.$store.getters['data/dropboxTokens']);
+      return tokensToArray(store.getters['data/dropboxTokensBySub']);
     },
     githubTokens() {
-      return tokensToArray(this.$store.getters['data/githubTokens']);
+      return tokensToArray(store.getters['data/githubTokensBySub']);
+    },
+    gitlabTokens() {
+      return tokensToArray(store.getters['data/gitlabTokensBySub']);
+    },
+    googleDriveTokens() {
+      return tokensToArray(store.getters['data/googleTokensBySub'], token => token.isDrive);
     },
     noToken() {
       return !this.googleDriveTokens.length
@@ -142,63 +165,97 @@ export default {
         syncSvc.requestSync();
       }
     },
-    manageSync() {
-      return this.$store.dispatch('modal/open', 'syncManagement');
+    async manageSync() {
+      try {
+        await store.dispatch('modal/open', 'syncManagement');
+      } catch (e) { /* cancel */ }
     },
-    addGoogleDriveAccount() {
-      return this.$store.dispatch('modal/open', {
-        type: 'googleDriveAccount',
-        onResolve: () => googleHelper.addDriveAccount(!store.getters['data/localSettings'].googleDriveRestrictedAccess),
-      })
-        .catch(() => {}); // Cancel
+    async addDropboxAccount() {
+      try {
+        await store.dispatch('modal/open', { type: 'dropboxAccount' });
+        await dropboxHelper.addAccount(!store.getters['data/localSettings'].dropboxRestrictedAccess);
+      } catch (e) { /* cancel */ }
     },
-    addDropboxAccount() {
-      return this.$store.dispatch('modal/open', {
-        type: 'dropboxAccount',
-        onResolve: () => dropboxHelper.addAccount(!store.getters['data/localSettings'].dropboxRestrictedAccess),
-      })
-        .catch(() => {}); // Cancel
+    async addGithubAccount() {
+      try {
+        await store.dispatch('modal/open', { type: 'githubAccount' });
+        await githubHelper.addAccount(store.getters['data/localSettings'].githubRepoFullAccess);
+      } catch (e) { /* cancel */ }
     },
-    addGithubAccount() {
-      return this.$store.dispatch('modal/open', {
-        type: 'githubAccount',
-        onResolve: () => githubHelper.addAccount(store.getters['data/localSettings'].githubRepoFullAccess),
-      })
-        .catch(() => {}); // Cancel
+    async addGitlabAccount() {
+      try {
+        const { serverUrl, applicationId } = await store.dispatch('modal/open', { type: 'gitlabAccount' });
+        await gitlabHelper.addAccount(serverUrl, applicationId);
+      } catch (e) { /* cancel */ }
     },
-    openGoogleDrive(token) {
-      return googleHelper.openPicker(token, 'doc')
-        .then(files => this.$store.dispatch('queue/enqueue',
-          () => googleDriveProvider.openFiles(token, files)));
+    async addGoogleDriveAccount() {
+      try {
+        await store.dispatch('modal/open', { type: 'googleDriveAccount' });
+        await googleHelper.addDriveAccount(!store.getters['data/localSettings'].googleDriveRestrictedAccess);
+      } catch (e) { /* cancel */ }
     },
-    openDropbox(token) {
-      return dropboxHelper.openChooser(token)
-        .then(paths => this.$store.dispatch('queue/enqueue',
-          () => dropboxProvider.openFiles(token, paths)));
+    async openGoogleDrive(token) {
+      const files = await googleHelper.openPicker(token, 'doc');
+      store.dispatch(
+        'queue/enqueue',
+        () => googleDriveProvider.openFiles(token, files),
+      );
     },
-    saveGoogleDrive(token) {
-      return openSyncModal(token, 'googleDriveSave')
-        .catch(() => {}); // Cancel
+    async openDropbox(token) {
+      const paths = await dropboxHelper.openChooser(token);
+      store.dispatch(
+        'queue/enqueue',
+        () => dropboxProvider.openFiles(token, paths),
+      );
     },
-    saveDropbox(token) {
-      return openSyncModal(token, 'dropboxSave')
-        .catch(() => {}); // Cancel
+    async saveGoogleDrive(token) {
+      try {
+        await openSyncModal(token, 'googleDriveSave');
+      } catch (e) { /* cancel */ }
     },
-    openGithub(token) {
-      return store.dispatch('modal/open', {
-        type: 'githubOpen',
-        token,
-      })
-        .then(syncLocation => this.$store.dispatch('queue/enqueue',
-          () => githubProvider.openFile(token, syncLocation)));
+    async saveDropbox(token) {
+      try {
+        await openSyncModal(token, 'dropboxSave');
+      } catch (e) { /* cancel */ }
     },
-    saveGithub(token) {
-      return openSyncModal(token, 'githubSave')
-        .catch(() => {}); // Cancel
+    async openGithub(token) {
+      try {
+        const syncLocation = await store.dispatch('modal/open', {
+          type: 'githubOpen',
+          token,
+        });
+        store.dispatch(
+          'queue/enqueue',
+          () => githubProvider.openFile(token, syncLocation),
+        );
+      } catch (e) { /* cancel */ }
     },
-    saveGist(token) {
-      return openSyncModal(token, 'gistSync')
-        .catch(() => {}); // Cancel
+    async saveGithub(token) {
+      try {
+        await openSyncModal(token, 'githubSave');
+      } catch (e) { /* cancel */ }
+    },
+    async saveGist(token) {
+      try {
+        await openSyncModal(token, 'gistSync');
+      } catch (e) { /* cancel */ }
+    },
+    async openGitlab(token) {
+      try {
+        const syncLocation = await store.dispatch('modal/open', {
+          type: 'gitlabOpen',
+          token,
+        });
+        store.dispatch(
+          'queue/enqueue',
+          () => gitlabProvider.openFile(token, syncLocation),
+        );
+      } catch (e) { /* cancel */ }
+    },
+    async saveGitlab(token) {
+      try {
+        await openSyncModal(token, 'gitlabSave');
+      } catch (e) { /* cancel */ }
     },
   },
 };

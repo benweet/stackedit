@@ -1,0 +1,281 @@
+@import '../../node_modules/normalize-scss/sass/normalize';
+@import './variables';
+
+@include normalize();
+
+html,
+body {
+  color: $body-color-light;
+  font-size: 16px;
+  font-family: $font-family-main;
+  font-variant-ligatures: common-ligatures;
+  line-height: $line-height-base;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.app--dark .layout__panel--editor,
+.app--dark .layout__panel--preview {
+  color: $body-color-dark;
+}
+
+p,
+blockquote,
+pre,
+ul,
+ol,
+dl {
+  margin: 1.2em 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 1.8em 0;
+  line-height: $line-height-title;
+}
+
+h1,
+h2 {
+  &::after {
+    content: '';
+    display: block;
+    position: relative;
+    top: 0.33em;
+    border-bottom: 1px solid $hr-color;
+  }
+}
+
+ol ul,
+ul ol,
+ul ul,
+ol ol {
+  margin: 0;
+}
+
+dt {
+  font-weight: bold;
+}
+
+a {
+  color: $link-color;
+  text-decoration: underline;
+  text-decoration-skip: ink;
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+}
+
+code,
+pre,
+samp {
+  font-family: $font-family-monospace;
+  font-size: $font-size-monospace;
+
+  * {
+    font-size: inherit;
+  }
+}
+
+blockquote {
+  color: rgba(0, 0, 0, 0.5);
+  padding-left: 1.5em;
+  border-left: 5px solid rgba(0, 0, 0, 0.1);
+
+  .app--dark .layout__panel--editor &,
+  .app--dark .layout__panel--preview & {
+    color: rgba(255, 255, 255, 0.4);
+    border-left-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+code {
+  background-color: $code-bg;
+  border-radius: $border-radius-base;
+  padding: 2px 4px;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid $hr-color;
+  margin: 2em 0;
+}
+
+pre > code {
+  background-color: $code-bg;
+  display: block;
+  padding: 0.5em;
+  -webkit-text-size-adjust: none;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.toc ul {
+  list-style-type: none;
+  padding-left: 20px;
+}
+
+table {
+  background-color: transparent;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+td,
+th {
+  border-right: 1px solid #dcdcdc;
+  padding: 8px 12px;
+
+  &:last-child {
+    border-right: 0;
+  }
+}
+
+td {
+  border-top: 1px solid #dcdcdc;
+}
+
+mark {
+  background-color: #f8f840;
+}
+
+kbd {
+  font-family: $font-family-main;
+  background-color: #fff;
+  border: 1px solid rgba(63, 63, 63, 0.25);
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(63, 63, 63, 0.25);
+  color: #333;
+  display: inline-block;
+  font-size: 0.8em;
+  margin: 0 0.1em;
+  padding: 0.1em 0.6em;
+  white-space: nowrap;
+}
+
+abbr {
+  &[title] {
+    border-bottom: 1px dotted #777;
+    cursor: help;
+  }
+}
+
+img {
+  max-width: 100%;
+}
+
+.task-list-item {
+  list-style-type: none;
+}
+
+.task-list-item-checkbox {
+  margin: 0 0.2em 0 -1.3em;
+}
+
+.footnote {
+  font-size: 0.8em;
+  position: relative;
+  top: -0.25em;
+  vertical-align: top;
+}
+
+.page-break-after {
+  page-break-after: always;
+}
+
+.abc-notation-block {
+  overflow-x: auto !important;
+}
+
+.stackedit__html {
+  margin-bottom: 180px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 30px;
+  padding-right: 30px;
+  max-width: 750px;
+}
+
+.stackedit__toc {
+  ul {
+    padding: 0;
+
+    a {
+      margin: 0.5rem 0;
+      padding: 0.5rem 1rem;
+    }
+
+    ul {
+      color: #888;
+      font-size: 0.9em;
+
+      a {
+        margin: 0;
+        padding: 0.1rem 1rem;
+      }
+    }
+  }
+
+  li {
+    display: block;
+  }
+
+  a {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+
+    &:active,
+    &:focus,
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.075);
+      border-radius: $border-radius-base;
+    }
+  }
+}
+
+.stackedit__left {
+  position: fixed;
+  display: none;
+  width: 250px;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+
+  @media (min-width: 1060px) {
+    display: block;
+  }
+}
+
+.stackedit__right {
+  position: absolute;
+  right: 0;
+  top: 0;
+  left: 0;
+
+  @media (min-width: 1060px) {
+    left: 250px;
+  }
+}
+
+.stackedit--pdf {
+  blockquote {
+    // wkhtmltopdf doesn't like borders with transparency
+    border-left-color: #ececec;
+  }
+
+  .stackedit__html {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: none;
+  }
+}

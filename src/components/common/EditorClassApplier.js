@@ -1,4 +1,4 @@
-import cledit from '../../services/cledit';
+import cledit from '../../services/editor/cledit';
 import editorSvc from '../../services/editorSvc';
 import utils from '../../services/utils';
 
@@ -10,7 +10,9 @@ const nextTickExecCbs = cledit.Utils.debounce(() => {
   }
   if (savedSelection) {
     editorSvc.clEditor.selectionMgr.setSelectionStartEnd(
-      savedSelection.start, savedSelection.end);
+      savedSelection.start,
+      savedSelection.end,
+    );
   }
   savedSelection = null;
 });

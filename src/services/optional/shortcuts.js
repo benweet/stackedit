@@ -23,6 +23,7 @@ const findReplaceOpener = type => () => {
 const methods = {
   bold: pagedownHandler('bold'),
   italic: pagedownHandler('italic'),
+  strikethrough: pagedownHandler('strikethrough'),
   link: pagedownHandler('link'),
   quote: pagedownHandler('quote'),
   code: pagedownHandler('code'),
@@ -45,7 +46,7 @@ const methods = {
     const replacement = `${param2 || ''}`;
     if (text && replacement) {
       setTimeout(() => {
-        const selectionMgr = editorSvc.clEditor.selectionMgr;
+        const { selectionMgr } = editorSvc.clEditor;
         let offset = selectionMgr.selectionStart;
         if (offset === selectionMgr.selectionEnd) {
           const range = selectionMgr.createRange(offset - text.length, offset);
@@ -85,4 +86,5 @@ store.watch(
     });
   }, {
     immediate: true,
-  });
+  },
+);

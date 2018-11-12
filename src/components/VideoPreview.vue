@@ -14,18 +14,16 @@ export default {
   components: {
     videoPlayer,
   },
-  computed: {
-  },
+
   methods: {
     startVideoAtTime(videoUrl, time) {
-      // Do nothing
+      alert(videoUrl, time);
     },
   },
-  mounted() {
-  },
+
 };
 </script>
 
 <style lang="scss">
-.drasl {}
+.drasl { display: block; }
 </style>

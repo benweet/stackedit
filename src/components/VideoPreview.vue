@@ -18,7 +18,7 @@ export default {
   },
   methods: {
     startVideoAtTime(videoUrl, time) {
-
+      // Do nothing
     },
   },
   mounted() {
@@ -27,5 +27,5 @@ export default {
 </script>
 
 <style lang="scss">
-
+.drasl {}
 </style>

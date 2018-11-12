@@ -12,7 +12,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import axios from 'axios';
-
 import editorSvc from '../services/editorSvc';
 
 export default {
@@ -30,9 +29,9 @@ export default {
     },
     getAssets() {
       axios({ method: 'get', url: '/assets' })
-      .then((result) => {
-        this.$store.commit('assets/setAssetList', result.data);
-      });
+        .then((result) => {
+          this.$store.commit('assets/setAssetList', result.data);
+        });
     },
   },
   mounted() {
@@ -42,7 +41,6 @@ export default {
 </script>
 
 <style lang="scss">
-
 .asset__list {
   border-top: 1px solid #ccc;
   overflow-y: scroll;
@@ -71,5 +69,4 @@ li:nth-child(2n) {
   border: none;
   background: #fff;
 }
-
 </style>

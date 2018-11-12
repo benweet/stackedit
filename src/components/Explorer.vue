@@ -35,7 +35,6 @@ import AssetList from './AssetList';
 import explorerSvc from '../services/explorerSvc';
 import store from '../store';
 
-
 export default {
   components: {
     ExplorerNode,
@@ -99,5 +98,4 @@ export default {
     cursor: auto;
   }
 }
-
 </style>

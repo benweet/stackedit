@@ -13,6 +13,7 @@
         <icon-pen></icon-pen>
       </button>
     </div>
+    <video-preview></video-preview>
   </div>
 </template>
 
@@ -22,11 +23,13 @@ import { mapGetters, mapActions } from 'vuex';
 import CommentList from './gutters/CommentList';
 import PreviewNewDiscussionButton from './gutters/PreviewNewDiscussionButton';
 import store from '../store';
+import VideoPreview from './VideoPreview';
 
 const appUri = `${window.location.protocol}//${window.location.host}`;
 
 export default {
   components: {
+    'video-preview': VideoPreview,
     CommentList,
     PreviewNewDiscussionButton,
   },
@@ -54,6 +57,8 @@ export default {
           const wnd = window.open(elt.href, '_blank');
           wnd.focus();
           return;
+        } else if (elt.attributes['data-video'].value) {
+          VideoPreview.startVideoAtTime(elt.attributes['data-video'].value);
         }
         elt = elt.parentNode;
       }

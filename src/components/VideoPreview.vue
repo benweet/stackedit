@@ -1,12 +1,9 @@
 <template>
-
+  <video-player
+    ref="videoPlayer"></video-player>
 </template>
-
 <script>
-import { mapGetters } from 'vuex';
-
-import 'video.js/dist/video-js.css'
-import { videoPlayer } from 'vue-video-player'
+import { videoPlayer } from 'vue-video-player';
 
 export default {
   name: 'video-preview',
@@ -14,13 +11,23 @@ export default {
   components: {
     videoPlayer,
   },
-
-  methods: {
-    startVideoAtTime(videoUrl, time) {
-      alert(videoUrl, time);
+  computed: {
+    player() {
+      return this.$refs.videoPlayer.player;
     },
   },
-
+  methods: {
+    startVideoAtTime(videoUrl, time) {
+      this.playerOptions.sources = [{
+        type: 'application/x-mpegurl',
+        src: videoUrl,
+      },
+      ];
+      if (time) {
+        this.player.seconds(time);
+      }
+    },
+  },
 };
 </script>
 

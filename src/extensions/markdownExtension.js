@@ -1,6 +1,7 @@
 import Prism from 'prismjs';
 import markdownitAbbr from 'markdown-it-abbr';
 import markdownitDeflist from 'markdown-it-deflist';
+import markdownitAttrs from 'markdown-it-attrs';
 import markdownitFootnote from 'markdown-it-footnote';
 import markdownitMark from 'markdown-it-mark';
 import markdownitImgsize from 'markdown-it-imsize';
@@ -108,6 +109,8 @@ extensionSvc.onInitConverter(0, (markdown, options) => {
     markdown.use(markdownitTasklist);
   }
   markdown.use(markdownitAnchor);
+
+  markdown.use(markdownitAttrs);
 
   // Wrap tables into a div for scrolling
   markdown.renderer.rules.table_open = (tokens, idx, opts) =>

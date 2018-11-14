@@ -3,7 +3,7 @@
     <ul>
       <li v-for="item in assetList">
         {{ item.Key }}
-        <button class="asset__add" @click="(key) => { addReference( item.Key ) }" v-title="'Add reference'">+</button>
+        <button class="asset__add" @click="(key) => { addReference( item ) }" v-title="'Add reference'">+</button>
       </li>
     </ul>
   </div>
@@ -24,8 +24,13 @@ export default {
     ...mapGetters('assets', ['assetList']),
   },
   methods: {
-    addReference(referenceKey) {
-      editorSvc.pagedownEditor.uiManager.doAssetReference(referenceKey);
+    addReference(assetReference) {
+      const urlPrefix = 'https://menntamalastofnun-vod.s3.amazonaws.com/assets/HLS/';
+      const escapedSpaces = assetReference.Key.split(' ').join('+');
+      const escapedUnderscores = escapedSpaces.split('_').join('\\_');
+      const url = urlPrefix + escapedUnderscores;
+
+      editorSvc.pagedownEditor.uiManager.doAssetReference(url);
     },
     getAssets() {
       axios({ method: 'get', url: '/assets' })

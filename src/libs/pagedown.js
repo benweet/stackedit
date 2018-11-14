@@ -404,7 +404,6 @@ function UIManager(input, commandManager) {
     inputBox.focus();
     var chunks = state.getChunks()
     let chunk = commandManager.addAssetReference(chunks, assetReference);
-    debugger;
     state.setChunks(chunk);
     state.restore();
   }
@@ -1385,9 +1384,8 @@ commandProto.addAssetReference = function (chunk, asset) {
   if (chunk.before.slice(-1) !== '\n') {
     chunk.before += '\n';
   }
-  chunk.before = chunk.before + ":: [" + asset + "](";
-  chunk.selection = "00:00";
-  chunk.after = ")\n" + chunk.after;
+  chunk.before = chunk.before + "{data-video=\"" + asset + "\"}";
+  chunk.selection = "";
   return chunk;
 }
 

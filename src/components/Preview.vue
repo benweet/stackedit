@@ -185,6 +185,11 @@ $corner-size: 110px;
   }
 }
 
+p[data-video] {
+  cursor: pointer;
+  border: 1px solid #ccc;
+}
+
 .preview__button {
   position: absolute;
   top: 15px;

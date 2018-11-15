@@ -2,7 +2,7 @@
   <div class="asset__list">
     <ul>
       <li v-for="item in assetList">
-        {{ item.Key }}
+        <span @click="(item) => playItem(item)">{{ item.Key }}</span>
         <button class="asset__add" @click="(key) => { addReference( item ) }" v-title="'Add reference'">+</button>
       </li>
     </ul>
@@ -25,15 +25,21 @@ export default {
   },
   methods: {
     addReference(assetReference) {
+      editorSvc.pagedownEditor.uiManager.doAssetReference(this.convertAssetUrl(assetReference.Key));
+    },
+    convertAssetUrl(input) {
       const urlPrefix = 'https://menntamalastofnun-vod.s3.amazonaws.com/assets/HLS/';
-      const escapedSpaces = assetReference.Key.split(' ').join('+');
+      const escapedSpaces = input.split(' ').join('+');
       const escapedUnderscores = escapedSpaces.split('_').join('\\_');
       const parts = escapedUnderscores.split('.');
       parts[parts.length - 1] = 'm3u8';
       const switchExtension = parts.join('.');
-      const url = urlPrefix + switchExtension;
-
-      editorSvc.pagedownEditor.uiManager.doAssetReference(url);
+      return urlPrefix + switchExtension;
+    },
+    playItem(event) {
+      const url = this.convertAssetUrl(event.target.innerHTML);
+      const urlClean = url.split('\\').join('');
+      this.$root.$emit('play_video', urlClean);
     },
     getAssets() {
       axios({ method: 'get', url: '/assets' })
@@ -61,6 +67,10 @@ li {
   margin: 0;
   padding: 0 0.5em;
   font-size: 12px;
+}
+
+.asset__list ul li span {
+  cursor: pointer;
 }
 
 li:nth-child(2n) {

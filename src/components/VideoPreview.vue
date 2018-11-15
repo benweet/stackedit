@@ -12,6 +12,12 @@ import { videoPlayer } from 'vue-video-player';
 export default {
   name: 'video-preview',
   props: ['videoUrl', 'time'],
+  created() {
+    this.$root.$on('play_video', (url) => {
+      this.videoUrl = url;
+      this.time = 0;
+    });
+  },
   data() {
     return {
       playerOptions: {
@@ -37,7 +43,6 @@ export default {
     },
     time: {
       handler(val) {
-        debugger;
         this.player.currentTime(val);
       },
     },

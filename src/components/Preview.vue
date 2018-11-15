@@ -13,7 +13,12 @@
         <icon-pen></icon-pen>
       </button>
     </div>
-    <video-preview></video-preview>
+    <div class="preview__video">
+      <video-preview
+      ref="video"
+      :videoUrl="videoUrl"
+      :time="time"></video-preview>
+    </div>
   </div>
 </template>
 
@@ -35,6 +40,8 @@ export default {
   },
   data: () => ({
     previewTop: true,
+    videoUrl: '',
+    time: 0,
   }),
   computed: {
     ...mapGetters('file', [
@@ -57,8 +64,10 @@ export default {
           const wnd = window.open(elt.href, '_blank');
           wnd.focus();
           return;
-        } else if (elt.attributes['data-video'].value) {
-          VideoPreview.startVideoAtTime(elt.attributes['data-video'].value);
+        } else if (elt.attributes['data-video']) {
+          this.videoUrl = elt.attributes['data-video'].value;
+          this.$refs.video.player.currentTime(0);
+          this.$refs.video.player.play();
         }
         elt = elt.parentNode;
       }
@@ -126,6 +135,29 @@ export default {
 
 .preview__inner-2 {
   margin: 0;
+  height: 80vh;
+}
+
+.preview__video {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+.vjs_tech {
+  max-width: 320px !important;
+  max-height: 160px !important;
+}
+
+.preview__video video {
+  width: 100%;
+  height: 100%;
+}
+
+.video-player {
+  width: 50vh;
+  max-width: 400px;
+  box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.2);
 }
 
 .preview__inner-2 > :first-child > :first-child {

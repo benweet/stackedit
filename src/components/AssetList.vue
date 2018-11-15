@@ -28,7 +28,10 @@ export default {
       const urlPrefix = 'https://menntamalastofnun-vod.s3.amazonaws.com/assets/HLS/';
       const escapedSpaces = assetReference.Key.split(' ').join('+');
       const escapedUnderscores = escapedSpaces.split('_').join('\\_');
-      const url = urlPrefix + escapedUnderscores;
+      const parts = escapedUnderscores.split('.');
+      parts[parts.length - 1] = 'm3u8';
+      const switchExtension = parts.join('.');
+      const url = urlPrefix + switchExtension;
 
       editorSvc.pagedownEditor.uiManager.doAssetReference(url);
     },

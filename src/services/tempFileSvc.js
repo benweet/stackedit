@@ -44,9 +44,9 @@ export default {
     // Sanitize file creations
     const lastCreated = {};
     const fileItemsById = store.state.file.itemsById;
-    Object.entries(store.getters['data/lastCreated']).forEach(([id, createdOn]) => {
+    Object.entries(store.getters['data/lastCreated']).forEach(([id, value]) => {
       if (fileItemsById[id] && fileItemsById[id].parentId === 'temp') {
-        lastCreated[id] = createdOn;
+        lastCreated[id] = value;
       }
     });
 
@@ -57,7 +57,7 @@ export default {
 
     // Keep only the last 10 temp files created by other sites
     Object.entries(lastCreated)
-      .sort(([, createdOn1], [, createdOn2]) => createdOn2 - createdOn1)
+      .sort(([, value1], [, value2]) => value2.created - value1.created)
       .splice(10)
       .forEach(([id]) => {
         delete lastCreated[id];

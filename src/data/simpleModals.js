@@ -32,7 +32,7 @@ export default {
     'Yes, add suffix',
   ),
   paymentSuccess: simpleModal(
-    '<p>Thank you for your payment! Your sponsorship will be active in a minute.</p>',
+    '<h3>Thank you for your payment!</h3><p>Your sponsorship will be active in a minute.</p>',
     'Ok',
   ),
   providerRedirection: simpleModal(

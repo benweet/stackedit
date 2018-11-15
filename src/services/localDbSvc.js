@@ -11,7 +11,6 @@ const { exportWorkspace } = utils.queryParams;
 const { silent } = utils.queryParams;
 const resetApp = utils.queryParams.reset;
 const deleteMarkerMaxAge = 1000;
-const checkSponsorshipAfter = (5 * 60 * 1000) + (30 * 1000); // tokenExpirationMargin + 30 sec
 
 class Connection {
   constructor() {
@@ -382,22 +381,6 @@ const localDbSvc = {
       store.getters['file/items']
         .filter(file => file.parentId === 'trash') // If file is in the trash
         .forEach(file => workspaceSvc.deleteFile(file.id));
-    }
-
-    // Enable sponsorship
-    if (utils.queryParams.paymentSuccess) {
-      window.location.hash = ''; // PaymentSuccess param is always on its own
-      store.dispatch('modal/open', 'paymentSuccess')
-        .catch(() => { /* Cancel */ });
-      const sponsorToken = store.getters['workspace/sponsorToken'];
-      // Force check sponsorship after a few seconds
-      const currentDate = Date.now();
-      if (sponsorToken && sponsorToken.expiresOn > currentDate - checkSponsorshipAfter) {
-        store.dispatch('data/addGoogleToken', {
-          ...sponsorToken,
-          expiresOn: currentDate - checkSponsorshipAfter,
-        });
-      }
     }
 
     // Sync local DB periodically

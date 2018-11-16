@@ -38,12 +38,6 @@ var webpackConfig = merge(baseWebpackConfig, {
       GOOGLE_CLIENT_ID: env.GOOGLE_CLIENT_ID,
       GITHUB_CLIENT_ID: env.GITHUB_CLIENT_ID,
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      },
-      sourceMap: true
-    }),
     // extract css into its own file
     new ExtractTextPlugin({
       filename: utils.assetsPath('css/[name].[contenthash].css')

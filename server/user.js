@@ -78,11 +78,11 @@ exports.paypalIpn = (req, res, next) => Promise.resolve()
       sponsorUntil = Date.now() + (5 * 366 * 24 * 60 * 60 * 1000); // 5 years
     }
     if (
-      req.body.receiver_email !== PAYPAL_RECEIVER_EMAIL ||
-      req.body.payment_status !== 'Completed' ||
-      req.body.mc_currency !== 'USD' ||
-      (req.body.txn_type !== 'web_accept' && req.body.txn_type !== 'subscr_payment') ||
-      !userId || !sponsorUntil
+      req.body.receiver_email !== PAYPAL_RECEIVER_EMAIL
+      || req.body.payment_status !== 'Completed'
+      || req.body.mc_currency !== 'USD'
+      || (req.body.txn_type !== 'web_accept' && req.body.txn_type !== 'subscr_payment')
+      || !userId || !sponsorUntil
     ) {
       // Ignoring PayPal IPN
       return res.end();
@@ -129,8 +129,8 @@ exports.checkMonetize = (token) => {
     json: true,
   }, (err, paymentsRes, payments) => {
     const authorized = payments && payments.app === 'ESTHdCYOi18iLhhO' && (
-      (payments.chargeOption && payments.chargeOption.alias === 'once') ||
-      (payments.subscriptionOption && payments.subscriptionOption.alias === 'yearly'));
+      (payments.chargeOption && payments.chargeOption.alias === 'once')
+      || (payments.subscriptionOption && payments.subscriptionOption.alias === 'yearly'));
     resolve(!err && paymentsRes.statusCode === 200 && authorized);
   }));
 };

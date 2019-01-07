@@ -1,6 +1,6 @@
+const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const baseWebpackConfig = require('./webpack.base.conf');
 const config = require('../config');
@@ -28,11 +28,24 @@ module.exports = merge(baseWebpackConfig, {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     // https://github.com/ampedandwired/html-webpack-plugin
-    new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: 'index.html',
-      inject: true,
-    }),
+    // new HtmlWebpackPlugin({
+    //   filename: 'index.html',
+    //   template: 'index.html',
+    //   inject: true
+    // }),
     new FriendlyErrorsPlugin(),
   ],
+  devServer: {
+    contentBase: path.join(__dirname, '..'),
+    port: 13100,
+    publicPath: '/public/dist/',
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
+    staticOptions: {
+      setHeaders(res) {
+        res.set('Access-Control-Allow-Origin', '*');
+      },
+    },
+  },
 });

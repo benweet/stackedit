@@ -39,7 +39,7 @@
   }
 
   .arrowheadPath {
-    fill: #333333;
+    fill: #333;
   }
 
   .edgePath .path {
@@ -139,7 +139,7 @@
   }
 
   .note {
-    stroke: #777700;
+    stroke: #770;
     fill: #ffa;
   }
 
@@ -210,6 +210,7 @@
   }
 
   /* Task styling */
+
   /* Default task */
   .task {
     stroke-width: 2;
@@ -232,7 +233,7 @@
     font-size: 11px;
   }
 
-  /* Specific task settings for the sections*/
+  /* Specific task settings for the sections */
   .taskText0,
   .taskText1,
   .taskText2,
@@ -433,19 +434,20 @@
 }
 
 .app--dark .mermaid {
-
   /* Flowchart variables */
+
   /* Sequence Diagram variables */
+
   /* Gantt chart variables */
   .label {
-    color: #323D47;
+    color: #323d47;
   }
 
   .node rect,
   .node circle,
   .node ellipse,
   .node polygon {
-    fill: #BDD5EA;
+    fill: #bdd5ea;
     stroke: purple;
     stroke-width: 1px;
   }
@@ -468,13 +470,13 @@
   }
 
   .cluster rect {
-    fill: #6D6D65 !important;
+    fill: #6d6d65 !important;
     stroke: rgba(255, 255, 255, 0.25) !important;
     stroke-width: 1px !important;
   }
 
   .cluster text {
-    fill: #F9FFFE;
+    fill: #f9fffe;
   }
 
   div.mermaidTooltip {
@@ -484,7 +486,7 @@
     padding: 2px;
     font-family: 'trebuchet ms', verdana, arial;
     font-size: 12px;
-    background: #6D6D65;
+    background: #6d6d65;
     border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 2px;
     pointer-events: none;
@@ -492,8 +494,8 @@
   }
 
   .actor {
-    stroke: #81B1DB;
-    fill: #BDD5EA;
+    stroke: #81b1db;
+    fill: #bdd5ea;
   }
 
   text.actor {
@@ -533,8 +535,8 @@
   }
 
   .labelBox {
-    stroke: #81B1DB;
-    fill: #BDD5EA;
+    stroke: #81b1db;
+    fill: #bdd5ea;
   }
 
   .labelText {
@@ -551,7 +553,7 @@
     stroke-width: 2;
     stroke-dasharray: '2 2';
     marker-end: 'url(#arrowhead)';
-    stroke: #81B1DB;
+    stroke: #81b1db;
   }
 
   .note {
@@ -577,7 +579,7 @@
   }
 
   .section2 {
-    fill: #EAE8B9;
+    fill: #eae8b9;
   }
 
   .section1,
@@ -587,19 +589,19 @@
   }
 
   .sectionTitle0 {
-    fill: #F9FFFE;
+    fill: #f9fffe;
   }
 
   .sectionTitle1 {
-    fill: #F9FFFE;
+    fill: #f9fffe;
   }
 
   .sectionTitle2 {
-    fill: #F9FFFE;
+    fill: #f9fffe;
   }
 
   .sectionTitle3 {
-    fill: #F9FFFE;
+    fill: #f9fffe;
   }
 
   .sectionTitle {
@@ -621,11 +623,12 @@
   /* Today line */
   .today {
     fill: none;
-    stroke: #DB5757;
+    stroke: #db5757;
     stroke-width: 2px;
   }
 
   /* Task styling */
+
   /* Default task */
   .task {
     stroke-width: 2;
@@ -637,30 +640,30 @@
   }
 
   .taskTextOutsideRight {
-    fill: #323D47;
+    fill: #323d47;
     text-anchor: start;
     font-size: 11px;
   }
 
   .taskTextOutsideLeft {
-    fill: #323D47;
+    fill: #323d47;
     text-anchor: end;
     font-size: 11px;
   }
 
-  /* Specific task settings for the sections*/
+  /* Specific task settings for the sections */
   .taskText0,
   .taskText1,
   .taskText2,
   .taskText3 {
-    fill: #323D47;
+    fill: #323d47;
   }
 
   .task0,
   .task1,
   .task2,
   .task3 {
-    fill: #BDD5EA;
+    fill: #bdd5ea;
     stroke: rgba(255, 255, 255, 0.5);
   }
 
@@ -679,7 +682,7 @@
   .active1,
   .active2,
   .active3 {
-    fill: #81B1DB;
+    fill: #81b1db;
     stroke: rgba(255, 255, 255, 0.5);
   }
 
@@ -687,7 +690,7 @@
   .activeText1,
   .activeText2,
   .activeText3 {
-    fill: #323D47 !important;
+    fill: #323d47 !important;
   }
 
   /* Completed task */
@@ -704,7 +707,7 @@
   .doneText1,
   .doneText2,
   .doneText3 {
-    fill: #323D47 !important;
+    fill: #323d47 !important;
   }
 
   /* Tasks on the critical line */
@@ -712,8 +715,8 @@
   .crit1,
   .crit2,
   .crit3 {
-    stroke: #E83737;
-    fill: #E83737;
+    stroke: #e83737;
+    fill: #e83737;
     stroke-width: 2;
   }
 
@@ -721,8 +724,8 @@
   .activeCrit1,
   .activeCrit2,
   .activeCrit3 {
-    stroke: #E83737;
-    fill: #81B1DB;
+    stroke: #e83737;
+    fill: #81b1db;
     stroke-width: 2;
   }
 
@@ -730,7 +733,7 @@
   .doneCrit1,
   .doneCrit2,
   .doneCrit3 {
-    stroke: #E83737;
+    stroke: #e83737;
     fill: lightgrey;
     stroke-width: 2;
     cursor: pointer;
@@ -741,20 +744,20 @@
   .doneCritText1,
   .doneCritText2,
   .doneCritText3 {
-    fill: #323D47 !important;
+    fill: #323d47 !important;
   }
 
   .activeCritText0,
   .activeCritText1,
   .activeCritText2,
   .activeCritText3 {
-    fill: #323D47 !important;
+    fill: #323d47 !important;
   }
 
   .titleText {
     text-anchor: middle;
     font-size: 18px;
-    fill: #323D47;
+    fill: #323d47;
   }
 
   g.classGroup text {
@@ -765,7 +768,7 @@
   }
 
   g.classGroup rect {
-    fill: #BDD5EA;
+    fill: #bdd5ea;
     stroke: purple;
   }
 
@@ -777,7 +780,7 @@
   .classLabel .box {
     stroke: none;
     stroke-width: 0;
-    fill: #BDD5EA;
+    fill: #bdd5ea;
     opacity: 0.5;
   }
 
@@ -805,13 +808,13 @@
   }
 
   #aggregationStart {
-    fill: #BDD5EA;
+    fill: #bdd5ea;
     stroke: purple;
     stroke-width: 1;
   }
 
   #aggregationEnd {
-    fill: #BDD5EA;
+    fill: #bdd5ea;
     stroke: purple;
     stroke-width: 1;
   }

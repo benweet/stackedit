@@ -1,94 +1,96 @@
-require('./check-versions')()
+const opn = require('opn');
+const path = require('path');
+const express = require('express');
+const webpack = require('webpack');
+const proxyMiddleware = require('http-proxy-middleware');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
+const webpackConfig = require('./webpack.dev.conf');
+const config = require('../config');
+require('./check-versions')();
 
-var config = require('../config')
 Object.keys(config.dev.env).forEach((key) => {
   if (!process.env[key]) {
     process.env[key] = JSON.parse(config.dev.env[key]);
   }
 });
 
-var opn = require('opn')
-var path = require('path')
-var express = require('express')
-var webpack = require('webpack')
-var proxyMiddleware = require('http-proxy-middleware')
-var webpackConfig = require('./webpack.dev.conf')
-
 // default port where dev server listens for incoming traffic
-var port = process.env.PORT || config.dev.port
+const port = process.env.PORT || config.dev.port;
 // automatically open browser, if not set will be false
-var autoOpenBrowser = !!config.dev.autoOpenBrowser
+const autoOpenBrowser = !!config.dev.autoOpenBrowser;
 // Define HTTP proxies to your custom API backend
 // https://github.com/chimurai/http-proxy-middleware
-var proxyTable = config.dev.proxyTable
+const { proxyTable } = config.dev;
 
-var app = express()
-var compiler = webpack(webpackConfig)
+const app = express();
+const compiler = webpack(webpackConfig);
 
 // StackEdit custom middlewares
 require('../server')(app);
 
-var devMiddleware = require('webpack-dev-middleware')(compiler, {
+const devMiddleware = webpackDevMiddleware(compiler, {
   publicPath: webpackConfig.output.publicPath,
-  quiet: true
-})
+  quiet: true,
+});
 
-var hotMiddleware = require('webpack-hot-middleware')(compiler, {
-  log: () => {}
-})
+const hotMiddleware = webpackHotMiddleware(compiler, {
+  log: () => {},
+});
+
 // force page reload when html-webpack-plugin template changes
-compiler.plugin('compilation', function (compilation) {
-  compilation.plugin('html-webpack-plugin-after-emit', function (data, cb) {
-    hotMiddleware.publish({ action: 'reload' })
-    cb()
-  })
-})
+compiler.plugin('compilation', (compilation) => {
+  compilation.plugin('html-webpack-plugin-after-emit', (data, cb) => {
+    hotMiddleware.publish({ action: 'reload' });
+    cb();
+  });
+});
 
 // proxy api requests
-Object.keys(proxyTable).forEach(function (context) {
-  var options = proxyTable[context]
+Object.keys(proxyTable).forEach((context) => {
+  let options = proxyTable[context];
   if (typeof options === 'string') {
-    options = { target: options }
+    options = { target: options };
   }
-  app.use(proxyMiddleware(options.filter || context, options))
-})
+  app.use(proxyMiddleware(options.filter || context, options));
+});
 
 // handle fallback for HTML5 history API
-app.use(require('connect-history-api-fallback')())
+app.use(require('connect-history-api-fallback')());
 
 // serve webpack bundle output
-app.use(devMiddleware)
+app.use(devMiddleware);
 
 // enable hot-reload and state-preserving
 // compilation error display
-app.use(hotMiddleware)
+app.use(hotMiddleware);
 
 // serve pure static assets
-var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
-app.use(staticPath, express.static('./static'))
+const staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory);
+app.use(staticPath, express.static('./static'));
 
-var uri = 'http://localhost:' + port
+const uri = `http://localhost:${port}`;
 
-var _resolve
-var readyPromise = new Promise(resolve => {
-  _resolve = resolve
-})
+let theResolve;
+const readyPromise = new Promise((resolve) => {
+  theResolve = resolve;
+});
 
-console.log('> Starting dev server...')
+console.log('> Starting dev server...');
 devMiddleware.waitUntilValid(() => {
-  console.log('> Listening at ' + uri + '\n')
+  console.log(`> Listening at ${uri}\n`);
   // when env is testing, don't need open it
   if (autoOpenBrowser && process.env.NODE_ENV !== 'testing') {
-    opn(uri)
+    opn(uri);
   }
-  _resolve()
-})
+  theResolve();
+});
 
-var server = app.listen(port)
+const server = app.listen(port);
 
 module.exports = {
   ready: readyPromise,
   close: () => {
-    server.close()
-  }
-}
+    server.close();
+  },
+};

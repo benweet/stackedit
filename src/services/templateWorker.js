@@ -1,7 +1,7 @@
 // This WebWorker provides a safe environment to run user scripts
 // See http://stackoverflow.com/questions/10653809/making-webworkers-a-safe-environment/10796616
 
-import Handlebars from 'handlebars';
+import Handlebars from 'handlebars/dist/cjs/handlebars';
 
 // Classeur own helpers
 Handlebars.registerHelper('tocToHtml', (toc, depth = 6) => {

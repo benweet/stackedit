@@ -1,3 +1,5 @@
+const http = require('http');
+const express = require('express');
 const env = require('./config/prod.env');
 
 Object.keys(env).forEach((key) => {
@@ -6,12 +8,9 @@ Object.keys(env).forEach((key) => {
   }
 });
 
-const http = require('http');
-const express = require('express');
-
 const app = express();
 
-require('./server')(app, process.env.SERVE_V4);
+require('./server')(app);
 
 const port = parseInt(process.env.PORT || 8080, 10);
 const httpServer = http.createServer(app);

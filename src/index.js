@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import 'babel-polyfill';
 import 'indexeddbshim/dist/indexeddbshim';
 import * as OfflinePluginRuntime from 'offline-plugin/runtime';
 import './extensions';
@@ -49,7 +48,7 @@ if (!localStorage.installPrompted) {
   });
 }
 
-Vue.config.productionTip = false;
+Vue.config.productionTip = true;
 
 /* eslint-disable no-new */
 new Vue({

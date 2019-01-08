@@ -57,10 +57,10 @@ exports.cssLoaders = function cssLoaders(options = {}) {
 exports.styleLoaders = function styleLoaders(options) {
   const output = [];
   const loaders = exports.cssLoaders(options);
-  loaders.forEach((extension) => {
-    const loader = loaders[extension];
+  Object.keys(loaders).forEach((ext) => {
+    const loader = loaders[ext];
     output.push({
-      test: new RegExp(`\\.${extension}$`),
+      test: new RegExp(`\\.${ext}$`),
       use: loader,
     });
   });

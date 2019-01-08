@@ -6,15 +6,15 @@ import cledit from '../services/editor/cledit';
 
 const diffMatchPatch = new DiffMatchPatch();
 
-const module = moduleTemplate(empty);
+const theModule = moduleTemplate(empty);
 
-module.state = {
-  ...module.state,
+theModule.state = {
+  ...theModule.state,
   revisionContent: null,
 };
 
-module.mutations = {
-  ...module.mutations,
+theModule.mutations = {
+  ...theModule.mutations,
   setRevisionContent: (state, value) => {
     if (value) {
       state.revisionContent = {
@@ -29,8 +29,8 @@ module.mutations = {
   },
 };
 
-module.getters = {
-  ...module.getters,
+theModule.getters = {
+  ...theModule.getters,
   current: ({ itemsById, revisionContent }, getters, rootState, rootGetters) => {
     if (revisionContent) {
       return revisionContent;
@@ -50,8 +50,8 @@ module.getters = {
     !revisionContent && current.id && rootGetters['layout/styles'].showEditor,
 };
 
-module.actions = {
-  ...module.actions,
+theModule.actions = {
+  ...theModule.actions,
   patchCurrent({ state, getters, commit }, value) {
     const { id } = getters.current;
     if (id && !state.revisionContent) {
@@ -109,4 +109,4 @@ module.actions = {
   },
 };
 
-export default module;
+export default theModule;

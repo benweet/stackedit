@@ -190,7 +190,7 @@ class Animation {
       this.$requestId = window.requestAnimationFrame(this.$end.endCb);
     }
 
-    const coeff = this.$end.easing.get(progress);
+    const coeff = this.$end.easing(progress);
     const transforms = this.$attributes.reduce((result, attribute) => {
       if (progress < 1) {
         const diff = this.$end[attribute.name] - this.$start[attribute.name];

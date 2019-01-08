@@ -1,30 +1,30 @@
 import moduleTemplate from './moduleTemplate';
 import empty from '../data/empties/emptyFile';
 
-const module = moduleTemplate(empty);
+const theModule = moduleTemplate(empty);
 
-module.state = {
-  ...module.state,
+theModule.state = {
+  ...theModule.state,
   currentId: null,
 };
 
-module.getters = {
-  ...module.getters,
+theModule.getters = {
+  ...theModule.getters,
   current: ({ itemsById, currentId }) => itemsById[currentId] || empty(),
   isCurrentTemp: (state, { current }) => current.parentId === 'temp',
   lastOpened: ({ itemsById }, { items }, rootState, rootGetters) =>
     itemsById[rootGetters['data/lastOpenedIds'][0]] || items[0] || empty(),
 };
 
-module.mutations = {
-  ...module.mutations,
+theModule.mutations = {
+  ...theModule.mutations,
   setCurrentId(state, value) {
     state.currentId = value;
   },
 };
 
-module.actions = {
-  ...module.actions,
+theModule.actions = {
+  ...theModule.actions,
   patchCurrent({ getters, commit }, value) {
     commit('patchItem', {
       ...value,
@@ -33,4 +33,4 @@ module.actions = {
   },
 };
 
-export default module;
+export default theModule;

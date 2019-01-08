@@ -100,7 +100,7 @@ module.exports = {
   plugins: [
     new VueLoaderPlugin(),
     new webpack.DefinePlugin({
-      VERSION: pkg.version,
+      VERSION: JSON.stringify(pkg.version),
     }),
   ],
 };

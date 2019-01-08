@@ -1,16 +1,16 @@
 import moduleTemplate from './moduleTemplate';
 import empty from '../data/empties/emptyContentState';
 
-const module = moduleTemplate(empty, true);
+const theModule = moduleTemplate(empty, true);
 
-module.getters = {
-  ...module.getters,
+theModule.getters = {
+  ...theModule.getters,
   current: ({ itemsById }, getters, rootState, rootGetters) =>
     itemsById[`${rootGetters['file/current'].id}/contentState`] || empty(),
 };
 
-module.actions = {
-  ...module.actions,
+theModule.actions = {
+  ...theModule.actions,
   patchCurrent({ getters, commit }, value) {
     commit('patchItem', {
       ...value,
@@ -19,4 +19,4 @@ module.actions = {
   },
 };
 
-export default module;
+export default theModule;

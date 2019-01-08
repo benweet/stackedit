@@ -12,10 +12,10 @@ const addToGroup = (groups, item) => {
 };
 
 export default (empty) => {
-  const module = moduleTemplate(empty);
+  const theModule = moduleTemplate(empty);
 
-  module.getters = {
-    ...module.getters,
+  theModule.getters = {
+    ...theModule.getters,
     groupedByFileId: (state, { items }) => {
       const groups = {};
       items.forEach(item => addToGroup(groups, item));
@@ -82,5 +82,5 @@ export default (empty) => {
     },
   };
 
-  return module;
+  return theModule;
 };

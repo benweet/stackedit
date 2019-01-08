@@ -4,7 +4,7 @@ const _ = require('lodash');
 
 const s3 = new AWS.S3();
 
-const bucket = 'menntamalastofnun-lesari'
+const bucket = 'menntamalastofnun-vod'
 
 function listAssets() {
   return new Promise((resolve, reject) => {

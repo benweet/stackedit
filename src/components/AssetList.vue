@@ -2,7 +2,7 @@
   <div class="asset__list">
     <ul>
       <li v-for="item in assetList">
-        <span @click="(item) => playItem(item)">{{ item.Key }}</span>
+        <span @click="(item) => playItem(item)">{{ item.fileName }}</span>
         <button class="asset__add" @click="(key) => { addReference( item ) }" v-title="'Add reference'">+</button>
       </li>
     </ul>
@@ -11,8 +11,10 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import _ from 'lodash';
 import axios from 'axios';
 import editorSvc from '../services/editorSvc';
+
 
 export default {
   name: 'asset-list',
@@ -28,13 +30,11 @@ export default {
       editorSvc.pagedownEditor.uiManager.doAssetReference(this.convertAssetUrl(assetReference.Key));
     },
     convertAssetUrl(input) {
-      const urlPrefix = 'https://menntamalastofnun-vod.s3.amazonaws.com/assets/HLS/';
+      const urlPrefix = 'https://menntamalastofnun-vod.s3.amazonaws.com/';
       const escapedSpaces = input.split(' ').join('+');
       const escapedUnderscores = escapedSpaces.split('_').join('\\_');
-      const parts = escapedUnderscores.split('.');
-      parts[parts.length - 1] = 'm3u8';
-      const switchExtension = parts.join('.');
-      return urlPrefix + switchExtension;
+
+      return urlPrefix + escapedUnderscores;
     },
     playItem(event) {
       const url = this.convertAssetUrl(event.target.innerHTML);
@@ -44,7 +44,14 @@ export default {
     getAssets() {
       axios({ method: 'get', url: '/assets' })
         .then((result) => {
-          this.$store.commit('assets/setAssetList', result.data);
+          const items = _.map(result.data, (item) => {
+            item.fileName = _.last(item.Key.split('/'));
+            return item;
+          });
+
+          console.log(items);
+
+          this.$store.commit('assets/setAssetList', items);
         });
     },
   },

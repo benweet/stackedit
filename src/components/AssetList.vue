@@ -15,7 +15,6 @@ import _ from 'lodash';
 import axios from 'axios';
 import editorSvc from '../services/editorSvc';
 
-
 export default {
   name: 'asset-list',
   props: ['assetList'],
@@ -44,13 +43,10 @@ export default {
     getAssets() {
       axios({ method: 'get', url: '/assets' })
         .then((result) => {
-          const items = _.map(result.data, (item) => {
+          const items = _.filter(_.map(result.data, (item) => {
             item.fileName = _.last(item.Key.split('/'));
             return item;
-          });
-
-          console.log(items);
-
+          }), item => /^.*([^_360]|[^_540][^_720][^_1080]).m3u8$/.test(item.fileName));
           this.$store.commit('assets/setAssetList', items);
         });
     },

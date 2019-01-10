@@ -15,6 +15,7 @@ export default {
   created() {
     this.$root.$on('play_video', (url) => {
       this.videoUrl = url;
+      console.log(this.videoUrl);
       this.time = 0;
     });
   },

@@ -2,7 +2,7 @@
   <div class="asset__list">
     <ul>
       <li v-for="item in assetList">
-        <span @click="(item) => playItem(item)">{{ item.fileName }}</span>
+        <span @click="(item) => playItem(item)" :data-key="item.Key">{{ item.fileName }}</span>
         <button class="asset__add" @click="(key) => { addReference( item ) }" v-title="'Add reference'">+</button>
       </li>
     </ul>
@@ -31,14 +31,11 @@ export default {
     convertAssetUrl(input) {
       const urlPrefix = 'https://menntamalastofnun-vod.s3.amazonaws.com/';
       const escapedSpaces = input.split(' ').join('+');
-      const escapedUnderscores = escapedSpaces.split('_').join('\\_');
-
-      return urlPrefix + escapedUnderscores;
+      return urlPrefix + escapedSpaces;
     },
     playItem(event) {
-      const url = this.convertAssetUrl(event.target.innerHTML);
-      const urlClean = url.split('\\').join('');
-      this.$root.$emit('play_video', urlClean);
+      const url = this.convertAssetUrl(event.target.getAttribute('data-key'));
+      this.$root.$emit('play_video', url);
     },
     getAssets() {
       axios({ method: 'get', url: '/assets' })
@@ -47,7 +44,7 @@ export default {
             item.fileName = _.last(item.Key.split('/'));
             return item;
           }), item => /^.*([^_360]|[^_540][^_720][^_1080]).m3u8$/.test(item.fileName));
-          this.$store.commit('assets/setAssetList', items);
+          this.$store.commit('assets/setAssetList', _.sortBy(items, item => item.fileName));
         });
     },
   },

@@ -66,8 +66,8 @@ export default {
           return;
         } else if (elt.attributes['data-video']) {
           this.videoUrl = elt.attributes['data-video'].value;
-          this.$refs.video.player.currentTime(0);
-          this.$refs.video.player.play();
+          this.$root.$emit('play_video', this.videoUrl);
+
         }
         elt = elt.parentNode;
       }

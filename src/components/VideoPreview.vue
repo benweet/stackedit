@@ -1,65 +1,43 @@
 <template>
-  <video-player
+  <video
     ref="videoPlayer"
-    :options="playerOptions"
+    :controls="true"
     :playsinline="true"
-    @canplay="onPlayerCanPlay($event)"
-    ></video-player>
+    ></video>
 </template>
 <script>
-import { videoPlayer } from 'vue-video-player';
+
+import Hls from "Hls.js";
 
 export default {
   name: 'video-preview',
-  props: ['videoUrl', 'time'],
-  created() {
+  mounted() {
+
+    if(Hls.isSupported()) {
+      this.hls = new Hls();
+      console.log("we're HLSing!");
+      this.hls.loadSource(this.src);
+      this.hls.attachMedia(this.$refs.videoPlayer);
+    }
+
     this.$root.$on('play_video', (url) => {
-      this.videoUrl = url;
-      console.log(this.videoUrl);
-      this.time = 0;
+      this.src = url;
     });
+  },
+  watch: {
+    src: {
+      handler(val) {
+        this.hls.loadSource(val);
+        this.hls.attachMedia(this.$refs.videoPlayer);
+        this.$refs.videoPlayer.play();
+      }
+    }
   },
   data() {
     return {
-      playerOptions: {
-        // videojs options
-        muted: true,
-        language: 'en',
-        playbackRates: [0.7, 1.0, 1.5, 2.0],
-        sources: [{
-          type: 'application/x-mpegurl',
-        }],
-        fluid: 'true',
-      },
+      src: 'https://menntamalastofnun-vod.s3.amazonaws.com/assets/komdu_og_skodadu_bilinn/be500ce1-8dc9-4dbf-a2b9-7e847a718180/HLS/06_2.m3u8',
+      hls: undefined,
     };
-  },
-  watch: {
-    videoUrl: {
-      handler(val) {
-        this.playerOptions.sources = [{
-          type: 'application/x-mpegurl',
-          src: val,
-        }];
-      },
-    },
-    time: {
-      handler(val) {
-        this.player.currentTime(val);
-      },
-    },
-  },
-  methods: {
-    onPlayerCanPlay(player) {
-      player.play();
-    },
-  },
-  components: {
-    videoPlayer,
-  },
-  computed: {
-    player() {
-      return this.$refs.videoPlayer.player;
-    },
   },
 };
 </script>

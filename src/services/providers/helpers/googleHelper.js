@@ -113,7 +113,7 @@ export default {
       {
         client_id: clientId,
         response_type: 'token id_token',
-        scope: ['openid', ...scopes].join(' '),
+        scope: ['openid', 'profile', ...scopes].join(' '),
         hd: appsDomain,
         login_hint: sub,
         prompt: silent ? 'none' : null,

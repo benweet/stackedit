@@ -7,7 +7,6 @@ const clientId = GOOGLE_CLIENT_ID;
 const apiKey = 'AIzaSyC_M4RA9pY6XmM9pmFxlT59UPMO7aHr9kk';
 const appsDomain = null;
 const tokenExpirationMargin = 5 * 60 * 1000; // 5 min (Google tokens expire after 1h)
-let googlePlusNotification = true;
 
 const driveAppDataScopes = ['https://www.googleapis.com/auth/drive.appdata'];
 const getDriveScopes = token => [token.driveFullAccess
@@ -36,42 +35,10 @@ if (utils.queryParams.providerId === 'googleDrive') {
   }
 }
 
-/**
- * https://developers.google.com/+/web/api/rest/latest/people/get
- */
-const getUser = async (sub, token) => {
-  const { body } = await networkSvc.request(token
-    ? {
-      method: 'GET',
-      url: `https://www.googleapis.com/plus/v1/people/${sub}`,
-      headers: {
-        Authorization: `Bearer ${token.accessToken}`,
-      },
-    }
-    : {
-      method: 'GET',
-      url: `https://www.googleapis.com/plus/v1/people/${sub}?key=${apiKey}`,
-    }, true);
-  return body;
-};
-
 const subPrefix = 'go';
-userSvc.setInfoResolver('google', subPrefix, async (sub) => {
-  try {
-    const googleToken = Object.values(store.getters['data/googleTokensBySub'])[0];
-    const body = await getUser(sub, googleToken);
-    return {
-      id: `${subPrefix}:${body.id}`,
-      name: body.displayName,
-      imageUrl: (body.image.url || '').replace(/\bsz?=\d+$/, 'sz=40'),
-    };
-  } catch (err) {
-    if (err.status !== 404) {
-      throw new Error('RETRY');
-    }
-    throw err;
-  }
-});
+// The Google integration does not call userSvc.setInfoResolver because 
+// the Google Plus API is shutdown effective 2019-03-07
+// See: https://developers.google.com/+/integrations-shutdown
 
 export default {
   subPrefix,
@@ -158,20 +125,6 @@ export default {
       isPhotos: scopes.indexOf('https://www.googleapis.com/auth/photos') !== -1,
       driveFullAccess: scopes.indexOf('https://www.googleapis.com/auth/drive') !== -1,
     };
-
-    // Call the user info endpoint
-    const user = await getUser('me', token);
-    if (user.displayName) {
-      token.name = user.displayName;
-    } else if (googlePlusNotification) {
-      store.dispatch('notification/info', 'Please activate Google Plus to change your account name and photo.');
-      googlePlusNotification = false;
-    }
-    userSvc.addInfo({
-      id: `${subPrefix}:${user.id}`,
-      name: user.displayName,
-      imageUrl: (user.image.url || '').replace(/\bsz?=\d+$/, 'sz=40'),
-    });
 
     if (existingToken) {
       // We probably retrieved a new token with restricted scopes.

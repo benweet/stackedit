@@ -14,7 +14,7 @@ function debounceAction(action, wait) {
   };
 }
 
-const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
+const collator = new Intl.Collator(undefined, { sensitivity: 'base', numeric: true });
 const compare = (node1, node2) => collator.compare(node1.item.name, node2.item.name);
 
 class Node {

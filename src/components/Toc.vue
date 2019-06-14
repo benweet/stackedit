@@ -60,7 +60,7 @@ export default {
       onClick(e);
     });
 
-    // Change mask postion on scroll
+    // Change mask position on scroll
     const updateMaskY = () => {
       const scrollPosition = editorSvc.getScrollPosition();
       if (scrollPosition) {

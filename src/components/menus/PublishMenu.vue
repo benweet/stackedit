@@ -1,23 +1,23 @@
 <template>
   <div class="side-bar__panel side-bar__panel--menu">
     <div class="side-bar__info" v-if="isCurrentTemp">
-      <p><b>{{currentFileName}}</b> can not be published as it's a temporary file.</p>
+      <p>{{currentFileName}} can't be published as it's a temporary file.</p>
     </div>
     <div v-else>
       <div class="side-bar__info" v-if="noToken">
         <p>You have to <b>link an account</b> to start publishing files.</p>
       </div>
       <div class="side-bar__info" v-if="publishLocations.length">
-        <p><b>{{currentFileName}}</b> is already published.</p>
+        <p>{{currentFileName}} is already published.</p>
         <menu-entry @click.native="requestPublish">
           <icon-upload slot="icon"></icon-upload>
           <div>Publish now</div>
-          <span>Update current file publications.</span>
+          <span>Update publications for {{currentFileName}}.</span>
         </menu-entry>
         <menu-entry @click.native="managePublish">
           <icon-view-list slot="icon"></icon-view-list>
           <div><div class="menu-entry__label menu-entry__label--count">{{locationCount}}</div> File publication</div>
-          <span>Manage current file publication locations.</span>
+          <span>Manage publication locations for {{currentFileName}}.</span>
         </menu-entry>
       </div>
       <hr>
@@ -157,7 +157,7 @@ export default {
       return Object.keys(this.publishLocations).length;
     },
     currentFileName() {
-      return store.getters['file/current'].name;
+      return `"${store.getters['file/current'].name}"`;
     },
     bloggerTokens() {
       return tokensToArray(store.getters['data/googleTokensBySub'], token => token.isBlogger);

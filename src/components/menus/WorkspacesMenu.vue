@@ -9,19 +9,19 @@
     <hr>
     <menu-entry @click.native="addCouchdbWorkspace">
       <icon-provider slot="icon" provider-id="couchdbWorkspace"></icon-provider>
-      <span>Add a <b>CouchDB</b> backed workspace</span>
+      <span>Add a <b>CouchDB</b> workspace</span>
     </menu-entry>
     <menu-entry @click.native="addGithubWorkspace">
       <icon-provider slot="icon" provider-id="githubWorkspace"></icon-provider>
-      <span>Add a <b>GitHub</b> backed workspace</span>
+      <span>Add a <b>GitHub</b> workspace</span>
     </menu-entry>
     <menu-entry @click.native="addGitlabWorkspace">
       <icon-provider slot="icon" provider-id="gitlabWorkspace"></icon-provider>
-      <span>Add a <b>GitLab</b> backed workspace</span>
+      <span>Add a <b>GitLab</b> workspace</span>
     </menu-entry>
     <menu-entry @click.native="addGoogleDriveWorkspace">
       <icon-provider slot="icon" provider-id="googleDriveWorkspace"></icon-provider>
-      <span>Add a <b>Google Drive</b> backed workspace</span>
+      <span>Add a <b>Google Drive</b> workspace</span>
     </menu-entry>
     <menu-entry @click.native="manageWorkspaces">
       <icon-database slot="icon"></icon-database>

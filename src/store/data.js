@@ -75,7 +75,7 @@ const makeAdditionalTemplate = (name, value, helpers = '\n') => ({
   helpers,
   isAdditional: true,
 });
-const additionalTemplates = {
+const defaultTemplates = {
   plainText: makeAdditionalTemplate('Plain text', '{{{files.0.content.text}}}'),
   plainHtml: makeAdditionalTemplate('Plain HTML', plainHtmlTemplate),
   styledHtml: makeAdditionalTemplate('Styled HTML', styledHtmlTemplate),
@@ -153,7 +153,7 @@ export default {
     templatesById: getter('templates'),
     allTemplatesById: (state, { templatesById }) => ({
       ...templatesById,
-      ...additionalTemplates,
+      ...defaultTemplates,
     }),
     lastCreated: getter('lastCreated'),
     lastOpened: getter('lastOpened'),
@@ -238,7 +238,7 @@ export default {
         ...templatesById,
       };
       // We don't store additional templates
-      Object.keys(additionalTemplates).forEach((id) => {
+      Object.keys(defaultTemplates).forEach((id) => {
         delete templatesToCommit[id];
       });
       commit('setItem', itemTemplate('templates', templatesToCommit));

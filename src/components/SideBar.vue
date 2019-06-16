@@ -56,7 +56,6 @@ const panelNames = {
   history: 'File history',
   export: 'Export to disk',
   import: 'Import from disk',
-  more: 'More',
 };
 
 export default {

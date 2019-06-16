@@ -51,7 +51,7 @@
         </div>
       </div>
       <div class="modal__info">
-        <b>ProTip:</b> A workspace is accessible <b>offline</b> once it has been opened for the first time.
+        <b>ProTip:</b> Workspaces are accessible offline, try it!
       </div>
     </div>
     <div class="modal__button-bar">
@@ -149,9 +149,7 @@ $small-button-size: 22px;
 }
 
 .workspace-entry__row {
-  margin-top: 1px;
-  padding-top: 1px;
-  border-top: 1px solid rgba(128, 128, 128, 0.15);
+  border-top: 1px solid $hr-color;
   line-height: $small-button-size;
 }
 

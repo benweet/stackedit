@@ -58,8 +58,10 @@ export default modalTemplate({
       this.config.reject();
       callback(null);
     },
-    addGooglePhotosAccount() {
-      return googleHelper.addPhotosAccount();
+    async addGooglePhotosAccount() {
+      try {
+        await googleHelper.addPhotosAccount();
+      } catch (e) { /* cancel */ }
     },
     async openGooglePhotos(token) {
       const { callback } = this.config;

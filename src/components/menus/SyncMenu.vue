@@ -1,14 +1,14 @@
 <template>
   <div class="side-bar__panel side-bar__panel--menu">
     <div class="side-bar__info" v-if="isCurrentTemp">
-      <p><b>{{currentFileName}}</b> can not be synced as it's a temporary file.</p>
+      <p>{{currentFileName}} can't be synced as it's a temporary file.</p>
     </div>
     <div v-else>
       <div class="side-bar__info" v-if="noToken">
         <p>You have to <b>link an account</b> to start syncing files.</p>
       </div>
       <div class="side-bar__info" v-if="syncLocations.length">
-        <p><b>{{currentFileName}}</b> is already synchronized.</p>
+        <p>{{currentFileName}} is already synchronized.</p>
         <menu-entry @click.native="requestSync">
           <icon-sync slot="icon"></icon-sync>
           <div>Synchronize now</div>
@@ -17,7 +17,7 @@
         <menu-entry @click.native="manageSync">
           <icon-view-list slot="icon"></icon-view-list>
           <div><div class="menu-entry__label menu-entry__label--count">{{locationCount}}</div> File synchronization</div>
-          <span>Manage current file synchronized locations.</span>
+          <span>Manage synchronized locations for {{currentFileName}}.</span>
         </menu-entry>
       </div>
       <hr>
@@ -139,7 +139,7 @@ export default {
       return Object.keys(this.syncLocations).length;
     },
     currentFileName() {
-      return store.getters['file/current'].name;
+      return `"${store.getters['file/current'].name}"`;
     },
     dropboxTokens() {
       return tokensToArray(store.getters['data/dropboxTokensBySub']);

@@ -88,8 +88,44 @@
       Print
     </menu-entry>
     <hr>
-    <menu-entry @click.native="setPanel('more')">
-      More...
+    <menu-entry @click.native="settings">
+      <icon-settings slot="icon"></icon-settings>
+      <div>Settings</div>
+      <span>Tweak application and keyboard shortcuts.</span>
+    </menu-entry>
+    <menu-entry @click.native="templates">
+      <icon-code-braces slot="icon"></icon-code-braces>
+      <div><div class="menu-entry__label menu-entry__label--count">{{templateCount}}</div> Templates</div>
+      <span>Configure Handlebars templates for your exports.</span>
+    </menu-entry>
+    <menu-entry @click.native="accounts">
+      <icon-key slot="icon"></icon-key>
+      <div><div class="menu-entry__label menu-entry__label--count">{{accountCount}}</div> User accounts</div>
+      <span>Manage access to your external accounts.</span>
+    </menu-entry>
+    <hr>
+    <menu-entry @click.native="exportWorkspace">
+      <icon-content-save slot="icon"></icon-content-save>
+      Export workspace backup
+    </menu-entry>
+    <input class="hidden-file" id="import-backup-file-input" type="file" @change="onImportBackup">
+    <label class="menu-entry button flex flex--row flex--align-center" for="import-backup-file-input">
+      <div class="menu-entry__icon flex flex--column flex--center">
+        <icon-content-save></icon-content-save>
+      </div>
+      <div class="flex flex--column">
+        Import workspace backup
+      </div>
+    </label>
+    <menu-entry @click.native="reset">
+      <icon-logout slot="icon"></icon-logout>
+      <div>Reset application</div>
+      <span>Sign out and clean all workspaces.</span>
+    </menu-entry>
+    <hr>
+    <menu-entry @click.native="about">
+      <icon-help-circle slot="icon"></icon-help-circle>
+      About StackEdit
     </menu-entry>
   </div>
 </template>
@@ -102,6 +138,8 @@ import UserImage from '../UserImage';
 import googleHelper from '../../services/providers/helpers/googleHelper';
 import syncSvc from '../../services/syncSvc';
 import userSvc from '../../services/userSvc';
+import backupSvc from '../../services/backupSvc';
+import utils from '../../services/utils';
 import store from '../../store';
 
 export default {
@@ -131,6 +169,13 @@ export default {
     publishLocationCount() {
       return Object.keys(store.getters['publishLocation/current']).length;
     },
+    templateCount() {
+      return Object.keys(store.getters['data/allTemplatesById']).length;
+    },
+    accountCount() {
+      return Object.values(store.getters['data/tokensByType'])
+        .reduce((count, tokensBySub) => count + Object.values(tokensBySub).length, 0);
+    },
   },
   methods: {
     ...mapActions('data', {
@@ -153,6 +198,64 @@ export default {
     },
     print() {
       window.print();
+    },
+    onImportBackup(evt) {
+      const file = evt.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const text = e.target.result;
+          if (text.match(/\uFFFD/)) {
+            store.dispatch('notification/error', 'File is not readable.');
+          } else {
+            backupSvc.importBackup(text);
+          }
+        };
+        const blob = file.slice(0, 10000000);
+        reader.readAsText(blob);
+      }
+    },
+    exportWorkspace() {
+      window.location.href = utils.addQueryParams('app', {
+        ...utils.queryParams,
+        exportWorkspace: true,
+      }, true);
+      window.location.reload();
+    },
+    async settings() {
+      try {
+        const settings = await store.dispatch('modal/open', 'settings');
+        store.dispatch('data/setSettings', settings);
+      } catch (e) {
+        // Cancel
+      }
+    },
+    async templates() {
+      try {
+        const { templates } = await store.dispatch('modal/open', 'templates');
+        store.dispatch('data/setTemplatesById', templates);
+      } catch (e) {
+        // Cancel
+      }
+    },
+    async accounts() {
+      try {
+        await store.dispatch('modal/open', 'accountManagement');
+      } catch (e) {
+        // Cancel
+      }
+    },
+    async reset() {
+      try {
+        await store.dispatch('modal/open', 'reset');
+        window.location.href = '#reset=true';
+        window.location.reload();
+      } catch (e) {
+        // Cancel
+      }
+    },
+    about() {
+      store.dispatch('modal/open', 'about');
     },
   },
 };

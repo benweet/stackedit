@@ -6,7 +6,7 @@ import userSvc from '../../userSvc';
 const clientId = GOOGLE_CLIENT_ID;
 const apiKey = 'AIzaSyC_M4RA9pY6XmM9pmFxlT59UPMO7aHr9kk';
 const appsDomain = null;
-const tokenExpirationMargin = 5 * 60 * 1000; // 5 min (Google tokens expire after 1h)
+const tokenExpirationMargin = 5 * 60 * 1000; // 5 min (tokens expire after 1h)
 let googlePlusNotification = true;
 
 const driveAppDataScopes = ['https://www.googleapis.com/auth/drive.appdata'];
@@ -37,20 +37,20 @@ if (utils.queryParams.providerId === 'googleDrive') {
 }
 
 /**
- * https://developers.google.com/+/web/api/rest/latest/people/get
+ * https://developers.google.com/people/api/rest/v1/people/get
  */
 const getUser = async (sub, token) => {
   const { body } = await networkSvc.request(token
     ? {
       method: 'GET',
-      url: `https://www.googleapis.com/plus/v1/people/${sub}`,
+      url: `https://people.googleapis.com/v1/people/${sub}`,
       headers: {
         Authorization: `Bearer ${token.accessToken}`,
       },
     }
     : {
       method: 'GET',
-      url: `https://www.googleapis.com/plus/v1/people/${sub}?key=${apiKey}`,
+      url: `https://people.googleapis.com/v1/people/${sub}?key=${apiKey}`,
     }, true);
   return body;
 };
@@ -141,22 +141,25 @@ export default {
     }
 
     // Build token object including scopes and sub
-    const existingToken = store.getters['data/googleTokensBySub'][body.sub];
+    const existingToken = store.getters['data/googleTokensBySub'][body.sub] || {
+      scopes: [],
+    };
+    const mergedScopes = [...new Set([...scopes, ...existingToken.scopes])];
     const token = {
-      scopes,
+      scopes: mergedScopes,
       accessToken,
       expiresOn: Date.now() + (expiresIn * 1000),
       idToken,
       sub: body.sub,
-      name: (existingToken || {}).name || 'Unknown',
-      isLogin: !store.getters['workspace/mainWorkspaceToken'] &&
-        scopes.indexOf('https://www.googleapis.com/auth/drive.appdata') !== -1,
-      isSponsor: false,
-      isDrive: scopes.indexOf('https://www.googleapis.com/auth/drive') !== -1 ||
-        scopes.indexOf('https://www.googleapis.com/auth/drive.file') !== -1,
-      isBlogger: scopes.indexOf('https://www.googleapis.com/auth/blogger') !== -1,
-      isPhotos: scopes.indexOf('https://www.googleapis.com/auth/photos') !== -1,
-      driveFullAccess: scopes.indexOf('https://www.googleapis.com/auth/drive') !== -1,
+      name: existingToken.name || 'Unknown',
+      isLogin: existingToken.isLogin || (!store.getters['workspace/mainWorkspaceToken'] &&
+        mergedScopes.indexOf('https://www.googleapis.com/auth/drive.appdata') !== -1),
+      isSponsor: existingToken.isSponsor || false,
+      isDrive: mergedScopes.indexOf('https://www.googleapis.com/auth/drive') !== -1 ||
+        mergedScopes.indexOf('https://www.googleapis.com/auth/drive.file') !== -1,
+      isBlogger: mergedScopes.indexOf('https://www.googleapis.com/auth/blogger') !== -1,
+      isPhotos: mergedScopes.indexOf('https://www.googleapis.com/auth/photos') !== -1,
+      driveFullAccess: mergedScopes.indexOf('https://www.googleapis.com/auth/drive') !== -1,
     };
 
     // Call the user info endpoint
@@ -173,20 +176,6 @@ export default {
       imageUrl: (user.image.url || '').replace(/\bsz?=\d+$/, 'sz=40'),
     });
 
-    if (existingToken) {
-      // We probably retrieved a new token with restricted scopes.
-      // That's no problem, token will be refreshed later with merged scopes.
-      // Restore flags
-      Object.assign(token, {
-        isLogin: existingToken.isLogin || token.isLogin,
-        isSponsor: existingToken.isSponsor,
-        isDrive: existingToken.isDrive || token.isDrive,
-        isBlogger: existingToken.isBlogger || token.isBlogger,
-        isPhotos: existingToken.isPhotos || token.isPhotos,
-        driveFullAccess: existingToken.driveFullAccess || token.driveFullAccess,
-      });
-    }
-
     if (token.isLogin) {
       try {
         token.isSponsor = (await networkSvc.request({
@@ -202,7 +191,7 @@ export default {
     }
 
     // Add token to google tokens
-    store.dispatch('data/addGoogleToken', token);
+    await store.dispatch('data/addGoogleToken', token);
     return token;
   },
   async refreshToken(token, scopes = []) {

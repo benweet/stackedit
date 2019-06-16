@@ -63,6 +63,10 @@ export default {
   background-image: url(../assets/iconGitlab.svg);
 }
 
+.icon-provider--google {
+  background-image: url(../assets/iconGoogle.svg);
+}
+
 .icon-provider--dropbox {
   background-image: url(../assets/iconDropbox.svg);
 }

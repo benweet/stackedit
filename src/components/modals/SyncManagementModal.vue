@@ -99,9 +99,7 @@ $small-button-size: 22px;
 }
 
 .sync-entry__row {
-  margin-top: 1px;
-  padding-top: 1px;
-  border-top: 1px solid rgba(128, 128, 128, 0.15);
+  border-top: 1px solid $hr-color;
   line-height: $small-button-size;
 }
 

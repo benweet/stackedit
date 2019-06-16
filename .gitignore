@@ -2,6 +2,7 @@
 node_modules/
 dist/
 .history
+.idea
 npm-debug.log*
 .vscode
 stackedit_v4

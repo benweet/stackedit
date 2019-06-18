@@ -7,7 +7,6 @@ const clientId = GOOGLE_CLIENT_ID;
 const apiKey = 'AIzaSyC_M4RA9pY6XmM9pmFxlT59UPMO7aHr9kk';
 const appsDomain = null;
 const tokenExpirationMargin = 5 * 60 * 1000; // 5 min (tokens expire after 1h)
-let googlePlusNotification = true;
 
 const driveAppDataScopes = ['https://www.googleapis.com/auth/drive.appdata'];
 const getDriveScopes = token => [token.driveFullAccess
@@ -40,17 +39,18 @@ if (utils.queryParams.providerId === 'googleDrive') {
  * https://developers.google.com/people/api/rest/v1/people/get
  */
 const getUser = async (sub, token) => {
+  const url = `https://people.googleapis.com/v1/people/${sub}?personFields=names,photos`;
   const { body } = await networkSvc.request(token
     ? {
       method: 'GET',
-      url: `https://people.googleapis.com/v1/people/${sub}`,
+      url,
       headers: {
         Authorization: `Bearer ${token.accessToken}`,
       },
     }
     : {
       method: 'GET',
-      url: `https://people.googleapis.com/v1/people/${sub}?key=${apiKey}`,
+      url: `${url}&key=${apiKey}`,
     }, true);
   return body;
 };
@@ -60,10 +60,12 @@ userSvc.setInfoResolver('google', subPrefix, async (sub) => {
   try {
     const googleToken = Object.values(store.getters['data/googleTokensBySub'])[0];
     const body = await getUser(sub, googleToken);
+    const name = body.names[0] || {};
+    const photo = body.photos[0] || {};
     return {
-      id: `${subPrefix}:${body.id}`,
-      name: body.displayName,
-      imageUrl: (body.image.url || '').replace(/\bsz?=\d+$/, 'sz=40'),
+      id: `${subPrefix}:${sub}`,
+      name: name.displayName,
+      imageUrl: (photo.url || '').replace(/\bsz?=\d+$/, 'sz=40'),
     };
   } catch (err) {
     if (err.status !== 404) {
@@ -141,40 +143,51 @@ export default {
     }
 
     // Build token object including scopes and sub
-    const existingToken = store.getters['data/googleTokensBySub'][body.sub] || {
-      scopes: [],
-    };
-    const mergedScopes = [...new Set([...scopes, ...existingToken.scopes])];
+    const existingToken = store.getters['data/googleTokensBySub'][body.sub];
     const token = {
-      scopes: mergedScopes,
+      scopes,
       accessToken,
       expiresOn: Date.now() + (expiresIn * 1000),
       idToken,
       sub: body.sub,
-      name: existingToken.name || 'Unknown',
-      isLogin: existingToken.isLogin || (!store.getters['workspace/mainWorkspaceToken'] &&
-        mergedScopes.indexOf('https://www.googleapis.com/auth/drive.appdata') !== -1),
-      isSponsor: existingToken.isSponsor || false,
-      isDrive: mergedScopes.indexOf('https://www.googleapis.com/auth/drive') !== -1 ||
-        mergedScopes.indexOf('https://www.googleapis.com/auth/drive.file') !== -1,
-      isBlogger: mergedScopes.indexOf('https://www.googleapis.com/auth/blogger') !== -1,
-      isPhotos: mergedScopes.indexOf('https://www.googleapis.com/auth/photos') !== -1,
-      driveFullAccess: mergedScopes.indexOf('https://www.googleapis.com/auth/drive') !== -1,
+      name: (existingToken || {}).name || 'Unknown',
+      isLogin: !store.getters['workspace/mainWorkspaceToken'] &&
+        scopes.indexOf('https://www.googleapis.com/auth/drive.appdata') !== -1,
+      isSponsor: false,
+      isDrive: scopes.indexOf('https://www.googleapis.com/auth/drive') !== -1 ||
+        scopes.indexOf('https://www.googleapis.com/auth/drive.file') !== -1,
+      isBlogger: scopes.indexOf('https://www.googleapis.com/auth/blogger') !== -1,
+      isPhotos: scopes.indexOf('https://www.googleapis.com/auth/photos') !== -1,
+      driveFullAccess: scopes.indexOf('https://www.googleapis.com/auth/drive') !== -1,
     };
 
     // Call the user info endpoint
     const user = await getUser('me', token);
-    if (user.displayName) {
-      token.name = user.displayName;
-    } else if (googlePlusNotification) {
-      store.dispatch('notification/info', 'Please activate Google Plus to change your account name and photo.');
-      googlePlusNotification = false;
+    const userId = user.resourceName.split('/')[1];
+    const name = user.names[0] || {};
+    const photo = user.photos[0] || {};
+    if (name.displayName) {
+      token.name = name.displayName;
     }
     userSvc.addInfo({
-      id: `${subPrefix}:${user.id}`,
-      name: user.displayName,
-      imageUrl: (user.image.url || '').replace(/\bsz?=\d+$/, 'sz=40'),
+      id: `${subPrefix}:${userId}`,
+      name: name.displayName,
+      imageUrl: (photo.url || '').replace(/\bsz?=\d+$/, 'sz=40'),
     });
+
+    if (existingToken) {
+      // We probably retrieved a new token with restricted scopes.
+      // That's no problem, token will be refreshed later with merged scopes.
+      // Restore flags
+      Object.assign(token, {
+        isLogin: existingToken.isLogin || token.isLogin,
+        isSponsor: existingToken.isSponsor,
+        isDrive: existingToken.isDrive || token.isDrive,
+        isBlogger: existingToken.isBlogger || token.isBlogger,
+        isPhotos: existingToken.isPhotos || token.isPhotos,
+        driveFullAccess: existingToken.driveFullAccess || token.driveFullAccess,
+      });
+    }
 
     if (token.isLogin) {
       try {

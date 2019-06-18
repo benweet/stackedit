@@ -21,7 +21,7 @@
         </menu-entry>
       </div>
       <hr>
-      <div v-for="token in bloggerTokens" :key="token.sub">
+      <div v-for="token in bloggerTokens" :key="'blogger-' + token.sub">
         <menu-entry @click.native="publishBlogger(token)">
           <icon-provider slot="icon" provider-id="blogger"></icon-provider>
           <div>Publish to Blogger</div>

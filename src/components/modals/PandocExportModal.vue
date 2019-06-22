@@ -27,12 +27,12 @@
 
 <script>
 import FileSaver from 'file-saver';
-import sponsorSvc from '../../services/sponsorSvc';
 import networkSvc from '../../services/networkSvc';
 import editorSvc from '../../services/editorSvc';
 import googleHelper from '../../services/providers/helpers/googleHelper';
 import modalTemplate from './common/modalTemplate';
 import store from '../../store';
+import badgeSvc from '../../services/badgeSvc';
 
 export default modalTemplate({
   computedLocalSettings: {
@@ -45,20 +45,14 @@ export default modalTemplate({
       const currentContent = store.getters['content/current'];
       const { selectedFormat } = this;
       store.dispatch('queue/enqueue', async () => {
-        const [sponsorToken, token] = await Promise.all([
-          Promise.resolve().then(() => {
-            const tokenToRefresh = store.getters['workspace/sponsorToken'];
-            return tokenToRefresh && googleHelper.refreshToken(tokenToRefresh);
-          }),
-          sponsorSvc.getToken(),
-        ]);
+        const tokenToRefresh = store.getters['workspace/sponsorToken'];
+        const sponsorToken = tokenToRefresh && await googleHelper.refreshToken(tokenToRefresh);
 
         try {
           const { body } = await networkSvc.request({
             method: 'POST',
             url: 'pandocExport',
             params: {
-              token,
               idToken: sponsorToken && sponsorToken.idToken,
               format: selectedFormat,
               options: JSON.stringify(store.getters['data/computedSettings'].pandoc),
@@ -69,6 +63,7 @@ export default modalTemplate({
             timeout: 60000,
           });
           FileSaver.saveAs(body, `${currentFile.name}.${selectedFormat}`);
+          badgeSvc.addBadge('exportPandoc');
         } catch (err) {
           if (err.status === 401) {
             store.dispatch('modal/open', 'sponsorOnly');

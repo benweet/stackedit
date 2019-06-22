@@ -66,7 +66,7 @@ export default new Provider({
 
     return entries.map((entry) => {
       const sub = `${githubHelper.subPrefix}:${entry.user.id}`;
-      userSvc.addInfo({ id: sub, name: entry.user.login, imageUrl: entry.user.avatar_url });
+      userSvc.addUserInfo({ id: sub, name: entry.user.login, imageUrl: entry.user.avatar_url });
       return {
         sub,
         id: entry.version,

@@ -12,6 +12,7 @@ import './providers/googleDriveWorkspaceProvider';
 import tempFileSvc from './tempFileSvc';
 import workspaceSvc from './workspaceSvc';
 import constants from '../data/constants';
+import badgeSvc from './badgeSvc';
 
 const minAutoSyncEvery = 60 * 1000; // 60 sec
 const inactivityThreshold = 3 * 1000; // 3 sec
@@ -455,7 +456,7 @@ const syncFile = async (fileId, syncContext = new SyncContext()) => {
         newSyncedContent.syncHistory[syncLocation.id] = newSyncHistoryItem;
         if (serverContent &&
           (serverContent.hash === newSyncHistoryItem[LAST_SEEN] ||
-          serverContent.history.indexOf(newSyncHistoryItem[LAST_SEEN]) !== -1)
+          serverContent.history.includes(newSyncHistoryItem[LAST_SEEN]))
         ) {
           // That's the 2nd time we've seen this content, trust it for future merges
           newSyncHistoryItem[LAST_MERGED] = newSyncHistoryItem[LAST_SEEN];
@@ -723,10 +724,11 @@ const syncWorkspace = async (skipContents = false) => {
       return true;
     }));
 
-    // Sync settings and workspaces only in the main workspace
+    // Sync settings, workspaces and badges only in the main workspace
     if (workspace.id === 'main') {
       await syncDataItem('settings');
       await syncDataItem('workspaces');
+      await syncDataItem('badges');
     }
     await syncDataItem('templates');
 
@@ -786,6 +788,10 @@ const syncWorkspace = async (skipContents = false) => {
     if (syncContext.restartSkipContents) {
       await syncWorkspace(true);
     }
+
+    if (workspace.id === 'main') {
+      badgeSvc.addBadge('syncMainWorkspace');
+    }
   } catch (err) {
     if (err && err.message === 'TOO_LATE') {
       // Restart sync
@@ -799,7 +805,7 @@ const syncWorkspace = async (skipContents = false) => {
 /**
  * Enqueue a sync task, if possible.
  */
-const requestSync = () => {
+const requestSync = (addTriggerSyncBadge = false) => {
   // No sync in light mode
   if (store.state.light) {
     return;
@@ -851,6 +857,10 @@ const requestSync = () => {
               workspaceSvc.deleteFile(fileId);
             }
           });
+
+          if (addTriggerSyncBadge) {
+            badgeSvc.addBadge('triggerSync');
+          }
         } finally {
           clearInterval(intervalId);
         }

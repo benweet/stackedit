@@ -135,7 +135,7 @@ export default new Provider({
         user = committer;
       }
       const sub = `${githubHelper.subPrefix}:${user.id}`;
-      userSvc.addInfo({ id: sub, name: user.login, imageUrl: user.avatar_url });
+      userSvc.addUserInfo({ id: sub, name: user.login, imageUrl: user.avatar_url });
       const date = (commit.author && commit.author.date)
         || (commit.committer && commit.committer.date);
       return {

@@ -4,6 +4,7 @@ import Provider from './common/Provider';
 import utils from '../utils';
 import userSvc from '../userSvc';
 import gitWorkspaceSvc from '../gitWorkspaceSvc';
+import badgeSvc from '../badgeSvc';
 
 const getAbsolutePath = ({ id }) =>
   `${store.getters['workspace/currentWorkspace'].path || ''}${id}`;
@@ -86,6 +87,7 @@ export default new Provider({
       });
     }
 
+    badgeSvc.addBadge('addGithubWorkspace');
     return store.getters['workspace/workspacesById'][workspaceId];
   },
   getChanges() {
@@ -247,7 +249,7 @@ export default new Provider({
         user = committer;
       }
       const sub = `${githubHelper.subPrefix}:${user.id}`;
-      userSvc.addInfo({ id: sub, name: user.login, imageUrl: user.avatar_url });
+      userSvc.addUserInfo({ id: sub, name: user.login, imageUrl: user.avatar_url });
       const date = (commit.author && commit.author.date)
         || (commit.committer && commit.committer.date)
         || 1;

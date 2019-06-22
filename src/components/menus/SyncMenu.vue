@@ -108,6 +108,7 @@ import githubProvider from '../../services/providers/githubProvider';
 import gitlabProvider from '../../services/providers/gitlabProvider';
 import syncSvc from '../../services/syncSvc';
 import store from '../../store';
+import badgeSvc from '../../services/badgeSvc';
 
 const tokensToArray = (tokens, filter = () => true) => Object.values(tokens)
   .filter(token => filter(token))
@@ -162,7 +163,7 @@ export default {
   methods: {
     requestSync() {
       if (!this.isSyncRequested) {
-        syncSvc.requestSync();
+        syncSvc.requestSync(true);
       }
     },
     async manageSync() {
@@ -194,28 +195,36 @@ export default {
         await googleHelper.addDriveAccount(!store.getters['data/localSettings'].googleDriveRestrictedAccess);
       } catch (e) { /* cancel */ }
     },
-    async openGoogleDrive(token) {
-      const files = await googleHelper.openPicker(token, 'doc');
-      store.dispatch(
-        'queue/enqueue',
-        () => googleDriveProvider.openFiles(token, files),
-      );
-    },
     async openDropbox(token) {
       const paths = await dropboxHelper.openChooser(token);
       store.dispatch(
         'queue/enqueue',
-        () => dropboxProvider.openFiles(token, paths),
+        async () => {
+          await dropboxProvider.openFiles(token, paths);
+          badgeSvc.addBadge('openFromDropbox');
+        },
+      );
+    },
+    async saveDropbox(token) {
+      try {
+        await openSyncModal(token, 'dropboxSave');
+        badgeSvc.addBadge('saveOnDropbox');
+      } catch (e) { /* cancel */ }
+    },
+    async openGoogleDrive(token) {
+      const files = await googleHelper.openPicker(token, 'doc');
+      store.dispatch(
+        'queue/enqueue',
+        async () => {
+          await googleDriveProvider.openFiles(token, files);
+          badgeSvc.addBadge('openFromGoogleDrive');
+        },
       );
     },
     async saveGoogleDrive(token) {
       try {
         await openSyncModal(token, 'googleDriveSave');
-      } catch (e) { /* cancel */ }
-    },
-    async saveDropbox(token) {
-      try {
-        await openSyncModal(token, 'dropboxSave');
+        badgeSvc.addBadge('saveOnGoogleDrive');
       } catch (e) { /* cancel */ }
     },
     async openGithub(token) {
@@ -226,18 +235,23 @@ export default {
         });
         store.dispatch(
           'queue/enqueue',
-          () => githubProvider.openFile(token, syncLocation),
+          async () => {
+            await githubProvider.openFile(token, syncLocation);
+            badgeSvc.addBadge('openFromGithub');
+          },
         );
       } catch (e) { /* cancel */ }
     },
     async saveGithub(token) {
       try {
         await openSyncModal(token, 'githubSave');
+        badgeSvc.addBadge('saveOnGithub');
       } catch (e) { /* cancel */ }
     },
     async saveGist(token) {
       try {
         await openSyncModal(token, 'gistSync');
+        badgeSvc.addBadge('saveOnGist');
       } catch (e) { /* cancel */ }
     },
     async openGitlab(token) {
@@ -248,13 +262,17 @@ export default {
         });
         store.dispatch(
           'queue/enqueue',
-          () => gitlabProvider.openFile(token, syncLocation),
+          async () => {
+            await gitlabProvider.openFile(token, syncLocation);
+            badgeSvc.addBadge('openFromGitlab');
+          },
         );
       } catch (e) { /* cancel */ }
     },
     async saveGitlab(token) {
       try {
         await openSyncModal(token, 'gitlabSave');
+        badgeSvc.addBadge('saveOnGitlab');
       } catch (e) { /* cancel */ }
     },
   },

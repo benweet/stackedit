@@ -45,16 +45,22 @@ export default {
 
       return item.promise;
     },
-    info({ dispatch }, info) {
+    info({ dispatch }, content) {
       return dispatch('showItem', {
         type: 'info',
-        content: info,
+        content,
       });
     },
-    confirm({ dispatch }, question) {
+    badge({ dispatch }, content) {
+      return dispatch('showItem', {
+        type: 'badge',
+        content,
+      });
+    },
+    confirm({ dispatch }, content) {
       return dispatch('showItem', {
         type: 'confirm',
-        content: question,
+        content,
         timeout: 10000, // 10 sec
       });
     },

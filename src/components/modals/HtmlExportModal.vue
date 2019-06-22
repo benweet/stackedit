@@ -26,6 +26,7 @@ import { mapActions } from 'vuex';
 import exportSvc from '../../services/exportSvc';
 import modalTemplate from './common/modalTemplate';
 import store from '../../store';
+import badgeSvc from '../../services/badgeSvc';
 
 export default modalTemplate({
   data: () => ({
@@ -54,11 +55,12 @@ export default modalTemplate({
     ...mapActions('notification', [
       'info',
     ]),
-    resolve() {
+    async resolve() {
       const { config } = this;
       const currentFile = store.getters['file/current'];
       config.resolve();
-      exportSvc.exportToDisk(currentFile.id, 'html', this.allTemplatesById[this.selectedTemplate]);
+      await exportSvc.exportToDisk(currentFile.id, 'html', this.allTemplatesById[this.selectedTemplate]);
+      badgeSvc.addBadge('exportHtml');
     },
   },
 });

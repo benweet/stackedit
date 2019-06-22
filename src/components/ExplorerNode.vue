@@ -22,6 +22,7 @@ import { mapMutations, mapActions } from 'vuex';
 import workspaceSvc from '../services/workspaceSvc';
 import explorerSvc from '../services/explorerSvc';
 import store from '../store';
+import badgeSvc from '../services/badgeSvc';
 
 export default {
   name: 'explorer-node', // Required for recursivity
@@ -81,7 +82,7 @@ export default {
     ]),
     select(id = this.node.item.id, doOpen = true) {
       const node = store.getters['explorer/nodeMap'][id];
-      if (!node) {
+      if (!node || node.item.id === store.state.explorer.selectedId) {
         return false;
       }
       store.commit('explorer/setSelectedId', id);
@@ -92,6 +93,7 @@ export default {
             store.commit('explorer/toggleOpenNode', id);
           } else {
             store.commit('file/setCurrentId', id);
+            badgeSvc.addBadge('switchFile');
           }
         }, 10);
       }
@@ -104,9 +106,11 @@ export default {
           if (newChildNode.isFolder) {
             const item = await workspaceSvc.storeItem(newChildNode.item);
             this.select(item.id);
+            badgeSvc.addBadge('createFolder');
           } else {
             const item = await workspaceSvc.createFile(newChildNode.item);
             this.select(item.id);
+            badgeSvc.addBadge('createFile');
           }
         } catch (e) {
           // Cancel
@@ -115,15 +119,16 @@ export default {
       store.commit('explorer/setNewItem', null);
     },
     async submitEdit(cancel) {
-      const { item } = store.getters['explorer/editingNode'];
+      const { item, isFolder } = store.getters['explorer/editingNode'];
       const value = this.editingValue;
       this.setEditingId(null);
-      if (!cancel && item.id && value) {
+      if (!cancel && item.id && value && item.name !== value) {
         try {
           await workspaceSvc.storeItem({
             ...item,
             name: value,
           });
+          badgeSvc.addBadge(isFolder ? 'renameFolder' : 'renameFile');
         } catch (e) {
           // Cancel
         }
@@ -151,6 +156,7 @@ export default {
           ...sourceNode.item,
           parentId: targetNode.item.id,
         });
+        badgeSvc.addBadge('moveFiles');
       }
     },
     async onContextMenu(evt) {

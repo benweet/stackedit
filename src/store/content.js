@@ -3,6 +3,7 @@ import moduleTemplate from './moduleTemplate';
 import empty from '../data/empties/emptyContent';
 import utils from '../services/utils';
 import cledit from '../services/editor/cledit';
+import badgeSvc from '../services/badgeSvc';
 
 const diffMatchPatch = new DiffMatchPatch();
 
@@ -104,6 +105,7 @@ module.actions = {
           ...currentContent,
           text: revisionContent.originalText,
         });
+        badgeSvc.addBadge('restoreVersion');
       }
     }
   },

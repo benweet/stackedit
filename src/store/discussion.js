@@ -3,7 +3,8 @@ import googleHelper from '../services/providers/helpers/googleHelper';
 import syncSvc from '../services/syncSvc';
 
 const idShifter = offset => (state, getters) => {
-  const ids = Object.keys(getters.currentFileDiscussions);
+  const ids = Object.keys(getters.currentFileDiscussions)
+    .filter(id => id !== state.newDiscussionId);
   const idx = ids.indexOf(state.currentDiscussionId) + offset + ids.length;
   return ids[idx % ids.length];
 };

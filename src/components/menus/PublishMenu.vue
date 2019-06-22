@@ -129,13 +129,13 @@ const tokensToArray = (tokens, filter = () => true) => Object.values(tokens)
   .filter(token => filter(token))
   .sort((token1, token2) => token1.name.localeCompare(token2.name));
 
-const publishModalOpener = type => async (token) => {
+const publishModalOpener = (type, featureId) => async (token) => {
   try {
     const publishLocation = await store.dispatch('modal/open', {
       type,
       token,
     });
-    publishSvc.createPublishLocation(publishLocation);
+    publishSvc.createPublishLocation(publishLocation, featureId);
   } catch (e) { /* cancel */ }
 };
 
@@ -236,15 +236,15 @@ export default {
         await zendeskHelper.addAccount(subdomain, clientId);
       } catch (e) { /* cancel */ }
     },
-    publishBlogger: publishModalOpener('bloggerPublish'),
-    publishBloggerPage: publishModalOpener('bloggerPagePublish'),
-    publishDropbox: publishModalOpener('dropboxPublish'),
-    publishGithub: publishModalOpener('githubPublish'),
-    publishGist: publishModalOpener('gistPublish'),
-    publishGitlab: publishModalOpener('gitlabPublish'),
-    publishGoogleDrive: publishModalOpener('googleDrivePublish'),
-    publishWordpress: publishModalOpener('wordpressPublish'),
-    publishZendesk: publishModalOpener('zendeskPublish'),
+    publishBlogger: publishModalOpener('bloggerPublish', 'publishToBlogger'),
+    publishBloggerPage: publishModalOpener('bloggerPagePublish', 'publishToBloggerPage'),
+    publishDropbox: publishModalOpener('dropboxPublish', 'publishToDropbox'),
+    publishGithub: publishModalOpener('githubPublish', 'publishToGithub'),
+    publishGist: publishModalOpener('gistPublish', 'publishToGist'),
+    publishGitlab: publishModalOpener('gitlabPublish', 'publishToGitlab'),
+    publishGoogleDrive: publishModalOpener('googleDrivePublish', 'publishToGoogleDrive'),
+    publishWordpress: publishModalOpener('wordpressPublish', 'publishToWordPress'),
+    publishZendesk: publishModalOpener('zendeskPublish', 'publishToZendesk'),
   },
 };
 </script>

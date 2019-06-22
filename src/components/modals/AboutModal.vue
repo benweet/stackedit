@@ -2,8 +2,6 @@
   <modal-inner class="modal__inner-1--about-modal" aria-label="About">
     <div class="modal__content">
       <div class="logo-background"></div>
-      <small>© 2013-2019 Dock5 Software Ltd.<br>v{{version}}</small>
-      <hr>
       StackEdit on <a target="_blank" href="https://github.com/benweet/stackedit/">GitHub</a>
       <br>
       <a target="_blank" href="https://github.com/benweet/stackedit/issues">Issue tracker</a> — <a target="_blank" href="https://github.com/benweet/stackedit/releases">Changelog</a>
@@ -13,12 +11,13 @@
       <a target="_blank" href="https://community.stackedit.io/">Community</a> — <a target="_blank" href="https://community.stackedit.io/c/how-to">Tutos and How To</a>
       <br>
       StackEdit on <a target="_blank" href="https://twitter.com/stackedit/">Twitter</a>
-      <div class="modal__info">
-      For commercial support or custom development, please <a href="mailto:stackedit.project@gmail.com">send us an email</a>.
-      </div>
+      <hr>
+      <small>© 2013-2019 Dock5 Software Ltd.<br>v{{version}}</small>
       <h3>FAQ</h3>
       <div class="faq" v-html="faq"></div>
-      <hr>
+      <div class="modal__info">
+        For commercial support or custom development, please <a href="mailto:stackedit.project@gmail.com">contact us</a>.
+      </div>
       Licensed under an
       <a target="_blank" href="http://www.apache.org/licenses/LICENSE-2.0">Apache License</a><br>
       <a target="_blank" href="privacy_policy.html">Privacy Policy</a>

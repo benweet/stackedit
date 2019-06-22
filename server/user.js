@@ -116,21 +116,3 @@ exports.checkSponsor = (idToken) => {
   return exports.getUserFromToken(idToken)
     .then(userInfo => userInfo && userInfo.sponsorUntil > Date.now(), () => false);
 };
-
-exports.checkMonetize = (token) => {
-  if (!token) {
-    return Promise.resolve(false);
-  }
-  return new Promise(resolve => request({
-    uri: 'https://monetizejs.com/api/payments',
-    qs: {
-      access_token: token,
-    },
-    json: true,
-  }, (err, paymentsRes, payments) => {
-    const authorized = payments && payments.app === 'ESTHdCYOi18iLhhO' && (
-      (payments.chargeOption && payments.chargeOption.alias === 'once') ||
-      (payments.subscriptionOption && payments.subscriptionOption.alias === 'yearly'));
-    resolve(!err && paymentsRes.statusCode === 200 && authorized);
-  }));
-};

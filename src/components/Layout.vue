@@ -177,11 +177,9 @@ export default {
   .sticky-comment,
   .current-discussion {
     background-color: mix(#000, $editor-background-light, 6.7%);
-    border-color: $editor-background-light;
 
     .app--dark & {
       background-color: mix(#fff, $editor-background-dark, 6.7%);
-      border-color: $editor-background-dark;
     }
   }
 }
@@ -204,7 +202,6 @@ $preview-background-dark: #252525;
   .sticky-comment,
   .current-discussion {
     background-color: mix(#000, $preview-background-light, 6.7%);
-    border-color: $preview-background-light;
   }
 }
 

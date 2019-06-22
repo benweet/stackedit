@@ -40,7 +40,6 @@ export default {
   right: 0;
   font-size: 15px;
   padding-top: 10px;
-  border-bottom: 2px solid;
 
   .current-discussion & {
     width: auto !important;

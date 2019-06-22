@@ -28,6 +28,7 @@ import UserName from '../UserName';
 import editorSvc from '../../services/editorSvc';
 import htmlSanitizer from '../../libs/htmlSanitizer';
 import store from '../../store';
+import badgeSvc from '../../services/badgeSvc';
 
 export default {
   components: {
@@ -52,6 +53,7 @@ export default {
       try {
         await store.dispatch('modal/open', 'commentDeletion');
         store.dispatch('discussion/cleanCurrentFile', { filterComment: this.comment });
+        badgeSvc.addBadge('removeComment');
       } catch (e) {
         // Cancel
       }

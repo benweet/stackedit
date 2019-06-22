@@ -25,7 +25,7 @@
     </div>
     <div class="modal__button-bar">
       <button class="button" @click="config.reject()">Cancel</button>
-      <button class="button button--resolve" @click="!error && config.resolve(strippedCustomSettings)">Ok</button>
+      <button class="button button--resolve" @click="resolve">Ok</button>
     </div>
   </modal-inner>
 </template>
@@ -38,6 +38,7 @@ import Tab from './common/Tab';
 import CodeEditor from '../CodeEditor';
 import defaultSettings from '../../data/defaults/defaultSettings.yml';
 import store from '../../store';
+import badgeSvc from '../../services/badgeSvc';
 
 const emptySettings = `# Add your custom settings here to override the
 # default settings.
@@ -75,6 +76,25 @@ export default {
         this.error = null;
       } catch (e) {
         this.error = e.message;
+      }
+    },
+    async resolve() {
+      if (!this.error) {
+        const settings = this.strippedCustomSettings;
+        await store.dispatch('data/setSettings', settings);
+        const customSettings = yaml.safeLoad(settings);
+        if (customSettings.shortcuts) {
+          badgeSvc.addBadge('changeShortcuts');
+        }
+        const computedSettings = store.getters['data/computedSettings'];
+        const customSettingsCount = Object
+          .keys(customSettings)
+          .filter(key => key !== 'shortcuts' && computedSettings[key])
+          .length;
+        if (customSettingsCount) {
+          badgeSvc.addBadge('changeSettings');
+        }
+        this.config.resolve(settings);
       }
     },
   },

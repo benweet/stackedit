@@ -6,8 +6,20 @@ export default {
     itemsById: {},
   },
   mutations: {
-    addItem: ({ itemsById }, item) => {
-      Vue.set(itemsById, item.id, item);
+    setItem: ({ itemsById }, item) => {
+      const itemToSet = {
+        ...item,
+      };
+      const existingItem = itemsById[item.id];
+      if (existingItem) {
+        if (!itemToSet.name) {
+          itemToSet.name = existingItem.name;
+        }
+        if (!itemToSet.imageUrl) {
+          itemToSet.imageUrl = existingItem.imageUrl;
+        }
+      }
+      Vue.set(itemsById, item.id, itemToSet);
     },
   },
 };

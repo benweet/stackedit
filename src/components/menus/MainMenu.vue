@@ -99,15 +99,20 @@
       <div><div class="menu-entry__label menu-entry__label--count">{{accountCount}}</div> User accounts</div>
       <span>Manage access to your external accounts.</span>
     </menu-entry>
+    <menu-entry @click.native="badges">
+      <icon-seal slot="icon"></icon-seal>
+      <div><div class="menu-entry__label menu-entry__label--count">{{badgeCount}}/{{featureCount}}</div> Badges</div>
+      <span>List application features and earned badges.</span>
+    </menu-entry>
     <hr>
-    <menu-entry @click.native="setPanel('workspaceBackup')">
+    <menu-entry @click.native="setPanel('workspaceBackups')">
       <icon-content-save slot="icon"></icon-content-save>
-      Workspace backup
+      Workspace backups
     </menu-entry>
     <menu-entry @click.native="reset">
       <icon-logout slot="icon"></icon-logout>
       <div>Reset application</div>
-      <span>Sign out and clean all workspaces.</span>
+      <span>Sign out and clean all workspace data.</span>
     </menu-entry>
     <hr>
     <menu-entry @click.native="about">
@@ -161,6 +166,12 @@ export default {
       return Object.values(store.getters['data/tokensByType'])
         .reduce((count, tokensBySub) => count + Object.values(tokensBySub).length, 0);
     },
+    badgeCount() {
+      return store.getters['data/allBadges'].filter(badge => badge.isEarned).length;
+    },
+    featureCount() {
+      return store.getters['data/allBadges'].length;
+    },
   },
   methods: {
     ...mapActions('data', {
@@ -186,35 +197,30 @@ export default {
     },
     async settings() {
       try {
-        const settings = await store.dispatch('modal/open', 'settings');
-        store.dispatch('data/setSettings', settings);
-      } catch (e) {
-        // Cancel
-      }
+        await store.dispatch('modal/open', 'settings');
+      } catch (e) { /* Cancel */ }
     },
     async templates() {
       try {
-        const { templates } = await store.dispatch('modal/open', 'templates');
-        store.dispatch('data/setTemplatesById', templates);
-      } catch (e) {
-        // Cancel
-      }
+        await store.dispatch('modal/open', 'templates');
+      } catch (e) { /* Cancel */ }
     },
     async accounts() {
       try {
         await store.dispatch('modal/open', 'accountManagement');
-      } catch (e) {
-        // Cancel
-      }
+      } catch (e) { /* Cancel */ }
+    },
+    async badges() {
+      try {
+        await store.dispatch('modal/open', 'badgeManagement');
+      } catch (e) { /* Cancel */ }
     },
     async reset() {
       try {
         await store.dispatch('modal/open', 'reset');
         window.location.href = '#reset=true';
         window.location.reload();
-      } catch (e) {
-        // Cancel
-      }
+      } catch (e) { /* Cancel */ }
     },
     about() {
       store.dispatch('modal/open', 'about');

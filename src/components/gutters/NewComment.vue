@@ -30,6 +30,7 @@ import markdownConversionSvc from '../../services/markdownConversionSvc';
 import utils from '../../services/utils';
 import userSvc from '../../services/userSvc';
 import store from '../../store';
+import badgeSvc from '../../services/badgeSvc';
 
 export default {
   components: {
@@ -70,12 +71,15 @@ export default {
               [utils.uid()]: comment,
             },
           };
-          // Create discussion
           if (discussionId === store.state.discussion.newDiscussionId) {
+            // Create discussion
             patch.discussions = {
               ...store.getters['content/current'].discussions,
               [discussionId]: store.getters['discussion/newDiscussion'],
             };
+            badgeSvc.addBadge('createDiscussion');
+          } else {
+            badgeSvc.addBadge('addComment');
           }
           store.dispatch('content/patchCurrent', patch);
           store.commit('discussion/setNewCommentText');

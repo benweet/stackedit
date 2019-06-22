@@ -3,6 +3,7 @@ import googleHelper from './helpers/googleHelper';
 import Provider from './common/Provider';
 import utils from '../utils';
 import workspaceSvc from '../workspaceSvc';
+import badgeSvc from '../badgeSvc';
 
 let fileIdToOpen;
 let syncStartPageToken;
@@ -137,6 +138,7 @@ export default new Provider({
       await initFolder(token, folder);
     }
 
+    badgeSvc.addBadge('addGoogleDriveWorkspace');
     return getWorkspace(folderId);
   },
   async performAction() {

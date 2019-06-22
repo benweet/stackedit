@@ -1,5 +1,6 @@
 import networkSvc from '../../networkSvc';
 import store from '../../../store';
+import badgeSvc from '../../badgeSvc';
 
 const clientId = '23361';
 const tokenExpirationMargin = 5 * 60 * 1000; // 5 min (WordPress tokens expire after 2 weeks)
@@ -63,8 +64,10 @@ export default {
     });
     return this.startOauth2(sub);
   },
-  addAccount(fullAccess = false) {
-    return this.startOauth2(fullAccess);
+  async addAccount(fullAccess = false) {
+    const token = await this.startOauth2(fullAccess);
+    badgeSvc.addBadge('addWordpressAccount');
+    return token;
   },
 
   /**

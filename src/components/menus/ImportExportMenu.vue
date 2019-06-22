@@ -53,6 +53,7 @@ import Provider from '../../services/providers/common/Provider';
 import store from '../../store';
 import workspaceSvc from '../../services/workspaceSvc';
 import exportSvc from '../../services/exportSvc';
+import badgeSvc from '../../services/badgeSvc';
 
 const turndownService = new TurndownService(store.getters['data/computedSettings'].turndown);
 
@@ -85,6 +86,7 @@ export default {
         name: file.name,
       });
       store.commit('file/setCurrentId', item.id);
+      badgeSvc.addBadge('importMarkdown');
     },
     async onImportHtml(evt) {
       const file = evt.target.files[0];
@@ -96,23 +98,29 @@ export default {
         name: file.name,
       });
       store.commit('file/setCurrentId', item.id);
+      badgeSvc.addBadge('importHtml');
     },
-    exportMarkdown() {
+    async exportMarkdown() {
       const currentFile = store.getters['file/current'];
-      return exportSvc.exportToDisk(currentFile.id, 'md')
-        .catch(() => { /* Cancel */ });
+      try {
+        await exportSvc.exportToDisk(currentFile.id, 'md');
+        badgeSvc.addBadge('exportMarkdown');
+      } catch (e) { /* Cancel */ }
     },
-    exportHtml() {
-      return store.dispatch('modal/open', 'htmlExport')
-        .catch(() => { /* Cancel */ });
+    async exportHtml() {
+      try {
+        await store.dispatch('modal/open', 'htmlExport');
+      } catch (e) { /* Cancel */ }
     },
-    exportPdf() {
-      return store.dispatch('modal/open', 'pdfExport')
-        .catch(() => { /* Cancel */ });
+    async exportPdf() {
+      try {
+        await store.dispatch('modal/open', 'pdfExport');
+      } catch (e) { /* Cancel */ }
     },
-    exportPandoc() {
-      return store.dispatch('modal/open', 'pandocExport')
-        .catch(() => { /* Cancel */ });
+    async exportPandoc() {
+      try {
+        await store.dispatch('modal/open', 'pandocExport');
+      } catch (e) { /* Cancel */ }
     },
   },
 };

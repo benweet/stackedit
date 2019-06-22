@@ -37,6 +37,7 @@ import SyncManagementModal from './modals/SyncManagementModal';
 import PublishManagementModal from './modals/PublishManagementModal';
 import WorkspaceManagementModal from './modals/WorkspaceManagementModal';
 import AccountManagementModal from './modals/AccountManagementModal';
+import BadgeManagementModal from './modals/BadgeManagementModal';
 import SponsorModal from './modals/SponsorModal';
 
 // Providers
@@ -88,6 +89,7 @@ export default {
     PublishManagementModal,
     WorkspaceManagementModal,
     AccountManagementModal,
+    BadgeManagementModal,
     SponsorModal,
     // Providers
     GooglePhotoModal,

@@ -1,6 +1,7 @@
 import networkSvc from '../../networkSvc';
 import userSvc from '../../userSvc';
 import store from '../../../store';
+import badgeSvc from '../../badgeSvc';
 
 const getAppKey = (fullAccess) => {
   if (fullAccess) {
@@ -73,7 +74,7 @@ export default {
       method: 'POST',
       url: 'https://api.dropboxapi.com/2/users/get_current_account',
     });
-    userSvc.addInfo({
+    userSvc.addUserInfo({
       id: `${subPrefix}:${body.account_id}`,
       name: body.name.display_name,
       imageUrl: body.profile_photo_url || '',
@@ -96,8 +97,10 @@ export default {
     store.dispatch('data/addDropboxToken', token);
     return token;
   },
-  addAccount(fullAccess = false) {
-    return this.startOauth2(fullAccess);
+  async addAccount(fullAccess = false) {
+    const token = await this.startOauth2(fullAccess);
+    badgeSvc.addBadge('addDropboxAccount');
+    return token;
   },
 
   /**

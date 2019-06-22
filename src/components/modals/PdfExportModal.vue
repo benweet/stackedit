@@ -23,11 +23,11 @@
 <script>
 import FileSaver from 'file-saver';
 import exportSvc from '../../services/exportSvc';
-import sponsorSvc from '../../services/sponsorSvc';
 import networkSvc from '../../services/networkSvc';
 import googleHelper from '../../services/providers/helpers/googleHelper';
 import modalTemplate from './common/modalTemplate';
 import store from '../../store';
+import badgeSvc from '../../services/badgeSvc';
 
 export default modalTemplate({
   computedLocalSettings: {
@@ -38,12 +38,11 @@ export default modalTemplate({
       this.config.resolve();
       const currentFile = store.getters['file/current'];
       store.dispatch('queue/enqueue', async () => {
-        const [sponsorToken, token, html] = await Promise.all([
+        const [sponsorToken, html] = await Promise.all([
           Promise.resolve().then(() => {
             const tokenToRefresh = store.getters['workspace/sponsorToken'];
             return tokenToRefresh && googleHelper.refreshToken(tokenToRefresh);
           }),
-          sponsorSvc.getToken(),
           exportSvc.applyTemplate(
             currentFile.id,
             this.allTemplatesById[this.selectedTemplate],
@@ -56,7 +55,6 @@ export default modalTemplate({
             method: 'POST',
             url: 'pdfExport',
             params: {
-              token,
               idToken: sponsorToken && sponsorToken.idToken,
               options: JSON.stringify(store.getters['data/computedSettings'].wkhtmltopdf),
             },
@@ -65,6 +63,7 @@ export default modalTemplate({
             timeout: 60000,
           });
           FileSaver.saveAs(body, `${currentFile.name}.pdf`);
+          badgeSvc.addBadge('exportPdf');
         } catch (err) {
           if (err.status === 401) {
             store.dispatch('modal/open', 'sponsorOnly');

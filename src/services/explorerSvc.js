@@ -1,5 +1,6 @@
 import store from '../store';
 import workspaceSvc from './workspaceSvc';
+import badgeSvc from './badgeSvc';
 
 export default {
   newItem(isFolder = false) {
@@ -61,6 +62,7 @@ export default {
       } else {
         workspaceSvc.deleteFile(id);
       }
+      badgeSvc.addBadge('removeFiles');
     };
 
     if (selectedNode === store.getters['explorer/selectedNode']) {

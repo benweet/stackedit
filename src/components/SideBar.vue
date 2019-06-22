@@ -19,7 +19,7 @@
       <history-menu v-else-if="panel === 'history'"></history-menu>
       <export-menu v-else-if="panel === 'export'"></export-menu>
       <import-export-menu v-else-if="panel === 'importExport'"></import-export-menu>
-      <workspace-backup-menu v-else-if="panel === 'workspaceBackup'"></workspace-backup-menu>
+      <workspace-backup-menu v-else-if="panel === 'workspaceBackups'"></workspace-backup-menu>
       <div v-else-if="panel === 'help'" class="side-bar__panel side-bar__panel--help">
         <pre class="markdown-highlighting" v-html="markdownSample"></pre>
       </div>
@@ -54,7 +54,7 @@ const panelNames = {
   publish: 'Publish',
   history: 'File history',
   importExport: 'Import/export',
-  workspaceBackup: 'Workspace backup',
+  workspaceBackups: 'Workspace backups',
 };
 
 export default {
@@ -174,8 +174,9 @@ export default {
   font-size: 0.95em;
 
   p {
-    margin: 10px;
+    margin: 10px 15px;
     line-height: 1.5;
+    font-style: italic;
   }
 }
 </style>

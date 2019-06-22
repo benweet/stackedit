@@ -50,12 +50,9 @@ const readJson = (str) => {
 
 exports.generate = (req, res) => {
   let wkhtmltopdfError = '';
-  Promise.all([
-    user.checkSponsor(req.query.idToken),
-    user.checkMonetize(req.query.token),
-  ])
-    .then(([isSponsor, isMonetize]) => {
-      if (!isSponsor && !isMonetize) {
+  user.checkSponsor(req.query.idToken)
+    .then((isSponsor) => {
+      if (!isSponsor) {
         throw new Error('unauthorized');
       }
       return new Promise((resolve, reject) => {
@@ -127,7 +124,7 @@ exports.generate = (req, res) => {
       }
 
       // Page size
-      params.push('--page-size', authorizedPageSizes.indexOf(options.pageSize) === -1 ? 'A4' : options.pageSize);
+      params.push('--page-size', !authorizedPageSizes.includes(options.pageSize) ? 'A4' : options.pageSize);
 
       // Use a temp file as wkhtmltopdf can't access /dev/stdout on Amazon EC2 for some reason
       const binPath = process.env.WKHTMLTOPDF_PATH || 'wkhtmltopdf';

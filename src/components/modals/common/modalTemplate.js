@@ -64,11 +64,10 @@ export default (desc) => {
       };
       // Make use of `function` to have `this` bound to the component
       component.methods.configureTemplates = async function () { // eslint-disable-line func-names
-        const { templates, selectedId } = await store.dispatch('modal/open', {
+        const { selectedId } = await store.dispatch('modal/open', {
           type: 'templates',
           selectedId: this.selectedTemplate,
         });
-        store.dispatch('data/setTemplatesById', templates);
         store.dispatch('data/patchLocalSettings', {
           [id]: selectedId,
         });

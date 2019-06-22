@@ -53,6 +53,7 @@ import CheckCircle from './CheckCircle';
 import ContentCopy from './ContentCopy';
 import Key from './Key';
 import DotsHorizontal from './DotsHorizontal';
+import Seal from './Seal';
 
 Vue.component('iconProvider', Provider);
 Vue.component('iconFormatBold', FormatBold);
@@ -108,3 +109,4 @@ Vue.component('iconCheckCircle', CheckCircle);
 Vue.component('iconContentCopy', ContentCopy);
 Vue.component('iconKey', Key);
 Vue.component('iconDotsHorizontal', DotsHorizontal);
+Vue.component('iconSeal', Seal);

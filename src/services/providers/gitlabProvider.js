@@ -138,7 +138,7 @@ export default new Provider({
     return entries.map((entry) => {
       const email = entry.author_email || entry.committer_email;
       const sub = `${gitlabHelper.subPrefix}:${token.serverUrl}/${email}`;
-      userSvc.addInfo({
+      userSvc.addUserInfo({
         id: sub,
         name: entry.author_name || entry.committer_name,
         imageUrl: '',

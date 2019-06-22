@@ -9,14 +9,17 @@ import store from '../store';
 export default {
   props: ['userId'],
   computed: {
+    sanitizedUserId() {
+      return userSvc.sanitizeUserId(this.userId);
+    },
     name() {
-      const userInfo = store.state.userInfo.itemsById[this.userId];
+      const userInfo = store.state.userInfo.itemsById[this.sanitizedUserId];
       return userInfo ? userInfo.name : 'Someone';
     },
   },
   watch: {
-    userId: {
-      handler: userId => userSvc.getInfo(userId),
+    sanitizedUserId: {
+      handler: sanitizedUserId => userSvc.addUserId(sanitizedUserId),
       immediate: true,
     },
   },

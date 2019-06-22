@@ -75,6 +75,6 @@ Vue.directive('clipboard', {
 
 // Global filters
 Vue.filter('formatTime', time =>
-  // Access the minute counter for reactive refresh
-  timeSvc.format(time, store.state.minuteCounter));
+  // Access the time counter for reactive refresh
+  timeSvc.format(time, store.state.timeCounter));
 

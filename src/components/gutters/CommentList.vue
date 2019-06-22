@@ -133,11 +133,6 @@ export default {
       : editorSvc.previewElt.parentNode;
 
     this.updateSticky = () => {
-      const commitIfDifferent = (value) => {
-        if (store.state.discussion.stickyComment !== value) {
-          store.commit('discussion/setStickyComment', value);
-        }
-      };
       let height = 0;
       let offsetTop = this.tops.current;
       const lastCommentElt = this.$el.querySelector(`.comment--${this.currentDiscussionLastCommentId}`);
@@ -152,13 +147,15 @@ export default {
       const currentDiscussionElt = document.querySelector('.current-discussion__inner');
       const minOffsetTop = this.scrollerElt.scrollTop + 10;
       const maxOffsetTop = (this.scrollerElt.scrollTop + this.scrollerElt.clientHeight) - height
-        - currentDiscussionElt.clientHeight - 10;
+        - currentDiscussionElt.clientHeight;
+      let stickyComment = null;
       if (offsetTop > maxOffsetTop || maxOffsetTop < minOffsetTop) {
-        commitIfDifferent('bottom');
+        stickyComment = 'bottom';
       } else if (offsetTop < minOffsetTop) {
-        commitIfDifferent('top');
-      } else {
-        commitIfDifferent(null);
+        stickyComment = 'top';
+      }
+      if (store.state.discussion.stickyComment !== stickyComment) {
+        store.commit('discussion/setStickyComment', stickyComment);
       }
     };
 
@@ -197,19 +194,6 @@ export default {
   position: absolute;
   width: 100%;
   padding-top: 10px;
-}
-
-.comment-list__current-discussion {
-  border-top: 2px solid;
-  border-bottom: 2px solid;
-
-  .comment-list--top & {
-    border-bottom-color: transparent;
-  }
-
-  .comment-list--bottom & {
-    border-top-color: transparent;
-  }
 }
 
 /* use div selector to avoid collision with Prism */

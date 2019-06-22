@@ -19,6 +19,7 @@ export default {
     'settings',
     'layoutSettings',
     'tokens',
+    'badges',
   ],
   textMaxLength: 250000,
   defaultName: 'Untitled',

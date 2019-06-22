@@ -10,6 +10,7 @@ import styledHtmlTemplate from '../data/templates/styledHtmlTemplate.html';
 import styledHtmlWithTocTemplate from '../data/templates/styledHtmlWithTocTemplate.html';
 import jekyllSiteTemplate from '../data/templates/jekyllSiteTemplate.html';
 import constants from '../data/constants';
+import features from '../data/features';
 
 const itemTemplate = (id, data = {}) => ({
   id,
@@ -203,7 +204,19 @@ export default {
     gitlabTokensBySub: (state, { tokensByType }) => tokensByType.gitlab || {},
     wordpressTokensBySub: (state, { tokensByType }) => tokensByType.wordpress || {},
     zendeskTokensBySub: (state, { tokensByType }) => tokensByType.zendesk || {},
-    badgesByFeatureId: getter('badges'),
+    badges: getter('badges'),
+    badgeTree: (state, { badges }) => features.map(feature => feature.toBadge(badges)),
+    allBadges: (state, { badgeTree }) => {
+      const result = [];
+      const processBadgeNodes = nodes => nodes.forEach((node) => {
+        result.push(node);
+        if (node.children) {
+          processBadgeNodes(node.children);
+        }
+      });
+      processBadgeNodes(badgeTree);
+      return result;
+    },
   },
   actions: {
     setSettings: setter('settings'),
@@ -275,5 +288,6 @@ export default {
     addGitlabToken: tokenAdder('gitlab'),
     addWordpressToken: tokenAdder('wordpress'),
     addZendeskToken: tokenAdder('zendesk'),
+    patchBadges: patcher('badges'),
   },
 };

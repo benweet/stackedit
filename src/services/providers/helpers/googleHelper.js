@@ -2,6 +2,7 @@ import utils from '../../utils';
 import networkSvc from '../../networkSvc';
 import store from '../../../store';
 import userSvc from '../../userSvc';
+import badgeSvc from '../../badgeSvc';
 
 const clientId = GOOGLE_CLIENT_ID;
 const apiKey = 'AIzaSyC_M4RA9pY6XmM9pmFxlT59UPMO7aHr9kk';
@@ -39,8 +40,8 @@ if (utils.queryParams.providerId === 'googleDrive') {
  * https://developers.google.com/people/api/rest/v1/people/get
  */
 const getUser = async (sub, token) => {
-  const url = `https://people.googleapis.com/v1/people/${sub}?personFields=names,photos`;
-  const { body } = await networkSvc.request(token
+  const url = `https://people.googleapis.com/v1/people/${sub}?personFields=names,photos&key=${apiKey}`;
+  const { body } = await networkSvc.request(sub === 'me' && token
     ? {
       method: 'GET',
       url,
@@ -50,7 +51,7 @@ const getUser = async (sub, token) => {
     }
     : {
       method: 'GET',
-      url: `${url}&key=${apiKey}`,
+      url,
     }, true);
   return body;
 };
@@ -60,8 +61,8 @@ userSvc.setInfoResolver('google', subPrefix, async (sub) => {
   try {
     const googleToken = Object.values(store.getters['data/googleTokensBySub'])[0];
     const body = await getUser(sub, googleToken);
-    const name = body.names[0] || {};
-    const photo = body.photos[0] || {};
+    const name = (body.names && body.names[0]) || {};
+    const photo = (body.photos && body.photos[0]) || {};
     return {
       id: `${subPrefix}:${sub}`,
       name: name.displayName,
@@ -150,15 +151,15 @@ export default {
       expiresOn: Date.now() + (expiresIn * 1000),
       idToken,
       sub: body.sub,
-      name: (existingToken || {}).name || 'Unknown',
+      name: (existingToken || {}).name || 'Someone',
       isLogin: !store.getters['workspace/mainWorkspaceToken'] &&
-        scopes.indexOf('https://www.googleapis.com/auth/drive.appdata') !== -1,
+        scopes.includes('https://www.googleapis.com/auth/drive.appdata'),
       isSponsor: false,
-      isDrive: scopes.indexOf('https://www.googleapis.com/auth/drive') !== -1 ||
-        scopes.indexOf('https://www.googleapis.com/auth/drive.file') !== -1,
-      isBlogger: scopes.indexOf('https://www.googleapis.com/auth/blogger') !== -1,
-      isPhotos: scopes.indexOf('https://www.googleapis.com/auth/photos') !== -1,
-      driveFullAccess: scopes.indexOf('https://www.googleapis.com/auth/drive') !== -1,
+      isDrive: scopes.includes('https://www.googleapis.com/auth/drive') ||
+        scopes.includes('https://www.googleapis.com/auth/drive.file'),
+      isBlogger: scopes.includes('https://www.googleapis.com/auth/blogger'),
+      isPhotos: scopes.includes('https://www.googleapis.com/auth/photos'),
+      driveFullAccess: scopes.includes('https://www.googleapis.com/auth/drive'),
     };
 
     // Call the user info endpoint
@@ -169,7 +170,7 @@ export default {
     if (name.displayName) {
       token.name = name.displayName;
     }
-    userSvc.addInfo({
+    userSvc.addUserInfo({
       id: `${subPrefix}:${userId}`,
       name: name.displayName,
       imageUrl: (photo.url || '').replace(/\bsz?=\d+$/, 'sz=40'),
@@ -191,13 +192,17 @@ export default {
 
     if (token.isLogin) {
       try {
-        token.isSponsor = (await networkSvc.request({
+        const res = await networkSvc.request({
           method: 'GET',
           url: 'userInfo',
           params: {
             idToken: token.idToken,
           },
-        })).body.sponsorUntil > Date.now();
+        });
+        token.isSponsor = res.body.sponsorUntil > Date.now();
+        if (token.isSponsor) {
+          badgeSvc.addBadge('sponsor');
+        }
       } catch (err) {
         // Ignore
       }
@@ -245,14 +250,20 @@ export default {
   signin() {
     return this.startOauth2(driveAppDataScopes);
   },
-  addDriveAccount(fullAccess = false, sub = null) {
-    return this.startOauth2(getDriveScopes({ driveFullAccess: fullAccess }), sub);
+  async addDriveAccount(fullAccess = false, sub = null) {
+    const token = await this.startOauth2(getDriveScopes({ driveFullAccess: fullAccess }), sub);
+    badgeSvc.addBadge('addGoogleDriveAccount');
+    return token;
   },
-  addBloggerAccount() {
-    return this.startOauth2(bloggerScopes);
+  async addBloggerAccount() {
+    const token = await this.startOauth2(bloggerScopes);
+    badgeSvc.addBadge('addBloggerAccount');
+    return token;
   },
-  addPhotosAccount() {
-    return this.startOauth2(photosScopes);
+  async addPhotosAccount() {
+    const token = await this.startOauth2(photosScopes);
+    badgeSvc.addBadge('addGooglePhotosAccount');
+    return token;
   },
   async getSponsorship(token) {
     const refreshedToken = await this.refreshToken(token);
@@ -296,10 +307,10 @@ export default {
         options.url = `https://www.googleapis.com/drive/v3/files/${fileId}`;
         if (parents && oldParents) {
           params.addParents = parents
-            .filter(parent => oldParents.indexOf(parent) === -1)
+            .filter(parent => !oldParents.includes(parent))
             .join(',');
           params.removeParents = oldParents
-            .filter(parent => parents.indexOf(parent) === -1)
+            .filter(parent => !parents.includes(parent))
             .join(',');
         }
       } else if (parents) {
@@ -457,7 +468,7 @@ export default {
         },
       });
       revisions.forEach((revision) => {
-        userSvc.addInfo({
+        userSvc.addUserInfo({
           id: `${subPrefix}:${revision.lastModifyingUser.permissionId}`,
           name: revision.lastModifyingUser.displayName,
           imageUrl: revision.lastModifyingUser.photoLink || '',

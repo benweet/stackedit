@@ -52,8 +52,7 @@ const store = new Vuex.Store({
     light: false,
     offline: false,
     lastOfflineCheck: 0,
-    minuteCounter: 0,
-    monetizeSponsor: false,
+    timeCounter: 0,
   },
   mutations: {
     setLight: (state, value) => {
@@ -65,14 +64,8 @@ const store = new Vuex.Store({
     updateLastOfflineCheck: (state) => {
       state.lastOfflineCheck = Date.now();
     },
-    updateMinuteCounter: (state) => {
-      state.minuteCounter += 1;
-    },
-    setMonetizeSponsor: (state, value) => {
-      state.monetizeSponsor = value;
-    },
-    setGoogleSponsor: (state, value) => {
-      state.googleSponsor = value;
+    updateTimeCounter: (state) => {
+      state.timeCounter += 1;
     },
   },
   getters: {
@@ -161,9 +154,9 @@ const store = new Vuex.Store({
       });
       return result;
     },
-    isSponsor: ({ light, monetizeSponsor }, getters) => {
+    isSponsor: ({ light }, getters) => {
       const sponsorToken = getters['workspace/sponsorToken'];
-      return light || monetizeSponsor || (sponsorToken && sponsorToken.isSponsor);
+      return light || (sponsorToken && sponsorToken.isSponsor);
     },
   },
   actions: {
@@ -183,7 +176,7 @@ const store = new Vuex.Store({
 });
 
 setInterval(() => {
-  store.commit('updateMinuteCounter');
-}, 60 * 1000);
+  store.commit('updateTimeCounter');
+}, 30 * 1000);
 
 export default store;

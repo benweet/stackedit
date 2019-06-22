@@ -10,7 +10,7 @@ pagedownButtons.forEach((button) => {
   }
 });
 
-const minPadding = 20;
+const minPadding = 25;
 const editorTopPadding = 10;
 const navigationBarEditButtonsWidth = (34 * buttonCount) + (8 * spacerCount); // buttons + spacers
 const navigationBarLeftButtonWidth = 38 + 4 + 12;

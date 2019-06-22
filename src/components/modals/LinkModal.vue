@@ -3,7 +3,7 @@
     <div class="modal__content">
       <p>Please provide a <b>URL</b> for your link.</p>
       <form-entry label="URL" error="url">
-        <input slot="field" class="textfield" type="text" v-model.trim="url" @keydown.enter="resolve()">
+        <input slot="field" class="textfield" type="text" v-model.trim="url" @keydown.enter="resolve">
       </form-entry>
     </div>
     <div class="modal__button-bar">
@@ -21,7 +21,8 @@ export default modalTemplate({
     url: '',
   }),
   methods: {
-    resolve() {
+    resolve(evt) {
+      evt.preventDefault(); // Fixes https://github.com/benweet/stackedit/issues/1503
       if (!this.url) {
         this.setError('url');
       } else {

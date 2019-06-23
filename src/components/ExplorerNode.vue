@@ -82,7 +82,7 @@ export default {
     ]),
     select(id = this.node.item.id, doOpen = true) {
       const node = store.getters['explorer/nodeMap'][id];
-      if (!node || node.item.id === store.state.explorer.selectedId) {
+      if (!node) {
         return false;
       }
       store.commit('explorer/setSelectedId', id);
@@ -91,7 +91,7 @@ export default {
         setTimeout(() => {
           if (node.isFolder) {
             store.commit('explorer/toggleOpenNode', id);
-          } else {
+          } else if (store.state.file.currentId !== id) {
             store.commit('file/setCurrentId', id);
             badgeSvc.addBadge('switchFile');
           }

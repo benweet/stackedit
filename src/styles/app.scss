@@ -12,6 +12,7 @@ body {
 
   /* Prevent body overscroll on Chrome */
   overflow: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 * {

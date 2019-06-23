@@ -38,7 +38,7 @@
     "handlebars": "^4.0.10",
     "indexeddbshim": "^3.6.2",
     "js-yaml": "^3.11.0",
-    "katex": "^v0.10.0-rc.1",
+    "katex": "^v0.10.2",
     "markdown-it": "^8.4.1",
     "markdown-it-abbr": "^1.0.4",
     "markdown-it-deflist": "^2.0.2",

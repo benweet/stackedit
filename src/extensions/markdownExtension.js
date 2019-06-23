@@ -152,7 +152,9 @@ extensionSvc.onSectionPreview((elt, options, isEditor) => {
     const checkboxElt = document.createElement('input');
     checkboxElt.type = 'checkbox';
     checkboxElt.className = 'task-list-item-checkbox';
-    checkboxElt.checked = spanElt.classList.contains('checked');
+    if (spanElt.classList.contains('checked')) {
+      checkboxElt.setAttribute('checked', true);
+    }
     if (!isEditor) {
       checkboxElt.disabled = 'disabled';
     }

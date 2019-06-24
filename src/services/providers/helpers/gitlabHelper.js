@@ -122,6 +122,7 @@ export default {
       params: {
         ref: branch,
         recursive: true,
+        per_page: 9999,
       },
     });
   },

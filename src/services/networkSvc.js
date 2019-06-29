@@ -8,7 +8,10 @@ const silentAuthorizeTimeout = 15 * 1000; // 15 secondes (which will be reattemp
 const networkTimeout = 30 * 1000; // 30 sec
 let isConnectionDown = false;
 const userInactiveAfter = 3 * 60 * 1000; // 3 minutes (twice the default sync period)
-
+let lastActivity = 0;
+let lastFocus = 0;
+let isConfLoading = false;
+let isConfLoaded = false;
 
 function parseHeaders(xhr) {
   const pairs = xhr.getAllResponseHeaders().trim().split('\n');
@@ -31,21 +34,20 @@ function isRetriable(err) {
 }
 
 export default {
-  init() {
+  async init() {
     // Keep track of the last user activity
-    this.lastActivity = 0;
     const setLastActivity = () => {
-      this.lastActivity = Date.now();
+      lastActivity = Date.now();
     };
     window.document.addEventListener('mousedown', setLastActivity);
     window.document.addEventListener('keydown', setLastActivity);
     window.document.addEventListener('touchstart', setLastActivity);
 
     // Keep track of the last window focus
-    this.lastFocus = 0;
+    lastFocus = 0;
     const setLastFocus = () => {
-      this.lastFocus = Date.now();
-      localStorage.setItem(store.getters['workspace/lastFocusKey'], this.lastFocus);
+      lastFocus = Date.now();
+      localStorage.setItem(store.getters['workspace/lastFocusKey'], lastFocus);
       setLastActivity();
     };
     if (document.hasFocus()) {
@@ -53,7 +55,7 @@ export default {
     }
     window.addEventListener('focus', setLastFocus);
 
-    // Check browser is online periodically
+    // Check that browser is online periodically
     const checkOffline = async () => {
       const isBrowserOffline = window.navigator.onLine === false;
       if (!isBrowserOffline
@@ -90,23 +92,42 @@ export default {
           store.dispatch('notification/error', 'You are offline.');
         } else {
           store.dispatch('notification/info', 'You are back online!');
+          this.getServerConf();
         }
       }
     };
+
     utils.setInterval(checkOffline, 1000);
     window.addEventListener('online', () => {
       isConnectionDown = false;
       checkOffline();
     });
     window.addEventListener('offline', checkOffline);
+    await checkOffline();
+    this.getServerConf();
+  },
+  async getServerConf() {
+    if (!store.state.offline && !isConfLoading && !isConfLoaded) {
+      try {
+        isConfLoading = true;
+        const res = await this.request({ url: 'conf' });
+        await store.dispatch('data/setServerConf', res.body);
+        isConfLoaded = true;
+      } finally {
+        isConfLoading = false;
+      }
+    }
   },
   isWindowFocused() {
     // We don't use state.workspace.lastFocus as it's not reactive
     const storedLastFocus = localStorage.getItem(store.getters['workspace/lastFocusKey']);
-    return parseInt(storedLastFocus, 10) === this.lastFocus;
+    return parseInt(storedLastFocus, 10) === lastFocus;
   },
   isUserActive() {
-    return this.lastActivity > Date.now() - userInactiveAfter && this.isWindowFocused();
+    return lastActivity > Date.now() - userInactiveAfter && this.isWindowFocused();
+  },
+  isConfLoaded() {
+    return !!Object.keys(store.getters['data/serverConf']).length;
   },
   async loadScript(url) {
     if (!scriptLoadingPromises[url]) {
@@ -217,15 +238,15 @@ export default {
       throw e;
     }
   },
-  async request(configParam, offlineCheck = false) {
+  async request(config, offlineCheck = false) {
     let retryAfter = 500; // 500 ms
     const maxRetryAfter = 10 * 1000; // 10 sec
-    const config = Object.assign({}, configParam);
-    config.timeout = config.timeout || networkTimeout;
-    config.headers = Object.assign({}, config.headers);
-    if (config.body && typeof config.body === 'object') {
-      config.body = JSON.stringify(config.body);
-      config.headers['Content-Type'] = 'application/json';
+    const sanitizedConfig = Object.assign({}, config);
+    sanitizedConfig.timeout = sanitizedConfig.timeout || networkTimeout;
+    sanitizedConfig.headers = Object.assign({}, sanitizedConfig.headers);
+    if (sanitizedConfig.body && typeof sanitizedConfig.body === 'object') {
+      sanitizedConfig.body = JSON.stringify(sanitizedConfig.body);
+      sanitizedConfig.headers['Content-Type'] = 'application/json';
     }
 
     const attempt = async () => {
@@ -236,7 +257,7 @@ export default {
           }
 
           const xhr = new window.XMLHttpRequest();
-          xhr.withCredentials = config.withCredentials || false;
+          xhr.withCredentials = sanitizedConfig.withCredentials || false;
 
           const timeoutId = setTimeout(() => {
             xhr.abort();
@@ -247,7 +268,7 @@ export default {
             } else {
               reject(new Error('Network request timeout.'));
             }
-          }, config.timeout);
+          }, sanitizedConfig.timeout);
 
           xhr.onload = () => {
             if (offlineCheck) {
@@ -257,9 +278,9 @@ export default {
             const result = {
               status: xhr.status,
               headers: parseHeaders(xhr),
-              body: config.blob ? xhr.response : xhr.responseText,
+              body: sanitizedConfig.blob ? xhr.response : xhr.responseText,
             };
-            if (!config.raw && !config.blob) {
+            if (!sanitizedConfig.raw && !sanitizedConfig.blob) {
               try {
                 result.body = JSON.parse(result.body);
               } catch (e) {
@@ -284,17 +305,17 @@ export default {
             }
           };
 
-          const url = utils.addQueryParams(config.url, config.params);
-          xhr.open(config.method || 'GET', url);
-          Object.entries(config.headers).forEach(([key, value]) => {
+          const url = utils.addQueryParams(sanitizedConfig.url, sanitizedConfig.params);
+          xhr.open(sanitizedConfig.method || 'GET', url);
+          Object.entries(sanitizedConfig.headers).forEach(([key, value]) => {
             if (value) {
               xhr.setRequestHeader(key, `${value}`);
             }
           });
-          if (config.blob) {
+          if (sanitizedConfig.blob) {
             xhr.responseType = 'blob';
           }
-          xhr.send(config.body || null);
+          xhr.send(sanitizedConfig.body || null);
         });
       } catch (err) {
         // Try again later in case of retriable error

@@ -4,8 +4,6 @@ import store from '../../../store';
 import userSvc from '../../userSvc';
 import badgeSvc from '../../badgeSvc';
 
-const clientId = GOOGLE_CLIENT_ID;
-const apiKey = 'AIzaSyC_M4RA9pY6XmM9pmFxlT59UPMO7aHr9kk';
 const appsDomain = null;
 const tokenExpirationMargin = 5 * 60 * 1000; // 5 min (tokens expire after 1h)
 
@@ -21,6 +19,7 @@ const checkIdToken = (idToken) => {
   try {
     const token = idToken.split('.');
     const payload = JSON.parse(utils.decodeBase64(token[1]));
+    const clientId = store.getters['data/serverConf'].googleClientId;
     return payload.aud === clientId && Date.now() + tokenExpirationMargin < payload.exp * 1000;
   } catch (e) {
     return false;
@@ -40,6 +39,7 @@ if (utils.queryParams.providerId === 'googleDrive') {
  * https://developers.google.com/people/api/rest/v1/people/get
  */
 const getUser = async (sub, token) => {
+  const apiKey = store.getters['data/serverConf'].googleApiKey;
   const url = `https://people.googleapis.com/v1/people/${sub}?personFields=names,photos&key=${apiKey}`;
   const { body } = await networkSvc.request(sub === 'me' && token
     ? {
@@ -111,6 +111,9 @@ export default {
    * https://developers.google.com/identity/protocols/OpenIDConnect
    */
   async startOauth2(scopes, sub = null, silent = false) {
+    const clientId = store.getters['data/serverConf'].googleClientId;
+
+    // Get an OAuth2 code
     const { accessToken, expiresIn, idToken } = await networkSvc.startOauth2(
       'https://accounts.google.com/o/oauth2/v2/auth',
       {
@@ -264,16 +267,6 @@ export default {
     const token = await this.startOauth2(photosScopes);
     badgeSvc.addBadge('addGooglePhotosAccount');
     return token;
-  },
-  async getSponsorship(token) {
-    const refreshedToken = await this.refreshToken(token);
-    return networkSvc.request({
-      method: 'GET',
-      url: 'userInfo',
-      params: {
-        idToken: refreshedToken.idToken,
-      },
-    }, true);
   },
 
   /**

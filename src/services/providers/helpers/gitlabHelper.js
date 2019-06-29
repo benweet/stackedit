@@ -51,6 +51,7 @@ export default {
    * https://docs.gitlab.com/ee/api/oauth2.html
    */
   async startOauth2(serverUrl, applicationId, sub = null, silent = false) {
+    // Get an OAuth2 code
     const { accessToken } = await networkSvc.startOauth2(
       `${serverUrl}/oauth/authorize`,
       {

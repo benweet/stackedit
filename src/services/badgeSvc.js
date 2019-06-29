@@ -16,7 +16,7 @@ const showInfo = () => {
 
 export default {
   addBadge(featureId) {
-    if (!store.getters['data/badges'][featureId]) {
+    if (!store.getters['data/badgeCreations'][featureId]) {
       if (!lastEarnedFeatureIds) {
         const earnedFeatureIds = store.getters['data/allBadges']
           .filter(badge => badge.isEarned)
@@ -24,7 +24,7 @@ export default {
         lastEarnedFeatureIds = new Set(earnedFeatureIds);
       }
 
-      store.dispatch('data/patchBadges', {
+      store.dispatch('data/patchBadgeCreations', {
         [featureId]: {
           created: Date.now(),
         },

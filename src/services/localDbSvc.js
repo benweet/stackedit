@@ -1,23 +1,23 @@
-import FileSaver from 'file-saver';
 import utils from './utils';
 import store from '../store';
 import welcomeFile from '../data/welcomeFile.md';
 import workspaceSvc from './workspaceSvc';
 import constants from '../data/constants';
 
+const deleteMarkerMaxAge = 1000;
 const dbVersion = 1;
 const dbStoreName = 'objects';
-const { exportWorkspace } = utils.queryParams;
 const { silent } = utils.queryParams;
-const resetApp = utils.queryParams.reset;
-const deleteMarkerMaxAge = 1000;
+const resetApp = localStorage.getItem('resetStackEdit');
+if (resetApp) {
+  localStorage.removeItem('resetStackEdit');
+}
 
 class Connection {
-  constructor() {
+  constructor(workspaceId = store.getters['workspace/currentWorkspace'].id) {
     this.getTxCbs = [];
 
     // Make the DB name
-    const workspaceId = store.getters['workspace/currentWorkspace'].id;
     this.dbName = utils.getDbName(workspaceId);
 
     // Init connection
@@ -264,7 +264,7 @@ const localDbSvc = {
       // DB item is different from the corresponding store item
       this.hashMap[dbItem.type][dbItem.id] = dbItem.hash;
       // Update content only if it exists in the store
-      if (storeItem || !contentTypes[dbItem.type] || exportWorkspace) {
+      if (storeItem || !contentTypes[dbItem.type]) {
         // Put item in the store
         dbItem.tx = undefined;
         store.commit(`${dbItem.type}/setItem`, dbItem);
@@ -327,7 +327,7 @@ const localDbSvc = {
    * Create the connection and start syncing.
    */
   async init() {
-    // Reset the app if reset flag was passed
+    // Reset the app if the reset flag was passed
     if (resetApp) {
       await Promise.all(Object.keys(store.getters['workspace/workspacesById'])
         .map(workspaceId => workspaceSvc.removeWorkspace(workspaceId)));
@@ -343,16 +343,6 @@ const localDbSvc = {
 
     // Load the DB
     await localDbSvc.sync();
-
-    // If exportWorkspace parameter was provided
-    if (exportWorkspace) {
-      const backup = JSON.stringify(store.getters.allItemsById);
-      const blob = new Blob([backup], {
-        type: 'text/plain;charset=utf-8',
-      });
-      FileSaver.saveAs(blob, 'StackEdit workspace.json');
-      throw new Error('RELOAD');
-    }
 
     // Watch workspace deletions and persist them as soon as possible
     // to make the changes available to reloading workspace tabs.
@@ -437,6 +427,27 @@ const localDbSvc = {
       },
       { immediate: true },
     );
+  },
+
+  getWorkspaceItems(workspaceId, onItem, onFinish = () => {}) {
+    const connection = new Connection(workspaceId);
+    connection.createTx((tx) => {
+      const dbStore = tx.objectStore(dbStoreName);
+      const index = dbStore.index('tx');
+      index.openCursor().onsuccess = (event) => {
+        const cursor = event.target.result;
+        if (cursor) {
+          onItem(cursor.value);
+          cursor.continue();
+        } else {
+          connection.db.close();
+          onFinish();
+        }
+      };
+    });
+
+    // Return a cancel function
+    return () => connection.db.close();
   },
 };
 

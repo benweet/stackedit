@@ -1,5 +1,6 @@
 const qs = require('qs'); // eslint-disable-line import/no-extraneous-dependencies
 const request = require('request');
+const conf = require('./conf');
 
 function githubToken(clientId, code) {
   return new Promise((resolve, reject) => {
@@ -8,7 +9,7 @@ function githubToken(clientId, code) {
       url: 'https://github.com/login/oauth/access_token',
       qs: {
         client_id: clientId,
-        client_secret: process.env.GITHUB_SECRET,
+        client_secret: conf.values.githubClientSecret,
         code,
       },
     }, (err, res, body) => {

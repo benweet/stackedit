@@ -17,14 +17,18 @@
 </template>
 
 <script>
+import FileSaver from 'file-saver';
 import MenuEntry from './common/MenuEntry';
-import utils from '../../services/utils';
 import store from '../../store';
 import backupSvc from '../../services/backupSvc';
+import localDbSvc from '../../services/localDbSvc';
 
 export default {
   components: {
     MenuEntry,
+  },
+  computed: {
+    workspaceId: () => store.getters['workspace/currentWorkspace'].id,
   },
   methods: {
     onImportBackup(evt) {
@@ -44,11 +48,16 @@ export default {
       }
     },
     exportWorkspace() {
-      window.location.href = utils.addQueryParams('app', {
-        ...utils.queryParams,
-        exportWorkspace: true,
-      }, true);
-      window.location.reload();
+      const allItemsById = {};
+      localDbSvc.getWorkspaceItems(this.workspaceId, (item) => {
+        allItemsById[item.id] = item;
+      }, () => {
+        const backup = JSON.stringify(allItemsById);
+        const blob = new Blob([backup], {
+          type: 'text/plain;charset=utf-8',
+        });
+        FileSaver.saveAs(blob, 'StackEdit workspace.json');
+      });
     },
   },
 };

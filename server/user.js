@@ -1,13 +1,8 @@
 const request = require('request');
 const AWS = require('aws-sdk');
 const verifier = require('google-id-token-verifier');
+const conf = require('./conf');
 
-const {
-  USER_BUCKET_NAME = 'stackedit-users',
-  PAYPAL_URI = 'https://www.paypal.com/cgi-bin/webscr',
-  PAYPAL_RECEIVER_EMAIL = 'stackedit.project@gmail.com',
-  GOOGLE_CLIENT_ID,
-} = process.env;
 const s3Client = new AWS.S3();
 
 const cb = (resolve, reject) => (err, res) => {
@@ -20,7 +15,7 @@ const cb = (resolve, reject) => (err, res) => {
 
 exports.getUser = id => new Promise((resolve, reject) => {
   s3Client.getObject({
-    Bucket: USER_BUCKET_NAME,
+    Bucket: conf.values.userBucketName,
     Key: id,
   }, cb(resolve, reject));
 })
@@ -35,7 +30,7 @@ exports.getUser = id => new Promise((resolve, reject) => {
 
 exports.putUser = (id, user) => new Promise((resolve, reject) => {
   s3Client.putObject({
-    Bucket: USER_BUCKET_NAME,
+    Bucket: conf.values.userBucketName,
     Key: id,
     Body: JSON.stringify(user),
   }, cb(resolve, reject));
@@ -43,13 +38,13 @@ exports.putUser = (id, user) => new Promise((resolve, reject) => {
 
 exports.removeUser = id => new Promise((resolve, reject) => {
   s3Client.deleteObject({
-    Bucket: USER_BUCKET_NAME,
+    Bucket: conf.values.userBucketName,
     Key: id,
   }, cb(resolve, reject));
 });
 
 exports.getUserFromToken = idToken => new Promise((resolve, reject) => verifier
-  .verify(idToken, GOOGLE_CLIENT_ID, cb(resolve, reject)))
+  .verify(idToken, conf.values.googleClientId, cb(resolve, reject)))
   .then(tokenInfo => exports.getUser(tokenInfo.sub));
 
 exports.userInfo = (req, res) => exports.getUserFromToken(req.query.idToken)
@@ -78,7 +73,7 @@ exports.paypalIpn = (req, res, next) => Promise.resolve()
       sponsorUntil = Date.now() + (5 * 366 * 24 * 60 * 60 * 1000); // 5 years
     }
     if (
-      req.body.receiver_email !== PAYPAL_RECEIVER_EMAIL ||
+      req.body.receiver_email !== conf.values.paypalReceiverEmail ||
       req.body.payment_status !== 'Completed' ||
       req.body.mc_currency !== 'USD' ||
       (req.body.txn_type !== 'web_accept' && req.body.txn_type !== 'subscr_payment') ||
@@ -90,7 +85,7 @@ exports.paypalIpn = (req, res, next) => Promise.resolve()
     // Processing PayPal IPN
     req.body.cmd = '_notify-validate';
     return new Promise((resolve, reject) => request.post({
-      uri: PAYPAL_URI,
+      uri: conf.values.paypalUri,
       form: req.body,
     }, (err, response, body) => {
       if (err) {

@@ -1,5 +1,11 @@
 <template>
   <div class="side-bar__panel side-bar__panel--menu">
+    <menu-entry @click.native="manageWorkspaces">
+      <icon-database slot="icon"></icon-database>
+      <div><div class="menu-entry__label menu-entry__label--count">{{workspaceCount}}</div> Manage workspaces</div>
+      <span>List, rename, remove workspaces</span>
+    </menu-entry>
+    <hr>
     <div class="workspace" v-for="(workspace, id) in workspacesById" :key="id">
       <menu-entry :href="workspace.url" target="_blank">
         <icon-provider slot="icon" :provider-id="workspace.providerId"></icon-provider>
@@ -22,10 +28,6 @@
     <menu-entry @click.native="addGoogleDriveWorkspace">
       <icon-provider slot="icon" provider-id="googleDriveWorkspace"></icon-provider>
       <span>Add a <b>Google Drive</b> workspace</span>
-    </menu-entry>
-    <menu-entry @click.native="manageWorkspaces">
-      <icon-database slot="icon"></icon-database>
-      <span><div class="menu-entry__label menu-entry__label--count">{{workspaceCount}}</div> Manage workspaces</span>
     </menu-entry>
   </div>
 </template>

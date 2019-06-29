@@ -11,6 +11,7 @@ import styledHtmlWithTocTemplate from '../data/templates/styledHtmlWithTocTempla
 import jekyllSiteTemplate from '../data/templates/jekyllSiteTemplate.html';
 import constants from '../data/constants';
 import features from '../data/features';
+import badgeSvc from '../services/badgeSvc';
 
 const itemTemplate = (id, data = {}) => ({
   id,
@@ -63,9 +64,12 @@ const patcher = id => ({ state, commit }, data) => {
 };
 
 // For layoutSettings
-const layoutSettingsToggler = propertyName => ({ getters, dispatch }, value) => dispatch('patchLayoutSettings', {
-  [propertyName]: value === undefined ? !getters.layoutSettings[propertyName] : value,
-});
+const layoutSettingsToggler = (propertyName, featureId) => ({ getters, dispatch }, value) => {
+  dispatch('patchLayoutSettings', {
+    [propertyName]: value === undefined ? !getters.layoutSettings[propertyName] : value,
+  });
+  badgeSvc.addBadge(featureId);
+};
 const notEnoughSpace = (getters) => {
   const layoutConstants = getters['layout/constants'];
   const showGutter = getters['discussion/currentDiscussion'];
@@ -132,6 +136,7 @@ export default {
     },
   },
   getters: {
+    serverConf: getter('serverConf'),
     workspaces: getter('workspaces'), // Not to be used, prefer workspace/workspacesById
     settings: getter('settings'),
     computedSettings: (state, { settings }) => {
@@ -204,8 +209,9 @@ export default {
     gitlabTokensBySub: (state, { tokensByType }) => tokensByType.gitlab || {},
     wordpressTokensBySub: (state, { tokensByType }) => tokensByType.wordpress || {},
     zendeskTokensBySub: (state, { tokensByType }) => tokensByType.zendesk || {},
-    badges: getter('badges'),
-    badgeTree: (state, { badges }) => features.map(feature => feature.toBadge(badges)),
+    badgeCreations: getter('badgeCreations'),
+    badgeTree: (state, { badgeCreations }) => features
+      .map(feature => feature.toBadge(badgeCreations)),
     allBadges: (state, { badgeTree }) => {
       const result = [];
       const processBadgeNodes = nodes => nodes.forEach((node) => {
@@ -219,15 +225,16 @@ export default {
     },
   },
   actions: {
+    setServerConf: setter('serverConf'),
     setSettings: setter('settings'),
     patchLocalSettings: patcher('localSettings'),
     patchLayoutSettings: patcher('layoutSettings'),
-    toggleNavigationBar: layoutSettingsToggler('showNavigationBar'),
-    toggleEditor: layoutSettingsToggler('showEditor'),
-    toggleSidePreview: layoutSettingsToggler('showSidePreview'),
-    toggleStatusBar: layoutSettingsToggler('showStatusBar'),
-    toggleScrollSync: layoutSettingsToggler('scrollSync'),
-    toggleFocusMode: layoutSettingsToggler('focusMode'),
+    toggleNavigationBar: layoutSettingsToggler('showNavigationBar', 'toggleNavigationBar'),
+    toggleEditor: layoutSettingsToggler('showEditor', 'toggleEditor'),
+    toggleSidePreview: layoutSettingsToggler('showSidePreview', 'toggleSidePreview'),
+    toggleStatusBar: layoutSettingsToggler('showStatusBar', 'toggleStatusBar'),
+    toggleScrollSync: layoutSettingsToggler('scrollSync', 'toggleScrollSync'),
+    toggleFocusMode: layoutSettingsToggler('focusMode', 'toggleFocusMode'),
     toggleSideBar: ({ getters, dispatch, rootGetters }, value) => {
       // Reset side bar
       dispatch('setSideBarPanel');
@@ -240,6 +247,7 @@ export default {
         patch.showExplorer = false;
       }
       dispatch('patchLayoutSettings', patch);
+      badgeSvc.addBadge('toggleSideBar');
     },
     toggleExplorer: ({ getters, dispatch, rootGetters }, value) => {
       // Close side bar if not enough space
@@ -250,6 +258,7 @@ export default {
         patch.showSideBar = false;
       }
       dispatch('patchLayoutSettings', patch);
+      badgeSvc.addBadge('toggleExplorer');
     },
     setSideBarPanel: ({ dispatch }, value) => dispatch('patchLayoutSettings', {
       sideBarPanel: value === undefined ? 'menu' : value,
@@ -288,6 +297,6 @@ export default {
     addGitlabToken: tokenAdder('gitlab'),
     addWordpressToken: tokenAdder('wordpress'),
     addZendeskToken: tokenAdder('zendesk'),
-    patchBadges: patcher('badges'),
+    patchBadgeCreations: patcher('badgeCreations'),
   },
 };

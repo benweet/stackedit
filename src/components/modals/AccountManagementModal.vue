@@ -22,15 +22,15 @@
             </div>
           </div>
           <div class="account-entry__row">
-            <span v-if="entry.userId">
+            <span class="account-entry__field" v-if="entry.userId">
               <b>User ID:</b>
               {{entry.userId}}
             </span>
-            <span v-if="entry.url">
+            <span class="account-entry__field" v-if="entry.url">
               <b>URL:</b>
               {{entry.url}}
             </span>
-            <span v-if="entry.scopes">
+            <span class="account-entry__field" v-if="entry.scopes">
               <b>Scopes:</b>
               {{entry.scopes.join(', ')}}
             </span>
@@ -230,8 +230,12 @@ $button-size: 30px;
 
 .account-entry__row {
   border-top: 1px solid $hr-color;
-  opacity: 0.5;
   font-size: 0.67em;
+  padding: 0.25em 0;
+}
+
+.account-entry__field {
+  opacity: 0.5;
 }
 
 .account-entry__icon {

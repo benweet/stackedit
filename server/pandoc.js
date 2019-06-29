@@ -3,6 +3,7 @@ const { spawn } = require('child_process');
 const fs = require('fs');
 const tmp = require('tmp');
 const user = require('./user');
+const conf = require('./conf');
 
 const outputFormats = {
   asciidoc: 'text/plain',
@@ -90,10 +91,9 @@ exports.generate = (req, res) => {
         reject(error);
       }
 
-      const binPath = process.env.PANDOC_PATH || 'pandoc';
       const format = outputFormat === 'pdf' ? 'latex' : outputFormat;
       params.push('-f', 'json', '-t', format, '-o', filePath);
-      const pandoc = spawn(binPath, params, {
+      const pandoc = spawn(conf.values.pandocPath, params, {
         stdio: [
           'pipe',
           'ignore',

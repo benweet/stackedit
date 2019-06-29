@@ -28,8 +28,6 @@ module.exports = {
     '!**/node_modules/**',
   ],
   globals: {
-    GOOGLE_CLIENT_ID: 'GOOGLE_CLIENT_ID',
-    GITHUB_CLIENT_ID: 'GITHUB_CLIENT_ID',
     NODE_ENV: 'production',
   },
 };

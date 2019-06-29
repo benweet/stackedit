@@ -4,9 +4,6 @@
       <p>{{currentFileName}} can't be synced as it's a temporary file.</p>
     </div>
     <div v-else>
-      <div class="side-bar__info" v-if="noToken">
-        <p>You have to <b>link an account</b> to start syncing files.</p>
-      </div>
       <div class="side-bar__info" v-if="syncLocations.length">
         <p>{{currentFileName}} is already synchronized.</p>
         <menu-entry @click.native="requestSync">
@@ -19,6 +16,9 @@
           <div><div class="menu-entry__label menu-entry__label--count">{{locationCount}}</div> File synchronization</div>
           <span>Manage synchronized locations for {{currentFileName}}.</span>
         </menu-entry>
+      </div>
+      <div class="side-bar__info" v-else-if="noToken">
+        <p>You have to link an account to start syncing files.</p>
       </div>
       <hr>
       <div v-for="token in dropboxTokens" :key="token.sub">

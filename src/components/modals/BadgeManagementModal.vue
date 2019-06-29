@@ -6,20 +6,21 @@
       </div>
       <p v-if="badgeCount > 1">{{badgeCount}} badges earned</p>
       <p v-else>{{badgeCount}} badge earned</p>
-      <div class="badge-entry" :class="{'badge-entry--earned': badge.isEarned}" v-for="badge in badgeTree" :key="badge.featureId">
+      <div class="badge-entry" v-for="badge in badgeTree" :key="badge.featureId">
         <div class="flex flex--row">
-          <icon-seal></icon-seal>
+          <icon-seal class="badge-entry__icon" :class="{'badge-entry__icon--earned': badge.isEarned, 'badge-entry__icon--some-earned': badge.hasSomeEarned}"></icon-seal>
           <div>
-            <span class="badge-entry__name">{{badge.name}}</span>
+            <span class="badge-entry__name" :class="{'badge-entry__name--earned': badge.isEarned, 'badge-entry__name--some-earned': badge.hasSomeEarned}">{{badge.name}}</span>
             <span class="badge-entry__description">&mdash; {{badge.description}}</span>
-            <div class="badge-entry" :class="{'badge-entry--earned': child.isEarned}" v-for="child in badge.children" :key="child.featureId">
+            <a href="javascript:void(0)" v-if="!shown[badge.featureId]" @click="show(badge.featureId)">Show</a>
+            <div class="badge-entry" v-else v-for="child in badge.children" :key="child.featureId">
               <div class="flex flex--row">
-                <icon-seal></icon-seal>
+                <icon-seal class="badge-entry__icon" :class="{'badge-entry__icon--earned': child.isEarned}"></icon-seal>
                 <div>
-                  <span class="badge-entry__name">{{child.name}}</span>
+                  <span class="badge-entry__name" :class="{'badge-entry__name--earned': child.isEarned}">{{child.name}}</span>
                   <span class="badge-entry__description">&mdash; {{child.description}}</span>
                 </div>
-              </div>
+            </div>
             </div>
           </div>
         </div>
@@ -32,6 +33,7 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import { mapGetters } from 'vuex';
 import ModalInner from './common/ModalInner';
 import store from '../../store';
@@ -40,6 +42,9 @@ export default {
   components: {
     ModalInner,
   },
+  data: () => ({
+    shown: {},
+  }),
   computed: {
     ...mapGetters('modal', [
       'config',
@@ -52,6 +57,11 @@ export default {
     },
     featureCount() {
       return store.getters['data/allBadges'].length;
+    },
+  },
+  methods: {
+    show(featureId) {
+      Vue.set(this.shown, featureId, true);
     },
   },
 };
@@ -76,19 +86,24 @@ export default {
 
   .badge-entry {
     font-size: 0.8em;
-    margin: 0.75rem 0 0;
-  }
-
-  svg {
-    width: 1.67em;
-    height: 1.67em;
-    margin-right: 0.25em;
-    opacity: 0.33;
-    flex: none;
+    margin: 0.75rem 0;
   }
 }
 
-.badge-entry--earned svg {
+.badge-entry__icon {
+  width: 1.67em;
+  height: 1.67em;
+  margin-right: 0.25em;
+  opacity: 0.3;
+  flex: none;
+}
+
+.badge-entry__icon--some-earned {
+  opacity: 0.5;
+  color: goldenrod;
+}
+
+.badge-entry__icon--earned {
   opacity: 1;
   color: goldenrod;
 }
@@ -100,10 +115,10 @@ export default {
 .badge-entry__name {
   font-size: 1.2em;
   font-weight: bold;
-  opacity: 0.5;
+  opacity: 0.4;
+}
 
-  .badge-entry--earned & {
-    opacity: 1;
-  }
+.badge-entry__name--earned {
+  opacity: 1;
 }
 </style>

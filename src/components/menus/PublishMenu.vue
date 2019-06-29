@@ -4,9 +4,6 @@
       <p>{{currentFileName}} can't be published as it's a temporary file.</p>
     </div>
     <div v-else>
-      <div class="side-bar__info" v-if="noToken">
-        <p>You have to <b>link an account</b> to start publishing files.</p>
-      </div>
       <div class="side-bar__info" v-if="publishLocations.length">
         <p>{{currentFileName}} is already published.</p>
         <menu-entry @click.native="requestPublish">
@@ -19,6 +16,9 @@
           <div><div class="menu-entry__label menu-entry__label--count">{{locationCount}}</div> File publication</div>
           <span>Manage publication locations for {{currentFileName}}.</span>
         </menu-entry>
+      </div>
+      <div class="side-bar__info" v-else-if="noToken">
+        <p>You have to link an account to start publishing files.</p>
       </div>
       <hr>
       <div v-for="token in bloggerTokens" :key="'blogger-' + token.sub">
@@ -181,8 +181,13 @@ export default {
       return tokensToArray(store.getters['data/zendeskTokensBySub']);
     },
     noToken() {
-      return Object.values(store.getters['data/tokensByType'])
-        .every(tokens => !Object.keys(tokens).length);
+      return !this.bloggerTokens.length
+        && !this.dropboxTokens.length
+        && !this.githubTokens.length
+        && !this.gitlabTokens.length
+        && !this.googleDriveTokens.length
+        && !this.wordpressTokens.length
+        && !this.zendeskTokens.length;
     },
   },
   methods: {

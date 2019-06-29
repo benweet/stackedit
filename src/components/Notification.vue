@@ -3,7 +3,7 @@
     <div class="notification__item flex flex--row flex--align-center" v-for="(item, idx) in items" :key="idx">
       <div class="notification__icon flex flex--column flex--center">
         <icon-alert v-if="item.type === 'error'"></icon-alert>
-        <icon-check-circle v-if="item.type === 'badge'"></icon-check-circle>
+        <icon-check-circle v-else-if="item.type === 'badge'"></icon-check-circle>
         <icon-information v-else></icon-information>
       </div>
       <div class="notification__content">

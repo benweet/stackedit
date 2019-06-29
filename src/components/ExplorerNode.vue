@@ -156,7 +156,7 @@ export default {
           ...sourceNode.item,
           parentId: targetNode.item.id,
         });
-        badgeSvc.addBadge('moveFiles');
+        badgeSvc.addBadge(sourceNode.isFolder ? 'moveFolder' : 'moveFile');
       }
     },
     async onContextMenu(evt) {

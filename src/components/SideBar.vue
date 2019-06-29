@@ -175,8 +175,9 @@ export default {
 
   p {
     margin: 10px 15px;
-    line-height: 1.5;
-    font-style: italic;
+    font-size: 0.9rem;
+    opacity: 0.67;
+    line-height: 1.3;
   }
 }
 </style>

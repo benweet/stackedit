@@ -124,7 +124,11 @@ export default new Provider({
     };
   },
   async listFileRevisions({ token, syncLocation }) {
-    const entries = await dropboxHelper.listRevisions(token, syncLocation.dropboxFileId);
+    const entries = await dropboxHelper.listRevisions({
+      token,
+      path: makePathRelative(token, syncLocation.path),
+      fileId: syncLocation.dropboxFileId,
+    });
     return entries.map(entry => ({
       id: entry.rev,
       sub: `${dropboxHelper.subPrefix}:${(entry.sharing_info || {}).modified_by || token.sub}`,

@@ -1,13 +1,3 @@
-class Badge {
-  constructor(featureId, name, description, children, isEarned) {
-    this.featureId = featureId;
-    this.name = name;
-    this.description = description;
-    this.children = children;
-    this.isEarned = isEarned;
-  }
-}
-
 class Feature {
   constructor(id, badgeName, description, children = null) {
     this.id = id;
@@ -16,13 +6,20 @@ class Feature {
     this.children = children;
   }
 
-  toBadge(earnings) {
+  toBadge(badgeCreations) {
     const children = this.children
-      ? this.children.map(child => child.toBadge(earnings))
+      ? this.children.map(child => child.toBadge(badgeCreations))
       : null;
-    return new Badge(this.id, this.badgeName, this.description, children, children
-      ? children.every(child => child.isEarned)
-      : !!earnings[this.id]);
+    return {
+      featureId: this.id,
+      name: this.badgeName,
+      description: this.description,
+      children,
+      isEarned: children
+        ? children.every(child => child.isEarned)
+        : !!badgeCreations[this.id],
+      hasSomeEarned: children && children.some(child => child.isEarned),
+    };
   }
 }
 
@@ -41,6 +38,16 @@ export default [
         'editCurrentFileName',
         'Renamer',
         'Use the name field in the navigation bar to rename the current file.',
+      ),
+      new Feature(
+        'toggleExplorer',
+        'Explorer toggler',
+        'Use the navigation bar to toggle the explorer.',
+      ),
+      new Feature(
+        'toggleSideBar',
+        'Side bar toggler',
+        'Use the navigation bar to toggle the side bar.',
       ),
     ],
   ),
@@ -65,9 +72,14 @@ export default [
         'Use the file explorer to create a new folder in your workspace.',
       ),
       new Feature(
-        'moveFiles',
+        'moveFile',
         'File mover',
-        'Drag files in the file explorer to move them around.',
+        'Drag a file in the file explorer to move it in another folder.',
+      ),
+      new Feature(
+        'moveFolder',
+        'Folder mover',
+        'Drag a folder in the file explorer to move it in another folder.',
       ),
       new Feature(
         'renameFile',
@@ -80,15 +92,57 @@ export default [
         'Use the file explorer to rename a folder in your workspace.',
       ),
       new Feature(
-        'removeFiles',
+        'removeFile',
         'File remover',
-        'Use the file explorer to remove files in your workspace.',
+        'Use the file explorer to remove a file in your workspace.',
+      ),
+      new Feature(
+        'removeFolder',
+        'Folder remover',
+        'Use the file explorer to remove a folder in your workspace.',
+      ),
+    ],
+  ),
+  new Feature(
+    'buttonBar',
+    'Button bar expert',
+    'Use the button bar to customize the editor layout and to toggle features.',
+    [
+      new Feature(
+        'toggleNavigationBar',
+        'Navigation bar toggler',
+        'Use the button bar to toggle the navigation bar.',
+      ),
+      new Feature(
+        'toggleSidePreview',
+        'Side preview toggler',
+        'Use the button bar to toggle the side preview.',
+      ),
+      new Feature(
+        'toggleEditor',
+        'Editor toggler',
+        'Use the button bar to toggle the editor.',
+      ),
+      new Feature(
+        'toggleFocusMode',
+        'Focused',
+        'Use the button bar to toggle the focus mode. This mode keeps the caret vertically centered while typing.',
+      ),
+      new Feature(
+        'toggleScrollSync',
+        'Scroll sync toggler',
+        'Use the button bar to toggle the scroll sync feature. This feature links the editor and the preview scrollbars.',
+      ),
+      new Feature(
+        'toggleStatusBar',
+        'Status bar toggler',
+        'Use the button bar to toggle the status bar.',
       ),
     ],
   ),
   new Feature(
     'signIn',
-    'Logged in',
+    'Signed in',
     'Sign in with Google, sync your main workspace and unlock functionalities.',
     [
       new Feature(
@@ -143,7 +197,7 @@ export default [
   new Feature(
     'manageAccounts',
     'Account manager',
-    'Link all kinds of external accounts and use the "User accounts" dialog to manage them.',
+    'Link all kinds of external accounts and use the "Accounts" dialog to manage them.',
     [
       new Feature(
         'addBloggerAccount',
@@ -188,7 +242,7 @@ export default [
       new Feature(
         'removeAccount',
         'Revoker',
-        'Use the "User accounts" dialog to remove access to an external account.',
+        'Use the "Accounts" dialog to remove access to an external account.',
       ),
     ],
   ),

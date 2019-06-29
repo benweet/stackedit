@@ -4,7 +4,7 @@
       <div class="modal__image">
         <icon-database></icon-database>
       </div>
-      <p>The following workspaces are locally available:</p>
+      <p>The following workspaces are accessible:</p>
       <div class="workspace-entry flex flex--column" v-for="(workspace, id) in workspacesById" :key="id">
         <div class="flex flex--column">
           <div class="workspace-entry__header flex flex--row flex--align-center">
@@ -48,10 +48,12 @@
               </a>
             </div>
           </div>
+          <div>
+            <span class="workspace-entry__offline" v-if="availableOffline[id]">
+              available offline
+            </span>
+          </div>
         </div>
-      </div>
-      <div class="modal__info">
-        <b>ProTip:</b> Workspaces are accessible offline, try it!
       </div>
     </div>
     <div class="modal__button-bar">
@@ -61,11 +63,13 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import { mapGetters, mapActions } from 'vuex';
 import ModalInner from './common/ModalInner';
 import workspaceSvc from '../../services/workspaceSvc';
 import store from '../../store';
 import badgeSvc from '../../services/badgeSvc';
+import localDbSvc from '../../services/localDbSvc';
 
 export default {
   components: {
@@ -74,6 +78,7 @@ export default {
   data: () => ({
     editedId: null,
     editingName: '',
+    availableOffline: {},
   }),
   computed: {
     ...mapGetters('modal', [
@@ -123,6 +128,14 @@ export default {
         } catch (e) { /* Cancel */ }
       }
     },
+  },
+  created() {
+    Object.keys(this.workspacesById).forEach(async (workspaceId) => {
+      const cancel = localDbSvc.getWorkspaceItems(workspaceId, () => {
+        Vue.set(this.availableOffline, workspaceId, true);
+        cancel();
+      });
+    });
   },
 };
 </script>
@@ -207,5 +220,14 @@ $small-button-size: 22px;
     opacity: 1;
     background-color: rgba(0, 0, 0, 0.1);
   }
+}
+
+.workspace-entry__offline {
+  font-size: 0.8rem;
+  line-height: 1;
+  padding: 0.15em 0.35em;
+  border-radius: 3px;
+  color: #fff;
+  background-color: darken($error-color, 10);
 }
 </style>

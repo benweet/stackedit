@@ -13,7 +13,7 @@ The file explorer is accessible using the button in left corner of the navigatio
 
 ## Switch to another file
 
-All your files are listed in the file explorer. You can switch from one to another by clicking a file in the list.
+All your files and folders are presented as a tree in the file explorer. You can switch from one to another by clicking a file in the tree.
 
 ## Rename a file
 

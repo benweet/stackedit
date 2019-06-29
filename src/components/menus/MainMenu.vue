@@ -84,25 +84,25 @@
       Print
     </menu-entry>
     <hr>
-    <menu-entry @click.native="settings">
-      <icon-settings slot="icon"></icon-settings>
-      <div>Settings</div>
-      <span>Tweak application and keyboard shortcuts.</span>
+    <menu-entry @click.native="badges">
+      <icon-seal slot="icon"></icon-seal>
+      <div><div class="menu-entry__label menu-entry__label--count">{{badgeCount}}/{{featureCount}}</div> Badges</div>
+      <span>List application features and earned badges.</span>
+    </menu-entry>
+    <menu-entry @click.native="accounts">
+      <icon-key slot="icon"></icon-key>
+      <div><div class="menu-entry__label menu-entry__label--count">{{accountCount}}</div> Accounts</div>
+      <span>Manage access to your external accounts.</span>
     </menu-entry>
     <menu-entry @click.native="templates">
       <icon-code-braces slot="icon"></icon-code-braces>
       <div><div class="menu-entry__label menu-entry__label--count">{{templateCount}}</div> Templates</div>
       <span>Configure Handlebars templates for your exports.</span>
     </menu-entry>
-    <menu-entry @click.native="accounts">
-      <icon-key slot="icon"></icon-key>
-      <div><div class="menu-entry__label menu-entry__label--count">{{accountCount}}</div> User accounts</div>
-      <span>Manage access to your external accounts.</span>
-    </menu-entry>
-    <menu-entry @click.native="badges">
-      <icon-seal slot="icon"></icon-seal>
-      <div><div class="menu-entry__label menu-entry__label--count">{{badgeCount}}/{{featureCount}}</div> Badges</div>
-      <span>List application features and earned badges.</span>
+    <menu-entry @click.native="settings">
+      <icon-settings slot="icon"></icon-settings>
+      <div>Settings</div>
+      <span>Tweak application and keyboard shortcuts.</span>
     </menu-entry>
     <hr>
     <menu-entry @click.native="setPanel('workspaceBackups')">
@@ -111,10 +111,8 @@
     </menu-entry>
     <menu-entry @click.native="reset">
       <icon-logout slot="icon"></icon-logout>
-      <div>Reset application</div>
-      <span>Sign out and clean all workspace data.</span>
+      Reset application
     </menu-entry>
-    <hr>
     <menu-entry @click.native="about">
       <icon-help-circle slot="icon"></icon-help-circle>
       About StackEdit
@@ -218,7 +216,7 @@ export default {
     async reset() {
       try {
         await store.dispatch('modal/open', 'reset');
-        window.location.href = '#reset=true';
+        localStorage.setItem('resetStackEdit', '1');
         window.location.reload();
       } catch (e) { /* Cancel */ }
     },

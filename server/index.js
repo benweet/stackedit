@@ -6,6 +6,7 @@ const user = require('./user');
 const github = require('./github');
 const pdf = require('./pdf');
 const pandoc = require('./pandoc');
+const conf = require('./conf');
 
 const resolvePath = pathToResolve => path.join(__dirname, '..', pathToResolve);
 
@@ -24,6 +25,7 @@ module.exports = (app, serveV4) => {
   }
 
   app.get('/oauth2/githubToken', github.githubToken);
+  app.get('/conf', (req, res) => res.send(conf.publicValues));
   app.get('/userInfo', user.userInfo);
   app.post('/pdfExport', pdf.generate);
   app.post('/pandocExport', pandoc.generate);

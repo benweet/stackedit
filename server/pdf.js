@@ -3,6 +3,7 @@ const { spawn } = require('child_process');
 const fs = require('fs');
 const tmp = require('tmp');
 const user = require('./user');
+const conf = require('./conf');
 
 /* eslint-disable no-var, prefer-arrow-callback, func-names */
 function waitForJavaScript() {
@@ -127,10 +128,9 @@ exports.generate = (req, res) => {
       params.push('--page-size', !authorizedPageSizes.includes(options.pageSize) ? 'A4' : options.pageSize);
 
       // Use a temp file as wkhtmltopdf can't access /dev/stdout on Amazon EC2 for some reason
-      const binPath = process.env.WKHTMLTOPDF_PATH || 'wkhtmltopdf';
       params.push('--run-script', `${waitForJavaScript.toString()}waitForJavaScript()`);
       params.push('--window-status', 'done');
-      const wkhtmltopdf = spawn(binPath, params.concat('-', filePath), {
+      const wkhtmltopdf = spawn(conf.values.wkhtmltopdfPath, params.concat('-', filePath), {
         stdio: [
           'pipe',
           'ignore',

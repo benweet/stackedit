@@ -2,7 +2,6 @@ import networkSvc from '../../networkSvc';
 import store from '../../../store';
 import badgeSvc from '../../badgeSvc';
 
-const clientId = '23361';
 const tokenExpirationMargin = 5 * 60 * 1000; // 5 min (WordPress tokens expire after 2 weeks)
 
 const request = (token, options) => networkSvc.request({
@@ -19,6 +18,9 @@ export default {
    * https://developer.wordpress.com/docs/oauth2/
    */
   async startOauth2(sub = null, silent = false) {
+    const clientId = store.getters['data/serverConf'].wordpressClientId;
+
+    // Get an OAuth2 code
     const { accessToken, expiresIn } = await networkSvc.startOauth2(
       'https://public-api.wordpress.com/oauth2/authorize',
       {

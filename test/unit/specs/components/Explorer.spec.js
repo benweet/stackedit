@@ -14,7 +14,7 @@ const ensureNotExists = file => expect(store.getters.allItemsById).not.toHavePro
 const refreshItem = item => store.getters.allItemsById[item.id];
 
 describe('Explorer.vue', () => {
-  it('should create new files in the root folder', () => {
+  it('should create new file in the root folder', async () => {
     expect(store.state.explorer.newChildNode.isNil).toBeTruthy();
     const wrapper = mount();
     wrapper.find('.side-title__button--new-file').trigger('click');
@@ -25,7 +25,7 @@ describe('Explorer.vue', () => {
     });
   });
 
-  it('should create new files in a folder', async () => {
+  it('should create new file in a folder', async () => {
     const folder = await workspaceSvc.storeItem({ type: 'folder' });
     const wrapper = mount();
     select(folder.id);
@@ -36,7 +36,7 @@ describe('Explorer.vue', () => {
     });
   });
 
-  it('should not create new files in the trash folder', () => {
+  it('should not create new files in the trash folder', async () => {
     const wrapper = mount();
     select('trash');
     wrapper.find('.side-title__button--new-file').trigger('click');
@@ -46,7 +46,7 @@ describe('Explorer.vue', () => {
     });
   });
 
-  it('should create new folders in the root folder', () => {
+  it('should create new folders in the root folder', async () => {
     expect(store.state.explorer.newChildNode.isNil).toBeTruthy();
     const wrapper = mount();
     wrapper.find('.side-title__button--new-folder').trigger('click');
@@ -68,7 +68,7 @@ describe('Explorer.vue', () => {
     });
   });
 
-  it('should not create new folders in the trash folder', () => {
+  it('should not create new folders in the trash folder', async () => {
     const wrapper = mount();
     select('trash');
     wrapper.find('.side-title__button--new-folder').trigger('click');
@@ -78,7 +78,7 @@ describe('Explorer.vue', () => {
     });
   });
 
-  it('should not create new folders in the temp folder', () => {
+  it('should not create new folders in the temp folder', async () => {
     const wrapper = mount();
     select('temp');
     wrapper.find('.side-title__button--new-folder').trigger('click');
@@ -96,6 +96,7 @@ describe('Explorer.vue', () => {
     wrapper.find('.side-title__button--delete').trigger('click');
     ensureExists(file);
     expect(refreshItem(file).parentId).toEqual('trash');
+    await specUtils.expectBadge('removeFile');
   });
 
   it('should not delete the trash folder', async () => {
@@ -103,15 +104,17 @@ describe('Explorer.vue', () => {
     select('trash');
     wrapper.find('.side-title__button--delete').trigger('click');
     await specUtils.resolveModal('trashDeletion');
+    await specUtils.expectBadge('removeFile', false);
   });
 
-  it('should not delete files in the trash folder', async () => {
+  it('should not delete file in the trash folder', async () => {
     const file = await workspaceSvc.createFile({ parentId: 'trash' }, true);
     const wrapper = mount();
     select(file.id);
     wrapper.find('.side-title__button--delete').trigger('click');
     await specUtils.resolveModal('trashDeletion');
     ensureExists(file);
+    await specUtils.expectBadge('removeFile', false);
   });
 
   it('should delete the temp folder after confirmation', async () => {
@@ -121,9 +124,10 @@ describe('Explorer.vue', () => {
     wrapper.find('.side-title__button--delete').trigger('click');
     await specUtils.resolveModal('tempFolderDeletion');
     ensureNotExists(file);
+    await specUtils.expectBadge('removeFolder');
   });
 
-  it('should delete temp files after confirmation', async () => {
+  it('should delete temp file after confirmation', async () => {
     const file = await workspaceSvc.createFile({ parentId: 'temp' }, true);
     const wrapper = mount();
     select(file.id);
@@ -131,6 +135,7 @@ describe('Explorer.vue', () => {
     ensureExists(file);
     await specUtils.resolveModal('tempFileDeletion');
     ensureNotExists(file);
+    await specUtils.expectBadge('removeFile');
   });
 
   it('should delete folder after confirmation', async () => {
@@ -144,9 +149,10 @@ describe('Explorer.vue', () => {
     // Make sure file has been moved to Trash
     ensureExists(file);
     expect(refreshItem(file).parentId).toEqual('trash');
+    await specUtils.expectBadge('removeFolder');
   });
 
-  it('should rename files', async () => {
+  it('should rename file', async () => {
     const file = await workspaceSvc.createFile({}, true);
     const wrapper = mount();
     select(file.id);
@@ -154,7 +160,7 @@ describe('Explorer.vue', () => {
     expect(store.getters['explorer/editingNode'].item.id).toEqual(file.id);
   });
 
-  it('should rename folders', async () => {
+  it('should rename folder', async () => {
     const folder = await workspaceSvc.storeItem({ type: 'folder' });
     const wrapper = mount();
     select(folder.id);
@@ -182,6 +188,7 @@ describe('Explorer.vue', () => {
       Explorer,
       wrapper => wrapper.find('.side-title__button--close').trigger('click'),
       () => store.getters['data/layoutSettings'].showExplorer,
+      'toggleExplorer',
     );
   });
 });

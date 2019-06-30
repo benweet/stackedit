@@ -58,18 +58,14 @@ export default {
         store.dispatch('modal/open', {
           type: 'couchdbWorkspace',
         });
-      } catch (e) {
-        // Cancel
-      }
+      } catch (e) { /* Cancel */ }
     },
     async addGithubWorkspace() {
       try {
         store.dispatch('modal/open', {
           type: 'githubWorkspace',
         });
-      } catch (e) {
-        // Cancel
-      }
+      } catch (e) { /* Cancel */ }
     },
     async addGitlabWorkspace() {
       try {
@@ -79,9 +75,7 @@ export default {
           type: 'gitlabWorkspace',
           token,
         });
-      } catch (e) {
-        // Cancel
-      }
+      } catch (e) { /* Cancel */ }
     },
     async addGoogleDriveWorkspace() {
       try {
@@ -90,12 +84,12 @@ export default {
           type: 'googleDriveWorkspace',
           token,
         });
-      } catch (e) {
-        // Cancel
-      }
+      } catch (e) { /* Cancel */ }
     },
     manageWorkspaces() {
-      store.dispatch('modal/open', 'workspaceManagement');
+      try {
+        store.dispatch('modal/open', 'workspaceManagement');
+      } catch (e) { /* Cancel */ }
     },
   },
 };

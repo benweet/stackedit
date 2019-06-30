@@ -64,21 +64,26 @@ const patcher = id => ({ state, commit }, data) => {
 };
 
 // For layoutSettings
-const layoutSettingsToggler = (propertyName, featureId) => ({ getters, dispatch }, value) => {
-  dispatch('patchLayoutSettings', {
-    [propertyName]: value === undefined ? !getters.layoutSettings[propertyName] : value,
-  });
-  badgeSvc.addBadge(featureId);
+const toggleLayoutSetting = (name, value, featureId, getters, dispatch) => {
+  const currentValue = getters.layoutSettings[name];
+  const patch = {
+    [name]: value === undefined ? !currentValue : !!value,
+  };
+  if (patch[name] !== currentValue) {
+    dispatch('patchLayoutSettings', patch);
+    badgeSvc.addBadge(featureId);
+  }
 };
-const notEnoughSpace = (getters) => {
-  const layoutConstants = getters['layout/constants'];
-  const showGutter = getters['discussion/currentDiscussion'];
-  return document.body.clientWidth < layoutConstants.editorMinWidth +
+
+const layoutSettingsToggler = (propertyName, featureId) => ({ getters, dispatch }, value) =>
+  toggleLayoutSetting(propertyName, value, featureId, getters, dispatch);
+
+const notEnoughSpace = (layoutConstants, showGutter) =>
+  document.body.clientWidth < layoutConstants.editorMinWidth +
     layoutConstants.explorerWidth +
     layoutConstants.sideBarWidth +
     layoutConstants.buttonBarWidth +
     (showGutter ? layoutConstants.gutterWidth : 0);
-};
 
 // For templates
 const makeAdditionalTemplate = (name, value, helpers = '\n') => ({
@@ -239,26 +244,30 @@ export default {
       // Reset side bar
       dispatch('setSideBarPanel');
 
+      // Toggle it
+      toggleLayoutSetting('showSideBar', value, 'toggleSideBar', getters, dispatch);
+
       // Close explorer if not enough space
-      const patch = {
-        showSideBar: value === undefined ? !getters.layoutSettings.showSideBar : value,
-      };
-      if (patch.showSideBar && notEnoughSpace(rootGetters)) {
-        patch.showExplorer = false;
+      if (getters.layoutSettings.showSideBar &&
+        notEnoughSpace(rootGetters['layout/constants'], rootGetters['discussion/currentDiscussion'])
+      ) {
+        dispatch('patchLayoutSettings', {
+          showExplorer: false,
+        });
       }
-      dispatch('patchLayoutSettings', patch);
-      badgeSvc.addBadge('toggleSideBar');
     },
     toggleExplorer: ({ getters, dispatch, rootGetters }, value) => {
+      // Toggle explorer
+      toggleLayoutSetting('showExplorer', value, 'toggleExplorer', getters, dispatch);
+
       // Close side bar if not enough space
-      const patch = {
-        showExplorer: value === undefined ? !getters.layoutSettings.showExplorer : value,
-      };
-      if (patch.showExplorer && notEnoughSpace(rootGetters)) {
-        patch.showSideBar = false;
+      if (getters.layoutSettings.showExplorer &&
+        notEnoughSpace(rootGetters['layout/constants'], rootGetters['discussion/currentDiscussion'])
+      ) {
+        dispatch('patchLayoutSettings', {
+          showSideBar: false,
+        });
       }
-      dispatch('patchLayoutSettings', patch);
-      badgeSvc.addBadge('toggleExplorer');
     },
     setSideBarPanel: ({ dispatch }, value) => dispatch('patchLayoutSettings', {
       sideBarPanel: value === undefined ? 'menu' : value,

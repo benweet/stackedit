@@ -34,4 +34,5 @@ exports.publicValues = {
   googleClientId,
   googleApiKey,
   wordpressClientId,
+  allowSponsorship: !!paypalReceiverEmail,
 };

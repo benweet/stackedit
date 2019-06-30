@@ -105,6 +105,9 @@ exports.paypalIpn = (req, res, next) => Promise.resolve()
   .catch(next);
 
 exports.checkSponsor = (idToken) => {
+  if (!conf.publicValues.allowSponsorship) {
+    return Promise.resolve(true);
+  }
   if (!idToken) {
     return Promise.resolve(false);
   }

@@ -21,7 +21,8 @@
     "postversion": "git push origin master --tags && npm publish",
     "patch": "npm version patch -m \"Tag v%s\"",
     "minor": "npm version minor -m \"Tag v%s\"",
-    "major": "npm version major -m \"Tag v%s\""
+    "major": "npm version major -m \"Tag v%s\"",
+    "deploy": "kubectl --record deployment.apps/stackedit-deployment set image deployment.v1.apps/stackedit-deployment stackedit=benweet/stackedit:v$npm_package_version"
   },
   "dependencies": {
     "@vue/test-utils": "^1.0.0-beta.16",

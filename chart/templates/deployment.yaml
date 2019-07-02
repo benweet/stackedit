@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "stackedit.fullname" . }}
+  labels:
+{{ include "stackedit.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "stackedit.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "stackedit.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - mountPath: /run
+              name: run-volume
+            - mountPath: /tmp
+              name: tmp-volume
+          env:
+            - name: PORT
+              value: "80"
+            - name: PAYPAL_RECEIVER_EMAIL
+              value: {{ .Values.paypalReceiverEmail }}
+            - name: AWS_ACCESS_KEY_ID
+              value: {{ .Values.awsAccessKeyId }}
+            - name: AWS_SECRET_ACCESS_KEY
+              value: {{ .Values.awsSecretAccessKey }}
+            - name: DROPBOX_APP_KEY
+              value: {{ .Values.dropboxAppKey }}
+            - name: DROPBOX_APP_KEY_FULL
+              value: {{ .Values.dropboxAppKeyFull }}
+            - name: GOOGLE_CLIENT_ID
+              value: {{ .Values.googleClientId }}
+            - name: GOOGLE_API_KEY
+              value: {{ .Values.googleApiKey }}
+            - name: GITHUB_CLIENT_ID
+              value: {{ .Values.githubClientId }}
+            - name: GITHUB_CLIENT_SECRET
+              value: {{ .Values.githubClientSecret }}
+            - name: WORDPRESS_CLIENT_ID
+              value: {{ .Values.wordpressClientId }}
+            - name: WORDPRESS_SECRET
+              value: {{ .Values.wordpressSecret }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+      - name: run-volume
+        emptyDir: {}
+      - name: tmp-volume
+        emptyDir: {}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

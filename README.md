@@ -74,8 +74,8 @@ helm install --name stackedit stackedit/stackedit \
   --set ingress.annotations."kubernetes\.io/ingress\.class"=nginx \
   --set ingress.annotations."certmanager\.k8s\.io/issuer"=letsencrypt-prod \
   --set ingress.annotations."certmanager\.k8s\.io/acme-challenge-type"=http01 \
-  --set ingress.hosts[0].host=stackedit.exemple.com \
+  --set ingress.hosts[0].host=stackedit.example.com \
   --set ingress.hosts[0].paths[0]=/ \
   --set ingress.tls[0].secretName=stackedit-tls \
-  --set ingress.tls[0].hosts[0]=stackedit.exemple.com
+  --set ingress.tls[0].hosts[0]=stackedit.example.com
 ```

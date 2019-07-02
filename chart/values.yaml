@@ -36,14 +36,14 @@ ingress:
    # certmanager.k8s.io/issuer: letsencrypt-prod
    # certmanager.k8s.io/acme-challenge-type: http01
   hosts: []
-   # - host: stackedit.exemple.com
+   # - host: stackedit.example.com
    #   paths:
    #     - /
 
   tls: []
    # - secretName: stackedit-tls
    #   hosts:
-   #     - stackedit.exemple.com
+   #     - stackedit.example.com
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

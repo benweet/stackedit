@@ -6,14 +6,24 @@ node_js:
 services:
   - docker
 
+variables:
+  KUBECONFIG: /etc/deploy/config
+
 before_deploy:
   # Run docker build
   - docker build -t benweet/stackedit .
+  # Install Kubectl
+  - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+  - mkdir -p /etc/deploy
+  - echo ${KUBE_CONFIG} | base64 -d > ${KUBECONFIG}
+  - kubectl config use-context gke_stackedit-project_us-central1-a_stackedit-cluster
   # Install Helm
   - curl -SLO https://git.io/get_helm.sh
   - chmod 700 get_helm.sh
   - ./get_helm.sh
   - helm init --client-only
+  - helm repo add stackedit https://benweet.github.io/stackedit-charts/
+  - helm repo update
   # Update the chart
   - npm run chart
 

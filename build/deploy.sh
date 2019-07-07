@@ -18,7 +18,3 @@ git config user.email "benoit.schweblin@gmail.com"
 git add .
 git commit -m "Added $TRAVIS_TAG"
 git push origin master
-
-# Upgrade the deployed release
-helm repo update
-helm upgrade stackedit stackedit/stackedit

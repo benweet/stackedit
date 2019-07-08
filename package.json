@@ -22,7 +22,7 @@
     "patch": "npm version patch -m \"Tag v%s\"",
     "minor": "npm version minor -m \"Tag v%s\"",
     "major": "npm version major -m \"Tag v%s\"",
-    "chart": "rm -rf dist/stackedit && cp -r chart dist/stackedit && sed -i.bak -e s/STACKEDIT_VERSION/$npm_package_version/g dist/stackedit/*.yaml && rm dist/stackedit/*.yaml.bak"
+    "chart": "mkdir -p dist && rm -rf dist/stackedit && cp -r chart dist/stackedit && sed -i.bak -e s/STACKEDIT_VERSION/$npm_package_version/g dist/stackedit/*.yaml && rm dist/stackedit/*.yaml.bak"
   },
   "dependencies": {
     "@vue/test-utils": "^1.0.0-beta.16",

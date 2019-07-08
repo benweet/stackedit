@@ -9,9 +9,9 @@ docker tag benweet/stackedit:$TRAVIS_TAG benweet/stackedit:latest
 docker push benweet/stackedit:latest
 
 # Add chart to helm repository
-git clone "https://benweet:$GITHUB_TOKEN@github.com/benweet/stackedit-charts.git" charts
-cd charts
-helm package ../dist/stackedit
+git clone --branch master "https://benweet:$GITHUB_TOKEN@github.com/benweet/stackedit-charts.git" /tmp/charts
+cd /tmp/charts
+helm package "$TRAVIS_BUILD_DIR/dist/stackedit"
 helm repo index --url https://benweet.github.io/stackedit-charts/ .
 git config user.name "Benoit Schweblin"
 git config user.email "benoit.schweblin@gmail.com"

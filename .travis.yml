@@ -10,12 +10,10 @@ before_deploy:
   # Run docker build
   - docker build -t benweet/stackedit .
   # Install Helm
-  - curl -SLO https://git.io/get_helm.sh
-  - chmod 700 get_helm.sh
-  - ./get_helm.sh
+  - curl -SL -o /tmp/get_helm.sh https://git.io/get_helm.sh
+  - chmod 700 /tmp/get_helm.sh
+  - /tmp/get_helm.sh
   - helm init --client-only
-  # Make the chart
-  - npm run chart
 
 deploy:
   provider: script

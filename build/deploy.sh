@@ -8,6 +8,10 @@ docker push benweet/stackedit:$TRAVIS_TAG
 docker tag benweet/stackedit:$TRAVIS_TAG benweet/stackedit:latest
 docker push benweet/stackedit:latest
 
+# Build the chart
+cd "$TRAVIS_BUILD_DIR"
+npm run chart
+
 # Add chart to helm repository
 git clone --branch master "https://benweet:$GITHUB_TOKEN@github.com/benweet/stackedit-charts.git" /tmp/charts
 cd /tmp/charts

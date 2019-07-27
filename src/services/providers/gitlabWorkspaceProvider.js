@@ -106,6 +106,8 @@ export default new Provider({
     return gitlabHelper.getTree({
       ...store.getters['workspace/currentWorkspace'],
       token: this.getToken(),
+      existingBody: [],
+      page: 1,
     });
   },
   prepareChanges(tree) {

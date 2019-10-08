@@ -176,18 +176,24 @@ function Highlighter(editor) {
         contentElt.appendChild(newSectionEltList);
       }
 
-      // Remove unauthorized nodes (text nodes outside of sections or
-      // duplicated sections via copy/paste)
-      let childNode = contentElt.firstChild;
-      while (childNode) {
-        const nextNode = childNode.nextSibling;
-        if (!childNode.section) {
-          contentElt.removeChild(childNode);
-        }
-        childNode = nextNode;
+      const lacksSection = (childNode) => {
+        return !childNode.section
       }
-      this.addTrailingNode();
-      this.$trigger('highlighted');
+    
+      const removeUnauthorizedSiblingNodesFrom = (childNode) => {
+        while (childNode) {
+          const nextNode = childNode.nextSibling;
+          if (lacksSection(childNode)) {
+            contentElt.removeChild(childNode);
+          }
+          childNode = nextNode;
+        }
+        this.addTrailingNode();
+        this.$trigger('highlighted');
+      }
+
+      let childNode = contentElt.firstChild;
+      removeUnauthorizedSiblingNodesFrom(childNode);
 
       if (editor.selectionMgr.hasFocus()) {
         editor.selectionMgr.restoreSelection();

@@ -120,10 +120,14 @@ function Highlighter(editor) {
         return false;
       });
 
-      if (leftIndex - rightIndex > sectionList.length) {
-        // Prevent overlap
-        rightIndex = leftIndex - sectionList.length;
+      const preventOverlap = (leftIndex, rightIndex) => {
+        if (leftIndex - rightIndex > sectionList.length) {
+          rightIndex = leftIndex - sectionList.length;
+        }
+        return rightIndex;
       }
+      
+      rightIndex = preventOverlap(leftIndex, rightIndex);
 
       const leftSections = sectionList.slice(0, leftIndex);
       modifiedSections = newSectionList.slice(leftIndex, newSectionList.length + rightIndex);

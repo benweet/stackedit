@@ -1,9 +1,4 @@
-import mermaidUtils from 'mermaid/src/utils';
-import flowRenderer from 'mermaid/src/diagrams/flowchart/flowRenderer';
-import sequenceRenderer from 'mermaid/src/diagrams/sequence/sequenceRenderer';
-import ganttRenderer from 'mermaid/src/diagrams/gantt/ganttRenderer';
-import classRenderer from 'mermaid/src/diagrams/class/classRenderer';
-import gitGraphRenderer from 'mermaid/src/diagrams/git/gitGraphRenderer';
+import { mermaidUtils, flowRenderer, sequenceRenderer, ganttRenderer, classRenderer, gitGraphRenderer } from 'mermaid';
 import extensionSvc from '../services/extensionSvc';
 import utils from '../services/utils';
 

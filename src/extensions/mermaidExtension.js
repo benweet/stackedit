@@ -1,9 +1,4 @@
-import mermaidUtils from 'mermaid/src/utils';
-import flowRenderer from 'mermaid/src/diagrams/flowchart/flowRenderer';
-import sequenceRenderer from 'mermaid/src/diagrams/sequence/sequenceRenderer';
-import ganttRenderer from 'mermaid/src/diagrams/gantt/ganttRenderer';
-import classRenderer from 'mermaid/src/diagrams/class/classRenderer';
-import gitGraphRenderer from 'mermaid/src/diagrams/git/gitGraphRenderer';
+import mermaid from 'mermaid';
 import extensionSvc from '../services/extensionSvc';
 import utils from '../services/utils';
 
@@ -49,42 +44,13 @@ const containerElt = document.createElement('div');
 containerElt.className = 'hidden-rendering-container';
 document.body.appendChild(containerElt);
 
+mermaid.initialize(config);
+
 const render = (elt) => {
   const svgId = `mermaid-svg-${utils.uid()}`;
   const txt = elt.textContent;
-  containerElt.innerHTML = `<div class="mermaid"><svg xmlns="http://www.w3.org/2000/svg" id="${svgId}"><g></g></svg></div>`;
-
   try {
-    const graphType = mermaidUtils.detectType(txt);
-    switch (graphType) {
-      case 'git':
-        config.flowchart.arrowMarkerAbsolute = config.arrowMarkerAbsolute;
-        gitGraphRenderer.setConf(config.git);
-        gitGraphRenderer.draw(txt, svgId, false);
-        break;
-      case 'flowchart':
-        config.flowchart.arrowMarkerAbsolute = config.arrowMarkerAbsolute;
-        flowRenderer.setConf(config.flowchart);
-        flowRenderer.draw(txt, svgId, false);
-        break;
-      case 'sequence':
-        config.sequence.arrowMarkerAbsolute = config.arrowMarkerAbsolute;
-        sequenceRenderer.setConf(config.sequence);
-        sequenceRenderer.draw(txt, svgId);
-        break;
-      case 'gantt':
-        config.gantt.arrowMarkerAbsolute = config.arrowMarkerAbsolute;
-        ganttRenderer.setConf(config.gantt);
-        ganttRenderer.draw(txt, svgId);
-        break;
-      case 'class':
-        config.class.arrowMarkerAbsolute = config.arrowMarkerAbsolute;
-        classRenderer.setConf(config.class);
-        classRenderer.draw(txt, svgId);
-        break;
-      default:
-        throw new Error('Invalid graph type.');
-    }
+    containerElt.innerHTML = mermaid.render(svgId, txt);
     elt.parentNode.replaceChild(containerElt.firstChild, elt);
   } catch (e) {
     console.error(e); // eslint-disable-line no-console

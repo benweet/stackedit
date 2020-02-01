@@ -66,14 +66,7 @@ module.exports = {
         include: [
           resolve('src'),
           resolve('test'),
-          resolve('node_modules/mermaid')
-        ],
-        exclude: [
-          resolve('node_modules/mermaid/src/diagrams/class/parser'),
-          resolve('node_modules/mermaid/src/diagrams/flowchart/parser'),
-          resolve('node_modules/mermaid/src/diagrams/gantt/parser'),
-          resolve('node_modules/mermaid/src/diagrams/git/parser'),
-          resolve('node_modules/mermaid/src/diagrams/sequence/parser')
+          '/node_modules/mermaid'
         ],
       },
       {

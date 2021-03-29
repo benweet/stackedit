@@ -11,7 +11,7 @@ const express = require('express');
 
 const app = express();
 
-require('./server')(app, process.env.SERVE_V4);
+require('./server')(app);
 
 const port = parseInt(process.env.PORT || 8080, 10);
 const httpServer = http.createServer(app);

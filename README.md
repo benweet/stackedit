@@ -15,7 +15,7 @@ https://stackedit.io/
 
 ### Build
 
-``` bash
+```bash
 # install dependencies
 npm install
 
@@ -51,15 +51,24 @@ helm install --name stackedit stackedit/stackedit \
   --set githubClientSecret=$GITHUB_CLIENT_SECRET \
   --set wordpressClientId=\"$WORDPRESS_CLIENT_ID\" \
   --set wordpressSecret=$WORDPRESS_CLIENT_SECRET
-  
-# Upgrade to the latest version
+```
+
+Later, to upgrade StackEdit to the latest version:
+
+```bash
 helm repo update
 helm upgrade stackedit stackedit/stackedit
+```
 
-# Uninstall StackEdit
+If you want to uninstall StackEdit:
+
+```bash
 helm delete --purge stackedit
+```
 
-# Deploy using your existing ingress controller and cert-manager
+If you want to use your existing ingress controller and cert-manager issuer:
+
+```bash
 # See https://docs.cert-manager.io/en/latest/tutorials/acme/quick-start/index.html
 helm install --name stackedit stackedit/stackedit \
   --set dropboxAppKey=$DROPBOX_API_KEY \
@@ -72,8 +81,7 @@ helm install --name stackedit stackedit/stackedit \
   --set wordpressSecret=$WORDPRESS_CLIENT_SECRET \
   --set ingress.enabled=true \
   --set ingress.annotations."kubernetes\.io/ingress\.class"=nginx \
-  --set ingress.annotations."certmanager\.k8s\.io/issuer"=letsencrypt-prod \
-  --set ingress.annotations."certmanager\.k8s\.io/acme-challenge-type"=http01 \
+  --set ingress.annotations."cert-manager\.io/cluster-issuer"=letsencrypt-prod \
   --set ingress.hosts[0].host=stackedit.example.com \
   --set ingress.hosts[0].paths[0]=/ \
   --set ingress.tls[0].secretName=stackedit-tls \

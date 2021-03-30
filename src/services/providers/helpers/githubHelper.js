@@ -63,11 +63,13 @@ export default {
    * https://developer.github.com/apps/building-oauth-apps/authorization-options-for-oauth-apps/
    */
   async startOauth2(scopes, sub = null, silent = false) {
+    const githubAuthUrl = store.getters['data/serverConf'].githubAuthUrl;
+    const githubUserProfileUrl = store.getters['data/serverConf'].githubUserProfileUrl;
     const clientId = store.getters['data/serverConf'].githubClientId;
 
     // Get an OAuth2 code
     const { code } = await networkSvc.startOauth2(
-      'https://github.com/login/oauth/authorize',
+      githubAuthUrl,
       {
         client_id: clientId,
         scope: scopes.join(' '),
@@ -88,7 +90,7 @@ export default {
     // Call the user info endpoint
     const user = (await networkSvc.request({
       method: 'GET',
-      url: 'https://api.github.com/user',
+      url: githubUserProfileUrl,
       params: {
         access_token: accessToken,
       },

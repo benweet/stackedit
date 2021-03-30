@@ -6,7 +6,7 @@ function githubToken(clientId, code) {
   return new Promise((resolve, reject) => {
     request({
       method: 'POST',
-      url: 'https://github.com/login/oauth/access_token',
+      url: conf.values.githubTokenUrl,
       qs: {
         client_id: clientId,
         client_secret: conf.values.githubClientSecret,

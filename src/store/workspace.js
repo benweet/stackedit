@@ -22,7 +22,7 @@ export default {
       Object.entries(rootGetters['data/workspaces']).forEach(([id, workspace]) => {
         const sanitizedWorkspace = {
           id,
-          providerId: 'googleDriveAppData',
+          providerId: 'githubWorkspace',
           sub: mainWorkspaceToken && mainWorkspaceToken.sub,
           ...workspace,
         };

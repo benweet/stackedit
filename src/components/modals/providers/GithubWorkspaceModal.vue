@@ -53,7 +53,7 @@ export default modalTemplate({
         const url = utils.addQueryParams('app', {
           ...parsedRepo,
           providerId: 'githubWorkspace',
-          branch: this.branch || 'master',
+          branch: this.branch || 'main',
           path: path || undefined,
         }, true);
         this.config.resolve();

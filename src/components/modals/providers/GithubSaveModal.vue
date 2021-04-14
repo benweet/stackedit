@@ -62,7 +62,7 @@ export default modalTemplate({
           this.config.token,
           parsedRepo.owner,
           parsedRepo.repo,
-          this.branch || 'master',
+          this.branch || 'main',
           this.path,
         );
         this.config.resolve(location);

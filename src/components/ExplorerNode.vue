@@ -1,7 +1,7 @@
 <template>
   <div class="explorer-node" :class="{'explorer-node--selected': isSelected, 'explorer-node--folder': node.isFolder, 'explorer-node--open': isOpen, 'explorer-node--trash': node.isTrash, 'explorer-node--temp': node.isTemp, 'explorer-node--drag-target': isDragTargetFolder}" @dragover.prevent @dragenter.stop="node.noDrop || setDragTarget(node)" @dragleave.stop="isDragTarget && setDragTarget()" @drop.prevent.stop="onDrop" @contextmenu="onContextMenu">
     <div class="explorer-node__item-editor" v-if="isEditing" :style="{paddingLeft: leftPadding}" draggable="true" @dragstart.stop.prevent>
-      <input type="text" class="text-input" v-focus @blur="submitEdit()" @keydown.stop @keydown.enter="submitEdit()" @keydown.esc.stop="submitEdit(true)" v-model="editingNodeName">
+      <input type="text" class="text-input" v-focus @input="setEditingNodeName" @blur="submitEdit(false, $event)" @keydown.stop @keydown.enter="submitEdit(false, $event)" @keydown.esc.stop="submitEdit(true, $event)" v-model="editingNodeName">
     </div>
     <div class="explorer-node__item" v-else :style="{paddingLeft: leftPadding}" @click="select()" draggable="true" @dragstart.stop="setDragSourceId" @dragend.stop="setDragTarget()">
       {{node.item.name}}
@@ -10,7 +10,7 @@
     <div class="explorer-node__children" v-if="node.isFolder && isOpen">
       <explorer-node v-for="node in node.folders" :key="node.item.id" :node="node" :depth="depth + 1"></explorer-node>
       <div v-if="newChild" class="explorer-node__new-child" :class="{'explorer-node__new-child--folder': newChild.isFolder}" :style="{paddingLeft: childLeftPadding}">
-        <input type="text" class="text-input" v-focus @blur="submitNewChild()" @keydown.stop @keydown.enter="submitNewChild()" @keydown.esc.stop="submitNewChild(true)" v-model.trim="newChildName">
+        <input type="text" class="text-input" v-focus @input="setNewChildName" @blur="submitNewChild(false, $event)" @keydown.stop @keydown.enter="submitNewChild(false, $event)" @keydown.esc.stop="submitNewChild(true, $event)" v-model.trim="newChildName">
       </div>
       <explorer-node v-for="node in node.files" :key="node.item.id" :node="node" :depth="depth + 1"></explorer-node>
     </div>
@@ -99,7 +99,11 @@ export default {
       }
       return true;
     },
-    async submitNewChild(cancel) {
+    async submitNewChild(cancel, evt) {
+      if (evt.keyCode === 229) {
+        evt.target.focus();
+        return;
+      }
       const { newChildNode } = store.state.explorer;
       if (!cancel && !newChildNode.isNil && newChildNode.item.name) {
         try {
@@ -118,7 +122,11 @@ export default {
       }
       store.commit('explorer/setNewItem', null);
     },
-    async submitEdit(cancel) {
+    async submitEdit(cancel, evt) {
+      if (evt.keyCode === 229) {
+        evt.target.focus();
+        return;
+      }
       const { item, isFolder } = store.getters['explorer/editingNode'];
       const value = this.editingValue;
       this.setEditingId(null);
@@ -143,6 +151,12 @@ export default {
       // Fix for Firefox
       // See https://stackoverflow.com/a/3977637/1333165
       evt.dataTransfer.setData('Text', '');
+    },
+    setEditingNodeName(evt) {
+      this.editingValue = evt.target.value.trim();
+    },
+    setNewChildName(evt) {
+      this.newChildName = evt.target.value.trim();
     },
     onDrop() {
       const sourceNode = store.getters['explorer/dragSourceNode'];

@@ -90,7 +90,7 @@ export default {
       method: 'GET',
       url: 'https://api.github.com/user',
       headers: {
-         authorization: 'token '+accessToken,
+        authorization: `token ${accessToken}`,
       },
     })).body;
     userSvc.addUserInfo({

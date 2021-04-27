@@ -63,7 +63,7 @@ dt {
 a {
   color: $link-color;
   text-decoration: underline;
-  text-decoration-skip: ink;
+  text-decoration-skip-ink: auto;
 
   &:hover,
   &:focus {

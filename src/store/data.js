@@ -30,6 +30,8 @@ const empty = (id) => {
       return itemTemplate(id, defaultLocalSettings());
     case 'layoutSettings':
       return itemTemplate(id, defaultLayoutSettings());
+    case 'themeId':
+      return itemTemplate(id, 'default');
     default:
       return itemTemplate(id);
   }
@@ -98,6 +100,15 @@ const defaultTemplates = {
   styledHtml: makeAdditionalTemplate('Styled HTML', styledHtmlTemplate),
   styledHtmlWithToc: makeAdditionalTemplate('Styled HTML with TOC', styledHtmlWithTocTemplate),
   jekyllSite: makeAdditionalTemplate('Jekyll site', jekyllSiteTemplate),
+};
+
+const defaultThemes = {
+  default: makeAdditionalTemplate('default', 'default'),
+  splendor: makeAdditionalTemplate('splendor', 'splendor'),
+  foghorn: makeAdditionalTemplate('foghorn', 'foghorn'),
+  gentle: makeAdditionalTemplate('gentle', 'gentle'),
+  retro: makeAdditionalTemplate('retro', 'retro'),
+  github: makeAdditionalTemplate('github', 'github'),
 };
 
 // For tokens
@@ -173,6 +184,12 @@ export default {
       ...templatesById,
       ...defaultTemplates,
     }),
+    allThemesById: (state, { themesById }) => ({
+      ...themesById,
+      ...defaultThemes,
+    }),
+    themeId: getter('themeId'),
+    theme: (state, { allThemesById, themeId }) => allThemesById[themeId],
     lastCreated: getter('lastCreated'),
     lastOpened: getter('lastOpened'),
     lastOpenedIds: (state, { lastOpened }, rootState) => {
@@ -282,6 +299,18 @@ export default {
       });
       commit('setItem', itemTemplate('templates', templatesToCommit));
     },
+    setThemesById: ({ commit }, themesById) => {
+      const themesToCommit = {
+        ...themesById,
+      };
+      // We don't store additional themes
+      Object.keys(defaultThemes).forEach((id) => {
+        delete themesToCommit[id];
+      });
+      commit('setItem', itemTemplate('themes', themesToCommit));
+    },
+    setThemeId: setter('themeId'),
+
     setLastCreated: setter('lastCreated'),
     setLastOpenedId: ({ getters, commit, rootState }, fileId) => {
       const lastOpened = { ...getters.lastOpened };

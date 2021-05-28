@@ -99,6 +99,11 @@
       <div><div class="menu-entry__label menu-entry__label--count">{{templateCount}}</div> Templates</div>
       <span>Configure Handlebars templates for your exports.</span>
     </menu-entry>
+    <menu-entry @click.native="themes">
+      <icon-eye slot="icon"></icon-eye>
+      <div>Themes</div>
+      <span>Configure Markdown preview theme.</span>
+    </menu-entry>
     <menu-entry @click.native="settings">
       <icon-settings slot="icon"></icon-settings>
       <div>Settings</div>
@@ -201,6 +206,11 @@ export default {
     async templates() {
       try {
         await store.dispatch('modal/open', 'templates');
+      } catch (e) { /* Cancel */ }
+    },
+    async themes() {
+      try {
+        await store.dispatch('modal/open', 'themes');
       } catch (e) { /* Cancel */ }
     },
     async accounts() {

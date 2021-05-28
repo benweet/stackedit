@@ -27,6 +27,7 @@ import ModalInner from './modals/common/ModalInner';
 import FilePropertiesModal from './modals/FilePropertiesModal';
 import SettingsModal from './modals/SettingsModal';
 import TemplatesModal from './modals/TemplatesModal';
+import ThemesModal from './modals/ThemesModal';
 import AboutModal from './modals/AboutModal';
 import HtmlExportModal from './modals/HtmlExportModal';
 import PdfExportModal from './modals/PdfExportModal';
@@ -79,6 +80,7 @@ export default {
     FilePropertiesModal,
     SettingsModal,
     TemplatesModal,
+    ThemesModal,
     AboutModal,
     HtmlExportModal,
     PdfExportModal,

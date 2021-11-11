@@ -86,12 +86,9 @@ export default {
     })).body;
 
     // Call the user info endpoint
-    const user = (await networkSvc.request({
+    const user = (await request(accessToken, {
       method: 'GET',
       url: 'https://api.github.com/user',
-      params: {
-        access_token: accessToken,
-      },
     })).body;
     userSvc.addUserInfo({
       id: `${subPrefix}:${user.id}`,

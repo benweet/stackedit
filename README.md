@@ -87,3 +87,4 @@ helm install --name stackedit stackedit/stackedit \
   --set ingress.tls[0].secretName=stackedit-tls \
   --set ingress.tls[0].hosts[0]=stackedit.example.com
 ```
+### [Run without installation]([![TeamCode try-it-now](https://static01.teamcode.com/badge/demo.svg)](https://www.teamcode.com/tin/clone?applicationId=273128516352372736))

@@ -14,10 +14,6 @@ module.exports = {
   entry: {
     app: './src/'
   },
-  node: {
-    // For mermaid
-    fs: 'empty' // jison generated code requires 'fs'
-  },
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
@@ -29,6 +25,9 @@ module.exports = {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       '@': resolve('src')
+    },
+    fallback: {
+      fs: false
     }
   },
   module: {

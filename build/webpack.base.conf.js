@@ -11,6 +11,7 @@ function resolve (dir) {
 }
 
 module.exports = {
+  mode: 'development', //add this line here
   entry: {
     app: './src/'
   },
@@ -27,7 +28,8 @@ module.exports = {
       '@': resolve('src')
     },
     fallback: {
-      fs: false
+      fs: false,
+      "path": require.resolve("path-browserify")
     }
   },
   module: {

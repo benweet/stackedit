@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import * as Vue from 'vue';
 import Provider from './Provider';
 import FormatBold from './FormatBold';
 import FormatItalic from './FormatItalic';

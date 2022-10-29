@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import * as Vue from 'vue';
 import emptyFile from '../data/empties/emptyFile';
 import emptyFolder from '../data/empties/emptyFolder';
 

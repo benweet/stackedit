@@ -2,7 +2,7 @@ var path = require('path')
 var webpack = require('webpack')
 var utils = require('./utils')
 var config = require('../config')
-var VueLoaderPlugin = require('vue-loader/lib/plugin')
+var {VueLoaderPlugin} = require('vue-loader')
 var vueLoaderConfig = require('./vue-loader.conf')
 var StylelintPlugin = require('stylelint-webpack-plugin')
 

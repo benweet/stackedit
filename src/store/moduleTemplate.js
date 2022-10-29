@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import * as Vue from 'vue';
 import utils from '../services/utils';
 
 export default (empty, simpleHash = false) => {

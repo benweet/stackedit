@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import Vue from 'vue';
+import * as Vue from 'vue';
 import store from '../store';
 
 const steps = [

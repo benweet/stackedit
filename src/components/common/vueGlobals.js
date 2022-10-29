@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import * as Vue from 'vue';
 import Clipboard from 'clipboard';
 import timeSvc from '../../services/timeSvc';
 import store from '../../store';

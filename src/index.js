@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import * as Vue from 'vue';
 import 'babel-polyfill';
 import 'indexeddbshim/dist/indexeddbshim';
 import * as OfflinePluginRuntime from 'offline-plugin/runtime';

@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import Vue from 'vue';
+import * as Vue from 'vue';
 import { mapGetters, mapActions } from 'vuex';
 import ModalInner from './common/ModalInner';
 import workspaceSvc from '../../services/workspaceSvc';

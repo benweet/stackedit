@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import * as Vue from 'vue';
 import yaml from 'js-yaml';
 import utils from '../services/utils';
 import defaultWorkspaces from '../data/defaults/defaultWorkspaces';

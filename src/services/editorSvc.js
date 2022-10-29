@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import * as Vue from 'vue';
 import DiffMatchPatch from 'diff-match-patch';
 import Prism from 'prismjs';
 import markdownItPandocRenderer from 'markdown-it-pandoc-renderer';

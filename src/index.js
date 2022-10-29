@@ -49,11 +49,11 @@ if (!localStorage.installPrompted) {
   });
 }
 
-Vue.config.productionTip = false;
+Vue.VueElement.config.productionTip = false;
 
-/* eslint-disable no-new */
-new Vue({
+new Vue.VueElement({
   el: '#app',
   store,
   render: h => h(App),
 });
+console.log("Started")

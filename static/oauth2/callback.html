@@ -2,7 +2,7 @@
 <html>
   <body>
     <script>
-      var origin = location.protocol + '//' + location.host;
+      const origin = location.protocol + '//' + location.host;
       (window.opener || window.parent).postMessage(location.hash || location.search, origin);
     </script>
   </body>

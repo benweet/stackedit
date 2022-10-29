@@ -1,40 +1,40 @@
-var arrayProperties = {}
-var liveCollectionProperties = {}
-var functionProperties = {}
-var objectProperties = {}
-var slice = Array.prototype.slice
+let arrayProperties = {};
+let liveCollectionProperties = {};
+let functionProperties = {};
+let objectProperties = {};
+const slice = Array.prototype.slice;
 
 arrayProperties.cl_each = function (cb) {
-    var i = 0
-    var length = this.length
-    for (; i < length; i++) {
+  let i = 0;
+  const length = this.length;
+  for (; i < length; i++) {
         cb(this[i], i, this)
     }
 }
 
 arrayProperties.cl_map = function (cb) {
-    var i = 0
-    var length = this.length
-    var result = Array(length)
-    for (; i < length; i++) {
+  let i = 0;
+  const length = this.length;
+  const result = Array(length);
+  for (; i < length; i++) {
         result[i] = cb(this[i], i, this)
     }
     return result
 }
 
 arrayProperties.cl_reduce = function (cb, memo) {
-    var i = 0
-    var length = this.length
-    for (; i < length; i++) {
+  let i = 0;
+  const length = this.length;
+  for (; i < length; i++) {
         memo = cb(memo, this[i], i, this)
     }
     return memo
 }
 
 arrayProperties.cl_some = function (cb) {
-    var i = 0
-    var length = this.length
-    for (; i < length; i++) {
+  let i = 0;
+  const length = this.length;
+  for (; i < length; i++) {
         if (cb(this[i], i, this)) {
             return true
         }
@@ -42,10 +42,10 @@ arrayProperties.cl_some = function (cb) {
 }
 
 arrayProperties.cl_filter = function (cb) {
-    var i = 0
-    var length = this.length
-    var result = []
-    for (; i < length; i++) {
+  let i = 0;
+  const length = this.length;
+  const result = [];
+  for (; i < length; i++) {
         cb(this[i], i, this) && result.push(this[i])
     }
     return result
@@ -68,9 +68,9 @@ liveCollectionProperties.cl_reduce = function (cb, memo) {
 }
 
 functionProperties.cl_bind = function (context) {
-    var self = this
-    var args = slice.call(arguments, 1)
-    context = context || null
+  const self = this;
+  const args = slice.call(arguments, 1);
+  context = context || null
     return args.length
         ? function () {
             return arguments.length
@@ -85,40 +85,40 @@ functionProperties.cl_bind = function (context) {
 }
 
 objectProperties.cl_each = function (cb) {
-    var i = 0
-    var keys = Object.keys(this)
-    var length = keys.length
-    for (; i < length; i++) {
+  let i = 0;
+  const keys = Object.keys(this);
+  const length = keys.length;
+  for (; i < length; i++) {
         cb(this[keys[i]], keys[i], this)
     }
 }
 
 objectProperties.cl_map = function (cb) {
-    var i = 0
-    var keys = Object.keys(this)
-    var length = keys.length
-    var result = Array(length)
-    for (; i < length; i++) {
+  let i = 0;
+  const keys = Object.keys(this);
+  const length = keys.length;
+  const result = Array(length);
+  for (; i < length; i++) {
         result[i] = cb(this[keys[i]], keys[i], this)
     }
     return result
 }
 
 objectProperties.cl_reduce = function (cb, memo) {
-    var i = 0
-    var keys = Object.keys(this)
-    var length = keys.length
-    for (; i < length; i++) {
+  let i = 0;
+  const keys = Object.keys(this);
+  const length = keys.length;
+  for (; i < length; i++) {
         memo = cb(memo, this[keys[i]], keys[i], this)
     }
     return memo
 }
 
 objectProperties.cl_some = function (cb) {
-    var i = 0
-    var keys = Object.keys(this)
-    var length = keys.length
-    for (; i < length; i++) {
+  let i = 0;
+  const keys = Object.keys(this);
+  const length = keys.length;
+  for (; i < length; i++) {
         if (cb(this[keys[i]], keys[i], this)) {
             return true
         }
@@ -127,10 +127,10 @@ objectProperties.cl_some = function (cb) {
 
 objectProperties.cl_extend = function (obj) {
     if (obj) {
-        var i = 0
-        var keys = Object.keys(obj)
-        var length = keys.length
-        for (; i < length; i++) {
+      let i = 0;
+      const keys = Object.keys(obj);
+      const length = keys.length;
+      for (; i < length; i++) {
             this[keys[i]] = obj[keys[i]]
         }
     }

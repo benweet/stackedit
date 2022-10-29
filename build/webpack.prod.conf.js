@@ -1,24 +1,34 @@
 import path from 'path'
-var utils = require('./utils')
-var webpack = require('webpack')
-var config = require('../config')
-var merge = require('webpack-merge')
-var baseWebpackConfig = require('./webpack.base.conf')
-var CopyWebpackPlugin = require('copy-webpack-plugin')
-var HtmlWebpackPlugin = require('html-webpack-plugin')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
-var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
-var OfflinePlugin = require('offline-plugin');
-var WebpackPwaManifest = require('webpack-pwa-manifest')
-var FaviconsWebpackPlugin = require('favicons-webpack-plugin')
+import webpack from 'webpack';
+
+import utils from './utils';
+
+import config from '../config';
+
+import merge from 'webpack-merge';
+
+import baseWebpackConfig from './webpack.base.conf.js'
+import CopyWebpackPlugin from 'copy-webpack-plugin'
+
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
+
+import OptimizeCSSPlugin from 'optimize-css-assets-webpack-plugin';
+
+import OfflinePlugin from 'offline-plugin';
+
+import WebpackPwaManifest from 'webpack-pwa-manifest';
+
+import FaviconsWebpackPlugin from 'favicons-webpack-plugin';
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
-var env = config.build.env
+const env = config.build.env;
 
-var webpackConfig = merge(baseWebpackConfig, {
+const webpackConfig = merge(baseWebpackConfig, {
   mode: 'production', //add this line here
   module: {
     rules: utils.styleLoaders({
@@ -84,7 +94,7 @@ var webpackConfig = merge(baseWebpackConfig, {
           module.resource.indexOf(
             path.join(__dirname, '../node_modules')
           ) === 0
-        )
+        );
       }
     }),
     // extract webpack runtime and module manifest to its own file in order to
@@ -127,10 +137,10 @@ var webpackConfig = merge(baseWebpackConfig, {
       externals: ['/', '/app', '/oauth2/callback']
     }),
   ]
-})
+});
 
 if (config.build.productionGzip) {
-  var CompressionWebpackPlugin = require('compression-webpack-plugin')
+  const CompressionWebpackPlugin = require('compression-webpack-plugin');
 
   webpackConfig.plugins.push(
     new CompressionWebpackPlugin({
@@ -148,7 +158,7 @@ if (config.build.productionGzip) {
 }
 
 if (config.build.bundleAnalyzerReport) {
-  var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+  const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
   webpackConfig.plugins.push(new BundleAnalyzerPlugin())
 }
 

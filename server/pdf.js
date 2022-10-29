@@ -10,7 +10,7 @@ function waitForJavaScript() {
   if (window.MathJax) {
     // Amazon EC2: fix TeX font detection
     MathJax.Hub.Register.StartupHook('HTML-CSS Jax Startup', function () {
-      var htmlCss = MathJax.OutputJax['HTML-CSS'];
+      const htmlCss = MathJax.OutputJax['HTML-CSS'];
       htmlCss.Font.checkWebFont = function (check, font, callback) {
         if (check.time(callback)) {
           return;

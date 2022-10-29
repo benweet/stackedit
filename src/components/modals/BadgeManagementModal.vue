@@ -61,7 +61,7 @@ export default {
   },
   methods: {
     show(featureId) {
-      Vue.set(this.shown, featureId, true);
+      this.shown[featureId] = true;
     },
   },
 };

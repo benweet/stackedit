@@ -1,12 +1,13 @@
-var utils = require('./utils')
-var config = require('../config')
-var isProduction = process.env.NODE_ENV === 'production'
+import utils from './utils.js'
+import configFromIndex from '../config/index.js'
+const isProduction = process.env.NODE_ENV === 'production'
 
-module.exports = {
+const config = {
   loaders: utils.cssLoaders({
     sourceMap: isProduction
-      ? config.build.productionSourceMap
-      : config.dev.cssSourceMap,
+      ? configFromIndex.build.productionSourceMap
+      : configFromIndex.dev.cssSourceMap,
     extract: isProduction
   })
 }
+export default config

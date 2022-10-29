@@ -1,4 +1,3 @@
-import * as Vue from 'vue';
 import utils from '../services/utils';
 
 export default (empty, simpleHash = false) => {
@@ -19,20 +18,20 @@ export default (empty, simpleHash = false) => {
         if (!item.hash || !simpleHash) {
           item.hash = hashFunc(item);
         }
-        Vue.set(state.itemsById, item.id, item);
+        state.itemsById[item.id] = item;
       },
       patchItem(state, patch) {
         const item = state.itemsById[patch.id];
         if (item) {
           Object.assign(item, patch);
           item.hash = hashFunc(item);
-          Vue.set(state.itemsById, item.id, item);
+          state.itemsById[item.id] = item;
           return true;
         }
         return false;
       },
       deleteItem(state, id) {
-        Vue.delete(state.itemsById, id);
+        delete state.itemsById[id];
       },
     },
     actions: {},

@@ -133,7 +133,11 @@ export default {
       });
 
       // Store item in itemsById or lsItemsById if its stored in the localStorage
-      Vue.set(localStorageIdSet.has(item.id) ? lsItemsById : itemsById, item.id, item);
+      if (localStorageIdSet.has(item.id)) {
+        lsItemsById[item.id] = item;
+      } else {
+        itemsById[item.id] = item;
+      }
     },
     deleteItem({ itemsById }, id) {
       // Only used by localDbSvc to clean itemsById from object moved to localStorage

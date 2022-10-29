@@ -1,9 +1,9 @@
 /* global window,MathJax */
-const { spawn } = require('child_process');
-const fs = require('fs');
-const tmp = require('tmp');
-const user = require('./user');
-const conf = require('./conf');
+import {spawn} from 'child_process'
+import fs from 'fs'
+import tmp from 'tmp'
+import user from './user.js'
+import conf from './conf.js'
 
 /* eslint-disable no-var, prefer-arrow-callback, func-names */
 function waitForJavaScript() {
@@ -49,7 +49,7 @@ const readJson = (str) => {
   }
 };
 
-exports.generate = (req, res) => {
+const generate = (req, res) => {
   let wkhtmltopdfError = '';
   user.checkSponsor(req.query.idToken)
     .then((isSponsor) => {
@@ -183,3 +183,5 @@ exports.generate = (req, res) => {
       }
     });
 };
+
+export default {generate}

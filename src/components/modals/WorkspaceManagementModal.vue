@@ -63,7 +63,6 @@
 </template>
 
 <script>
-import * as Vue from 'vue';
 import { mapGetters, mapActions } from 'vuex';
 import ModalInner from './common/ModalInner';
 import workspaceSvc from '../../services/workspaceSvc';
@@ -132,7 +131,7 @@ export default {
   created() {
     Object.keys(this.workspacesById).forEach(async (workspaceId) => {
       const cancel = localDbSvc.getWorkspaceItems(workspaceId, () => {
-        Vue.set(this.availableOffline, workspaceId, true);
+        this.availableOffline[workspaceId] = true;
         cancel();
       });
     });

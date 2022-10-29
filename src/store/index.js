@@ -1,4 +1,3 @@
-import * as Vue from 'vue';
 import Vuex, { createLogger } from 'vuex';
 import utils from '../services/utils';
 import content from './content';
@@ -21,8 +20,9 @@ import locationTemplate from './locationTemplate';
 import emptyPublishLocation from '../data/empties/emptyPublishLocation';
 import emptySyncLocation from '../data/empties/emptySyncLocation';
 import constants from '../data/constants';
+import { createApp } from 'vue';
+import App from '../components/App';
 
-Vue.use(Vuex);
 
 const debug = NODE_ENV !== 'production';
 
@@ -185,3 +185,4 @@ setInterval(() => {
 }, 30 * 1000);
 
 export default store;
+createApp(App).use(store).mount('#app')

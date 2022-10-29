@@ -1,9 +1,8 @@
 /* global window */
-const { spawn } = require('child_process');
-const fs = require('fs');
-const tmp = require('tmp');
-const user = require('./user');
-const conf = require('./conf');
+import {spawn} from 'child_process'
+import fs from 'fs'
+import tmp from 'tmp'
+import conf from './conf.js'
 
 const outputFormats = {
   asciidoc: 'text/plain',
@@ -37,7 +36,7 @@ const readJson = (str) => {
   }
 };
 
-exports.generate = (req, res) => {
+const generate = (req, res) => {
   let pandocError = '';
   const outputFormat = Object.prototype.hasOwnProperty.call(outputFormats, req.query.format)
     ? req.query.format
@@ -147,3 +146,5 @@ exports.generate = (req, res) => {
       }
     });
 };
+
+export default {generate}

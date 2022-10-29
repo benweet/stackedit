@@ -1,4 +1,4 @@
-require('./check-versions')()
+await import('./check-versions')
 
 process.env.NODE_ENV = 'production'
 

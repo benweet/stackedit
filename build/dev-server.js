@@ -1,18 +1,22 @@
-require('./check-versions')()
+import './check-versions.js'
+import config from '../config/index.js'
 
-var config = require('../config')
 Object.keys(config.dev.env).forEach((key) => {
   if (!process.env[key]) {
     process.env[key] = JSON.parse(config.dev.env[key]);
   }
 });
 
-var opn = require('opn')
-var path = require('path')
-var express = require('express')
-var webpack = require('webpack')
-var proxyMiddleware = require('http-proxy-middleware')
-var webpackConfig = require('./webpack.dev.conf')
+import path from 'path'
+import opn from 'opn'
+import express from 'express'
+import  webpack from 'webpack'
+import devMiddlewareFunc from 'webpack-dev-middleware'
+import proxyMiddleware from 'http-proxy-middleware'
+import webpackConfig from './webpack.dev.conf.js'
+import webpackHot from 'webpack-hot-middleware'
+import index from '../server/index.js'
+import connectHistory from 'connect-history-api-fallback'
 
 // default port where dev server listens for incoming traffic
 var port = process.env.PORT || config.dev.port
@@ -23,16 +27,18 @@ var autoOpenBrowser = !!config.dev.autoOpenBrowser
 var proxyTable = config.dev.proxyTable
 
 var app = express()
-var compiler = webpack(webpackConfig)
+
+
+var compiler = webpack(webpackConfig.res)
 
 // StackEdit custom middlewares
-require('../server')(app);
+index(app);
 
-var devMiddleware = require('webpack-dev-middleware')(compiler, {
-  publicPath: webpackConfig.output.publicPath,
+var devMiddleware = devMiddlewareFunc(compiler, {
+  publicPath: webpackConfig.res.output.publicPath,
 })
 
-var hotMiddleware = require('webpack-hot-middleware')(compiler, {
+var hotMiddleware = webpackHot(compiler, {
   log: () => {}
 })
 
@@ -43,11 +49,11 @@ Object.keys(proxyTable).forEach(function (context) {
   if (typeof options === 'string') {
     options = { target: options }
   }
-  app.use(proxyMiddleware(options.filter || context, options))
+  app.use(proxyMiddleware.createProxyMiddleware(options.filter || context, options))
 })
 
 // handle fallback for HTML5 history API
-app.use(require('connect-history-api-fallback')())
+app.use(connectHistory())
 
 // serve webpack bundle output
 app.use(devMiddleware)
@@ -79,7 +85,7 @@ devMiddleware.waitUntilValid(() => {
 
 var server = app.listen(port)
 
-module.exports = {
+export default {
   ready: readyPromise,
   close: () => {
     server.close()

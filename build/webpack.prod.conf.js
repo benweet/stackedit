@@ -1,4 +1,4 @@
-var path = require('path')
+import path from 'path'
 var utils = require('./utils')
 var webpack = require('webpack')
 var config = require('../config')

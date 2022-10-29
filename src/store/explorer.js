@@ -1,4 +1,3 @@
-import * as Vue from 'vue';
 import emptyFile from '../data/empties/emptyFile';
 import emptyFolder from '../data/empties/emptyFolder';
 
@@ -78,7 +77,7 @@ export default {
       state.newChildNode.item.name = name;
     },
     toggleOpenNode(state, id) {
-      Vue.set(state.openNodes, id, !state.openNodes[id]);
+      state.openNodes[id] = !state.openNodes[id];
     },
   },
   getters: {

@@ -52,13 +52,13 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import utils from '../../services/utils';
-import badgeSvc from '../../services/badgeSvc';
-import ModalInner from './common/ModalInner';
-import CodeEditor from '../CodeEditor';
+import utils from '../../services/utils.js';
+import badgeSvc from '../../services/badgeSvc.js';
+import ModalInner from './common/ModalInner.vue';
+import CodeEditor from '../CodeEditor.vue';
 import emptyTemplateValue from '../../data/empties/emptyTemplateValue.html';
 import emptyTemplateHelpers from '!raw-loader!../../data/empties/emptyTemplateHelpers.js'; // eslint-disable-line
-import store from '../../store';
+import store from '../../store/index.js';
 
 const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
 

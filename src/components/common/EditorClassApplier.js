@@ -1,6 +1,6 @@
-import cledit from '../../services/editor/cledit';
-import editorSvc from '../../services/editorSvc';
-import utils from '../../services/utils';
+import cledit from '../../services/editor/cledit/index.js';
+import editorSvc from '../../services/editorSvc.js';
+import utils from '../../services/utils.js';
 
 let savedSelection = null;
 const nextTickCbs = [];

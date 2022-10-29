@@ -1,4 +1,4 @@
-import pagedownButtons from '../data/pagedownButtons';
+import pagedownButtons from '../data/pagedownButtons.js';
 
 let buttonCount = 2; // 2 for undo/redo
 let spacerCount = 0;

@@ -10,11 +10,11 @@
 
 <script>
 import { mapState, mapGetters, mapMutations } from 'vuex';
-import Comment from './Comment';
-import NewComment from './NewComment';
-import editorSvc from '../../services/editorSvc';
-import store from '../../store';
-import utils from '../../services/utils';
+import Comment from './Comment.vue';
+import NewComment from './NewComment.vue';
+import editorSvc from '../../services/editorSvc.js';
+import store from '../../store/index.js';
+import utils from '../../services/utils.js';
 
 export default {
   components: {

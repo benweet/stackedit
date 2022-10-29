@@ -1,7 +1,7 @@
-import networkSvc from '../../networkSvc';
-import userSvc from '../../userSvc';
-import store from '../../../store';
-import badgeSvc from '../../badgeSvc';
+import networkSvc from '../../networkSvc.js';
+import userSvc from '../../userSvc.js';
+import store from '../../../store/index.js';
+import badgeSvc from '../../badgeSvc.js';
 
 const getAppKey = (fullAccess) => {
   if (fullAccess) {

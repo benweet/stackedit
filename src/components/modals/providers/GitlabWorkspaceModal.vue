@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import utils from '../../../services/utils';
-import modalTemplate from '../common/modalTemplate';
+import utils from '../../../services/utils.js';
+import modalTemplate from '../common/modalTemplate.js';
 
 export default modalTemplate({
   data: () => ({

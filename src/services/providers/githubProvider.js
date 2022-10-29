@@ -1,9 +1,9 @@
-import store from '../../store';
-import githubHelper from './helpers/githubHelper';
-import Provider from './common/Provider';
-import utils from '../utils';
-import workspaceSvc from '../workspaceSvc';
-import userSvc from '../userSvc';
+import store from '../../store/index.js';
+import githubHelper from './helpers/githubHelper.js';
+import Provider from './common/Provider.js';
+import utils from '../utils.js';
+import workspaceSvc from '../workspaceSvc.js';
+import userSvc from '../userSvc.js';
 
 const savedSha = {};
 

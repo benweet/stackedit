@@ -25,7 +25,7 @@
 import { mapActions } from 'vuex';
 import exportSvc from '../../services/exportSvc';
 import modalTemplate from './common/modalTemplate';
-import store from '../../store';
+import store from '../../store/index.js';
 import badgeSvc from '../../services/badgeSvc';
 
 export default modalTemplate({

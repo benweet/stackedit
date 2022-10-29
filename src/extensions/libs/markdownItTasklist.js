@@ -9,7 +9,7 @@ function attrSet(token, name, value) {
   }
 }
 
-module.exports = (md) => {
+export default (md) => {
   md.core.ruler.after('inline', 'tasklist', ({ tokens, Token }) => {
     for (let i = 2; i < tokens.length; i += 1) {
       const token = tokens[i];

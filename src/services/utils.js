@@ -1,7 +1,7 @@
 import yaml from 'js-yaml';
-import '../libs/clunderscore';
-import presets from '../data/presets';
-import constants from '../data/constants';
+import '../libs/clunderscore.js';
+import presets from '../data/presets.js';
+import constants from '../data/constants.js';
 
 // For utils.uid()
 const uidLength = 16;

@@ -19,10 +19,10 @@
 
 <script>
 import { mapMutations, mapActions } from 'vuex';
-import workspaceSvc from '../services/workspaceSvc';
-import explorerSvc from '../services/explorerSvc';
-import store from '../store';
-import badgeSvc from '../services/badgeSvc';
+import workspaceSvc from '../services/workspaceSvc.js';
+import explorerSvc from '../services/explorerSvc.js';
+import store from '../store/index.js';
+import badgeSvc from '../services/badgeSvc.js';
 
 export default {
   name: 'explorer-node', // Required for recursivity

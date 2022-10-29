@@ -1,5 +1,5 @@
-import store from '../store';
-import utils from '../services/utils';
+import store from '../store/index.js';
+import utils from '../services/utils.js';
 
 const endsWith = (str, suffix) => str.slice(-suffix.length) === suffix;
 

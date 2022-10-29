@@ -78,17 +78,17 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import ModalInner from './common/ModalInner';
-import MenuEntry from '../menus/common/MenuEntry';
-import store from '../../store';
-import utils from '../../services/utils';
-import googleHelper from '../../services/providers/helpers/googleHelper';
-import dropboxHelper from '../../services/providers/helpers/dropboxHelper';
-import githubHelper from '../../services/providers/helpers/githubHelper';
-import gitlabHelper from '../../services/providers/helpers/gitlabHelper';
-import wordpressHelper from '../../services/providers/helpers/wordpressHelper';
-import zendeskHelper from '../../services/providers/helpers/zendeskHelper';
-import badgeSvc from '../../services/badgeSvc';
+import ModalInner from './common/ModalInner.vue';
+import MenuEntry from '../menus/common/MenuEntry.vue';
+import store from '../../store/index.js';
+import utils from '../../services/utils.js';
+import googleHelper from '../../services/providers/helpers/googleHelper.js';
+import dropboxHelper from '../../services/providers/helpers/dropboxHelper.js';
+import githubHelper from '../../services/providers/helpers/githubHelper.js';
+import gitlabHelper from '../../services/providers/helpers/gitlabHelper.js';
+import wordpressHelper from '../../services/providers/helpers/wordpressHelper.js';
+import zendeskHelper from '../../services/providers/helpers/zendeskHelper.js';
+import badgeSvc from '../../services/badgeSvc.js';
 
 export default {
   components: {

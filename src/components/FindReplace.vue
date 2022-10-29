@@ -33,10 +33,10 @@
 
 <script>
 import { mapState } from 'vuex';
-import editorSvc from '../services/editorSvc';
-import cledit from '../services/editor/cledit';
-import store from '../store';
-import EditorClassApplier from './common/EditorClassApplier';
+import editorSvc from '../services/editorSvc.js';
+import cledit from '../services/editor/cledit/index.js';
+import store from '../store/index.js';
+import EditorClassApplier from './common/EditorClassApplier.js';
 
 const accessor = (fieldName, setterName) => ({
   get() {

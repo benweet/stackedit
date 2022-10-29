@@ -1,5 +1,5 @@
-import './emojiExtension';
-import './abcExtension';
-import './katexExtension';
-import './markdownExtension';
-import './mermaidExtension';
+import './emojiExtension.js';
+import './abcExtension.js';
+import './katexExtension.js';
+import './markdownExtension.js';
+import './mermaidExtension.js';

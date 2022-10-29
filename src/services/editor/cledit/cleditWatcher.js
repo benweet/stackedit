@@ -1,4 +1,4 @@
-import cledit from './cleditCore';
+import cledit from './cleditCore.js';
 
 function Watcher(editor, listener) {
   this.isWatching = false;

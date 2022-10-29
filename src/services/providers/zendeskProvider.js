@@ -1,6 +1,6 @@
-import store from '../../store';
-import zendeskHelper from './helpers/zendeskHelper';
-import Provider from './common/Provider';
+import store from '../../store/index.js';
+import zendeskHelper from './helpers/zendeskHelper.js';
+import Provider from './common/Provider.js';
 
 export default new Provider({
   id: 'zendesk',

@@ -1,6 +1,6 @@
 import katex from 'katex';
-import markdownItMath from './libs/markdownItMath';
-import extensionSvc from '../services/extensionSvc';
+import markdownItMath from './libs/markdownItMath.js';
+import extensionSvc from '../services/extensionSvc.js';
 
 extensionSvc.onGetOptions((options, properties) => {
   options.math = properties.extensions.katex.enabled;

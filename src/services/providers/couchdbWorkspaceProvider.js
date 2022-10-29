@@ -1,8 +1,8 @@
-import store from '../../store';
-import couchdbHelper from './helpers/couchdbHelper';
-import Provider from './common/Provider';
-import utils from '../utils';
-import badgeSvc from '../badgeSvc';
+import store from '../../store/index.js';
+import couchdbHelper from './helpers/couchdbHelper.js';
+import Provider from './common/Provider.js';
+import utils from '../utils.js';
+import badgeSvc from '../badgeSvc.js';
 
 let syncLastSeq;
 

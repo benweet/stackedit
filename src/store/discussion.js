@@ -1,6 +1,6 @@
-import utils from '../services/utils';
-import googleHelper from '../services/providers/helpers/googleHelper';
-import syncSvc from '../services/syncSvc';
+import utils from '../services/utils.js';
+import googleHelper from '../services/providers/helpers/googleHelper.js';
+import syncSvc from '../services/syncSvc.js';
 
 const idShifter = offset => (state, getters) => {
   const ids = Object.keys(getters.currentFileDiscussions)

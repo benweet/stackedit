@@ -1,8 +1,8 @@
 import { shallowMount } from '@vue/test-utils';
-import Explorer from '../../../../src/components/Explorer';
-import store from '../../../../src/store';
-import workspaceSvc from '../../../../src/services/workspaceSvc';
-import specUtils from '../specUtils';
+import Explorer from '../../../../src/components/Explorer.vue';
+import store from '../../../../src/store/index.js';
+import workspaceSvc from '../../../../src/services/workspaceSvc.js';
+import specUtils from '../specUtils.js';
 
 const mount = () => shallowMount(Explorer, { store });
 const select = (id) => {

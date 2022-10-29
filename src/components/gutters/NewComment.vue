@@ -23,14 +23,14 @@
 <script>
 import { mapGetters, mapMutations, mapActions } from 'vuex';
 import Prism from 'prismjs';
-import UserImage from '../UserImage';
-import cledit from '../../services/editor/cledit';
-import editorSvc from '../../services/editorSvc';
-import markdownConversionSvc from '../../services/markdownConversionSvc';
-import utils from '../../services/utils';
-import userSvc from '../../services/userSvc';
-import store from '../../store';
-import badgeSvc from '../../services/badgeSvc';
+import UserImage from '../UserImage.vue';
+import cledit from '../../services/editor/cledit/index.js';
+import editorSvc from '../../services/editorSvc.js';
+import markdownConversionSvc from '../../services/markdownConversionSvc.js';
+import utils from '../../services/utils.js';
+import userSvc from '../../services/userSvc.js';
+import store from '../../store/index.js';
+import badgeSvc from '../../services/badgeSvc.js';
 
 export default {
   components: {

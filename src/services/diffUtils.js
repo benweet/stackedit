@@ -1,5 +1,5 @@
 import DiffMatchPatch from 'diff-match-patch';
-import utils from './utils';
+import utils from './utils.js';
 
 const diffMatchPatch = new DiffMatchPatch();
 diffMatchPatch.Match_Distance = 10000;

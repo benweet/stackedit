@@ -17,11 +17,11 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import simpleModals from '../data/simpleModals';
-import editorSvc from '../services/editorSvc';
-import syncSvc from '../services/syncSvc';
-import googleHelper from '../services/providers/helpers/googleHelper';
-import store from '../store';
+import simpleModals from '../data/simpleModals.js';
+import editorSvc from '../services/editorSvc.js';
+import syncSvc from '../services/syncSvc.js';
+import googleHelper from '../services/providers/helpers/googleHelper.js';
+import store from '../store/index.js';
 
 import ModalInner from './modals/common/ModalInner';
 import FilePropertiesModal from './modals/FilePropertiesModal';

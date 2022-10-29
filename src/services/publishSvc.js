@@ -1,11 +1,11 @@
-import localDbSvc from './localDbSvc';
-import store from '../store';
-import utils from './utils';
-import networkSvc from './networkSvc';
-import exportSvc from './exportSvc';
-import providerRegistry from './providers/common/providerRegistry';
-import workspaceSvc from './workspaceSvc';
-import badgeSvc from './badgeSvc';
+import localDbSvc from './localDbSvc.js';
+import store from '../store/index.js';
+import utils from './utils.js';
+import networkSvc from './networkSvc.js';
+import exportSvc from './exportSvc.js';
+import providerRegistry from './providers/common/providerRegistry.js';
+import workspaceSvc from './workspaceSvc.js';
+import badgeSvc from './badgeSvc.js';
 
 const hasCurrentFilePublishLocations = () => !!store.getters['publishLocation/current'].length;
 

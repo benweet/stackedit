@@ -1,6 +1,6 @@
-import store from '../../store';
-import googleHelper from './helpers/googleHelper';
-import Provider from './common/Provider';
+import store from '../../store/index.js';
+import googleHelper from './helpers/googleHelper.js';
+import Provider from './common/Provider.js';
 
 export default new Provider({
   id: 'bloggerPage',

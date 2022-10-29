@@ -33,9 +33,9 @@
 </template>
 
 <script>
-import githubProvider from '../../../services/providers/githubProvider';
-import modalTemplate from '../common/modalTemplate';
-import utils from '../../../services/utils';
+import githubProvider from '../../../services/providers/githubProvider.js';
+import modalTemplate from '../common/modalTemplate.js';
+import utils from '../../../services/utils.js';
 
 export default modalTemplate({
   data: () => ({

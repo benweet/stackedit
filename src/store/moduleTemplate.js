@@ -1,4 +1,4 @@
-import utils from '../services/utils';
+import utils from '../services/utils.js';
 
 export default (empty, simpleHash = false) => {
   // Use Date.now() as a simple hash function, which is ok for not-synced types

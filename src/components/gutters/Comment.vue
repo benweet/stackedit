@@ -23,12 +23,12 @@
 
 <script>
 import { mapMutations } from 'vuex';
-import UserImage from '../UserImage';
-import UserName from '../UserName';
-import editorSvc from '../../services/editorSvc';
-import htmlSanitizer from '../../libs/htmlSanitizer';
-import store from '../../store';
-import badgeSvc from '../../services/badgeSvc';
+import UserImage from '../UserImage.vue';
+import UserName from '../UserName.vue';
+import editorSvc from '../../services/editorSvc.js';
+import htmlSanitizer from '../../libs/htmlSanitizer.js';
+import store from '../../store/index.js';
+import badgeSvc from '../../services/badgeSvc.js';
 
 export default {
   components: {

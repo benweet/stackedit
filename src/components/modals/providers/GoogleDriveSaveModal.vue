@@ -29,10 +29,10 @@
 </template>
 
 <script>
-import googleHelper from '../../../services/providers/helpers/googleHelper';
-import googleDriveProvider from '../../../services/providers/googleDriveProvider';
-import modalTemplate from '../common/modalTemplate';
-import store from '../../../store';
+import googleHelper from '../../../services/providers/helpers/googleHelper.js';
+import googleDriveProvider from '../../../services/providers/googleDriveProvider.js';
+import modalTemplate from '../common/modalTemplate.js';
+import store from '../../../store/index.js';
 
 export default modalTemplate({
   data: () => ({

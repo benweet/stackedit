@@ -1,8 +1,8 @@
-import cledit from './editor/cledit';
-import store from '../store';
-import utils from './utils';
-import editorSvc from './editorSvc';
-import workspaceSvc from './workspaceSvc';
+import cledit from './editor/cledit/index.js';
+import store from '../store/index.js';
+import utils from './utils.js';
+import editorSvc from './editorSvc.js';
+import workspaceSvc from './workspaceSvc.js';
 
 const {
   origin,

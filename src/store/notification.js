@@ -1,5 +1,5 @@
-import providerRegistry from '../services/providers/common/providerRegistry';
-import utils from '../services/utils';
+import providerRegistry from '../services/providers/common/providerRegistry.js';
+import utils from '../services/utils.js';
 
 const defaultTimeout = 5000; // 5 sec
 

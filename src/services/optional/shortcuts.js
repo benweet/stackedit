@@ -1,7 +1,7 @@
 import Mousetrap from 'mousetrap';
-import store from '../../store';
-import editorSvc from '../../services/editorSvc';
-import syncSvc from '../../services/syncSvc';
+import store from '../../store/index.js';
+import editorSvc from '../../services/editorSvc.js';
+import syncSvc from '../../services/syncSvc.js';
 
 // Skip shortcuts if modal is open or editor is hidden
 Mousetrap.prototype.stopCallback = () => store.getters['modal/config'] || !store.getters['content/isCurrentEditable'];

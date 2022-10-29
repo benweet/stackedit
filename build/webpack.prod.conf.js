@@ -1,9 +1,9 @@
 import path from 'path'
 import webpack from 'webpack';
 
-import utils from './utils';
+import utils from './utils.js';
 
-import config from '../config';
+import config from '../config/index.js';
 
 import merge from 'webpack-merge';
 
@@ -12,9 +12,6 @@ import CopyWebpackPlugin from 'copy-webpack-plugin'
 
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
-
-import OptimizeCSSPlugin from 'optimize-css-assets-webpack-plugin';
 
 import OfflinePlugin from 'offline-plugin';
 

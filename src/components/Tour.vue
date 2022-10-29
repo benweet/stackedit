@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import store from '../store';
+import store from '../store/index.js';
 
 const steps = [
   'welcome',

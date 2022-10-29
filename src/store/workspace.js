@@ -1,5 +1,5 @@
-import utils from '../services/utils';
-import providerRegistry from '../services/providers/common/providerRegistry';
+import utils from '../services/utils.js';
+import providerRegistry from '../services/providers/common/providerRegistry.js';
 
 export default {
   namespaced: true,

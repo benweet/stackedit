@@ -1,6 +1,6 @@
-import moduleTemplate from './moduleTemplate';
-import providerRegistry from '../services/providers/common/providerRegistry';
-import utils from '../services/utils';
+import moduleTemplate from './moduleTemplate.js';
+import providerRegistry from '../services/providers/common/providerRegistry.js';
+import utils from '../services/utils.js';
 
 const addToGroup = (groups, item) => {
   const list = groups[item.fileId];

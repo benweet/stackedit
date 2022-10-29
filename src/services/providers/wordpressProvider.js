@@ -1,6 +1,6 @@
-import store from '../../store';
-import wordpressHelper from './helpers/wordpressHelper';
-import Provider from './common/Provider';
+import store from '../../store/index.js';
+import wordpressHelper from './helpers/wordpressHelper.js';
+import Provider from './common/Provider.js';
 
 export default new Provider({
   id: 'wordpress',

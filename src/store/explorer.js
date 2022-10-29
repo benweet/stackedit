@@ -1,5 +1,5 @@
-import emptyFile from '../data/empties/emptyFile';
-import emptyFolder from '../data/empties/emptyFolder';
+import emptyFile from '../data/empties/emptyFile.js';
+import emptyFolder from '../data/empties/emptyFolder.js';
 
 const setter = propertyName => (state, value) => {
   state[propertyName] = value;

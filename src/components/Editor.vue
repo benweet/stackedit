@@ -10,9 +10,9 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import CommentList from './gutters/CommentList';
-import EditorNewDiscussionButton from './gutters/EditorNewDiscussionButton';
-import store from '../store';
+import CommentList from './gutters/CommentList.vue';
+import EditorNewDiscussionButton from './gutters/EditorNewDiscussionButton.vue';
+import store from '../store/index.js';
 
 export default {
   components: {

@@ -1,8 +1,8 @@
 import { shallowMount } from '@vue/test-utils';
-import store from '../../../src/store';
-import utils from '../../../src/services/utils';
+import store from '../../../src/store/index.js';
+import utils from '../../../src/services/utils.js';
 import '../../../src/icons';
-import '../../../src/components/common/vueGlobals';
+import '../../../src/components/common/vueGlobals.js';
 
 const clone = object => JSON.parse(JSON.stringify(object));
 

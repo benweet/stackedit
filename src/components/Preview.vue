@@ -19,9 +19,9 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import CommentList from './gutters/CommentList';
-import PreviewNewDiscussionButton from './gutters/PreviewNewDiscussionButton';
-import store from '../store';
+import CommentList from './gutters/CommentList.vue';
+import PreviewNewDiscussionButton from './gutters/PreviewNewDiscussionButton.vue';
+import store from '../store/index.js';
 
 const appUri = `${window.location.protocol}//${window.location.host}`;
 

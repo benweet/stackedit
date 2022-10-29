@@ -27,12 +27,12 @@
 
 <script>
 import FileSaver from 'file-saver';
-import networkSvc from '../../services/networkSvc';
-import editorSvc from '../../services/editorSvc';
-import googleHelper from '../../services/providers/helpers/googleHelper';
-import modalTemplate from './common/modalTemplate';
-import store from '../../store';
-import badgeSvc from '../../services/badgeSvc';
+import networkSvc from '../../services/networkSvc.js';
+import editorSvc from '../../services/editorSvc.js';
+import googleHelper from '../../services/providers/helpers/googleHelper.js';
+import modalTemplate from './common/modalTemplate.js';
+import store from '../../store/index.js';
+import badgeSvc from '../../services/badgeSvc.js';
 
 export default modalTemplate({
   computedLocalSettings: {

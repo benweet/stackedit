@@ -1,4 +1,4 @@
-import cledit from './cleditCore';
+import cledit from './cleditCore.js';
 
 const DIFF_DELETE = -1;
 const DIFF_INSERT = 1;

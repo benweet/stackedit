@@ -46,14 +46,14 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import TurndownService from 'turndown/lib/turndown.browser.umd';
-import htmlSanitizer from '../../libs/htmlSanitizer';
-import MenuEntry from './common/MenuEntry';
-import Provider from '../../services/providers/common/Provider';
-import store from '../../store';
-import workspaceSvc from '../../services/workspaceSvc';
-import exportSvc from '../../services/exportSvc';
-import badgeSvc from '../../services/badgeSvc';
+import TurndownService from 'turndown/lib/turndown.browser.umd.js';
+import htmlSanitizer from '../../libs/htmlSanitizer.js';
+import MenuEntry from './common/MenuEntry.vue';
+import Provider from '../../services/providers/common/Provider.js';
+import store from '../../store/index.js';
+import workspaceSvc from '../../services/workspaceSvc.js';
+import exportSvc from '../../services/exportSvc.js';
+import badgeSvc from '../../services/badgeSvc.js';
 
 const turndownService = new TurndownService(store.getters['data/computedSettings'].turndown);
 

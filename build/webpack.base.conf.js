@@ -16,6 +16,16 @@ function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
+import ESLintPlugin from 'eslint-webpack-plugin'
+
+const options = {
+  extensions: [`js`, `jsx`],
+  exclude: [
+    `/node_modules/`,
+    `/bower_components/`,
+  ],
+}
+
 export default {
   mode: 'development', //add this line here
   entry: {
@@ -40,15 +50,6 @@ export default {
   },
   module: {
     rules: [
-      {
-        test: /\.(js|vue)$/,
-        loader: 'eslint-loader',
-        enforce: 'pre',
-        include: [resolve('src'), resolve('test')],
-        options: {
-          formatter: import('eslint-friendly-formatter')
-        }
-      },
       {
         test: /\.vue$/,
         loader: 'vue-loader',

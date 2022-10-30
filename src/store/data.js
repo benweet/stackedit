@@ -149,8 +149,8 @@ export default {
     workspaces: getter('workspaces'), // Not to be used, prefer workspace/workspacesById
     settings: getter('settings'),
     computedSettings: (state, { settings }) => {
-      const customSettings = yaml.safeLoad(settings);
-      const parsedSettings = yaml.safeLoad(defaultSettings);
+      const customSettings = yaml.load(settings,{});
+      const parsedSettings = yaml.load(defaultSettings,{});
       const override = (obj, opt) => {
         const objType = Object.prototype.toString.call(obj);
         const optType = Object.prototype.toString.call(opt);

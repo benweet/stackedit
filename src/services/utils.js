@@ -195,7 +195,7 @@ export default {
   computeProperties(yamlProperties) {
     let properties = {};
     try {
-      properties = yaml.safeLoad(yamlProperties) || {};
+      properties = yaml.load(yamlProperties) || {};
     } catch (e) {
       // Ignore
     }

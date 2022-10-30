@@ -20,7 +20,7 @@ import locationTemplate from './locationTemplate.js';
 import emptyPublishLocation from '../data/empties/emptyPublishLocation.js';
 import emptySyncLocation from '../data/empties/emptySyncLocation.js';
 import constants from '../data/constants.js';
-import { app } from '../index.js';
+import { app } from '../VueApp.js';
 
 
 const debug = NODE_ENV !== 'production';
@@ -184,4 +184,6 @@ setInterval(() => {
 }, 30 * 1000);
 
 export default store;
+
 app.use(store)
+

@@ -1,17 +1,18 @@
+import store from './store/index.js';
+import localDbSvc from './services/localDbSvc.js';
+import './icons/index.js';
 import 'indexeddbshim/dist/indexeddbshim.js';
 import * as OfflinePluginRuntime from 'offline-plugin/runtime.js';
 import './extensions/index.js';
 import './services/optional/index.js';
-import './icons/index.js';
-import App from './components/App.vue';
-import store from './store/index.js';
-import localDbSvc from './services/localDbSvc.js';
-import { createApp } from 'vue';
+import { app } from './VueApp.js';
+
+
+app.mount('#app')
 
 if (!indexedDB) {
   throw new Error('Your browser is not supported. Please upgrade to the latest version.');
 }
-
 OfflinePluginRuntime.install({
   onUpdateReady: () => {
     // Tells to new SW to take control immediately
@@ -48,7 +49,6 @@ if (!localStorage.installPrompted) {
   });
 }
 
-export const app = createApp(App);
-app.mount('#app')
+
 
 console.log("Started")

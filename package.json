@@ -59,7 +59,7 @@
     "mousetrap": "^1.6.5",
     "normalize-scss": "^7.0.1",
     "path-browserify": "^1.0.1",
-    "prismjs": "^1.29.0",
+    "prismjs": "1.6.0",
     "request": "^2.88.2",
     "serve-static": "^1.15.0",
     "tmp": "^0.2.1",
@@ -68,6 +68,7 @@
     "vuex": "^4.1.0"
   },
   "devDependencies": {
+    "tiny-emitter": "^2.1.0",
     "@babel/core": "^7.19.6",
     "@babel/preset-env": "^7.19.4",
     "autoprefixer": "^10.4.13",

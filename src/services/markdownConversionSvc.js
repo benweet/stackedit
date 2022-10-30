@@ -1,5 +1,5 @@
 import DiffMatchPatch from 'diff-match-patch';
-import Prism from 'prismjs';
+import * as Prism from 'prismjs';
 import MarkdownIt from 'markdown-it';
 import markdownGrammarSvc from './markdownGrammarSvc.js';
 import extensionSvc from './extensionSvc.js';
@@ -268,6 +268,6 @@ export default {
   highlight(markdown, converter = this.defaultConverter, grammars = this.defaultPrismGrammars) {
     const parsingCtx = this.parseSections(converter, markdown);
     return parsingCtx.sections
-      .map(section => Prism.highlight(section.text, grammars[section.data])).join('');
+      .map(section => Prism.highlight(section.text, grammars[section.data], Prism.languages[this.lang])).join('');
   },
 };

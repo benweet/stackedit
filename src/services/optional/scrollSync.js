@@ -172,6 +172,7 @@ store.watch(
   },
 );
 
+//TODO fix
 editorSvc.$on('previewCtxMeasured', (previewCtxMeasured) => {
   if (previewCtxMeasured) {
     ({ sectionDescList } = previewCtxMeasured);

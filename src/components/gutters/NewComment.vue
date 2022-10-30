@@ -22,7 +22,7 @@
 
 <script>
 import { mapGetters, mapMutations, mapActions } from 'vuex';
-import Prism from 'prismjs';
+import * as Prism from 'prismjs';
 import UserImage from '../UserImage.vue';
 import cledit from '../../services/editor/cledit/index.js';
 import editorSvc from '../../services/editorSvc.js';
@@ -96,6 +96,7 @@ export default {
       sectionHighlighter: section => Prism.highlight(
         section.text,
         editorSvc.prismGrammars[section.data],
+        Prism.languages[this.lang]
       ),
       sectionParser: text => markdownConversionSvc
         .parseSections(editorSvc.converter, text).sections,

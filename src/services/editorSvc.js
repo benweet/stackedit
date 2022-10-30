@@ -1,6 +1,5 @@
-import * as Vue from 'vue';
 import DiffMatchPatch from 'diff-match-patch';
-import Prism from 'prismjs';
+import * as Prism from 'prismjs';
 import markdownItPandocRenderer from 'markdown-it-pandoc-renderer';
 import cledit from './editor/cledit/index.js';
 import pagedown from '../libs/pagedown.js';
@@ -13,6 +12,7 @@ import editorSvcDiscussions from './editor/editorSvcDiscussions.js';
 import editorSvcUtils from './editor/editorSvcUtils.js';
 import utils from './utils.js';
 import store from '../store/index.js';
+import eventBus from '../../build/eventBus.js';
 
 const allowDebounce = (action, wait) => {
   let timeoutId;
@@ -40,8 +40,10 @@ class SectionDesc {
   }
 }
 
+
 // Use a vue instance as an event bus
-const editorSvc = Object.assign(new Vue(), editorSvcDiscussions, editorSvcUtils, {
+//https://docs.gitlab.com/ee/development/fe_guide/vue3_migration.html
+const editorSvc = Object.assign(eventBus, editorSvcDiscussions, editorSvcUtils, {
   // Elements
   editorElt: null,
   previewElt: null,

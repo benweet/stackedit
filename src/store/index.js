@@ -20,8 +20,7 @@ import locationTemplate from './locationTemplate.js';
 import emptyPublishLocation from '../data/empties/emptyPublishLocation.js';
 import emptySyncLocation from '../data/empties/emptySyncLocation.js';
 import constants from '../data/constants.js';
-import { createApp } from 'vue';
-import App from '../components/App.vue';
+import { app } from '../index.js';
 
 
 const debug = NODE_ENV !== 'production';
@@ -185,4 +184,4 @@ setInterval(() => {
 }, 30 * 1000);
 
 export default store;
-createApp(App).use(store).mount('#app')
+app.use(store)

@@ -48,8 +48,7 @@ if (!localStorage.installPrompted) {
   });
 }
 
-Vue.VueElement.config.productionTip = false;
-
-createApp(App).mount('#app')
+export const app = createApp(App);
+app.mount('#app')
 
 console.log("Started")

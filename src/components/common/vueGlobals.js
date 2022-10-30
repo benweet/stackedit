@@ -2,8 +2,8 @@ import * as Vue from 'vue';
 import Clipboard from 'clipboard';
 import timeSvc from '../../services/timeSvc.js';
 import store from '../../store/index.js';
+import app from '../App.vue';
 
-const app = Vue.createApp({})
 
 // Global directives
 app.directive('focus', {

@@ -10,4 +10,4 @@ extensionSvc.onInitConverter(1, (markdown, options) => {
   if (options.emoji) {
     markdown.use(markdownItEmoji, options.emojiShortcuts ? {} : { shortcuts: {} });
   }
-});
+})

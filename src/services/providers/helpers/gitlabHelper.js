@@ -1,8 +1,8 @@
-import utils from '../../utils';
-import networkSvc from '../../networkSvc';
-import store from '../../../store';
-import userSvc from '../../userSvc';
-import badgeSvc from '../../badgeSvc';
+import utils from '../../utils.js';
+import networkSvc from '../../networkSvc.js';
+import store from '../../../store/index.js';
+import userSvc from '../../userSvc.js';
+import badgeSvc from '../../badgeSvc.js';
 
 const request = ({ accessToken, serverUrl }, options) => networkSvc.request({
   ...options,

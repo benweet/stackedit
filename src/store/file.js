@@ -1,5 +1,5 @@
-import moduleTemplate from './moduleTemplate';
-import empty from '../data/empties/emptyFile';
+import moduleTemplate from './moduleTemplate.js';
+import empty from '../data/empties/emptyFile.js';
 
 const module = moduleTemplate(empty);
 

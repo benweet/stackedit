@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import modalTemplate from '../common/modalTemplate';
-import store from '../../../store';
+import modalTemplate from '../common/modalTemplate.js';
+import store from '../../../store/index.js';
 
 export default modalTemplate({
   data: () => ({

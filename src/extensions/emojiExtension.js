@@ -1,5 +1,5 @@
 import markdownItEmoji from 'markdown-it-emoji';
-import extensionSvc from '../services/extensionSvc';
+import extensionSvc from '../services/extensionSvc.js';
 
 extensionSvc.onGetOptions((options, properties) => {
   options.emoji = properties.extensions.emoji.enabled;

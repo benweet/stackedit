@@ -1,9 +1,17 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
-var path = require('path')
 
-module.exports = {
+import path from 'path'
+import {fileURLToPath} from 'url';
+import env from './prod.env.js'
+import devenv from './dev.env.js'
+
+const __filename = fileURLToPath(import.meta.url);
+
+const __dirname = path.dirname(__filename)
+
+export default  {
   build: {
-    env: require('./prod.env'),
+    env: env,
     index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
@@ -22,7 +30,7 @@ module.exports = {
     bundleAnalyzerReport: process.env.npm_config_report
   },
   dev: {
-    env: require('./dev.env'),
+    env: devenv,
     port: 8080,
     autoOpenBrowser: false,
     assetsSubDirectory: 'static',

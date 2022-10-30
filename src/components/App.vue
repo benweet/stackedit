@@ -12,16 +12,16 @@
 import '../styles';
 import '../styles/markdownHighlighting.scss';
 import '../styles/app.scss';
-import Layout from './Layout';
-import Modal from './Modal';
-import Notification from './Notification';
-import ContextMenu from './ContextMenu';
-import SplashScreen from './SplashScreen';
-import syncSvc from '../services/syncSvc';
-import networkSvc from '../services/networkSvc';
-import tempFileSvc from '../services/tempFileSvc';
-import store from '../store';
-import './common/vueGlobals';
+import Layout from './Layout.vue';
+import Modal from './Modal.vue';
+import Notification from './Notification.vue';
+import ContextMenu from './ContextMenu.vue';
+import SplashScreen from './SplashScreen.vue';
+import syncSvc from '../services/syncSvc.js';
+import networkSvc from '../services/networkSvc.js';
+import tempFileSvc from '../services/tempFileSvc.js';
+import store from '../store/index.js';
+import './common/vueGlobals.js';
 
 const themeClasses = {
   light: ['app--light'],

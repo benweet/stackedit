@@ -1,46 +1,46 @@
-var util = {},
+const util = {},
   re = window.RegExp,
   SETTINGS = {
     lineLength: 72
   };
 
-var defaultsStrings = {
-  bold: "Strong <strong> Ctrl/Cmd+B",
-  boldexample: "strong text",
+const defaultsStrings = {
+  bold: 'Strong <strong> Ctrl/Cmd+B',
+  boldexample: 'strong text',
 
-  italic: "Emphasis <em> Ctrl/Cmd+I",
-  italicexample: "emphasized text",
+  italic: 'Emphasis <em> Ctrl/Cmd+I',
+  italicexample: 'emphasized text',
 
-  strikethrough: "Strikethrough <s> Ctrl/Cmd+I",
-  strikethroughexample: "strikethrough text",
+  strikethrough: 'Strikethrough <s> Ctrl/Cmd+I',
+  strikethroughexample: 'strikethrough text',
 
-  link: "Hyperlink <a> Ctrl/Cmd+L",
-  linkdescription: "enter link description here",
-  linkdialog: "<p><b>Insert Hyperlink</b></p><p>http://example.com/ \"optional title\"</p>",
+  link: 'Hyperlink <a> Ctrl/Cmd+L',
+  linkdescription: 'enter link description here',
+  linkdialog: '<p><b>Insert Hyperlink</b></p><p>http://example.com/ "optional title"</p>',
 
-  quote: "Blockquote <blockquote> Ctrl/Cmd+Q",
-  quoteexample: "Blockquote",
+  quote: 'Blockquote <blockquote> Ctrl/Cmd+Q',
+  quoteexample: 'Blockquote',
 
-  code: "Code Sample <pre><code> Ctrl/Cmd+K",
-  codeexample: "enter code here",
+  code: 'Code Sample <pre><code> Ctrl/Cmd+K',
+  codeexample: 'enter code here',
 
-  image: "Image <img> Ctrl/Cmd+G",
-  imagedescription: "enter image description here",
-  imagedialog: "<p><b>Insert Image</b></p><p>http://example.com/images/diagram.jpg \"optional title\"<br><br>Need <a href='http://www.google.com/search?q=free+image+hosting' target='_blank'>free image hosting?</a></p>",
+  image: 'Image <img> Ctrl/Cmd+G',
+  imagedescription: 'enter image description here',
+  imagedialog: '<p><b>Insert Image</b></p><p>http://example.com/images/diagram.jpg "optional title"<br><br>Need <a href=\'http://www.google.com/search?q=free+image+hosting\' target=\'_blank\'>free image hosting?</a></p>',
 
-  olist: "Numbered List <ol> Ctrl/Cmd+O",
-  ulist: "Bulleted List <ul> Ctrl/Cmd+U",
-  litem: "List item",
+  olist: 'Numbered List <ol> Ctrl/Cmd+O',
+  ulist: 'Bulleted List <ul> Ctrl/Cmd+U',
+  litem: 'List item',
 
-  heading: "Heading <h1>/<h2> Ctrl/Cmd+H",
-  headingexample: "Heading",
+  heading: 'Heading <h1>/<h2> Ctrl/Cmd+H',
+  headingexample: 'Heading',
 
-  hr: "Horizontal Rule <hr> Ctrl/Cmd+R",
+  hr: 'Horizontal Rule <hr> Ctrl/Cmd+R',
 
-  undo: "Undo - Ctrl/Cmd+Z",
-  redo: "Redo - Ctrl/Cmd+Y",
+  undo: 'Undo - Ctrl/Cmd+Z',
+  redo: 'Redo - Ctrl/Cmd+Y',
 
-  help: "Markdown Editing Help"
+  help: 'Markdown Editing Help'
 };
 
 // options, if given, can have the following properties:
@@ -71,7 +71,7 @@ function Pagedown(options) {
     };
   }
   options.strings = options.strings || {};
-  var getString = function (identifier) {
+  const getString = function (identifier) {
     return options.strings[identifier] || defaultsStrings[identifier];
   };
 
@@ -87,7 +87,7 @@ function Pagedown(options) {
   HookCollection.prototype = {
 
     chain: function (hookname, func) {
-      var original = this[hookname];
+      const original = this[hookname];
       if (!original) {
         throw new Error("unknown hook " + hookname);
       }
@@ -96,7 +96,7 @@ function Pagedown(options) {
         this[hookname] = func;
       } else {
         this[hookname] = function () {
-          var args = Array.prototype.slice.call(arguments, 0);
+          const args = Array.prototype.slice.call(arguments, 0);
           args[0] = original.apply(null, args);
           return func.apply(null, args);
         };
@@ -116,7 +116,7 @@ function Pagedown(options) {
     }
   };
 
-  var hooks = this.hooks = new HookCollection();
+  const hooks = this.hooks = new HookCollection();
   hooks.addNoop("onPreviewRefresh"); // called with no arguments after the preview has been refreshed
   hooks.addNoop("postBlockquoteCreation"); // called with the user's selection *after* the blockquote was created; should return the actual to-be-inserted text
   hooks.addFalse("insertImageDialog");
@@ -126,16 +126,16 @@ function Pagedown(options) {
    */
   hooks.addFalse("insertLinkDialog");
 
-  var that = this,
-    input;
+  const that = this;
+  let input;
 
   this.run = function () {
     if (input)
       return; // already initialized
 
     input = options.input;
-    var commandManager = new CommandManager(hooks, getString);
-    var uiManager;
+    const commandManager = new CommandManager(hooks, getString);
+    let uiManager;
 
     uiManager = new UIManager(input, commandManager);
 
@@ -152,8 +152,8 @@ function Chunks() { }
 // endRegex: a regular expresssion to find the end tag
 Chunks.prototype.findTags = function (startRegex, endRegex) {
 
-  var chunkObj = this;
-  var regex;
+  const chunkObj = this;
+  let regex;
 
   if (startRegex) {
 
@@ -199,7 +199,9 @@ Chunks.prototype.findTags = function (startRegex, endRegex) {
 //
 // If remove is true, the whitespace disappears.
 Chunks.prototype.trimWhitespace = function (remove) {
-  var beforeReplacer, afterReplacer, that = this;
+  let beforeReplacer,
+    afterReplacer;
+  const that = this;
   if (remove) {
     beforeReplacer = afterReplacer = "";
   } else {
@@ -230,8 +232,8 @@ Chunks.prototype.skipLines = function (nLinesBefore, nLinesAfter, findExtraNewli
   nLinesBefore++;
   nLinesAfter++;
 
-  var regexText;
-  var replacementText;
+  let regexText;
+  let replacementText;
 
   // chrome bug ... documented at: http://meta.stackoverflow.com/questions/63307/blockquote-glitch-in-editor-in-chrome-6-and-7/65985#65985
   if (navigator.userAgent.match(/Chrome/)) {
@@ -306,8 +308,8 @@ util.extendRegExp = function (regex, pre, post) {
     post = "";
   }
 
-  var pattern = regex.toString();
-  var flags;
+  let pattern = regex.toString();
+  let flags;
 
   // Replace the flags with empty space and store them.
   pattern = pattern.replace(/\/([gim]*)$/, function (wholeMatch, flagsPart) {
@@ -327,8 +329,8 @@ util.extendRegExp = function (regex, pre, post) {
 function TextareaState(input) {
 
   // Aliases
-  var stateObj = this;
-  var inputArea = input;
+  const stateObj = this;
+  const inputArea = input;
   this.init = function () {
     this.setInputAreaSelectionStartEnd();
     this.text = inputArea.getContent();
@@ -364,7 +366,7 @@ function TextareaState(input) {
   // Gets a collection of HTML chunks from the inptut textarea.
   this.getChunks = function () {
 
-    var chunk = new Chunks();
+    const chunk = new Chunks();
     chunk.before = util.fixEolChars(stateObj.text.substring(0, stateObj.start));
     chunk.startTag = "";
     chunk.selection = util.fixEolChars(stateObj.text.substring(stateObj.start, stateObj.end));
@@ -389,28 +391,28 @@ function TextareaState(input) {
 
 function UIManager(input, commandManager) {
 
-  var inputBox = input,
+  const inputBox = input,
     buttons = {}; // buttons.undo, buttons.link, etc. The actual DOM elements.
 
   makeSpritedButtonRow();
 
   // Perform the button's action.
   function doClick(buttonName) {
-    var button = buttons[buttonName];
+    const button = buttons[buttonName];
     if (!button) {
       return;
     }
 
     inputBox.focus();
-    var linkOrImage = button === buttons.link || button.id === buttons.image;
+    const linkOrImage = button === buttons.link || button.id === buttons.image;
 
-    var state = new TextareaState(input);
+    const state = new TextareaState(input);
 
     if (!state) {
       return;
     }
 
-    var chunks = state.getChunks();
+    const chunks = state.getChunks();
 
     // Some commands launch a "modal" prompt dialog.  Javascript
     // can't really make a modal dialog box and the WMD code
@@ -429,7 +431,7 @@ function UIManager(input, commandManager) {
     // Yes this is awkward and I think it sucks, but there's
     // no real workaround.  Only the image and link code
     // create dialogs and require the function pointers.
-    var fixupInputArea = function () {
+    const fixupInputArea = function () {
 
       inputBox.focus();
 
@@ -440,7 +442,7 @@ function UIManager(input, commandManager) {
       state.restore();
     };
 
-    var noCleanup = button(chunks, fixupInputArea);
+    const noCleanup = button(chunks, fixupInputArea);
 
     if (!noCleanup) {
       fixupInputArea();
@@ -494,20 +496,20 @@ function CommandManager(pluginHooks, getString) {
   this.getString = getString;
 }
 
-var commandProto = CommandManager.prototype;
+const commandProto = CommandManager.prototype;
 
 // The markdown symbols - 4 spaces = code, > = blockquote, etc.
 commandProto.prefixes = "(?:\\s{4,}|\\s*>|\\s*-\\s+|\\s*\\d+\\.|=|\\+|-|_|\\*|#|\\s*\\[[^\n]]+\\]:)";
 
 // Remove markdown symbols from the chunk selection.
 commandProto.unwrap = function (chunk) {
-  var txt = new re("([^\\n])\\n(?!(\\n|" + this.prefixes + "))", "g");
+  const txt = new re('([^\\n])\\n(?!(\\n|' + this.prefixes + '))', 'g');
   chunk.selection = chunk.selection.replace(txt, "$1 $2");
 };
 
 commandProto.wrap = function (chunk, len) {
   this.unwrap(chunk);
-  var regex = new re("(.{1," + len + "})( +|$\\n?)", "gm"),
+  const regex = new re('(.{1,' + len + '})( +|$\\n?)', 'gm'),
     that = this;
 
   chunk.selection = chunk.selection.replace(regex, function (line, marked) {
@@ -539,10 +541,10 @@ commandProto.doBorI = function (chunk, postProcessing, nStars, insertText) {
 
   // Look for stars before and after.  Is the chunk already marked up?
   // note that these regex matches cannot fail
-  var starsBefore = /(\**$)/.exec(chunk.before)[0];
-  var starsAfter = /(^\**)/.exec(chunk.after)[0];
+  const starsBefore = /(\**$)/.exec(chunk.before)[0];
+  const starsAfter = /(^\**)/.exec(chunk.after)[0];
 
-  var prevStars = Math.min(starsBefore.length, starsAfter.length);
+  const prevStars = Math.min(starsBefore.length, starsAfter.length);
 
   // Remove stars if we have to since the button acts as a toggle.
   if ((prevStars >= nStars) && (prevStars != 2 || nStars != 1)) {
@@ -553,7 +555,7 @@ commandProto.doBorI = function (chunk, postProcessing, nStars, insertText) {
     // some arbitrary stuff around.
     chunk.after = chunk.after.replace(/^([*_]*)/, "");
     chunk.before = chunk.before.replace(/(\s?)$/, "");
-    var whitespace = re.$1;
+    const whitespace = re.$1;
     chunk.before = chunk.before + starsAfter + whitespace;
   } else {
 
@@ -564,12 +566,12 @@ commandProto.doBorI = function (chunk, postProcessing, nStars, insertText) {
     }
 
     // Add the true markup.
-    var markup = nStars <= 1 ? "*" : "**"; // shouldn't the test be = ?
+    const markup = nStars <= 1 ? '*' : '**'; // shouldn't the test be = ?
     chunk.before = chunk.before + markup;
     chunk.after = markup + chunk.after;
   }
 
-  return;
+
 };
 
 commandProto.doStrikethrough = function (chunk, postProcessing) {
@@ -580,12 +582,12 @@ commandProto.doStrikethrough = function (chunk, postProcessing) {
 
   // Look for stars before and after.  Is the chunk already marked up?
   // note that these regex matches cannot fail
-  var starsBefore = /(~*$)/.exec(chunk.before)[0];
-  var starsAfter = /(^~*)/.exec(chunk.after)[0];
+  const starsBefore = /(~*$)/.exec(chunk.before)[0];
+  const starsAfter = /(^~*)/.exec(chunk.after)[0];
 
-  var prevStars = Math.min(starsBefore.length, starsAfter.length);
+  const prevStars = Math.min(starsBefore.length, starsAfter.length);
 
-  var nStars = 2;
+  const nStars = 2;
 
   // Remove stars if we have to since the button acts as a toggle.
   if ((prevStars >= nStars) && (prevStars != 2 || nStars != 1)) {
@@ -596,7 +598,7 @@ commandProto.doStrikethrough = function (chunk, postProcessing) {
     // some arbitrary stuff around.
     chunk.after = chunk.after.replace(/^(~*)/, "");
     chunk.before = chunk.before.replace(/(\s?)$/, "");
-    var whitespace = re.$1;
+    const whitespace = re.$1;
     chunk.before = chunk.before + starsAfter + whitespace;
   } else {
 
@@ -607,12 +609,12 @@ commandProto.doStrikethrough = function (chunk, postProcessing) {
     }
 
     // Add the true markup.
-    var markup = "~~"; // shouldn't the test be = ?
+    const markup = '~~'; // shouldn't the test be = ?
     chunk.before = chunk.before + markup;
     chunk.after = markup + chunk.after;
   }
 
-  return;
+
 };
 
 commandProto.stripLinkDefs = function (text, defsToAdd) {
@@ -633,20 +635,20 @@ commandProto.stripLinkDefs = function (text, defsToAdd) {
 
 commandProto.addLinkDef = function (chunk, linkDef) {
 
-  var refNumber = 0; // The current reference number
-  var defsToAdd = {}; //
+  let refNumber = 0; // The current reference number
+  const defsToAdd = {}; //
   // Start with a clean slate by removing all previous link definitions.
   chunk.before = this.stripLinkDefs(chunk.before, defsToAdd);
   chunk.selection = this.stripLinkDefs(chunk.selection, defsToAdd);
   chunk.after = this.stripLinkDefs(chunk.after, defsToAdd);
 
-  var defs = "";
-  var regex = /(\[)((?:\[[^\]]*\]|[^\[\]])*)(\][ ]?(?:\n[ ]*)?\[)(\d+)(\])/g;
+  let defs = '';
+  const regex = /(\[)((?:\[[^\]]*\]|[^\[\]])*)(\][ ]?(?:\n[ ]*)?\[)(\d+)(\])/g;
 
-  var addDefNumber = function (def) {
+  const addDefNumber = function (def) {
     refNumber++;
-    def = def.replace(/^[ ]{0,3}\[(\d+)\]:/, "  [" + refNumber + "]:");
-    defs += "\n" + def;
+    def = def.replace(/^[ ]{0,3}\[(\d+)\]:/, '  [' + refNumber + ']:');
+    defs += '\n' + def;
   };
 
   // note that
@@ -654,7 +656,7 @@ commandProto.addLinkDef = function (chunk, linkDef) {
   //    of regex, inner is always a proper substring of wholeMatch, and
   // b) more than one level of nesting is neither supported by the regex
   //    nor making a lot of sense (the only use case for nesting is a linked image)
-  var getLink = function (wholeMatch, before, inner, afterInner, id, end) {
+  const getLink = function (wholeMatch, before, inner, afterInner, id, end) {
     inner = inner.replace(regex, getLink);
     if (defsToAdd[id]) {
       addDefNumber(defsToAdd[id]);
@@ -671,7 +673,7 @@ commandProto.addLinkDef = function (chunk, linkDef) {
     chunk.selection = chunk.selection.replace(regex, getLink);
   }
 
-  var refOut = refNumber;
+  const refOut = refNumber;
 
   chunk.after = chunk.after.replace(regex, getLink);
 
@@ -731,10 +733,10 @@ commandProto.doLinkOrImage = function (chunk, postProcessing, isImage) {
       this.addLinkDef(chunk, null);
       return;
     }
-    var that = this;
+    const that = this;
     // The function to be executed when you enter a link and press OK or Cancel.
     // Marks up the link and adds the ref.
-    var linkEnteredCallback = function (link) {
+    const linkEnteredCallback = function (link) {
 
       if (link !== null) {
         // (                          $1
@@ -755,22 +757,23 @@ commandProto.doLinkOrImage = function (chunk, postProcessing, isImage) {
         // this by anchoring with ^, because in the case that the selection starts with two brackets, this
         // would mean a zero-width match at the start. Since zero-width matches advance the string position,
         // the first bracket could then not act as the "not a backslash" for the second.
-        chunk.selection = (" " + chunk.selection).replace(/([^\\](?:\\\\)*)(?=[[\]])/g, "$1\\").substr(1);
+        chunk.selection = (' ' + chunk.selection).replace(/([^\\](?:\\\\)*)(?=[[\]])/g, '$1\\')
+          .substr(1);
 
         /*
         var linkDef = " [999]: " + properlyEncoded(link);
 
         var num = that.addLinkDef(chunk, linkDef);
         */
-        chunk.startTag = isImage ? "![" : "[";
+        chunk.startTag = isImage ? '![' : '[';
         //chunk.endTag = "][" + num + "]";
-        chunk.endTag = "](" + properlyEncoded(link) + ")";
+        chunk.endTag = '](' + properlyEncoded(link) + ')';
 
         if (!chunk.selection) {
           if (isImage) {
-            chunk.selection = that.getString("imagedescription");
+            chunk.selection = that.getString('imagedescription');
           } else {
-            chunk.selection = that.getString("linkdescription");
+            chunk.selection = that.getString('linkdescription');
           }
         }
       }
@@ -790,8 +793,8 @@ commandProto.doLinkOrImage = function (chunk, postProcessing, isImage) {
 // at the current indent level.
 commandProto.doAutoindent = function (chunk) {
 
-  var commandMgr = this,
-    fakeSelection = false;
+  const commandMgr = this;
+  let fakeSelection = false;
 
   chunk.before = chunk.before.replace(/(\n|^)[ ]{0,3}([*+-]|\d+[.])[ \t]*\n$/, "\n\n");
   chunk.before = chunk.before.replace(/(\n|^)[ ]{0,3}>[ \t]*\n$/, "\n\n");
@@ -879,14 +882,15 @@ commandProto.doBlockquote = function (chunk) {
   // Hence we replaced this by a simple state machine that just goes through the
   // lines and checks for a), b), and c).
 
-  var match = "",
-    leftOver = "",
+  let match = '',
+    leftOver = '',
     line;
   if (chunk.before) {
-    var lines = chunk.before.replace(/\n$/, "").split("\n");
-    var inChain = false;
-    for (var i = 0; i < lines.length; i++) {
-      var good = false;
+    const lines = chunk.before.replace(/\n$/, '')
+      .split('\n');
+    let inChain = false;
+    for (let i = 0; i < lines.length; i++) {
+      let good = false;
       line = lines[i];
       inChain = inChain && line.length > 0; // c) any non-empty line continues the chain
       if (/^>/.test(line)) { // a)
@@ -927,20 +931,20 @@ commandProto.doBlockquote = function (chunk) {
     }
   );
 
-  var replaceBlanksInTags = function (useBracket) {
+  const replaceBlanksInTags = function (useBracket) {
 
-    var replacement = useBracket ? "> " : "";
+    const replacement = useBracket ? '> ' : '';
 
     if (chunk.startTag) {
       chunk.startTag = chunk.startTag.replace(/\n((>|\s)*)\n$/,
         function (totalMatch, markdown) {
-          return "\n" + markdown.replace(/^[ ]{0,3}>?[ \t]*$/gm, replacement) + "\n";
+          return '\n' + markdown.replace(/^[ ]{0,3}>?[ \t]*$/gm, replacement) + '\n';
         });
     }
     if (chunk.endTag) {
       chunk.endTag = chunk.endTag.replace(/^\n((>|\s)*)\n/,
         function (totalMatch, markdown) {
-          return "\n" + markdown.replace(/^[ ]{0,3}>?[ \t]*$/gm, replacement) + "\n";
+          return '\n' + markdown.replace(/^[ ]{0,3}>?[ \t]*$/gm, replacement) + '\n';
         });
     }
   };
@@ -977,8 +981,8 @@ commandProto.doBlockquote = function (chunk) {
 
 commandProto.doCode = function (chunk) {
 
-  var hasTextBefore = /\S[ ]*$/.test(chunk.before);
-  var hasTextAfter = /^[ ]*\S/.test(chunk.after);
+  const hasTextBefore = /\S[ ]*$/.test(chunk.before);
+  const hasTextAfter = /^[ ]*\S/.test(chunk.after);
 
   // Use 'four space' markdown if the selection is on its own
   // line or is multiline.
@@ -990,8 +994,8 @@ commandProto.doCode = function (chunk) {
         return "";
       });
 
-    var nLinesBack = 1;
-    var nLinesForward = 1;
+    let nLinesBack = 1;
+    let nLinesForward = 1;
 
     if (/(\n|^)(\t|[ ]{4,}).*\n$/.test(chunk.before)) {
       nLinesBack = 0;
@@ -1039,25 +1043,25 @@ commandProto.doList = function (chunk, postProcessing, isNumberedList, isCheckLi
 
   // These are identical except at the very beginning and end.
   // Should probably use the regex extension function to make this clearer.
-  var previousItemsRegex = /(\n|^)(([ ]{0,3}([*+-]|\d+[.])[ \t]+.*)(\n.+|\n{2,}([*+-].*|\d+[.])[ \t]+.*|\n{2,}[ \t]+\S.*)*)\n*$/;
-  var nextItemsRegex = /^\n*(([ ]{0,3}([*+-]|\d+[.])[ \t]+.*)(\n.+|\n{2,}([*+-].*|\d+[.])[ \t]+.*|\n{2,}[ \t]+\S.*)*)\n*/;
+  const previousItemsRegex = /(\n|^)(([ ]{0,3}([*+-]|\d+[.])[ \t]+.*)(\n.+|\n{2,}([*+-].*|\d+[.])[ \t]+.*|\n{2,}[ \t]+\S.*)*)\n*$/;
+  const nextItemsRegex = /^\n*(([ ]{0,3}([*+-]|\d+[.])[ \t]+.*)(\n.+|\n{2,}([*+-].*|\d+[.])[ \t]+.*|\n{2,}[ \t]+\S.*)*)\n*/;
 
   // The default bullet is a dash but others are possible.
   // This has nothing to do with the particular HTML bullet,
   // it's just a markdown bullet.
-  var bullet = "-";
+  let bullet = '-';
 
   // The number in a numbered list.
-  var num = 1;
+  let num = 1;
 
   // Get the item prefix - e.g. " 1. " for a numbered list, " - " for a bulleted list.
-  var getItemPrefix = function (checkListContent) {
-    var prefix;
+  const getItemPrefix = function (checkListContent) {
+    let prefix;
     if (isNumberedList) {
-      prefix = " " + num + ". ";
+      prefix = ' ' + num + '. ';
       num++;
     } else {
-      prefix = " " + bullet + " ";
+      prefix = ' ' + bullet + ' ';
       if (isCheckList) {
         prefix += '[';
         prefix += checkListContent || ' ';
@@ -1068,7 +1072,7 @@ commandProto.doList = function (chunk, postProcessing, isNumberedList, isCheckLi
   };
 
   // Fixes the prefixes of the other list items.
-  var getPrefixedItem = function (itemText) {
+  const getPrefixedItem = function (itemText) {
 
     // The numbering flag is unset when called by autoindent.
     if (isNumberedList === undefined) {
@@ -1077,8 +1081,8 @@ commandProto.doList = function (chunk, postProcessing, isNumberedList, isCheckLi
 
     // Renumber/bullet the list element.
     itemText = itemText.replace(isCheckList
-      ? /^[ ]{0,3}([*+-]|\d+[.])\s+\[([ xX])\]\s/gm
-      : /^[ ]{0,3}([*+-]|\d+[.])\s/gm,
+        ? /^[ ]{0,3}([*+-]|\d+[.])\s+\[([ xX])\]\s/gm
+        : /^[ ]{0,3}([*+-]|\d+[.])\s/gm,
       function (match, p1, p2) {
         return getItemPrefix(p2);
       });
@@ -1095,7 +1099,7 @@ commandProto.doList = function (chunk, postProcessing, isNumberedList, isCheckLi
 
   if (chunk.startTag) {
 
-    var hasDigits = /\d+[.]/.test(chunk.startTag);
+    const hasDigits = /\d+[.]/.test(chunk.startTag);
     chunk.startTag = "";
     chunk.selection = chunk.selection.replace(/\n[ ]{4}/g, "\n");
     this.unwrap(chunk);
@@ -1110,7 +1114,7 @@ commandProto.doList = function (chunk, postProcessing, isNumberedList, isCheckLi
     }
   }
 
-  var nLinesUp = 1;
+  let nLinesUp = 1;
 
   chunk.before = chunk.before.replace(previousItemsRegex,
     function (itemText) {
@@ -1125,9 +1129,9 @@ commandProto.doList = function (chunk, postProcessing, isNumberedList, isCheckLi
     chunk.selection = this.getString("litem");
   }
 
-  var prefix = getItemPrefix();
+  let prefix = getItemPrefix();
 
-  var nLinesDown = 1;
+  let nLinesDown = 1;
 
   chunk.after = chunk.after.replace(nextItemsRegex,
     function (itemText) {
@@ -1138,7 +1142,7 @@ commandProto.doList = function (chunk, postProcessing, isNumberedList, isCheckLi
   chunk.trimWhitespace(true);
   chunk.skipLines(nLinesUp, nLinesDown, true);
   chunk.startTag = prefix;
-  var spaces = prefix.replace(/./g, " ");
+  const spaces = prefix.replace(/./g, ' ');
   this.wrap(chunk, SETTINGS.lineLength - spaces.length);
   chunk.selection = chunk.selection.replace(/\n/g, "\n" + spaces);
 
@@ -1147,7 +1151,7 @@ commandProto.doList = function (chunk, postProcessing, isNumberedList, isCheckLi
 commandProto.doTable = function (chunk) {
   // Credit: https://github.com/fcrespo82/atom-markdown-table-formatter
 
-  var keepFirstAndLastPipes = true,
+  const keepFirstAndLastPipes = true,
     /*
                       ( # header capture
                         (?:
@@ -1177,10 +1181,10 @@ commandProto.doTable = function (chunk) {
 
 
   function padding(len, str) {
-    var result = '';
+    let result = '';
     str = str || ' ';
     len = Math.floor(len);
-    for (var i = 0; i < len; i++) {
+    for (let i = 0; i < len; i++) {
       result += str;
     }
     return result;
@@ -1207,7 +1211,34 @@ commandProto.doTable = function (chunk) {
   }
 
   function formatTable(text, appendNewline) {
-    var i, j, len1, ref1, ref2, ref3, k, len2, results, formatline, headerline, just, formatrow, data, line, lines, justify, cell, cells, first, last, ends, columns, content, widths, formatted, front, back;
+    let i,
+      j,
+      len1,
+      ref1,
+      ref2,
+      ref3,
+      k,
+      len2,
+      results,
+      formatline,
+      headerline,
+      just,
+      formatrow,
+      data,
+      line,
+      lines,
+      justify,
+      cell,
+      cells,
+      first,
+      last,
+      ends,
+      columns,
+      content,
+      widths,
+      formatted,
+      front,
+      back;
     formatline = text[2].trim();
     headerline = text[1].trim();
     ref1 = headerline.length === 0 ? [0, text[3]] : [1, text[1] + text[3]], formatrow = ref1[0], data = ref1[1];
@@ -1250,7 +1281,9 @@ commandProto.doTable = function (chunk) {
       widths.push(Math.max.apply(Math, [2].concat(results)));
     }
     just = function (string, col) {
-      var back, front, length;
+      let back,
+        front,
+        length;
       length = widths[col] - string.length;
       switch (justify[col]) {
         case '::':
@@ -1272,7 +1305,10 @@ commandProto.doTable = function (chunk) {
       formatted.push(addTailPipes(joinCells(results)));
     }
     formatline = addTailPipes(joinCells((function () {
-      var j, ref2, ref3, results;
+      let j,
+        ref2,
+        ref3,
+        results;
       results = [];
       for (i = j = 0, ref2 = columns - 1; 0 <= ref2 ? j <= ref2 : j >= ref2; i = 0 <= ref2 ? ++j : --j) {
         ref3 = justify[i], front = ref3[0], back = ref3[1];
@@ -1281,7 +1317,7 @@ commandProto.doTable = function (chunk) {
       return results;
     })()));
     formatted.splice(formatrow, 0, formatline);
-    var result = (headerline.length === 0 && text[1] !== '' ? '\n' : '') + formatted.join('\n');
+    let result = (headerline.length === 0 && text[1] !== '' ? '\n' : '') + formatted.join('\n');
     if (appendNewline !== false) {
       result += '\n'
     }
@@ -1291,18 +1327,18 @@ commandProto.doTable = function (chunk) {
   if (chunk.before.slice(-1) !== '\n') {
     chunk.before += '\n';
   }
-  var match = chunk.selection.match(regex);
+  let match = chunk.selection.match(regex);
   if (match) {
     chunk.selection = formatTable(match, chunk.selection.slice(-1) === '\n');
   } else {
-    var table = chunk.selection + '|\n-|-\n|';
+    let table = chunk.selection + '|\n-|-\n|';
     match = table.match(regex);
     if (!match || match[0].slice(0, table.length) !== table) {
       return;
     }
     table = formatTable(match);
-    var selectionOffset = keepFirstAndLastPipes ? 1 : 0;
-    var pipePos = table.indexOf('|', selectionOffset);
+    const selectionOffset = keepFirstAndLastPipes ? 1 : 0;
+    const pipePos = table.indexOf('|', selectionOffset);
     chunk.before += table.slice(0, selectionOffset);
     chunk.selection = table.slice(selectionOffset, pipePos);
     chunk.after = table.slice(pipePos) + chunk.after;
@@ -1323,7 +1359,7 @@ commandProto.doHeading = function (chunk) {
     return;
   }
 
-  var headerLevel = 0; // The existing header level of the selected text.
+  let headerLevel = 0; // The existing header level of the selected text.
 
   // Remove any existing hash heading markdown and save the header level.
   chunk.findTags(/#+[ ]*/, /[ ]*#+/);
@@ -1349,7 +1385,7 @@ commandProto.doHeading = function (chunk) {
   // We make a level 2 header if there is no current header.
   // If there is a header level, we substract one from the header level.
   // If it's already a level 1 header, it's removed.
-  var headerLevelToCreate = headerLevel === 0 ? 2 : headerLevel - 1;
+  let headerLevelToCreate = headerLevel === 0 ? 2 : headerLevel - 1;
 
   if (headerLevelToCreate > 0) {
 

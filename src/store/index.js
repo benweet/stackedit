@@ -1,28 +1,28 @@
-import * as Vue from 'vue';
 import Vuex, { createLogger } from 'vuex';
-import utils from '../services/utils';
-import content from './content';
-import contentState from './contentState';
-import contextMenu from './contextMenu';
-import data from './data';
-import discussion from './discussion';
-import explorer from './explorer';
-import file from './file';
-import findReplace from './findReplace';
-import folder from './folder';
-import layout from './layout';
-import modal from './modal';
-import notification from './notification';
-import queue from './queue';
-import syncedContent from './syncedContent';
-import userInfo from './userInfo';
-import workspace from './workspace';
-import locationTemplate from './locationTemplate';
-import emptyPublishLocation from '../data/empties/emptyPublishLocation';
-import emptySyncLocation from '../data/empties/emptySyncLocation';
-import constants from '../data/constants';
+import utils from '../services/utils.js';
+import content from './content.js';
+import contentState from './contentState.js';
+import contextMenu from './contextMenu.js';
+import data from './data.js';
+import discussion from './discussion.js';
+import explorer from './explorer.js';
+import file from './file.js';
+import findReplace from './findReplace.js';
+import folder from './folder.js';
+import layout from './layout.js';
+import modal from './modal.js';
+import notification from './notification.js';
+import queue from './queue.js';
+import syncedContent from './syncedContent.js';
+import userInfo from './userInfo.js';
+import workspace from './workspace.js';
+import locationTemplate from './locationTemplate.js';
+import emptyPublishLocation from '../data/empties/emptyPublishLocation.js';
+import emptySyncLocation from '../data/empties/emptySyncLocation.js';
+import constants from '../data/constants.js';
+import { createApp } from 'vue';
+import App from '../components/App.vue';
 
-Vue.use(Vuex);
 
 const debug = NODE_ENV !== 'production';
 
@@ -185,3 +185,4 @@ setInterval(() => {
 }, 30 * 1000);
 
 export default store;
+createApp(App).use(store).mount('#app')

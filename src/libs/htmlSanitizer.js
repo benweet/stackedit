@@ -13,13 +13,13 @@ function sanitizeUri(uri, isImage) {
   return uri;
 }
 
-var buf;
+let buf;
 
 /* jshint -W083 */
 
 // Regular Expressions for parsing tags and attributes
-var START_TAG_REGEXP =
-  /^<((?:[a-zA-Z])[\w:-]*)((?:\s+[\w:-]+(?:\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|[^>\s]+))?)*)\s*(\/?)\s*(>?)/,
+const START_TAG_REGEXP =
+    /^<((?:[a-zA-Z])[\w:-]*)((?:\s+[\w:-]+(?:\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|[^>\s]+))?)*)\s*(\/?)\s*(>?)/,
   END_TAG_REGEXP = /^<\/\s*([\w:-]+)[^>]*>/,
   ATTR_REGEXP = /([\w:-]+)(?:\s*=\s*(?:(?:"((?:[^"])*)")|(?:'((?:[^'])*)')|([^>\s]+)))?/g,
   BEGIN_TAG_REGEXP = /^</,
@@ -38,48 +38,48 @@ var START_TAG_REGEXP =
 
 // Safe Void Elements - HTML5
 // http://dev.w3.org/html5/spec/Overview.html#void-elements
-var voidElements = makeMap("area,br,col,hr,img,wbr");
+const voidElements = makeMap('area,br,col,hr,img,wbr');
 
 // Elements that you can, intentionally, leave open (and which close themselves)
 // http://dev.w3.org/html5/spec/Overview.html#optional-tags
-var optionalEndTagBlockElements = makeMap("colgroup,dd,dt,li,p,tbody,td,tfoot,th,thead,tr"),
-  optionalEndTagInlineElements = makeMap("rp,rt"),
+const optionalEndTagBlockElements = makeMap('colgroup,dd,dt,li,p,tbody,td,tfoot,th,thead,tr'),
+  optionalEndTagInlineElements = makeMap('rp,rt'),
   optionalEndTagElements = {
     ...optionalEndTagInlineElements,
     ...optionalEndTagBlockElements,
   };
 
 // Safe Block Elements - HTML5
-var blockElements = {
+const blockElements = {
   ...optionalEndTagBlockElements,
-  ...makeMap("address,article," +
-  "aside,blockquote,caption,center,del,dir,div,dl,figure,figcaption,footer,h1,h2,h3,h4,h5," +
-  "h6,header,hgroup,hr,ins,map,menu,nav,ol,pre,script,section,table,ul")
+  ...makeMap('address,article,' +
+    'aside,blockquote,caption,center,del,dir,div,dl,figure,figcaption,footer,h1,h2,h3,h4,h5,' +
+    'h6,header,hgroup,hr,ins,map,menu,nav,ol,pre,script,section,table,ul')
 };
 
 // benweet: Add iframe
 blockElements.iframe = true;
 
 // Inline Elements - HTML5
-var inlineElements = {
+const inlineElements = {
   ...optionalEndTagInlineElements,
-  ...makeMap("a,abbr,acronym,b," +
-    "bdi,bdo,big,br,cite,code,del,dfn,em,font,i,img,ins,kbd,label,map,mark,q,ruby,rp,rt,s," +
-    "samp,small,span,strike,strong,sub,sup,time,tt,u,var")
+  ...makeMap('a,abbr,acronym,b,' +
+    'bdi,bdo,big,br,cite,code,del,dfn,em,font,i,img,ins,kbd,label,map,mark,q,ruby,rp,rt,s,' +
+    'samp,small,span,strike,strong,sub,sup,time,tt,u,var')
 };
 
 // SVG Elements
 // https://wiki.whatwg.org/wiki/Sanitization_rules#svg_Elements
 // Note: the elements animate,animateColor,animateMotion,animateTransform,set are intentionally omitted.
 // They can potentially allow for arbitrary javascript to be executed. See #11290
-var svgElements = makeMap("circle,defs,desc,ellipse,font-face,font-face-name,font-face-src,g,glyph," +
-  "hkern,image,linearGradient,line,marker,metadata,missing-glyph,mpath,path,polygon,polyline," +
-  "radialGradient,rect,stop,svg,switch,text,title,tspan,use");
+const svgElements = makeMap('circle,defs,desc,ellipse,font-face,font-face-name,font-face-src,g,glyph,' +
+  'hkern,image,linearGradient,line,marker,metadata,missing-glyph,mpath,path,polygon,polyline,' +
+  'radialGradient,rect,stop,svg,switch,text,title,tspan,use');
 
 // Special Elements (can contain anything)
-var specialElements = makeMap("script,style");
+const specialElements = makeMap('script,style');
 
-var validElements = {
+const validElements = {
   ...voidElements,
   ...blockElements,
   ...inlineElements,
@@ -88,9 +88,9 @@ var validElements = {
 };
 
 //Attributes that have href and hence need to be sanitized
-var uriAttrs = makeMap("background,cite,href,longdesc,src,usemap,xlink:href");
+const uriAttrs = makeMap('background,cite,href,longdesc,src,usemap,xlink:href');
 
-var htmlAttrs = makeMap('abbr,align,alt,axis,bgcolor,border,cellpadding,cellspacing,class,clear,' +
+const htmlAttrs = makeMap('abbr,align,alt,axis,bgcolor,border,cellpadding,cellspacing,class,clear,' +
   'color,cols,colspan,compact,coords,dir,face,headers,height,hreflang,hspace,' +
   'ismap,lang,language,nohref,nowrap,rel,rev,rows,rowspan,rules,' +
   'scope,scrolling,shape,size,span,start,summary,tabindex,target,title,type,' +
@@ -98,7 +98,7 @@ var htmlAttrs = makeMap('abbr,align,alt,axis,bgcolor,border,cellpadding,cellspac
 
 // SVG attributes (without "id" and "name" attributes)
 // https://wiki.whatwg.org/wiki/Sanitization_rules#svg_Attributes
-var svgAttrs = makeMap('accent-height,accumulate,additive,alphabetic,arabic-form,ascent,' +
+const svgAttrs = makeMap('accent-height,accumulate,additive,alphabetic,arabic-form,ascent,' +
   'baseProfile,bbox,begin,by,calcMode,cap-height,class,color,color-rendering,content,' +
   'cx,cy,d,dx,dy,descent,display,dur,end,fill,fill-rule,font-family,font-size,font-stretch,' +
   'font-style,font-variant,font-weight,from,fx,fy,g1,g2,glyph-name,gradientUnits,hanging,' +
@@ -114,7 +114,7 @@ var svgAttrs = makeMap('accent-height,accumulate,additive,alphabetic,arabic-form
   'width,widths,x,x-height,x1,x2,xlink:actuate,xlink:arcrole,xlink:role,xlink:show,xlink:title,' +
   'xlink:type,xml:base,xml:lang,xml:space,xmlns,xmlns:xlink,y,y1,y2,zoomAndPan', true);
 
-var validAttrs = {
+const validAttrs = {
   ...uriAttrs,
   ...svgAttrs,
   ...htmlAttrs,
@@ -125,9 +125,9 @@ validAttrs.id = true;
 validAttrs.allowfullscreen = true;
 
 function makeMap(str, lowercaseKeys) {
-  var obj = {},
-    items = str.split(','),
-    i;
+  const obj = {},
+    items = str.split(',');
+  let i;
   for (i = 0; i < items.length; i++) {
     obj[lowercaseKeys ? items[i].toLowerCase() : items[i]] = true;
   }
@@ -155,8 +155,11 @@ function htmlParser(html, handler) {
       html = '' + html;
     }
   }
-  var index, chars, match, stack = [],
-    last = html,
+  let index,
+    chars,
+    match;
+  const stack = [];
+  let last = html,
     text;
   stack.last = function () {
     return stack[stack.length - 1];
@@ -273,11 +276,11 @@ function htmlParser(html, handler) {
       stack.push(tagName);
     }
 
-    var attrs = {};
+    const attrs = {};
 
     rest.replace(ATTR_REGEXP,
       function (match, name, doubleQuotedValue, singleQuotedValue, unquotedValue) {
-        var value = doubleQuotedValue || singleQuotedValue || unquotedValue || '';
+        const value = doubleQuotedValue || singleQuotedValue || unquotedValue || '';
 
         attrs[name] = decodeEntities(value);
       });
@@ -285,7 +288,7 @@ function htmlParser(html, handler) {
   }
 
   function parseEndTag(tag, tagName) {
-    var pos = 0,
+    let pos = 0,
       i;
     tagName = tagName && tagName.toLowerCase();
     if (tagName) {
@@ -306,7 +309,8 @@ function htmlParser(html, handler) {
   }
 }
 
-var hiddenPre = document.createElement("pre");
+const hiddenPre = document.createElement('pre');
+
 /**
  * decodes all entities into regular string
  * @param value
@@ -334,9 +338,9 @@ function encodeEntities(value) {
   return value.
     replace(/&/g, '&amp;').
     replace(SURROGATE_PAIR_REGEXP, function (value) {
-      var hi = value.charCodeAt(0);
-      var low = value.charCodeAt(1);
-      return '&#' + (((hi - 0xD800) * 0x400) + (low - 0xDC00) + 0x10000) + ';';
+    const hi = value.charCodeAt(0);
+    const low = value.charCodeAt(1);
+    return '&#' + (((hi - 0xD800) * 0x400) + (low - 0xDC00) + 0x10000) + ';';
     }).
     replace(NON_ALPHANUMERIC_REGEXP, function (value) {
       return '&#' + value.charCodeAt(0) + ';';
@@ -356,8 +360,8 @@ function encodeEntities(value) {
  * }
  */
 function htmlSanitizeWriter(buf, uriValidator) {
-  var ignore = false;
-  var out = buf.push.bind(buf);
+  let ignore = false;
+  const out = buf.push.bind(buf);
   return {
     start: function (tag, attrs, unary) {
       tag = tag && tag.toLowerCase();
@@ -368,9 +372,9 @@ function htmlSanitizeWriter(buf, uriValidator) {
         out('<');
         out(tag);
         Object.keys(attrs).forEach(function (key) {
-          var value = attrs[key];
-          var lkey = key && key.toLowerCase();
-          var isImage = (tag === 'img' && lkey === 'src') || (lkey === 'background');
+          const value = attrs[key];
+          const lkey = key && key.toLowerCase();
+          const isImage = (tag === 'img' && lkey === 'src') || (lkey === 'background');
           if (validAttrs[lkey] === true &&
             (uriAttrs[lkey] !== true || uriValidator(value, isImage))) {
             out(' ');

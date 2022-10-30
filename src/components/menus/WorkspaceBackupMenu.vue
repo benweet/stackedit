@@ -19,9 +19,9 @@
 <script>
 import FileSaver from 'file-saver';
 import MenuEntry from './common/MenuEntry';
-import store from '../../store';
-import backupSvc from '../../services/backupSvc';
-import localDbSvc from '../../services/localDbSvc';
+import store from '../../store/index.js';
+import backupSvc from '../../services/backupSvc.js';
+import localDbSvc from '../../services/localDbSvc.js';
 
 export default {
   components: {

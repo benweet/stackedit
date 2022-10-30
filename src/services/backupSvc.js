@@ -1,5 +1,5 @@
-import workspaceSvc from './workspaceSvc';
-import utils from './utils';
+import workspaceSvc from './workspaceSvc.js';
+import utils from './utils.js';
 
 export default {
   async importBackup(jsonValue) {

@@ -1,16 +1,16 @@
-require('./check-versions')()
+await import('./check-versions')
 
 process.env.NODE_ENV = 'production'
 
-var ora = require('ora')
-var rm = require('rimraf')
-var path = require('path')
-var chalk = require('chalk')
-var webpack = require('webpack')
-var config = require('../config')
-var webpackConfig = require('./webpack.prod.conf')
+const ora = require('ora');
+const rm = require('rimraf');
+const path = require('path');
+const chalk = require('chalk');
+const webpack = require('webpack');
+const config = require('../config');
+const webpackConfig = require('./webpack.prod.conf');
 
-var spinner = ora('building for production...')
+const spinner = ora('building for production...');
 spinner.start()
 
 rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {

@@ -1,6 +1,6 @@
-import store from '../store';
-import workspaceSvc from './workspaceSvc';
-import badgeSvc from './badgeSvc';
+import store from '../store/index.js';
+import workspaceSvc from './workspaceSvc.js';
+import badgeSvc from './badgeSvc.js';
 
 export default {
   newItem(isFolder = false) {

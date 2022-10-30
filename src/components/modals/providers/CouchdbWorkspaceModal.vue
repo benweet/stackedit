@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import modalTemplate from '../common/modalTemplate';
-import utils from '../../../services/utils';
+import modalTemplate from '../common/modalTemplate.js';
+import utils from '../../../services/utils.js';
 
 export default modalTemplate({
   data: () => ({

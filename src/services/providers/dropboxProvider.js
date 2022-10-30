@@ -1,8 +1,8 @@
-import store from '../../store';
-import dropboxHelper from './helpers/dropboxHelper';
-import Provider from './common/Provider';
-import utils from '../utils';
-import workspaceSvc from '../workspaceSvc';
+import store from '../../store/index.js';
+import dropboxHelper from './helpers/dropboxHelper.js';
+import Provider from './common/Provider.js';
+import utils from '../utils.js';
+import workspaceSvc from '../workspaceSvc.js';
 
 const makePathAbsolute = (token, path) => {
   if (!token.fullAccess) {

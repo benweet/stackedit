@@ -36,7 +36,7 @@
 import * as Vue from 'vue';
 import { mapGetters } from 'vuex';
 import ModalInner from './common/ModalInner';
-import store from '../../store';
+import store from '../../store/index.js';
 
 export default {
   components: {
@@ -61,7 +61,7 @@ export default {
   },
   methods: {
     show(featureId) {
-      Vue.set(this.shown, featureId, true);
+      this.shown[featureId] = true;
     },
   },
 };

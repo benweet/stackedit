@@ -1,8 +1,8 @@
-const qs = require('qs'); // eslint-disable-line import/no-extraneous-dependencies
-const request = require('request');
-const conf = require('./conf');
+import qs from 'qs' // eslint-disable-line import/no-extraneous-dependencies
+import request from 'request'
+import conf from './conf.js'
 
-function githubToken(clientId, code) {
+const githubToken =  (clientId, code)=> {
   return new Promise((resolve, reject) => {
     request({
       method: 'POST',
@@ -26,7 +26,7 @@ function githubToken(clientId, code) {
   });
 }
 
-exports.githubToken = (req, res) => {
+export const activeRequest =  (req, res) => {
   githubToken(req.query.clientId, req.query.code)
     .then(
       token => res.send(token),
@@ -35,3 +35,5 @@ exports.githubToken = (req, res) => {
         .send(err ? err.message || err.toString() : 'bad_code'),
     );
 };
+
+export default {activeRequest}

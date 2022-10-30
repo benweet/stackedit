@@ -34,10 +34,10 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import MenuEntry from './common/MenuEntry';
-import googleHelper from '../../services/providers/helpers/googleHelper';
-import gitlabHelper from '../../services/providers/helpers/gitlabHelper';
-import store from '../../store';
+import MenuEntry from './common/MenuEntry.vue';
+import googleHelper from '../../services/providers/helpers/googleHelper.js';
+import gitlabHelper from '../../services/providers/helpers/gitlabHelper.js';
+import store from '../../store/index.js';
 
 export default {
   components: {

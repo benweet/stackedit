@@ -1,5 +1,5 @@
-import editorSvc from '../editorSvc';
-import store from '../../store';
+import editorSvc from '../editorSvc.js';
+import store from '../../store/index.js';
 
 editorSvc.$on('inited', () => {
   const getPreviewOffset = (elt) => {

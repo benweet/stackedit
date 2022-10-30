@@ -30,8 +30,8 @@
 </template>
 
 <script>
-import modalTemplate from '../common/modalTemplate';
-import constants from '../../../data/constants';
+import modalTemplate from '../common/modalTemplate.js';
+import constants from '../../../data/constants.js';
 
 export default modalTemplate({
   data: () => ({

@@ -29,12 +29,12 @@
 
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
-import editorSvc from '../../services/editorSvc';
-import animationSvc from '../../services/animationSvc';
-import markdownConversionSvc from '../../services/markdownConversionSvc';
-import StickyComment from './StickyComment';
-import store from '../../store';
-import badgeSvc from '../../services/badgeSvc';
+import editorSvc from '../../services/editorSvc.js';
+import animationSvc from '../../services/animationSvc.js';
+import markdownConversionSvc from '../../services/markdownConversionSvc.js';
+import StickyComment from './StickyComment.vue';
+import store from '../../store/index.js';
+import badgeSvc from '../../services/badgeSvc.js';
 
 export default {
   components: {

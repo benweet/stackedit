@@ -1,8 +1,8 @@
-import utils from './utils';
-import store from '../store';
+import utils from './utils.js';
+import store from '../store/index.js';
 import welcomeFile from '../data/welcomeFile.md';
-import workspaceSvc from './workspaceSvc';
-import constants from '../data/constants';
+import workspaceSvc from './workspaceSvc.js';
+import constants from '../data/constants.js';
 
 const deleteMarkerMaxAge = 1000;
 const dbVersion = 1;

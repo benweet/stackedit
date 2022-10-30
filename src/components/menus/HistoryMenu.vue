@@ -46,17 +46,17 @@
 
 <script>
 import { mapState, mapMutations, mapGetters } from 'vuex';
-import providerRegistry from '../../services/providers/common/providerRegistry';
-import MenuEntry from './common/MenuEntry';
-import UserImage from '../UserImage';
-import UserName from '../UserName';
-import EditorClassApplier from '../common/EditorClassApplier';
-import PreviewClassApplier from '../common/PreviewClassApplier';
-import utils from '../../services/utils';
-import googleHelper from '../../services/providers/helpers/googleHelper';
-import syncSvc from '../../services/syncSvc';
-import store from '../../store';
-import badgeSvc from '../../services/badgeSvc';
+import providerRegistry from '../../services/providers/common/providerRegistry.js';
+import MenuEntry from './common/MenuEntry.vue';
+import UserImage from '../UserImage.vue';
+import UserName from '../UserName.vue';
+import EditorClassApplier from '../common/EditorClassApplier.js';
+import PreviewClassApplier from '../common/PreviewClassApplier.js';
+import utils from '../../services/utils.js';
+import googleHelper from '../../services/providers/helpers/googleHelper.js';
+import syncSvc from '../../services/syncSvc.js';
+import store from '../../store/index.js';
+import badgeSvc from '../../services/badgeSvc.js';
 
 let editorClassAppliers = [];
 let previewClassAppliers = [];

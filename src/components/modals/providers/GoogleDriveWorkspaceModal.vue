@@ -23,10 +23,10 @@
 </template>
 
 <script>
-import googleHelper from '../../../services/providers/helpers/googleHelper';
-import modalTemplate from '../common/modalTemplate';
-import utils from '../../../services/utils';
-import store from '../../../store';
+import googleHelper from '../../../services/providers/helpers/googleHelper.js';
+import modalTemplate from '../common/modalTemplate.js';
+import utils from '../../../services/utils.js';
+import store from '../../../store/index.js';
 
 export default modalTemplate({
   computedLocalSettings: {

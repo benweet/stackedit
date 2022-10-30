@@ -2,17 +2,17 @@ import * as Vue from 'vue';
 import DiffMatchPatch from 'diff-match-patch';
 import Prism from 'prismjs';
 import markdownItPandocRenderer from 'markdown-it-pandoc-renderer';
-import cledit from './editor/cledit';
-import pagedown from '../libs/pagedown';
-import htmlSanitizer from '../libs/htmlSanitizer';
-import markdownConversionSvc from './markdownConversionSvc';
-import markdownGrammarSvc from './markdownGrammarSvc';
-import sectionUtils from './editor/sectionUtils';
-import extensionSvc from './extensionSvc';
-import editorSvcDiscussions from './editor/editorSvcDiscussions';
-import editorSvcUtils from './editor/editorSvcUtils';
-import utils from './utils';
-import store from '../store';
+import cledit from './editor/cledit/index.js';
+import pagedown from '../libs/pagedown.js';
+import htmlSanitizer from '../libs/htmlSanitizer.js';
+import markdownConversionSvc from './markdownConversionSvc.js';
+import markdownGrammarSvc from './markdownGrammarSvc.js';
+import sectionUtils from './editor/sectionUtils.js';
+import extensionSvc from './extensionSvc.js';
+import editorSvcDiscussions from './editor/editorSvcDiscussions.js';
+import editorSvcUtils from './editor/editorSvcUtils.js';
+import utils from './utils.js';
+import store from '../store/index.js';
 
 const allowDebounce = (action, wait) => {
   let timeoutId;

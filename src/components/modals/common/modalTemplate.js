@@ -1,6 +1,6 @@
-import ModalInner from './ModalInner';
-import FormEntry from './FormEntry';
-import store from '../../../store';
+import ModalInner from './ModalInner.vue';
+import FormEntry from './FormEntry.vue';
+import store from '../../../store/index.js';
 
 const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
 

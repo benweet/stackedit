@@ -86,14 +86,14 @@
 <script>
 import yaml from 'js-yaml';
 import { mapGetters } from 'vuex';
-import ModalInner from './common/ModalInner';
-import Tab from './common/Tab';
-import FormEntry from './common/FormEntry';
-import CodeEditor from '../CodeEditor';
-import utils from '../../services/utils';
-import presets from '../../data/presets';
-import store from '../../store';
-import badgeSvc from '../../services/badgeSvc';
+import ModalInner from './common/ModalInner.vue';
+import Tab from './common/Tab.vue';
+import FormEntry from './common/FormEntry.vue';
+import CodeEditor from '../CodeEditor.vue';
+import utils from '../../services/utils.js';
+import presets from '../../data/presets.js';
+import store from '../../store/index.js';
+import badgeSvc from '../../services/badgeSvc.js';
 
 const metadataProperties = {
   title: '',

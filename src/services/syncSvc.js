@@ -1,18 +1,18 @@
-import localDbSvc from './localDbSvc';
-import store from '../store';
-import utils from './utils';
-import diffUtils from './diffUtils';
-import networkSvc from './networkSvc';
-import providerRegistry from './providers/common/providerRegistry';
-import googleDriveAppDataProvider from './providers/googleDriveAppDataProvider';
-import './providers/couchdbWorkspaceProvider';
-import './providers/githubWorkspaceProvider';
-import './providers/gitlabWorkspaceProvider';
-import './providers/googleDriveWorkspaceProvider';
-import tempFileSvc from './tempFileSvc';
-import workspaceSvc from './workspaceSvc';
-import constants from '../data/constants';
-import badgeSvc from './badgeSvc';
+import localDbSvc from './localDbSvc.js';
+import store from '../store/index.js';
+import utils from './utils.js';
+import diffUtils from './diffUtils.js';
+import networkSvc from './networkSvc.js';
+import providerRegistry from './providers/common/providerRegistry.js';
+import googleDriveAppDataProvider from './providers/googleDriveAppDataProvider.js';
+import './providers/couchdbWorkspaceProvider.js';
+import './providers/githubWorkspaceProvider.js';
+import './providers/gitlabWorkspaceProvider.js';
+import './providers/googleDriveWorkspaceProvider.js';
+import tempFileSvc from './tempFileSvc.js';
+import workspaceSvc from './workspaceSvc.js';
+import constants from '../data/constants.js';
+import badgeSvc from './badgeSvc.js';
 
 const minAutoSyncEvery = 60 * 1000; // 60 sec
 const inactivityThreshold = 3 * 1000; // 3 sec

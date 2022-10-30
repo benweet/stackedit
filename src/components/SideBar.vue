@@ -33,17 +33,17 @@
 
 <script>
 import { mapActions } from 'vuex';
-import Toc from './Toc';
-import MainMenu from './menus/MainMenu';
-import WorkspacesMenu from './menus/WorkspacesMenu';
-import SyncMenu from './menus/SyncMenu';
-import PublishMenu from './menus/PublishMenu';
-import HistoryMenu from './menus/HistoryMenu';
-import ImportExportMenu from './menus/ImportExportMenu';
-import WorkspaceBackupMenu from './menus/WorkspaceBackupMenu';
+import Toc from './Toc.vue';
+import MainMenu from './menus/MainMenu.vue';
+import WorkspacesMenu from './menus/WorkspacesMenu.vue';
+import SyncMenu from './menus/SyncMenu.vue';
+import PublishMenu from './menus/PublishMenu.vue';
+import HistoryMenu from './menus/HistoryMenu.vue';
+import ImportExportMenu from './menus/ImportExportMenu.vue';
+import WorkspaceBackupMenu from './menus/WorkspaceBackupMenu.vue';
 import markdownSample from '../data/markdownSample.md';
-import markdownConversionSvc from '../services/markdownConversionSvc';
-import store from '../store';
+import markdownConversionSvc from '../services/markdownConversionSvc.js';
+import store from '../store/index.js';
 
 const panelNames = {
   menu: 'Menu',

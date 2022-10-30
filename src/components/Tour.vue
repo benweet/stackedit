@@ -50,8 +50,7 @@
 </template>
 
 <script>
-import * as Vue from 'vue';
-import store from '../store';
+import store from '../store/index.js';
 
 const steps = [
   'welcome',
@@ -102,7 +101,7 @@ export default {
             default:
               return;
           }
-          Vue.set(this.stepStyles, step, style);
+          this.stepStyles[step] =  style;
         });
       });
     },

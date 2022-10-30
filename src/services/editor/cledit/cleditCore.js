@@ -1,7 +1,7 @@
 import DiffMatchPatch from 'diff-match-patch';
-import TurndownService from 'turndown/lib/turndown.browser.umd';
-import htmlSanitizer from '../../../libs/htmlSanitizer';
-import store from '../../../store';
+import TurndownService from 'turndown/lib/turndown.browser.umd.js';
+import htmlSanitizer from '../../../libs/htmlSanitizer.js';
+import store from '../../../store/index.js';
 
 function cledit(contentElt, scrollEltOpt, isMarkdown = false) {
   const scrollElt = scrollEltOpt || contentElt;

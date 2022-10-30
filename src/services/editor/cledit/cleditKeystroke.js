@@ -1,4 +1,4 @@
-import cledit from './cleditCore';
+import cledit from './cleditCore.js';
 
 function Keystroke(handler, priority) {
   this.handler = handler;

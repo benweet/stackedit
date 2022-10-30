@@ -1,5 +1,5 @@
 import DiffMatchPatch from 'diff-match-patch';
-import cledit from './cleditCore';
+import cledit from './cleditCore.js';
 
 function UndoMgr(editor) {
   cledit.Utils.createEventHooks(this);

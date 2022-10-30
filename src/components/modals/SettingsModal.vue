@@ -33,12 +33,12 @@
 <script>
 import yaml from 'js-yaml';
 import { mapGetters } from 'vuex';
-import ModalInner from './common/ModalInner';
-import Tab from './common/Tab';
-import CodeEditor from '../CodeEditor';
+import ModalInner from './common/ModalInner.vue';
+import Tab from './common/Tab.vue';
+import CodeEditor from '../CodeEditor.vue';
 import defaultSettings from '../../data/defaults/defaultSettings.yml';
-import store from '../../store';
-import badgeSvc from '../../services/badgeSvc';
+import store from '../../store/index.js';
+import badgeSvc from '../../services/badgeSvc.js';
 
 const emptySettings = `# Add your custom settings here to override the
 # default settings.

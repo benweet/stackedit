@@ -1,4 +1,4 @@
-import store from '../store';
+import store from '../store/index.js';
 
 let lastEarnedFeatureIds = null;
 let debounceTimeoutId;

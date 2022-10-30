@@ -1,6 +1,5 @@
-import * as Vue from 'vue';
-import emptyFile from '../data/empties/emptyFile';
-import emptyFolder from '../data/empties/emptyFolder';
+import emptyFile from '../data/empties/emptyFile.js';
+import emptyFolder from '../data/empties/emptyFolder.js';
 
 const setter = propertyName => (state, value) => {
   state[propertyName] = value;
@@ -78,7 +77,7 @@ export default {
       state.newChildNode.item.name = name;
     },
     toggleOpenNode(state, id) {
-      Vue.set(state.openNodes, id, !state.openNodes[id]);
+      state.openNodes[id] = !state.openNodes[id];
     },
   },
   getters: {

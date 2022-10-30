@@ -116,14 +116,14 @@
 <script>
 import { mapState, mapGetters } from 'vuex';
 import MenuEntry from './common/MenuEntry';
-import googleHelper from '../../services/providers/helpers/googleHelper';
-import dropboxHelper from '../../services/providers/helpers/dropboxHelper';
-import githubHelper from '../../services/providers/helpers/githubHelper';
-import gitlabHelper from '../../services/providers/helpers/gitlabHelper';
-import wordpressHelper from '../../services/providers/helpers/wordpressHelper';
-import zendeskHelper from '../../services/providers/helpers/zendeskHelper';
-import publishSvc from '../../services/publishSvc';
-import store from '../../store';
+import googleHelper from '../../services/providers/helpers/googleHelper.js';
+import dropboxHelper from '../../services/providers/helpers/dropboxHelper.js';
+import githubHelper from '../../services/providers/helpers/githubHelper.js';
+import gitlabHelper from '../../services/providers/helpers/gitlabHelper.js';
+import wordpressHelper from '../../services/providers/helpers/wordpressHelper.js';
+import zendeskHelper from '../../services/providers/helpers/zendeskHelper.js';
+import publishSvc from '../../services/publishSvc.js';
+import store from '../../store/index.js';
 
 const tokensToArray = (tokens, filter = () => true) => Object.values(tokens)
   .filter(token => filter(token))

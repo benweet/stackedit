@@ -97,18 +97,18 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
-import MenuEntry from './common/MenuEntry';
-import googleHelper from '../../services/providers/helpers/googleHelper';
-import dropboxHelper from '../../services/providers/helpers/dropboxHelper';
-import githubHelper from '../../services/providers/helpers/githubHelper';
-import gitlabHelper from '../../services/providers/helpers/gitlabHelper';
-import googleDriveProvider from '../../services/providers/googleDriveProvider';
-import dropboxProvider from '../../services/providers/dropboxProvider';
-import githubProvider from '../../services/providers/githubProvider';
-import gitlabProvider from '../../services/providers/gitlabProvider';
-import syncSvc from '../../services/syncSvc';
-import store from '../../store';
-import badgeSvc from '../../services/badgeSvc';
+import MenuEntry from './common/MenuEntry.vue';
+import googleHelper from '../../services/providers/helpers/googleHelper.js';
+import dropboxHelper from '../../services/providers/helpers/dropboxHelper.js';
+import githubHelper from '../../services/providers/helpers/githubHelper.js' ;
+import gitlabHelper from '../../services/providers/helpers/gitlabHelper.js';
+import googleDriveProvider from '../../services/providers/googleDriveProvider.js';
+import dropboxProvider from '../../services/providers/dropboxProvider.js';
+import githubProvider from '../../services/providers/githubProvider.js';
+import gitlabProvider from '../../services/providers/gitlabProvider.js';
+import syncSvc from '../../services/syncSvc.js';
+import store from '../../store/index.js';
+import badgeSvc from '../../services/badgeSvc.js';
 
 const tokensToArray = (tokens, filter = () => true) => Object.values(tokens)
   .filter(token => filter(token))

@@ -17,9 +17,9 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import ModalInner from './common/ModalInner';
-import utils from '../../services/utils';
-import store from '../../store';
+import ModalInner from './common/ModalInner.vue';
+import utils from '../../services/utils.js';
+import store from '../../store/index.js';
 
 export default {
   components: {

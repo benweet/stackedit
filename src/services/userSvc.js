@@ -1,5 +1,5 @@
-import store from '../store';
-import utils from './utils';
+import store from '../store/index.js';
+import utils from './utils.js';
 
 const refreshUserInfoAfter = 60 * 60 * 1000; // 60 minutes
 

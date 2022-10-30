@@ -48,9 +48,9 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import ModalInner from './common/ModalInner';
-import store from '../../store';
-import badgeSvc from '../../services/badgeSvc';
+import ModalInner from './common/ModalInner.vue';
+import store from '../../store/index.js';
+import badgeSvc from '../../services/badgeSvc.js';
 
 export default {
   components: {

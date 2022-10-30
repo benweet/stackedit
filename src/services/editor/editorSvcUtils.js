@@ -1,7 +1,7 @@
 import DiffMatchPatch from 'diff-match-patch';
-import cledit from './cledit';
-import animationSvc from '../animationSvc';
-import store from '../../store';
+import cledit from './cledit/index.js';
+import animationSvc from '../animationSvc.js';
+import store from '../../store/index.js';
 
 const diffMatchPatch = new DiffMatchPatch();
 

@@ -1,8 +1,8 @@
-import providerRegistry from './providerRegistry';
-import emptyContent from '../../../data/empties/emptyContent';
-import utils from '../../utils';
-import store from '../../../store';
-import workspaceSvc from '../../workspaceSvc';
+import providerRegistry from './providerRegistry.js';
+import emptyContent from '../../../data/empties/emptyContent.js';
+import utils from '../../utils.js';
+import store from '../../../store/index.js';
+import workspaceSvc from '../../workspaceSvc.js';
 
 const dataExtractor = /<!--stackedit_data:([A-Za-z0-9+/=\s]+)-->\s*$/;
 

@@ -1,5 +1,5 @@
 import markdownItEmoji from 'markdown-it-emoji';
-import extensionSvc from '../services/extensionSvc';
+import extensionSvc from '../services/extensionSvc.js';
 
 extensionSvc.onGetOptions((options, properties) => {
   options.emoji = properties.extensions.emoji.enabled;
@@ -10,4 +10,4 @@ extensionSvc.onInitConverter(1, (markdown, options) => {
   if (options.emoji) {
     markdown.use(markdownItEmoji, options.emojiShortcuts ? {} : { shortcuts: {} });
   }
-});
+})

@@ -27,9 +27,9 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
-import ExplorerNode from './ExplorerNode';
-import explorerSvc from '../services/explorerSvc';
-import store from '../store';
+import ExplorerNode from './ExplorerNode.vue';
+import explorerSvc from '../services/explorerSvc.js';
+import store from '../store/index.js';
 
 export default {
   components: {

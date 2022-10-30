@@ -1,6 +1,6 @@
-import cledit from '../editor/cledit';
-import editorSvc from '../editorSvc';
-import store from '../../store';
+import cledit from '../editor/cledit/index.js';
+import editorSvc from '../editorSvc.js';
+import store from '../../store/index.js';
 
 const { Keystroke } = cledit;
 const indentRegexp = /^ {0,3}>[ ]*|^[ \t]*[*+-][ \t](?:\[[ xX]\][ \t])?|^([ \t]*)\d+\.[ \t](?:\[[ xX]\][ \t])?|^\s+/;
@@ -182,6 +182,7 @@ function tabKeyHandler(evt, state) {
   return true;
 }
 
+//TODO fix
 editorSvc.$on('inited', () => {
   editorSvc.clEditor.addKeystroke(new Keystroke(enterKeyHandler, 50));
   editorSvc.clEditor.addKeystroke(new Keystroke(tabKeyHandler, 50));

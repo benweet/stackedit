@@ -1,6 +1,6 @@
-import store from '../../store';
-import animationSvc from '../animationSvc';
-import editorSvc from '../editorSvc';
+import store from '../../store/index.js';
+import animationSvc from '../animationSvc.js';
+import editorSvc from '../editorSvc.js';
 
 let editorScrollerElt;
 let previewScrollerElt;
@@ -172,6 +172,7 @@ store.watch(
   },
 );
 
+//TODO fix
 editorSvc.$on('previewCtxMeasured', (previewCtxMeasured) => {
   if (previewCtxMeasured) {
     ({ sectionDescList } = previewCtxMeasured);

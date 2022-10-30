@@ -63,13 +63,12 @@
 </template>
 
 <script>
-import Vue from 'vue';
 import { mapGetters, mapActions } from 'vuex';
-import ModalInner from './common/ModalInner';
-import workspaceSvc from '../../services/workspaceSvc';
-import store from '../../store';
-import badgeSvc from '../../services/badgeSvc';
-import localDbSvc from '../../services/localDbSvc';
+import ModalInner from './common/ModalInner.vue';
+import workspaceSvc from '../../services/workspaceSvc.js';
+import store from '../../store/index.js';
+import badgeSvc from '../../services/badgeSvc.js';
+import localDbSvc from '../../services/localDbSvc.js';
 
 export default {
   components: {
@@ -132,7 +131,7 @@ export default {
   created() {
     Object.keys(this.workspacesById).forEach(async (workspaceId) => {
       const cancel = localDbSvc.getWorkspaceItems(workspaceId, () => {
-        Vue.set(this.availableOffline, workspaceId, true);
+        this.availableOffline[workspaceId] = true;
         cancel();
       });
     });

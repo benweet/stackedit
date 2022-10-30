@@ -24,8 +24,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import editorSvc from '../services/editorSvc';
-import utils from '../services/utils';
+import editorSvc from '../services/editorSvc.js';
+import utils from '../services/utils.js';
 
 class Stat {
   constructor(name, regex) {

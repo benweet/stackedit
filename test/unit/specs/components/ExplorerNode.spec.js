@@ -1,9 +1,9 @@
 import { shallowMount } from '@vue/test-utils';
-import ExplorerNode from '../../../../src/components/ExplorerNode';
-import store from '../../../../src/store';
-import workspaceSvc from '../../../../src/services/workspaceSvc';
-import explorerSvc from '../../../../src/services/explorerSvc';
-import specUtils from '../specUtils';
+import ExplorerNode from '../../../../src/components/ExplorerNode.vue';
+import store from '../../../../src/store/index.js';
+import workspaceSvc from '../../../../src/services/workspaceSvc.js';
+import explorerSvc from '../../../../src/services/explorerSvc.js';
+import specUtils from '../specUtils.js';
 
 const makeFileNode = async () => {
   const file = await workspaceSvc.createFile({}, true);

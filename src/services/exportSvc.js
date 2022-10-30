@@ -1,11 +1,11 @@
 import FileSaver from 'file-saver';
 import TemplateWorker from 'worker-loader!./templateWorker.js'; // eslint-disable-line
-import localDbSvc from './localDbSvc';
-import markdownConversionSvc from './markdownConversionSvc';
-import extensionSvc from './extensionSvc';
-import utils from './utils';
-import store from '../store';
-import htmlSanitizer from '../libs/htmlSanitizer';
+import localDbSvc from './localDbSvc.js';
+import markdownConversionSvc from './markdownConversionSvc.js';
+import extensionSvc from './extensionSvc.js';
+import utils from './utils.js';
+import store from '../store/index.js';
+import htmlSanitizer from '../libs/htmlSanitizer.js';
 
 function groupHeadings(headings, level = 1) {
   const result = [];

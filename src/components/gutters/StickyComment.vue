@@ -7,8 +7,8 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
-import Comment from './Comment';
-import NewComment from './NewComment';
+import Comment from './Comment.vue';
+import NewComment from './NewComment.vue';
 
 export default {
   components: {

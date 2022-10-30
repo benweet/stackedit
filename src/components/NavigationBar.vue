@@ -48,16 +48,16 @@
 
 <script>
 import { mapState, mapMutations, mapGetters, mapActions } from 'vuex';
-import editorSvc from '../services/editorSvc';
-import syncSvc from '../services/syncSvc';
-import publishSvc from '../services/publishSvc';
-import animationSvc from '../services/animationSvc';
-import tempFileSvc from '../services/tempFileSvc';
-import utils from '../services/utils';
-import pagedownButtons from '../data/pagedownButtons';
-import store from '../store';
-import workspaceSvc from '../services/workspaceSvc';
-import badgeSvc from '../services/badgeSvc';
+import editorSvc from '../services/editorSvc.js';
+import syncSvc from '../services/syncSvc.js';
+import publishSvc from '../services/publishSvc.js';
+import animationSvc from '../services/animationSvc.js';
+import tempFileSvc from '../services/tempFileSvc.js';
+import utils from '../services/utils.js';
+import pagedownButtons from '../data/pagedownButtons.js';
+import store from '../store/index.js';
+import workspaceSvc from '../services/workspaceSvc.js';
+import badgeSvc from '../services/badgeSvc.js';
 
 // According to mousetrap
 const mod = /Mac|iPod|iPhone|iPad/.test(navigator.platform) ? 'Meta' : 'Ctrl';

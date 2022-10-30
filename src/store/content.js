@@ -1,9 +1,9 @@
 import DiffMatchPatch from 'diff-match-patch';
-import moduleTemplate from './moduleTemplate';
-import empty from '../data/empties/emptyContent';
-import utils from '../services/utils';
-import cledit from '../services/editor/cledit';
-import badgeSvc from '../services/badgeSvc';
+import moduleTemplate from './moduleTemplate.js';
+import empty from '../data/empties/emptyContent.js';
+import utils from '../services/utils.js';
+import cledit from '../services/editor/cledit/index.js';
+import badgeSvc from '../services/badgeSvc.js';
 
 const diffMatchPatch = new DiffMatchPatch();
 

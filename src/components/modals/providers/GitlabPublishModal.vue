@@ -43,9 +43,9 @@
 </template>
 
 <script>
-import gitlabProvider from '../../../services/providers/gitlabProvider';
-import modalTemplate from '../common/modalTemplate';
-import utils from '../../../services/utils';
+import gitlabProvider from '../../../services/providers/gitlabProvider.js';
+import modalTemplate from '../common/modalTemplate.js';
+import utils from '../../../services/utils.js';
 
 export default modalTemplate({
   data: () => ({

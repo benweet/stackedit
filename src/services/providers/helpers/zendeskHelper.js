@@ -1,6 +1,6 @@
-import networkSvc from '../../networkSvc';
-import store from '../../../store';
-import badgeSvc from '../../badgeSvc';
+import networkSvc from '../../networkSvc.js';
+import store from '../../../store/index.js';
+import badgeSvc from '../../badgeSvc.js';
 
 const request = (token, options) => networkSvc.request({
   ...options,

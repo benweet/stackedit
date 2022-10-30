@@ -1,22 +1,35 @@
-var path = require('path')
-var webpack = require('webpack')
-var utils = require('./utils')
-var config = require('../config')
-var VueLoaderPlugin = require('vue-loader/lib/plugin')
-var vueLoaderConfig = require('./vue-loader.conf')
-var StylelintPlugin = require('stylelint-webpack-plugin')
+import { fileURLToPath } from 'url';
+
+import path from 'path'
+import webpack from 'webpack'
+import utils from './utils.js'
+import config from '../config/index.js'
+import {VueLoaderPlugin} from 'vue-loader'
+import vueLoaderConfig from './vue-loader.conf.js'
+import StylelintPlugin from 'stylelint-webpack-plugin'
+import packageConfig from '../package.json' assert {type:'json'}
 
 function resolve (dir) {
+  const __filename = fileURLToPath(import.meta.url);
+
+  const __dirname = path.dirname(__filename)
   return path.join(__dirname, '..', dir)
 }
 
-module.exports = {
+import ESLintPlugin from 'eslint-webpack-plugin'
+
+const options = {
+  extensions: [`js`, `jsx`],
+  exclude: [
+    `/node_modules/`,
+    `/bower_components/`,
+  ],
+}
+
+export default {
+  mode: 'development', //add this line here
   entry: {
     app: './src/'
-  },
-  node: {
-    // For mermaid
-    fs: 'empty' // jison generated code requires 'fs'
   },
   output: {
     path: config.build.assetsRoot,
@@ -29,19 +42,14 @@ module.exports = {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       '@': resolve('src')
+    },
+    fallback: {
+      fs: false,
+      path: false
     }
   },
   module: {
     rules: [
-      {
-        test: /\.(js|vue)$/,
-        loader: 'eslint-loader',
-        enforce: 'pre',
-        include: [resolve('src'), resolve('test')],
-        options: {
-          formatter: require('eslint-friendly-formatter')
-        }
-      },
       {
         test: /\.vue$/,
         loader: 'vue-loader',
@@ -103,7 +111,7 @@ module.exports = {
       files: ['**/*.vue', '**/*.scss']
     }),
     new webpack.DefinePlugin({
-      VERSION: JSON.stringify(require('../package.json').version)
+      VERSION: JSON.stringify(packageConfig.version)
     })
   ]
 }

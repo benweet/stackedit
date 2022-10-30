@@ -50,20 +50,20 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
-import NavigationBar from './NavigationBar';
-import ButtonBar from './ButtonBar';
-import StatusBar from './StatusBar';
-import Explorer from './Explorer';
-import SideBar from './SideBar';
-import Editor from './Editor';
-import Preview from './Preview';
-import Tour from './Tour';
-import StickyComment from './gutters/StickyComment';
-import CurrentDiscussion from './gutters/CurrentDiscussion';
-import FindReplace from './FindReplace';
-import editorSvc from '../services/editorSvc';
-import markdownConversionSvc from '../services/markdownConversionSvc';
-import store from '../store';
+import NavigationBar from './NavigationBar.vue';
+import ButtonBar from './ButtonBar.vue';
+import StatusBar from './StatusBar.vue';
+import Explorer from './Explorer.vue';
+import SideBar from './SideBar.vue';
+import Editor from './Editor.vue';
+import Preview from './Preview.vue';
+import Tour from './Tour.vue';
+import StickyComment from './gutters/StickyComment.vue';
+import CurrentDiscussion from './gutters/CurrentDiscussion.vue';
+import FindReplace from './FindReplace.vue';
+import editorSvc from '../services/editorSvc.js';
+import markdownConversionSvc from '../services/markdownConversionSvc.js';
+import store from '../store/index.js';
 
 export default {
   components: {

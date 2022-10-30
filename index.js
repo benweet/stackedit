@@ -1,17 +1,19 @@
+import { app } from './src/VueApp.js';
 const env = require('./config/prod.env');
 
+console.log(app)
 Object.keys(env).forEach((key) => {
   if (!process.env[key]) {
     process.env[key] = JSON.parse(env[key]);
   }
 });
 
-const http = require('http');
-const express = require('express');
-
+import http from 'http'
+import express from 'express'
+import server from './server'
 const app = express();
 
-require('./server')(app);
+server(app);
 
 const port = parseInt(process.env.PORT || 8080, 10);
 const httpServer = http.createServer(app);

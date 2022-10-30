@@ -1,7 +1,7 @@
-import networkSvc from '../../networkSvc';
-import utils from '../../utils';
-import store from '../../../store';
-import userSvc from '../../userSvc';
+import networkSvc from '../../networkSvc.js';
+import utils from '../../utils.js';
+import store from '../../../store/index.js';
+import userSvc from '../../userSvc.js';
 
 const request = async (token, options = {}) => {
   const baseUrl = `${token.dbUrl}/`;

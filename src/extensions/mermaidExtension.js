@@ -1,6 +1,6 @@
 import 'mermaid';
-import extensionSvc from '../services/extensionSvc';
-import utils from '../services/utils';
+import extensionSvc from '../services/extensionSvc.js';
+import utils from '../services/utils.js';
 
 const config = {
   logLevel: 5,

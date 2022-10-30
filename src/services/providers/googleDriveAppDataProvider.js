@@ -1,7 +1,7 @@
-import store from '../../store';
-import googleHelper from './helpers/googleHelper';
-import Provider from './common/Provider';
-import utils from '../utils';
+import store from '../../store/index.js';
+import googleHelper from './helpers/googleHelper.js';
+import Provider from './common/Provider.js';
+import utils from '../utils.js';
 
 let syncStartPageToken;
 

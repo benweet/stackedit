@@ -7,7 +7,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import editorSvc from '../services/editorSvc';
+import editorSvc from '../services/editorSvc.js';
 
 export default {
   data: () => ({

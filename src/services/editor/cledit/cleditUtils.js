@@ -1,4 +1,4 @@
-import cledit from './cleditCore';
+import cledit from './cleditCore.js';
 
 const Utils = {
   isGecko: 'MozAppearance' in document.documentElement.style,

@@ -1,19 +1,19 @@
-var utils = require('./utils')
-var webpack = require('webpack')
-var config = require('../config')
-var merge = require('webpack-merge')
-var baseWebpackConfig = require('./webpack.base.conf')
-var HtmlWebpackPlugin = require('html-webpack-plugin')
-var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+import Utils from './utils.js'
+import webpack from 'webpack'
+import config from '../config/index.js'
+import {merge} from 'webpack-merge'
+import baseWebpackConfig from './webpack.base.conf.js'
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 // add hot-reload related code to entry chunks
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
   baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])
 })
 
-module.exports = merge(baseWebpackConfig, {
+const res =  merge(baseWebpackConfig, {
+  mode: 'development', //add this line here
   module: {
-    rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap })
+    rules: Utils.styleLoaders({ sourceMap: config.dev.cssSourceMap })
   },
   // cheap-module-eval-source-map is faster for development
   devtool: 'source-map',
@@ -29,7 +29,8 @@ module.exports = merge(baseWebpackConfig, {
       filename: 'index.html',
       template: 'index.html',
       inject: true
-    }),
-    new FriendlyErrorsPlugin()
+    })
   ]
 })
+
+export default {res}

@@ -1,7 +1,7 @@
-const request = require('request');
-const AWS = require('aws-sdk');
-const verifier = require('google-id-token-verifier');
-const conf = require('./conf');
+import request  from 'request';
+import AWS from 'aws-sdk'
+import verifier from 'google-id-token-verifier'
+import conf from './conf.js'
 
 const s3Client = new AWS.S3();
 
@@ -13,7 +13,7 @@ const cb = (resolve, reject) => (err, res) => {
   }
 };
 
-exports.getUser = id => new Promise((resolve, reject) => {
+const getUser = id => new Promise((resolve, reject) => {
   s3Client.getObject({
     Bucket: conf.values.userBucketName,
     Key: id,
@@ -28,7 +28,7 @@ exports.getUser = id => new Promise((resolve, reject) => {
     },
   );
 
-exports.putUser = (id, user) => new Promise((resolve, reject) => {
+const putUser = (id, user) => new Promise((resolve, reject) => {
   s3Client.putObject({
     Bucket: conf.values.userBucketName,
     Key: id,
@@ -36,18 +36,18 @@ exports.putUser = (id, user) => new Promise((resolve, reject) => {
   }, cb(resolve, reject));
 });
 
-exports.removeUser = id => new Promise((resolve, reject) => {
+const removeUser = id => new Promise((resolve, reject) => {
   s3Client.deleteObject({
     Bucket: conf.values.userBucketName,
     Key: id,
   }, cb(resolve, reject));
 });
 
-exports.getUserFromToken = idToken => new Promise((resolve, reject) => verifier
+const getUserFromToken = idToken => new Promise((resolve, reject) => verifier
   .verify(idToken, conf.values.googleClientId, cb(resolve, reject)))
   .then(tokenInfo => exports.getUser(tokenInfo.sub));
 
-exports.userInfo = (req, res) => exports.getUserFromToken(req.query.idToken)
+const userInfo = (req, res) => exports.getUserFromToken(req.query.idToken)
   .then(
     user => res.send(Object.assign({
       sponsorUntil: 0,
@@ -57,7 +57,7 @@ exports.userInfo = (req, res) => exports.getUserFromToken(req.query.idToken)
       .send(err ? err.message || err.toString() : 'invalid_token'),
   );
 
-exports.paypalIpn = (req, res, next) => Promise.resolve()
+const paypalIpn = (req, res, next) => Promise.resolve()
   .then(() => {
     const userId = req.body.custom;
     const paypalEmail = req.body.payer_email;
@@ -96,7 +96,7 @@ exports.paypalIpn = (req, res, next) => Promise.resolve()
         resolve();
       }
     }))
-      .then(() => exports.putUser(userId, {
+      .then(() => putUser(userId, {
         paypalEmail,
         sponsorUntil,
       }))
@@ -104,13 +104,15 @@ exports.paypalIpn = (req, res, next) => Promise.resolve()
   })
   .catch(next);
 
-exports.checkSponsor = (idToken) => {
+const checkSponsor = (idToken) => {
   if (!conf.publicValues.allowSponsorship) {
     return Promise.resolve(true);
   }
   if (!idToken) {
     return Promise.resolve(false);
   }
-  return exports.getUserFromToken(idToken)
+  return getUserFromToken(idToken)
     .then(userInfo => userInfo && userInfo.sponsorUntil > Date.now(), () => false);
 };
+
+export default {getUser,removeUser,paypalIpn,checkSponsor, userInfo}

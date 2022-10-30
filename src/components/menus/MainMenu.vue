@@ -122,13 +122,13 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import MenuEntry from './common/MenuEntry';
-import providerRegistry from '../../services/providers/common/providerRegistry';
-import UserImage from '../UserImage';
-import googleHelper from '../../services/providers/helpers/googleHelper';
-import syncSvc from '../../services/syncSvc';
-import userSvc from '../../services/userSvc';
-import store from '../../store';
+import MenuEntry from './common/MenuEntry.vue';
+import providerRegistry from '../../services/providers/common/providerRegistry.js';
+import UserImage from '../UserImage.vue';
+import googleHelper from '../../services/providers/helpers/googleHelper.js';
+import syncSvc from '../../services/syncSvc.js';
+import userSvc from '../../services/userSvc.js';
+import store from '../../store/index.js';
 
 export default {
   components: {

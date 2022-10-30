@@ -1,6 +1,6 @@
-import utils from './utils';
-import store from '../store';
-import constants from '../data/constants';
+import utils from './utils.js';
+import store from '../store/index.js';
+import constants from '../data/constants.js';
 
 const scriptLoadingPromises = Object.create(null);
 const authorizeTimeout = 6 * 60 * 1000; // 2 minutes

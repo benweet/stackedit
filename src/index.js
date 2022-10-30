@@ -1,18 +1,18 @@
-import Vue from 'vue';
-import 'babel-polyfill';
-import 'indexeddbshim/dist/indexeddbshim';
-import * as OfflinePluginRuntime from 'offline-plugin/runtime';
-import './extensions';
-import './services/optional';
-import './icons';
-import App from './components/App';
-import store from './store';
-import localDbSvc from './services/localDbSvc';
+import store from './store/index.js';
+import localDbSvc from './services/localDbSvc.js';
+import './icons/index.js';
+import 'indexeddbshim/dist/indexeddbshim.js';
+import * as OfflinePluginRuntime from 'offline-plugin/runtime.js';
+import './extensions/index.js';
+import './services/optional/index.js';
+import { app } from './VueApp.js';
+
+
+app.mount('#app')
 
 if (!indexedDB) {
   throw new Error('Your browser is not supported. Please upgrade to the latest version.');
 }
-
 OfflinePluginRuntime.install({
   onUpdateReady: () => {
     // Tells to new SW to take control immediately
@@ -49,11 +49,6 @@ if (!localStorage.installPrompted) {
   });
 }
 
-Vue.config.productionTip = false;
 
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  store,
-  render: h => h(App),
-});
+
+console.log("Started")

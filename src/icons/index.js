@@ -1,112 +1,112 @@
-import Vue from 'vue';
-import Provider from './Provider';
-import FormatBold from './FormatBold';
-import FormatItalic from './FormatItalic';
-import FormatQuoteClose from './FormatQuoteClose';
-import LinkVariant from './LinkVariant';
-import FileImage from './FileImage';
-import Table from './Table';
-import FormatListNumbers from './FormatListNumbers';
-import FormatListBulleted from './FormatListBulleted';
-import FormatSize from './FormatSize';
-import FormatStrikethrough from './FormatStrikethrough';
-import StatusBar from './StatusBar';
-import NavigationBar from './NavigationBar';
-import SidePreview from './SidePreview';
-import Eye from './Eye';
-import Settings from './Settings';
-import FilePlus from './FilePlus';
-import FileMultiple from './FileMultiple';
-import FolderPlus from './FolderPlus';
-import Delete from './Delete';
-import Close from './Close';
-import Pen from './Pen';
-import Target from './Target';
-import ArrowLeft from './ArrowLeft';
-import HelpCircle from './HelpCircle';
-import Toc from './Toc';
-import Login from './Login';
-import Logout from './Logout';
-import Sync from './Sync';
-import SyncOff from './SyncOff';
-import Upload from './Upload';
-import ViewList from './ViewList';
-import Download from './Download';
-import CodeTags from './CodeTags';
-import CodeBraces from './CodeBraces';
-import OpenInNew from './OpenInNew';
-import Information from './Information';
-import Alert from './Alert';
-import SignalOff from './SignalOff';
-import Folder from './Folder';
-import ScrollSync from './ScrollSync';
-import Printer from './Printer';
-import Undo from './Undo';
-import Redo from './Redo';
-import ContentSave from './ContentSave';
-import Message from './Message';
-import History from './History';
-import Database from './Database';
-import Magnify from './Magnify';
-import FormatListChecks from './FormatListChecks';
-import CheckCircle from './CheckCircle';
-import ContentCopy from './ContentCopy';
-import Key from './Key';
-import DotsHorizontal from './DotsHorizontal';
-import Seal from './Seal';
+import Provider from './Provider.vue';
+import FormatBold from './FormatBold.vue';
+import FormatItalic from './FormatItalic.vue';
+import FormatQuoteClose from './FormatQuoteClose.vue';
+import LinkVariant from './LinkVariant.vue';
+import FileImage from './FileImage.vue';
+import Table from './Table.vue';
+import FormatListNumbers from './FormatListNumbers.vue';
+import FormatListBulleted from './FormatListBulleted.vue';
+import FormatSize from './FormatSize.vue';
+import FormatStrikethrough from './FormatStrikethrough.vue';
+import StatusBar from './StatusBar.vue';
+import NavigationBar from './NavigationBar.vue';
+import SidePreview from './SidePreview.vue';
+import Eye from './Eye.vue';
+import Settings from './Settings.vue';
+import FilePlus from './FilePlus.vue';
+import FileMultiple from './FileMultiple.vue';
+import FolderPlus from './FolderPlus.vue';
+import Delete from './Delete.vue';
+import Close from './Close.vue';
+import Pen from './Pen.vue';
+import Target from './Target.vue';
+import ArrowLeft from './ArrowLeft.vue';
+import HelpCircle from './HelpCircle.vue';
+import Toc from './Toc.vue';
+import Login from './Login.vue';
+import Logout from './Logout.vue';
+import Sync from './Sync.vue';
+import SyncOff from './SyncOff.vue';
+import Upload from './Upload.vue';
+import ViewList from './ViewList.vue';
+import Download from './Download.vue';
+import CodeTags from './CodeTags.vue';
+import CodeBraces from './CodeBraces.vue';
+import OpenInNew from './OpenInNew.vue';
+import Information from './Information.vue';
+import Alert from './Alert.vue';
+import SignalOff from './SignalOff.vue';
+import Folder from './FolderPlus.vue';
+import ScrollSync from './ScrollSync.vue';
+import Printer from './Printer.vue';
+import Undo from './Undo.vue';
+import Redo from './Redo.vue';
+import ContentSave from './ContentSave.vue';
+import Message from './Message.vue';
+import History from './History.vue';
+import Database from './Database.vue';
+import Magnify from './Magnify.vue';
+import FormatListChecks from './FormatListChecks.vue';
+import CheckCircle from './CheckCircle.vue';
+import ContentCopy from './ContentCopy.vue';
+import Key from './Key.vue';
+import DotsHorizontal from './DotsHorizontal.vue';
+import Seal from './Seal.vue';
+import { app } from '../VueApp.js';
 
-Vue.component('iconProvider', Provider);
-Vue.component('iconFormatBold', FormatBold);
-Vue.component('iconFormatItalic', FormatItalic);
-Vue.component('iconFormatQuoteClose', FormatQuoteClose);
-Vue.component('iconLinkVariant', LinkVariant);
-Vue.component('iconFileImage', FileImage);
-Vue.component('iconTable', Table);
-Vue.component('iconFormatListNumbers', FormatListNumbers);
-Vue.component('iconFormatListBulleted', FormatListBulleted);
-Vue.component('iconFormatSize', FormatSize);
-Vue.component('iconFormatStrikethrough', FormatStrikethrough);
-Vue.component('iconStatusBar', StatusBar);
-Vue.component('iconNavigationBar', NavigationBar);
-Vue.component('iconSidePreview', SidePreview);
-Vue.component('iconEye', Eye);
-Vue.component('iconSettings', Settings);
-Vue.component('iconFilePlus', FilePlus);
-Vue.component('iconFileMultiple', FileMultiple);
-Vue.component('iconFolderPlus', FolderPlus);
-Vue.component('iconDelete', Delete);
-Vue.component('iconClose', Close);
-Vue.component('iconPen', Pen);
-Vue.component('iconTarget', Target);
-Vue.component('iconArrowLeft', ArrowLeft);
-Vue.component('iconHelpCircle', HelpCircle);
-Vue.component('iconToc', Toc);
-Vue.component('iconLogin', Login);
-Vue.component('iconLogout', Logout);
-Vue.component('iconSync', Sync);
-Vue.component('iconSyncOff', SyncOff);
-Vue.component('iconUpload', Upload);
-Vue.component('iconViewList', ViewList);
-Vue.component('iconDownload', Download);
-Vue.component('iconCodeTags', CodeTags);
-Vue.component('iconCodeBraces', CodeBraces);
-Vue.component('iconOpenInNew', OpenInNew);
-Vue.component('iconInformation', Information);
-Vue.component('iconAlert', Alert);
-Vue.component('iconSignalOff', SignalOff);
-Vue.component('iconFolder', Folder);
-Vue.component('iconScrollSync', ScrollSync);
-Vue.component('iconPrinter', Printer);
-Vue.component('iconUndo', Undo);
-Vue.component('iconRedo', Redo);
-Vue.component('iconContentSave', ContentSave);
-Vue.component('iconMessage', Message);
-Vue.component('iconHistory', History);
-Vue.component('iconDatabase', Database);
-Vue.component('iconMagnify', Magnify);
-Vue.component('iconFormatListChecks', FormatListChecks);
-Vue.component('iconCheckCircle', CheckCircle);
-Vue.component('iconContentCopy', ContentCopy);
-Vue.component('iconKey', Key);
-Vue.component('iconDotsHorizontal', DotsHorizontal);
-Vue.component('iconSeal', Seal);
+  app.component('iconProvider', Provider)
+    .component('iconFormatBold', FormatBold)
+    .component('iconFormatItalic', FormatItalic)
+    .component('iconFormatQuoteClose', FormatQuoteClose)
+    .component('iconLinkVariant', LinkVariant)
+    .component('iconFileImage', FileImage)
+    .component('iconTable', Table)
+    .component('iconFormatListNumbers', FormatListNumbers)
+    .component('iconFormatListBulleted', FormatListBulleted)
+    .component('iconFormatSize', FormatSize)
+    .component('iconFormatStrikethrough', FormatStrikethrough)
+    .component('iconStatusBar', StatusBar)
+    .component('iconNavigationBar', NavigationBar)
+    .component('iconSidePreview', SidePreview)
+    .component('iconEye', Eye)
+    .component('iconSettings', Settings)
+    .component('iconFilePlus', FilePlus)
+    .component('iconFileMultiple', FileMultiple)
+    .component('iconFolderPlus', FolderPlus)
+    .component('iconDelete', Delete)
+    .component('iconClose', Close)
+    .component('iconPen', Pen)
+    .component('iconTarget', Target)
+    .component('iconArrowLeft', ArrowLeft)
+    .component('iconHelpCircle', HelpCircle)
+    .component('iconToc', Toc)
+    .component('iconLogin', Login)
+    .component('iconLogout', Logout)
+    .component('iconSync', Sync)
+    .component('iconSyncOff', SyncOff)
+    .component('iconUpload', Upload)
+    .component('iconViewList', ViewList)
+    .component('iconDownload', Download)
+    .component('iconCodeTags', CodeTags)
+    .component('iconCodeBraces', CodeBraces)
+    .component('iconOpenInNew', OpenInNew)
+    .component('iconInformation', Information)
+    .component('iconAlert', Alert)
+    .component('iconSignalOff', SignalOff)
+    .component('iconFolder', Folder)
+    .component('iconScrollSync', ScrollSync)
+    .component('iconPrinter', Printer)
+    .component('iconUndo', Undo)
+    .component('iconRedo', Redo)
+    .component('iconContentSave', ContentSave)
+    .component('iconMessage', Message)
+    .component('iconHistory', History)
+    .component('iconDatabase', Database)
+    .component('iconMagnify', Magnify)
+    .component('iconFormatListChecks', FormatListChecks)
+    .component('iconCheckCircle', CheckCircle)
+    .component('iconContentCopy', ContentCopy)
+    .component('iconKey', Key)
+    .component('iconDotsHorizontal', DotsHorizontal)
+    .component('iconSeal', Seal);

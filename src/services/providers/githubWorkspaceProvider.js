@@ -1,10 +1,10 @@
-import store from '../../store';
-import githubHelper from './helpers/githubHelper';
-import Provider from './common/Provider';
-import utils from '../utils';
-import userSvc from '../userSvc';
-import gitWorkspaceSvc from '../gitWorkspaceSvc';
-import badgeSvc from '../badgeSvc';
+import store from '../../store/index.js';
+import githubHelper from './helpers/githubHelper.js';
+import Provider from './common/Provider.js';
+import utils from '../utils.js';
+import userSvc from '../userSvc.js';
+import gitWorkspaceSvc from '../gitWorkspaceSvc.js';
+import badgeSvc from '../badgeSvc.js';
 
 const getAbsolutePath = ({ id }) =>
   `${store.getters['workspace/currentWorkspace'].path || ''}${id}`;

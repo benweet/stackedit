@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import utils from '../../../services/utils';
+import utils from '../../../services/utils.js';
 
 export default {
   props: ['label', 'info', 'error'],

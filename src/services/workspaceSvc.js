@@ -1,7 +1,7 @@
-import store from '../store';
-import utils from './utils';
-import constants from '../data/constants';
-import badgeSvc from './badgeSvc';
+import store from '../store/index.js';
+import utils from './utils.js';
+import constants from '../data/constants.js';
+import badgeSvc from './badgeSvc.js';
 
 const forbiddenFolderNameMatcher = /^\.stackedit-data$|^\.stackedit-trash$|\.md$|\.sync$|\.publish$/;
 

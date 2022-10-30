@@ -1,9 +1,9 @@
 import DiffMatchPatch from 'diff-match-patch';
-import Prism from 'prismjs';
+import * as Prism from 'prismjs';
 import MarkdownIt from 'markdown-it';
-import markdownGrammarSvc from './markdownGrammarSvc';
-import extensionSvc from './extensionSvc';
-import utils from './utils';
+import markdownGrammarSvc from './markdownGrammarSvc.js';
+import extensionSvc from './extensionSvc.js';
+import utils from './utils.js';
 
 const htmlSectionMarker = '\uF111\uF222\uF333\uF444';
 const diffMatchPatch = new DiffMatchPatch();
@@ -268,6 +268,6 @@ export default {
   highlight(markdown, converter = this.defaultConverter, grammars = this.defaultPrismGrammars) {
     const parsingCtx = this.parseSections(converter, markdown);
     return parsingCtx.sections
-      .map(section => Prism.highlight(section.text, grammars[section.data])).join('');
+      .map(section => Prism.highlight(section.text, grammars[section.data], Prism.languages[this.lang])).join('');
   },
 };

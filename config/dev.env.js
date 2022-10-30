@@ -1,6 +1,8 @@
-var merge = require('webpack-merge')
-var prodEnv = require('./prod.env')
+import {merge} from 'webpack-merge'
+import prodEnv from './prod.env.js'
 
-module.exports = merge(prodEnv, {
+const config = merge(prodEnv, {
   NODE_ENV: '"development"'
 })
+
+export default config

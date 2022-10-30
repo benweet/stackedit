@@ -6,8 +6,8 @@
 
 <script>
 import { mapActions } from 'vuex';
-import editorSvc from '../../services/editorSvc';
-import store from '../../store';
+import editorSvc from '../../services/editorSvc.js';
+import store from '../../store/index.js';
 
 export default {
   data: () => ({

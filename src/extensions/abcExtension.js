@@ -1,5 +1,5 @@
-import renderAbc from 'abcjs/src/api/abc_tunebook_svg';
-import extensionSvc from '../services/extensionSvc';
+import renderAbc from 'abcjs/src/api/abc_tunebook_svg.js';
+import extensionSvc from '../services/extensionSvc.js';
 
 const render = (elt) => {
   const content = elt.textContent;

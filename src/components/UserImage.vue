@@ -4,8 +4,8 @@
 </template>
 
 <script>
-import userSvc from '../services/userSvc';
-import store from '../store';
+import userSvc from '../services/userSvc.js';
+import store from '../store/index.js';
 
 export default {
   props: ['userId'],

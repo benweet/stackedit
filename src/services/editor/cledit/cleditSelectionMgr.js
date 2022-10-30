@@ -1,4 +1,4 @@
-import cledit from './cleditCore';
+import cledit from './cleditCore.js';
 
 function SelectionMgr(editor) {
   const { debounce } = cledit.Utils;

@@ -1,4 +1,4 @@
-import './shortcuts';
-import './keystrokes';
-import './scrollSync';
-import './taskChange';
+import './shortcuts.js';
+import './keystrokes.js';
+import './scrollSync.js';
+import './taskChange.js';

@@ -3,8 +3,8 @@
 </template>
 
 <script>
-import Prism from 'prismjs';
-import cledit from '../services/editor/cledit';
+import * as Prism from 'prismjs';
+import cledit from '../services/editor/cledit/index.js';
 
 export default {
   props: ['value', 'lang', 'disabled'],
@@ -19,7 +19,7 @@ export default {
       clEditor.on('contentChanged', value => this.$emit('changed', value));
       clEditor.init({
         content: this.value,
-        sectionHighlighter: section => Prism.highlight(section.text, Prism.languages[this.lang]),
+        sectionHighlighter: section => Prism.highlight(section.text, Prism.languages[this.lang], Prism.languages[this.lang]),
       });
       clEditor.toggleEditable(!this.disabled);
     }

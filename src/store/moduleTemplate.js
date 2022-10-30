@@ -1,5 +1,4 @@
-import Vue from 'vue';
-import utils from '../services/utils';
+import utils from '../services/utils.js';
 
 export default (empty, simpleHash = false) => {
   // Use Date.now() as a simple hash function, which is ok for not-synced types
@@ -19,20 +18,20 @@ export default (empty, simpleHash = false) => {
         if (!item.hash || !simpleHash) {
           item.hash = hashFunc(item);
         }
-        Vue.set(state.itemsById, item.id, item);
+        state.itemsById[item.id] = item;
       },
       patchItem(state, patch) {
         const item = state.itemsById[patch.id];
         if (item) {
           Object.assign(item, patch);
           item.hash = hashFunc(item);
-          Vue.set(state.itemsById, item.id, item);
+          state.itemsById[item.id] = item;
           return true;
         }
         return false;
       },
       deleteItem(state, id) {
-        Vue.delete(state.itemsById, id);
+        delete state.itemsById[id];
       },
     },
     actions: {},

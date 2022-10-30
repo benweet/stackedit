@@ -26,7 +26,7 @@
 import modalTemplate from './common/modalTemplate';
 import MenuEntry from '../menus/common/MenuEntry';
 import googleHelper from '../../services/providers/helpers/googleHelper';
-import store from '../../store';
+import store from '../../store/index.js';
 
 export default modalTemplate({
   components: {

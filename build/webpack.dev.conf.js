@@ -4,7 +4,7 @@ import config from '../config/index.js'
 import {merge} from 'webpack-merge'
 import baseWebpackConfig from './webpack.base.conf.js'
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import FriendlyErrorsPlugin from 'friendly-errors-webpack-plugin'
+
 // add hot-reload related code to entry chunks
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
   baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])
@@ -29,8 +29,7 @@ const res =  merge(baseWebpackConfig, {
       filename: 'index.html',
       template: 'index.html',
       inject: true
-    }),
-    new FriendlyErrorsPlugin()
+    })
   ]
 })
 

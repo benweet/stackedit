@@ -26,7 +26,9 @@
     "chart": "mkdir -p dist && rm -rf dist/stackedit && cp -r chart dist/stackedit && sed -i.bak -e s/STACKEDIT_VERSION/$npm_package_version/g dist/stackedit/*.yaml && rm dist/stackedit/*.yaml.bak"
   },
   "dependencies": {
+    "@babel/plugin-transform-runtime": "^7.19.6",
     "@babel/polyfill": "^7.12.1",
+    "@babel/runtime": "^7.20.0",
     "@vue/test-utils": "^2.2.1",
     "abcjs": "^6.1.6",
     "aws-sdk": "^2.1243.0",
@@ -83,9 +85,9 @@
     "eslint-plugin-import": "^2.11.0",
     "eventsource-polyfill": "^0.9.6",
     "express": "^4.16.3",
+    "favicons": "^7.0.1",
     "favicons-webpack-plugin": "^6.0.0-alpha.2",
     "file-loader": "^6.2.0",
-    "friendly-errors-webpack-plugin": "^1.7.0",
     "gulp": "^4.0.2",
     "gulp-concat": "^2.6.1",
     "html-webpack-plugin": "^5.5.0",
@@ -100,6 +102,7 @@
     "offline-plugin": "^5.0.3",
     "opn": "^6.0.0",
     "ora": "^6.1.2",
+    "postcss": "^8.1.0",
     "raw-loader": "^4.0.2",
     "replace-in-file": "^6.3.5",
     "rimraf": "^3.0.2",

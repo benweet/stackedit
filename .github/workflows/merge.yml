@@ -10,7 +10,8 @@ on:
   workflow_dispatch: {}
 
 env:
-  IMAGE_NAME: burendouk/stackedit
+  REGISTRY_NAME: burendouk
+  IMAGE_NAME: stackedit
 
 jobs:
   get-publish-version:
@@ -62,4 +63,31 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: ${{ env.IMAGE_NAME }}:latest,${{ env.IMAGE_NAME }}:${{ needs.get-publish-version.outputs.publish-version }}
+          tags: ${{ env.REGISTRY_NAME }}/${{ env.IMAGE_NAME }}:latest,${{ env.REGISTRY_NAME }}/${{ env.IMAGE_NAME }}:${{ needs.get-publish-version.outputs.publish-version }}
+
+  build-push-ecr:
+    runs-on: ubuntu-latest
+    needs: get-publish-version
+    steps:
+      - name: Get release version
+        id: get_version
+        run: echo RELEASE_VERSION=$(echo ${GITHUB_REF:10}) >> $GITHUB_ENV
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-2
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build and push - ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        run: |
+          docker build -t $ECR_REGISTRY/${{ env.IMAGE_NAME }}:latest -t $ECR_REGISTRY/${{ env.IMAGE_NAME }}:${{ needs.get-publish-version.outputs.publish-version }} .
+          docker push $ECR_REGISTRY/${{ env.IMAGE_NAME }}:latest
+          docker push $ECR_REGISTRY/${{ env.IMAGE_NAME }}:${{ needs.get-publish-version.outputs.publish-version }}
+          

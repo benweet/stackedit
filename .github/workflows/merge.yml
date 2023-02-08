@@ -75,8 +75,12 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-skip-session-tagging: true
+          aws-access-key-id: ${{ secrets.ACTIONS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.ACTIONS_SECRET_ACCESS_KEY }}
+          role-to-assume: ${{ secrets.AWS_GHA_ROLE }}
+          role-duration-seconds: 900
+          role-session-name: ${{ github.run_id }}-${{ github.run_number }}
           aws-region: eu-west-2
 
       - name: Login to Amazon ECR
@@ -90,4 +94,3 @@ jobs:
           docker build -t $ECR_REGISTRY/${{ env.IMAGE_NAME }}:latest -t $ECR_REGISTRY/${{ env.IMAGE_NAME }}:${{ needs.get-publish-version.outputs.publish-version }} .
           docker push $ECR_REGISTRY/${{ env.IMAGE_NAME }}:latest
           docker push $ECR_REGISTRY/${{ env.IMAGE_NAME }}:${{ needs.get-publish-version.outputs.publish-version }}
-          

@@ -20,7 +20,7 @@ exports.getUser = id => new Promise((resolve, reject) => {
   }, cb(resolve, reject));
 })
   .then(
-    res => JSON.parse(`${res.Body}`),
+    res => JSON.parse(res.Body.toString('utf-8')),
     (err) => {
       if (err.code !== 'NoSuchKey') {
         throw err;
@@ -33,13 +33,6 @@ exports.putUser = (id, user) => new Promise((resolve, reject) => {
     Bucket: conf.values.userBucketName,
     Key: id,
     Body: JSON.stringify(user),
-  }, cb(resolve, reject));
-});
-
-exports.removeUser = id => new Promise((resolve, reject) => {
-  s3Client.deleteObject({
-    Bucket: conf.values.userBucketName,
-    Key: id,
   }, cb(resolve, reject));
 });
 

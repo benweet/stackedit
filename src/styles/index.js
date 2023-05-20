@@ -1,4 +1,5 @@
 import 'katex/dist/katex.css';
 import './fonts.scss';
 import './prism.scss';
-import './base.scss';
+// import './base.scss';
+import './themes.scss';

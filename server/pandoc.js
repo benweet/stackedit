@@ -68,7 +68,7 @@ exports.generate = (req, res) => {
       const metadata = readJson(req.query.metadata);
       const params = [];
 
-      params.push('--latex-engine=xelatex');
+      params.push('--pdf-engine=xelatex');
       params.push('--webtex=http://chart.apis.google.com/chart?cht=tx&chf=bg,s,FFFFFF00&chco=000000&chl=');
       if (options.toc) {
         params.push('--toc');

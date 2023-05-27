@@ -273,6 +273,12 @@ img {
     border-left-color: #ececec;
   }
 
+  // Hide tex annotations in PDF exports
+  annotation,
+  .katex-mathml {
+    display: none;
+  }
+
   .stackedit__html {
     padding-left: 0;
     padding-right: 0;

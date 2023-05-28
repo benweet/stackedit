@@ -4,15 +4,19 @@ import store from '../../../store';
 import userSvc from '../../userSvc';
 import badgeSvc from '../../badgeSvc';
 
-const request = ({ accessToken, serverUrl }, options) => networkSvc.request({
+const fullRequest = ({ accessToken, serverUrl }, options) => networkSvc.request({
   ...options,
   url: `${serverUrl}/api/v4/${options.url}`,
   headers: {
     ...options.headers || {},
     Authorization: `Bearer ${accessToken}`,
   },
-})
-  .then(res => res.body);
+});
+
+const request = ({ accessToken, serverUrl }, options) => fullRequest({
+  accessToken,
+  serverUrl,
+}, options).then(res => res.body);
 
 const getCommitMessage = (name, path) => {
   const message = store.getters['data/computedSettings'].git[name];
@@ -114,17 +118,33 @@ export default {
    * https://docs.gitlab.com/ee/api/repositories.html#list-repository-tree
    */
   async getTree({
+    existingBody, // Used for recursive requests, intially empty
     token,
     projectId,
     branch,
+    page,
   }) {
-    return request(token, {
+    const pageResponse = await fullRequest(token, {
       url: `projects/${encodeURIComponent(projectId)}/repository/tree`,
       params: {
         ref: branch,
         recursive: true,
-        per_page: 9999,
+        per_page: 100,
+        page,
       },
+    });
+    const combinedBody = pageResponse.body.concat(existingBody);
+    const nextPage = new Headers(pageResponse.headers).get('X-Next-Page');
+    // eslint-disable-next-line eqeqeq
+    if (nextPage == '') {
+      return combinedBody;
+    }
+    return this.getTree({
+      existingBody: combinedBody,
+      token,
+      projectId,
+      branch,
+      page: nextPage,
     });
   },
 

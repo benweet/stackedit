@@ -120,10 +120,14 @@ function Highlighter(editor) {
         return false;
       });
 
-      if (leftIndex - rightIndex > sectionList.length) {
-        // Prevent overlap
-        rightIndex = leftIndex - sectionList.length;
-      }
+      const preventOverlap = () => {
+        if (leftIndex - rightIndex > sectionList.length) {
+          rightIndex = leftIndex - sectionList.length;
+        }
+        return rightIndex;
+      };
+
+      rightIndex = preventOverlap();
 
       const leftSections = sectionList.slice(0, leftIndex);
       modifiedSections = newSectionList.slice(leftIndex, newSectionList.length + rightIndex);
@@ -172,18 +176,22 @@ function Highlighter(editor) {
         contentElt.appendChild(newSectionEltList);
       }
 
-      // Remove unauthorized nodes (text nodes outside of sections or
-      // duplicated sections via copy/paste)
-      let childNode = contentElt.firstChild;
-      while (childNode) {
-        const nextNode = childNode.nextSibling;
-        if (!childNode.section) {
-          contentElt.removeChild(childNode);
+      const lacksSection = node => !node.section;
+
+      const removeUnauthorizedChildNodesFrom = (parentNode) => {
+        let childNode = parentNode.firstChild;
+        while (childNode) {
+          const nextNode = childNode.nextSibling;
+          if (lacksSection(childNode)) {
+            parentNode.removeChild(childNode);
+          }
+          childNode = nextNode;
         }
-        childNode = nextNode;
-      }
-      this.addTrailingNode();
-      this.$trigger('highlighted');
+        this.addTrailingNode();
+        this.$trigger('highlighted');
+      };
+
+      removeUnauthorizedChildNodesFrom(contentElt);
 
       if (editor.selectionMgr.hasFocus()) {
         editor.selectionMgr.restoreSelection();

@@ -21,8 +21,8 @@ const request = async (token, options = {}) => {
         url: utils.resolveUrl(baseUrl, '../_session'),
         withCredentials: true,
         body: {
-          name,
-          password,
+          name: name || '',
+          password: password || '',
         },
       });
     } catch (err) {

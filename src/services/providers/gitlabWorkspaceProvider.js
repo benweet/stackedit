@@ -49,7 +49,7 @@ export default new Provider({
     const { serverUrl, branch } = utils.queryParams;
     const workspaceParams = this.getWorkspaceParams({ serverUrl, branch });
     if (!branch) {
-      workspaceParams.branch = 'master';
+      workspaceParams.branch = 'main';
     }
 
     // Extract project path param

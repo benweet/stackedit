@@ -21,7 +21,7 @@
       <form-entry label="Branch" info="optional">
         <input slot="field" class="textfield" type="text" v-model.trim="branch" @keydown.enter="resolve()">
         <div class="form-entry__info">
-          If not supplied, the <code>master</code> branch will be used.
+          If not supplied, the <code>main</code> branch will be used.
         </div>
       </form-entry>
       <form-entry label="Template">
@@ -74,7 +74,7 @@ export default modalTemplate({
           this.config.token,
           parsedRepo.owner,
           parsedRepo.repo,
-          this.branch || 'master',
+          this.branch || 'main',
           this.path,
         );
         location.templateId = this.selectedTemplate;

@@ -117,7 +117,8 @@ cledit.defaultKeystrokes = [
   }),
 
   new Keystroke((evt, state, editor) => {
-    if (evt.which !== 8 /* backspace */ && evt.which !== 46 /* delete */) {
+    if (evt.which !== 8 /* backspace */
+     && (evt.which !== 46 || evt.shiftKey) /* delete, but not shift-delete */) {
       return false;
     }
 

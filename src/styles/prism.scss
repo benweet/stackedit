@@ -71,3 +71,11 @@
     font-style: italic;
   }
 }
+@media print {
+  pre, code {
+    overflow: visible !important;
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+  }
+}
+

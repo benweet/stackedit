@@ -1,7 +1,6 @@
 import Mousetrap from 'mousetrap';
 import store from '../../store';
 import editorSvc from '../../services/editorSvc';
-import syncSvc from '../../services/syncSvc';
 
 // Skip shortcuts if modal is open or editor is hidden
 Mousetrap.prototype.stopCallback = () => store.getters['modal/config'] || !store.getters['content/isCurrentEditable'];
@@ -34,9 +33,6 @@ const methods = {
   heading: pagedownHandler('heading'),
   hr: pagedownHandler('hr'),
   sync() {
-    if (syncSvc.isSyncPossible()) {
-      syncSvc.requestSync();
-    }
     return true;
   },
   find: findReplaceOpener('find'),

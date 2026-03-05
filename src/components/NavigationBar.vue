@@ -11,22 +11,10 @@
       <button class="navigation-bar__button navigation-bar__button--stackedit button" v-else tour-step-anchor="menu" @click="toggleSideBar()" v-title="'Toggle side bar'"><icon-provider provider-id="stackedit"></icon-provider></button>
     </div>
     <div class="navigation-bar__inner navigation-bar__inner--right navigation-bar__inner--title flex flex--row">
-      <!-- Spinner -->
-      <div class="navigation-bar__spinner">
-        <div v-if="!offline && showSpinner" class="spinner"></div>
-        <icon-sync-off v-if="offline"></icon-sync-off>
-      </div>
       <!-- Title -->
       <div class="navigation-bar__title navigation-bar__title--fake text-input"></div>
       <div class="navigation-bar__title navigation-bar__title--text text-input" :style="{width: titleWidth + 'px'}">{{title}}</div>
       <input class="navigation-bar__title navigation-bar__title--input text-input" :class="{'navigation-bar__title--focus': titleFocus, 'navigation-bar__title--scrolling': titleScrolling}" :style="{width: titleWidth + 'px'}" @focus="editTitle(true)" @blur="editTitle(false)" @keydown.enter="submitTitle(false)" @keydown.esc.stop="submitTitle(true)" @mouseenter="titleHover = true" @mouseleave="titleHover = false" v-model="title">
-      <!-- Sync/Publish -->
-      <div class="flex flex--row" :class="{'navigation-bar__hidden': styles.hideLocations}">
-        <a class="navigation-bar__button navigation-bar__button--location button" :class="{'navigation-bar__button--blink': location.id === currentLocation.id}" v-for="location in syncLocations" :key="location.id" :href="location.url" target="_blank" v-title="'Synchronized location'"><icon-provider :provider-id="location.providerId"></icon-provider></a>
-        <button class="navigation-bar__button navigation-bar__button--sync button" :disabled="!isSyncPossible || isSyncRequested || offline" @click="requestSync" v-title="'Synchronize now'"><icon-sync></icon-sync></button>
-        <a class="navigation-bar__button navigation-bar__button--location button" :class="{'navigation-bar__button--blink': location.id === currentLocation.id}" v-for="location in publishLocations" :key="location.id" :href="location.url" target="_blank" v-title="'Publish location'"><icon-provider :provider-id="location.providerId"></icon-provider></a>
-        <button class="navigation-bar__button navigation-bar__button--publish button" :disabled="!publishLocations.length || isPublishRequested || offline" @click="requestPublish" v-title="'Publish now'"><icon-upload></icon-upload></button>
-      </div>
       <!-- Revision -->
       <div class="flex flex--row" v-if="revisionContent">
         <button class="navigation-bar__button navigation-bar__button--revision navigation-bar__button--restore button" @click="restoreRevision">Restore</button>
@@ -49,15 +37,12 @@
 <script>
 import { mapState, mapMutations, mapGetters, mapActions } from 'vuex';
 import editorSvc from '../services/editorSvc';
-import syncSvc from '../services/syncSvc';
-import publishSvc from '../services/publishSvc';
 import animationSvc from '../services/animationSvc';
 import tempFileSvc from '../services/tempFileSvc';
 import utils from '../services/utils';
 import pagedownButtons from '../data/pagedownButtons';
 import store from '../store';
 import workspaceSvc from '../services/workspaceSvc';
-import badgeSvc from '../services/badgeSvc';
 
 // According to mousetrap
 const mod = /Mac|iPod|iPhone|iPad/.test(navigator.platform) ? 'Meta' : 'Ctrl';
@@ -89,12 +74,6 @@ export default {
   computed: {
     ...mapState([
       'light',
-      'offline',
-    ]),
-    ...mapState('queue', [
-      'isSyncRequested',
-      'isPublishRequested',
-      'currentLocation',
     ]),
     ...mapState('layout', [
       'canUndo',
@@ -106,25 +85,12 @@ export default {
     ...mapGetters('layout', [
       'styles',
     ]),
-    ...mapGetters('syncLocation', {
-      syncLocations: 'current',
-    }),
-    ...mapGetters('publishLocation', {
-      publishLocations: 'current',
-    }),
     pagedownButtons() {
       return pagedownButtons.map(button => ({
         ...button,
         titleWithShortcut: `${button.title}${getShortcut(button.method)}`,
         iconClass: `icon-${button.icon}`,
       }));
-    },
-    isSyncPossible() {
-      return store.getters['workspace/syncToken'] ||
-        store.getters['syncLocation/current'].length;
-    },
-    showSpinner() {
-      return !store.state.queue.isEmpty;
     },
     titleWidth() {
       if (!this.mounted) {
@@ -177,23 +143,10 @@ export default {
     redo() {
       return editorSvc.clEditor.undoMgr.redo();
     },
-    requestSync() {
-      if (this.isSyncPossible && !this.isSyncRequested) {
-        syncSvc.requestSync(true);
-      }
-    },
-    requestPublish() {
-      if (this.publishLocations.length && !this.isPublishRequested) {
-        publishSvc.requestPublish();
-      }
-    },
     pagedownClick(name) {
       if (store.getters['content/isCurrentEditable']) {
         const text = editorSvc.clEditor.getContent();
         editorSvc.pagedownEditor.uiManager.doClick(name);
-        if (text !== editorSvc.clEditor.getContent()) {
-          badgeSvc.addBadge('formatButtons');
-        }
       }
     },
     async editTitle(toggle) {
@@ -209,7 +162,6 @@ export default {
               ...store.getters['file/current'],
               name: title,
             });
-            badgeSvc.addBadge('editCurrentFileName');
           } catch (e) {
             // Cancel
           }
@@ -354,12 +306,6 @@ export default {
   background-color: transparent;
 }
 
-.navigation-bar__button--sync,
-.navigation-bar__button--publish {
-  padding: 0 6px;
-  margin: 0 5px;
-}
-
 .navigation-bar__button[disabled] {
   &,
   &:active,
@@ -377,27 +323,6 @@ export default {
     color: $navbar-hover-color;
     background-color: $navbar-hover-background;
   }
-}
-
-.navigation-bar__button--location {
-  width: 20px;
-  height: 20px;
-  border-radius: 10px;
-  padding: 2px;
-  margin-top: 8px;
-  opacity: 0.5;
-  background-color: rgba(255, 255, 255, 0.2);
-
-  &:active,
-  &:focus,
-  &:hover {
-    opacity: 1;
-    background-color: rgba(255, 255, 255, 0.2);
-  }
-}
-
-.navigation-bar__button--blink {
-  animation: blink 1s linear infinite;
 }
 
 .navigation-bar__title--fake {
@@ -458,69 +383,6 @@ export default {
 
   .navigation-bar--light & {
     display: none;
-  }
-}
-
-$r: 10px;
-$d: $r * 2;
-$b: $d/10;
-$t: 3000ms;
-
-.navigation-bar__spinner {
-  width: 24px;
-  margin: 7px 0 0 8px;
-
-  .icon {
-    width: 24px;
-    height: 24px;
-    color: transparentize($error-color, 0.5);
-  }
-}
-
-.spinner {
-  width: $d;
-  height: $d;
-  display: block;
-  position: relative;
-  border: $b solid transparentize($navbar-color, 0.5);
-  border-radius: 50%;
-  margin: 2px;
-
-  &::before,
-  &::after {
-    content: "";
-    position: absolute;
-    display: block;
-    width: $b;
-    background-color: $navbar-color;
-    border-radius: $b * 0.5;
-    transform-origin: 50% 0;
-  }
-
-  &::before {
-    height: $r * 0.4;
-    left: $r - $b * 1.5;
-    top: 50%;
-    animation: spin $t linear infinite;
-  }
-
-  &::after {
-    height: $r * 0.6;
-    left: $r - $b * 1.5;
-    top: 50%;
-    animation: spin $t/4 linear infinite;
-  }
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes blink {
-  50% {
-    opacity: 1;
   }
 }
 </style>

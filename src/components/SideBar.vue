@@ -13,11 +13,6 @@
     </div>
     <div class="side-bar__inner">
       <main-menu v-if="panel === 'menu'"></main-menu>
-      <workspaces-menu v-else-if="panel === 'workspaces'"></workspaces-menu>
-      <sync-menu v-else-if="panel === 'sync'"></sync-menu>
-      <publish-menu v-else-if="panel === 'publish'"></publish-menu>
-      <history-menu v-else-if="panel === 'history'"></history-menu>
-      <export-menu v-else-if="panel === 'export'"></export-menu>
       <import-export-menu v-else-if="panel === 'importExport'"></import-export-menu>
       <workspace-backup-menu v-else-if="panel === 'workspaceBackups'"></workspace-backup-menu>
       <div v-else-if="panel === 'help'" class="side-bar__panel side-bar__panel--help">
@@ -35,10 +30,6 @@
 import { mapActions } from 'vuex';
 import Toc from './Toc';
 import MainMenu from './menus/MainMenu';
-import WorkspacesMenu from './menus/WorkspacesMenu';
-import SyncMenu from './menus/SyncMenu';
-import PublishMenu from './menus/PublishMenu';
-import HistoryMenu from './menus/HistoryMenu';
 import ImportExportMenu from './menus/ImportExportMenu';
 import WorkspaceBackupMenu from './menus/WorkspaceBackupMenu';
 import markdownSample from '../data/markdownSample.md';
@@ -47,12 +38,8 @@ import store from '../store';
 
 const panelNames = {
   menu: 'Menu',
-  workspaces: 'Workspaces',
   help: 'Markdown cheat sheet',
   toc: 'Table of contents',
-  sync: 'Synchronize',
-  publish: 'Publish',
-  history: 'File history',
   importExport: 'Import/export',
   workspaceBackups: 'Workspace backups',
 };
@@ -61,10 +48,6 @@ export default {
   components: {
     Toc,
     MainMenu,
-    WorkspacesMenu,
-    SyncMenu,
-    PublishMenu,
-    HistoryMenu,
     ImportExportMenu,
     WorkspaceBackupMenu,
   },

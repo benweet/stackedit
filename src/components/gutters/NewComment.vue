@@ -2,10 +2,7 @@
   <div class="comment comment--new" @keydown.esc.stop="cancelNewComment">
     <div class="comment__header flex flex--row flex--space-between flex--align-center">
       <div class="comment__user flex flex--row flex--align-center">
-        <div class="comment__user-image">
-          <user-image :user-id="userId"></user-image>
-        </div>
-        <span class="user-name">{{loginToken.name}}</span>
+        <span class="user-name">Author</span>
       </div>
     </div>
     <div class="comment__text">
@@ -21,29 +18,16 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapActions } from 'vuex';
+import { mapMutations, mapActions } from 'vuex';
 import Prism from 'prismjs';
-import UserImage from '../UserImage';
 import cledit from '../../services/editor/cledit';
 import editorSvc from '../../services/editorSvc';
 import markdownConversionSvc from '../../services/markdownConversionSvc';
 import utils from '../../services/utils';
-import userSvc from '../../services/userSvc';
 import store from '../../store';
-import badgeSvc from '../../services/badgeSvc';
 
 export default {
-  components: {
-    UserImage,
-  },
-  computed: {
-    ...mapGetters('workspace', [
-      'loginToken',
-    ]),
-    userId() {
-      return userSvc.getCurrentUserId();
-    },
-  },
+  computed: {},
   methods: {
     ...mapMutations('discussion', [
       'setNewCommentFocus',
@@ -77,9 +61,6 @@ export default {
               ...store.getters['content/current'].discussions,
               [discussionId]: store.getters['discussion/newDiscussion'],
             };
-            badgeSvc.addBadge('createDiscussion');
-          } else {
-            badgeSvc.addBadge('addComment');
           }
           store.dispatch('content/patchCurrent', patch);
           store.commit('discussion/setNewCommentText');

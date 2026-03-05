@@ -53,7 +53,6 @@
 <script>
 import { mapGetters } from 'vuex';
 import utils from '../../services/utils';
-import badgeSvc from '../../services/badgeSvc';
 import ModalInner from './common/ModalInner';
 import CodeEditor from '../CodeEditor';
 import emptyTemplateValue from '../../data/empties/emptyTemplateValue.html';
@@ -155,21 +154,7 @@ export default {
       }, 1);
     },
     async resolve() {
-      const oldTemplateIds = Object.keys(store.getters['data/templatesById']);
       await store.dispatch('data/setTemplatesById', this.templates);
-      const newTemplateIds = Object.keys(store.getters['data/templatesById']);
-      const createdCount = newTemplateIds
-        .filter(id => !oldTemplateIds.includes(id))
-        .length;
-      const removedCount = oldTemplateIds
-        .filter(id => !newTemplateIds.includes(id))
-        .length;
-      if (createdCount) {
-        badgeSvc.addBadge('addTemplate');
-      }
-      if (removedCount) {
-        badgeSvc.addBadge('removeTemplate');
-      }
       this.config.resolve({
         templates: this.templates,
         selectedId: this.selectedId,

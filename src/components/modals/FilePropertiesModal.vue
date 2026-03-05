@@ -93,7 +93,6 @@ import CodeEditor from '../CodeEditor';
 import utils from '../../services/utils';
 import presets from '../../data/presets';
 import store from '../../store';
-import badgeSvc from '../../services/badgeSvc';
 
 const metadataProperties = {
   title: '',
@@ -216,17 +215,6 @@ export default {
       if (this.error) {
         this.setYamlTab();
       } else {
-        const properties = this.properties || {};
-        if (Object.keys(metadataProperties).some(key => properties[key])) {
-          badgeSvc.addBadge('setMetadata');
-        }
-        const extensions = properties.extensions || {};
-        if (extensions.preset) {
-          badgeSvc.addBadge('changePreset');
-        }
-        if (Object.keys(extensions).filter(key => key !== 'preset').length) {
-          badgeSvc.addBadge('changeExtension');
-        }
         store.commit('content/patchItem', {
           id: this.contentId,
           properties: utils.sanitizeText(this.yamlProperties),

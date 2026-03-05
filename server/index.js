@@ -1,9 +1,6 @@
 const compression = require('compression');
 const serveStatic = require('serve-static');
-const bodyParser = require('body-parser');
 const path = require('path');
-const user = require('./user');
-const github = require('./github');
 const pdf = require('./pdf');
 const pandoc = require('./pandoc');
 const conf = require('./conf');
@@ -24,24 +21,14 @@ module.exports = (app) => {
     app.use(compression());
   }
 
-  app.get('/oauth2/githubToken', github.githubToken);
   app.get('/conf', (req, res) => res.send(conf.publicValues));
-  app.get('/userInfo', user.userInfo);
   app.post('/pdfExport', pdf.generate);
   app.post('/pandocExport', pandoc.generate);
-  app.post('/paypalIpn', bodyParser.urlencoded({
-    extended: false,
-  }), user.paypalIpn);
 
   // Serve landing.html
   app.get('/', (req, res) => res.sendFile(resolvePath('static/landing/index.html')));
   // Serve sitemap.xml
   app.get('/sitemap.xml', (req, res) => res.sendFile(resolvePath('static/sitemap.xml')));
-  // Serve callback.html
-  app.get('/oauth2/callback', (req, res) => res.sendFile(resolvePath('static/oauth2/callback.html')));
-  // Google Drive action receiver
-  app.get('/googleDriveAction', (req, res) =>
-    res.redirect(`./app#providerId=googleDrive&state=${encodeURIComponent(req.query.state)}`));
 
   // Serve static resources
   if (process.env.NODE_ENV === 'production') {

@@ -1,4 +1,3 @@
-import providerRegistry from '../services/providers/common/providerRegistry';
 import utils from '../services/utils';
 
 const defaultTimeout = 5000; // 5 sec
@@ -64,19 +63,13 @@ export default {
         timeout: 10000, // 10 sec
       });
     },
-    error({ dispatch, rootState }, error) {
+    error({ dispatch }, error) {
       const item = { type: 'error' };
       if (error) {
         if (error.message) {
           item.content = error.message;
         } else if (error.status) {
-          const location = rootState.queue.currentLocation;
-          if (location.providerId) {
-            const provider = providerRegistry.providersById[location.providerId];
-            item.content = `HTTP error ${error.status} on ${provider.name} location.`;
-          } else {
-            item.content = `HTTP error ${error.status}.`;
-          }
+          item.content = `HTTP error ${error.status}.`;
         } else {
           item.content = `${error}`;
         }

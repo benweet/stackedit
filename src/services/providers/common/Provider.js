@@ -1,8 +1,6 @@
-import providerRegistry from './providerRegistry';
 import emptyContent from '../../../data/empties/emptyContent';
 import utils from '../../utils';
 import store from '../../../store';
-import workspaceSvc from '../../workspaceSvc';
 
 const dataExtractor = /<!--stackedit_data:([A-Za-z0-9+/=\s]+)-->\s*$/;
 
@@ -12,7 +10,6 @@ export default class Provider {
 
   constructor(props) {
     Object.assign(this, props);
-    providerRegistry.register(this);
   }
 
   /**
@@ -77,26 +74,4 @@ export default class Provider {
     return utils.addItemHash(result);
   }
 
-  /**
-   * Find and open a file with location that meets the criteria
-   */
-  static openFileWithLocation(criteria) {
-    const location = utils.search(store.getters['syncLocation/items'], criteria);
-    if (location) {
-      // Found one, open it if it exists
-      const item = store.state.file.itemsById[location.fileId];
-      if (item) {
-        store.commit('file/setCurrentId', item.id);
-        // If file is in the trash, restore it
-        if (item.parentId === 'trash') {
-          workspaceSvc.setOrPatchItem({
-            ...item,
-            parentId: null,
-          });
-        }
-        return true;
-      }
-    }
-    return false;
-  }
 }

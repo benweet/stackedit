@@ -1,7 +1,6 @@
 import store from '../store';
 import utils from './utils';
 import constants from '../data/constants';
-import badgeSvc from './badgeSvc';
 
 const forbiddenFolderNameMatcher = /^\.stackedit-data$|^\.stackedit-trash$|\.md$|\.sync$|\.publish$/;
 
@@ -158,12 +157,6 @@ export default {
     store.commit('syncedContent/deleteItem', `${fileId}/syncedContent`);
     // Delete the contentState
     store.commit('contentState/deleteItem', `${fileId}/contentState`);
-    // Delete sync locations
-    (store.getters['syncLocation/groupedByFileId'][fileId] || [])
-      .forEach(item => store.commit('syncLocation/deleteItem', item.id));
-    // Delete publish locations
-    (store.getters['publishLocation/groupedByFileId'][fileId] || [])
-      .forEach(item => store.commit('publishLocation/deleteItem', item.id));
   },
 
   /**
@@ -174,7 +167,6 @@ export default {
     store.getters['folder/items'].forEach(folder => this.removeCircularReference(folder));
 
     this.ensureUniquePaths(idsToKeep);
-    this.ensureUniqueLocations(idsToKeep);
   },
 
   /**
@@ -243,49 +235,6 @@ export default {
         return true;
       }
     }
-  },
-
-  addSyncLocation(location) {
-    store.commit('syncLocation/setItem', {
-      ...location,
-      id: utils.uid(),
-    });
-
-    // Sanitize the workspace
-    this.ensureUniqueLocations();
-
-    if (Object.keys(store.getters['syncLocation/currentWithWorkspaceSyncLocation']).length > 1) {
-      badgeSvc.addBadge('syncMultipleLocations');
-    }
-  },
-
-  addPublishLocation(location) {
-    store.commit('publishLocation/setItem', {
-      ...location,
-      id: utils.uid(),
-    });
-
-    // Sanitize the workspace
-    this.ensureUniqueLocations();
-
-    if (Object.keys(store.getters['publishLocation/current']).length > 1) {
-      badgeSvc.addBadge('publishMultipleLocations');
-    }
-  },
-
-  /**
-   * Ensure two sync/publish locations of the same file don't have the same hash.
-   */
-  ensureUniqueLocations(idsToKeep = {}) {
-    ['syncLocation', 'publishLocation'].forEach((type) => {
-      store.getters[`${type}/items`].forEach((item) => {
-        if (!idsToKeep[item.id]
-          && store.getters[`${type}/groupedByFileIdAndHash`][item.fileId][item.hash].length > 1
-        ) {
-          store.commit(`${item.type}/deleteItem`, item.id);
-        }
-      });
-    });
   },
 
   /**

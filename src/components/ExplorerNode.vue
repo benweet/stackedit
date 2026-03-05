@@ -22,7 +22,6 @@ import { mapMutations, mapActions } from 'vuex';
 import workspaceSvc from '../services/workspaceSvc';
 import explorerSvc from '../services/explorerSvc';
 import store from '../store';
-import badgeSvc from '../services/badgeSvc';
 
 export default {
   name: 'explorer-node', // Required for recursivity
@@ -93,7 +92,6 @@ export default {
             store.commit('explorer/toggleOpenNode', id);
           } else if (store.state.file.currentId !== id) {
             store.commit('file/setCurrentId', id);
-            badgeSvc.addBadge('switchFile');
           }
         }, 10);
       }
@@ -106,11 +104,9 @@ export default {
           if (newChildNode.isFolder) {
             const item = await workspaceSvc.storeItem(newChildNode.item);
             this.select(item.id);
-            badgeSvc.addBadge('createFolder');
           } else {
             const item = await workspaceSvc.createFile(newChildNode.item);
             this.select(item.id);
-            badgeSvc.addBadge('createFile');
           }
         } catch (e) {
           // Cancel
@@ -128,7 +124,6 @@ export default {
             ...item,
             name: value,
           });
-          badgeSvc.addBadge(isFolder ? 'renameFolder' : 'renameFile');
         } catch (e) {
           // Cancel
         }
@@ -156,7 +151,6 @@ export default {
           ...sourceNode.item,
           parentId: targetNode.item.id,
         });
-        badgeSvc.addBadge(sourceNode.isFolder ? 'moveFolder' : 'moveFile');
       }
     },
     async onContextMenu(evt) {

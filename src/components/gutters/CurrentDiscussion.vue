@@ -34,7 +34,6 @@ import animationSvc from '../../services/animationSvc';
 import markdownConversionSvc from '../../services/markdownConversionSvc';
 import StickyComment from './StickyComment';
 import store from '../../store';
-import badgeSvc from '../../services/badgeSvc';
 
 export default {
   components: {
@@ -104,7 +103,6 @@ export default {
         store.dispatch('discussion/cleanCurrentFile', {
           filterDiscussion: this.currentDiscussion,
         });
-        badgeSvc.addBadge('removeDiscussion');
       } catch (e) {
         // Cancel
       }

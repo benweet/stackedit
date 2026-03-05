@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StackEdit — Offline Markdown Editor</title>
+
+<!-- CDN libs (loaded once, cached by browser) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/markdown-it@14.0.0/dist/markdown-it.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/markdown-it-footnote@4.0.0/dist/markdown-it-footnote.min.js"></script>
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #fff;
+  --bg-secondary: #f6f8fa;
+  --bg-toolbar: #f0f2f5;
+  --text: #1a1a2e;
+  --text-secondary: #555;
+  --border: #d0d7de;
+  --accent: #4a76a8;
+  --accent-hover: #3d6590;
+  --editor-bg: #fff;
+  --preview-bg: #fff;
+  --gutter: #e8eaed;
+  --scrollbar: #c1c1c1;
+  --shadow: rgba(0,0,0,0.08);
+  --btn-hover: rgba(0,0,0,0.06);
+  --status-bg: #f0f2f5;
+}
+
+[data-theme="dark"] {
+  --bg: #1e1e2e;
+  --bg-secondary: #252536;
+  --bg-toolbar: #2a2a3c;
+  --text: #cdd6f4;
+  --text-secondary: #a6adc8;
+  --border: #45475a;
+  --accent: #89b4fa;
+  --accent-hover: #74c7ec;
+  --editor-bg: #1e1e2e;
+  --preview-bg: #232334;
+  --gutter: #313244;
+  --scrollbar: #585b70;
+  --shadow: rgba(0,0,0,0.3);
+  --btn-hover: rgba(255,255,255,0.08);
+  --status-bg: #2a2a3c;
+}
+
+html, body {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+}
+
+/* ── Toolbar ── */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 12px;
+  background: var(--bg-toolbar);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.toolbar button {
+  background: none;
+  border: none;
+  color: var(--text);
+  font-size: 14px;
+  padding: 5px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+  line-height: 1;
+  min-width: 30px;
+  text-align: center;
+}
+.toolbar button:hover { background: var(--btn-hover); }
+.toolbar button:active { transform: scale(0.95); }
+.toolbar button[title]::after { content: none; }
+
+.toolbar .sep {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+.toolbar .spacer { flex: 1; }
+
+.toolbar .filename {
+  font-size: 13px;
+  color: var(--text-secondary);
+  padding: 4px 8px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: none;
+  outline: none;
+  max-width: 200px;
+  font-family: inherit;
+}
+.toolbar .filename:focus {
+  border-color: var(--accent);
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* ── Layout ── */
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.panels {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.panel-header {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  padding: 6px 16px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.divider {
+  width: 5px;
+  background: var(--gutter);
+  cursor: col-resize;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.divider:hover, .divider.active { background: var(--accent); }
+
+/* ── Editor ── */
+#editor {
+  flex: 1;
+  padding: 16px 20px;
+  font-family: 'SFMono-Regular', 'Fira Code', 'Fira Mono', Menlo, Consolas, monospace;
+  font-size: 14px;
+  line-height: 1.7;
+  background: var(--editor-bg);
+  color: var(--text);
+  border: none;
+  outline: none;
+  resize: none;
+  overflow-y: auto;
+  tab-size: 4;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+#editor::selection { background: rgba(74,118,168,0.3); }
+
+/* ── Preview ── */
+#preview {
+  flex: 1;
+  padding: 16px 24px;
+  overflow-y: auto;
+  background: var(--preview-bg);
+  line-height: 1.7;
+}
+
+#preview h1 { font-size: 2em; margin: 0.5em 0 0.3em; border-bottom: 1px solid var(--border); padding-bottom: 0.3em; }
+#preview h2 { font-size: 1.5em; margin: 0.8em 0 0.3em; border-bottom: 1px solid var(--border); padding-bottom: 0.2em; }
+#preview h3 { font-size: 1.25em; margin: 0.8em 0 0.3em; }
+#preview h4 { font-size: 1.1em; margin: 0.8em 0 0.3em; }
+#preview p { margin: 0.6em 0; }
+#preview ul, #preview ol { margin: 0.6em 0; padding-left: 2em; }
+#preview li { margin: 0.25em 0; }
+#preview blockquote {
+  border-left: 4px solid var(--accent);
+  margin: 0.8em 0;
+  padding: 0.4em 1em;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  border-radius: 0 4px 4px 0;
+}
+#preview code {
+  font-family: 'SFMono-Regular', 'Fira Code', Menlo, Consolas, monospace;
+  font-size: 0.9em;
+  background: var(--bg-secondary);
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+}
+#preview pre {
+  background: var(--bg-secondary);
+  padding: 14px 18px;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin: 0.8em 0;
+  border: 1px solid var(--border);
+}
+#preview pre code { background: none; padding: 0; font-size: 13px; }
+#preview table { border-collapse: collapse; margin: 0.8em 0; width: 100%; }
+#preview th, #preview td {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  text-align: left;
+}
+#preview th { background: var(--bg-secondary); font-weight: 600; }
+#preview img { max-width: 100%; border-radius: 4px; }
+#preview hr { border: none; border-top: 2px solid var(--border); margin: 1.5em 0; }
+#preview a { color: var(--accent); text-decoration: none; }
+#preview a:hover { text-decoration: underline; }
+#preview .task-list-item { list-style: none; margin-left: -1.5em; }
+#preview .task-list-item input { margin-right: 0.5em; }
+#preview .katex-display { overflow-x: auto; padding: 4px 0; }
+#preview .footnotes { font-size: 0.9em; border-top: 1px solid var(--border); margin-top: 2em; padding-top: 1em; }
+
+/* Mermaid */
+#preview .mermaid { text-align: center; margin: 1em 0; }
+
+/* ── Status Bar ── */
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 14px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  background: var(--status-bg);
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--scrollbar); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+
+/* ── Modal ── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--bg);
+  border-radius: 8px;
+  padding: 24px;
+  width: 90%;
+  max-width: 520px;
+  box-shadow: 0 12px 40px var(--shadow);
+  border: 1px solid var(--border);
+}
+.modal h3 { margin-bottom: 12px; font-size: 16px; }
+.modal label { display: block; margin: 8px 0 4px; font-size: 13px; color: var(--text-secondary); }
+.modal textarea, .modal input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 13px;
+  background: var(--bg-secondary);
+  color: var(--text);
+}
+.modal textarea { height: 200px; resize: vertical; }
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+.modal-actions button {
+  padding: 6px 16px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 13px;
+}
+.modal-actions button.primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .panels { flex-direction: column; }
+  .divider { width: auto; height: 5px; cursor: row-resize; }
+}
+
+/* Print */
+@media print {
+  .toolbar, .status-bar, .divider, .panel:first-child, .panel-header { display: none !important; }
+  .panel { flex: 1 !important; }
+  #preview { padding: 0; overflow: visible; }
+}
+</style>
+</head>
+<body>
+
+<div class="app" id="app">
+  <!-- Toolbar -->
+  <div class="toolbar" role="toolbar">
+    <button onclick="fmt('bold')" title="Bold (Ctrl+B)"><b>B</b></button>
+    <button onclick="fmt('italic')" title="Italic (Ctrl+I)"><i>I</i></button>
+    <button onclick="fmt('strikethrough')" title="Strikethrough" style="text-decoration:line-through">S</button>
+    <div class="sep"></div>
+    <button onclick="fmt('h1')" title="Heading 1"><b>H1</b></button>
+    <button onclick="fmt('h2')" title="Heading 2"><b>H2</b></button>
+    <button onclick="fmt('h3')" title="Heading 3"><b>H3</b></button>
+    <div class="sep"></div>
+    <button onclick="fmt('ul')" title="Unordered List">&#8226; List</button>
+    <button onclick="fmt('ol')" title="Ordered List">1. List</button>
+    <button onclick="fmt('task')" title="Task List">&#9744; Task</button>
+    <div class="sep"></div>
+    <button onclick="fmt('quote')" title="Blockquote">&ldquo; Quote</button>
+    <button onclick="fmt('code')" title="Inline Code">&lt;/&gt;</button>
+    <button onclick="fmt('codeblock')" title="Code Block">&#9744; Code</button>
+    <button onclick="fmt('link')" title="Link">&#128279;</button>
+    <button onclick="fmt('image')" title="Image">&#128247;</button>
+    <button onclick="fmt('table')" title="Table">&#9638; Table</button>
+    <button onclick="fmt('hr')" title="Horizontal Rule">&#8213;</button>
+    <div class="sep"></div>
+    <button onclick="doUndo()" title="Undo (Ctrl+Z)">&#8617;</button>
+    <button onclick="doRedo()" title="Redo (Ctrl+Y)">&#8618;</button>
+
+    <div class="spacer"></div>
+
+    <input class="filename" id="filename" type="text" value="untitled.md" title="Filename" spellcheck="false">
+    <div class="sep"></div>
+    <button onclick="openFileDialog()" title="Open File">&#128194; Open</button>
+    <button onclick="saveFile()" title="Save Markdown">&#128190; Save</button>
+    <button onclick="exportHTML()" title="Export HTML">&#11208; HTML</button>
+    <div class="sep"></div>
+    <button onclick="toggleTheme()" id="themeBtn" title="Toggle Theme">&#9789;</button>
+    <button onclick="showHelp()" title="Keyboard Shortcuts">?</button>
+  </div>
+
+  <!-- Panels -->
+  <div class="panels">
+    <div class="panel" id="editorPanel">
+      <div class="panel-header">Markdown</div>
+      <textarea id="editor" spellcheck="true" autofocus></textarea>
+    </div>
+    <div class="divider" id="divider"></div>
+    <div class="panel" id="previewPanel">
+      <div class="panel-header">Preview</div>
+      <div id="preview"></div>
+    </div>
+  </div>
+
+  <!-- Status bar -->
+  <div class="status-bar">
+    <span id="stats">0 words &middot; 0 characters</span>
+    <span id="cursor-pos">Ln 1, Col 1</span>
+  </div>
+</div>
+
+<!-- Open-file input -->
+<input type="file" id="fileInput" accept=".md,.markdown,.txt,.text,.html,.htm" style="display:none">
+
+<!-- HTML Export Modal -->
+<div class="modal-overlay" id="htmlModal">
+  <div class="modal">
+    <h3>Export as HTML</h3>
+    <label>Preview of generated HTML:</label>
+    <textarea id="htmlOutput" readonly></textarea>
+    <div class="modal-actions">
+      <button onclick="closeModal('htmlModal')">Close</button>
+      <button class="primary" onclick="copyHtml()">Copy</button>
+      <button class="primary" onclick="downloadHtml()">Download</button>
+    </div>
+  </div>
+</div>
+
+<!-- Help Modal -->
+<div class="modal-overlay" id="helpModal">
+  <div class="modal">
+    <h3>Keyboard Shortcuts</h3>
+    <table style="width:100%;font-size:13px;margin-top:8px">
+      <tr><td><kbd>Ctrl+B</kbd></td><td>Bold</td></tr>
+      <tr><td><kbd>Ctrl+I</kbd></td><td>Italic</td></tr>
+      <tr><td><kbd>Ctrl+K</kbd></td><td>Insert link</td></tr>
+      <tr><td><kbd>Ctrl+Shift+C</kbd></td><td>Code block</td></tr>
+      <tr><td><kbd>Ctrl+S</kbd></td><td>Save as .md</td></tr>
+      <tr><td><kbd>Ctrl+Shift+S</kbd></td><td>Export HTML</td></tr>
+      <tr><td><kbd>Ctrl+O</kbd></td><td>Open file</td></tr>
+      <tr><td><kbd>Tab</kbd></td><td>Indent</td></tr>
+      <tr><td><kbd>Shift+Tab</kbd></td><td>Outdent</td></tr>
+      <tr><td><kbd>Esc</kbd></td><td>Close modal</td></tr>
+    </table>
+    <p style="margin-top:14px;font-size:12px;color:var(--text-secondary)">
+      Supports: CommonMark, tables, task lists, footnotes, strikethrough, KaTeX math (<code>$...$</code>, <code>$$...$$</code>), Mermaid diagrams (<code>```mermaid</code>), and syntax-highlighted code fences.
+    </p>
+    <div class="modal-actions"><button onclick="closeModal('helpModal')">Close</button></div>
+  </div>
+</div>
+
+<script>
+// ─── Markdown-it Setup ───
+const defined = typeof markdownitFootnote !== 'undefined';
+const md = window.markdownit({
+  html: true,
+  linkify: true,
+  typographer: true,
+  highlight(str, lang) {
+    if (lang === 'mermaid') {
+      return `<div class="mermaid">${md.utils.escapeHtml(str)}</div>`;
+    }
+    if (lang && Prism.languages[lang]) {
+      try { return Prism.highlight(str, Prism.languages[lang], lang); } catch (_) {}
+    }
+    return '';
+  }
+});
+if (defined) md.use(markdownitFootnote);
+
+// Task-list plugin
+md.core.ruler.after('inline', 'task-lists', state => {
+  const tokens = state.tokens;
+  for (let i = 2; i < tokens.length; i++) {
+    if (tokens[i].type !== 'inline') continue;
+    const content = tokens[i].content;
+    if (!/^\[([ xX])\]\s/.test(content)) continue;
+    const checked = content[1] !== ' ';
+    tokens[i].content = content.slice(4);
+    tokens[i].children[0].content = tokens[i].children[0].content.slice(4);
+    const checkbox = new state.Token('html_inline', '', 0);
+    checkbox.content = `<input type="checkbox" disabled ${checked ? 'checked' : ''}> `;
+    tokens[i].children.unshift(checkbox);
+    // mark parent li
+    if (tokens[i - 2].type === 'list_item_open') {
+      tokens[i - 2].attrJoin('class', 'task-list-item');
+    }
+  }
+});
+
+// KaTeX inline/block math
+function renderKatex(src, displayMode) {
+  try { return katex.renderToString(src, { displayMode, throwOnError: false }); }
+  catch (e) { return `<code>${md.utils.escapeHtml(src)}</code>`; }
+}
+
+// $$ block math
+md.block.ruler.before('fence', 'math_block', (state, startLine, endLine, silent) => {
+  const startPos = state.bMarks[startLine] + state.tShift[startLine];
+  if (state.src.slice(startPos, startPos + 2) !== '$$') return false;
+  if (silent) return true;
+  let nextLine = startLine;
+  let found = false;
+  while (++nextLine < endLine) {
+    const pos = state.bMarks[nextLine] + state.tShift[nextLine];
+    if (state.src.slice(pos, pos + 2) === '$$') { found = true; break; }
+  }
+  if (!found) return false;
+  const content = state.getLines(startLine + 1, nextLine, state.tShift[startLine], false).trim();
+  const token = state.push('math_block', 'div', 0);
+  token.content = content;
+  token.map = [startLine, nextLine + 1];
+  state.line = nextLine + 1;
+  return true;
+});
+md.renderer.rules.math_block = (tokens, idx) => renderKatex(tokens[idx].content, true);
+
+// $ inline math
+md.inline.ruler.after('escape', 'math_inline', (state, silent) => {
+  if (state.src[state.pos] !== '$') return false;
+  if (state.src[state.pos + 1] === '$') return false;
+  const start = state.pos + 1;
+  let end = start;
+  while (end < state.posMax && state.src[end] !== '$') end++;
+  if (end >= state.posMax) return false;
+  if (!silent) {
+    const token = state.push('math_inline', '', 0);
+    token.content = state.src.slice(start, end);
+  }
+  state.pos = end + 1;
+  return true;
+});
+md.renderer.rules.math_inline = (tokens, idx) => renderKatex(tokens[idx].content, false);
+
+// ─── Mermaid ───
+mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose' });
+
+// ─── DOM refs ───
+const editor = document.getElementById('editor');
+const preview = document.getElementById('preview');
+const filenameEl = document.getElementById('filename');
+const statsEl = document.getElementById('stats');
+const cursorEl = document.getElementById('cursor-pos');
+const divider = document.getElementById('divider');
+const fileInput = document.getElementById('fileInput');
+
+// ─── State ───
+const STORAGE_KEY = 'stackedit_offline_doc';
+const STORAGE_THEME = 'stackedit_offline_theme';
+let undoStack = [];
+let redoStack = [];
+let lastSaved = '';
+let renderTimer = null;
+
+// ─── Render ───
+function render() {
+  const raw = editor.value;
+  preview.innerHTML = md.render(raw);
+
+  // Highlight code blocks Prism didn't catch
+  preview.querySelectorAll('pre code[class*="language-"]').forEach(el => {
+    Prism.highlightElement(el);
+  });
+
+  // Render mermaid
+  preview.querySelectorAll('.mermaid').forEach((el, i) => {
+    const id = 'mermaid-' + i;
+    try {
+      const code = el.textContent;
+      el.removeAttribute('data-processed');
+      mermaid.render(id, code).then(({ svg }) => { el.innerHTML = svg; });
+    } catch (_) {}
+  });
+
+  updateStats(raw);
+  schedSave(raw);
+}
+
+function scheduleRender() {
+  clearTimeout(renderTimer);
+  renderTimer = setTimeout(render, 150);
+}
+
+function updateStats(text) {
+  const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+  statsEl.textContent = `${words} word${words !== 1 ? 's' : ''} \u00b7 ${text.length} characters`;
+}
+
+function updateCursor() {
+  const val = editor.value.substring(0, editor.selectionStart);
+  const lines = val.split('\n');
+  cursorEl.textContent = `Ln ${lines.length}, Col ${lines[lines.length - 1].length + 1}`;
+}
+
+// ─── Undo / Redo ───
+function snapshot() {
+  const v = editor.value;
+  if (undoStack.length && undoStack[undoStack.length - 1] === v) return;
+  undoStack.push(v);
+  if (undoStack.length > 200) undoStack.shift();
+  redoStack = [];
+}
+
+function doUndo() {
+  if (undoStack.length < 2) return;
+  redoStack.push(undoStack.pop());
+  editor.value = undoStack[undoStack.length - 1];
+  scheduleRender();
+}
+
+function doRedo() {
+  if (!redoStack.length) return;
+  const v = redoStack.pop();
+  undoStack.push(v);
+  editor.value = v;
+  scheduleRender();
+}
+
+// ─── Formatting ───
+function fmt(type) {
+  editor.focus();
+  const start = editor.selectionStart;
+  const end = editor.selectionEnd;
+  const sel = editor.value.substring(start, end);
+  const before = editor.value.substring(0, start);
+  const after = editor.value.substring(end);
+  let insert = '';
+  let cursorOffset = 0;
+
+  switch (type) {
+    case 'bold': insert = `**${sel || 'bold text'}**`; cursorOffset = sel ? 0 : -2; break;
+    case 'italic': insert = `*${sel || 'italic text'}*`; cursorOffset = sel ? 0 : -1; break;
+    case 'strikethrough': insert = `~~${sel || 'text'}~~`; cursorOffset = sel ? 0 : -2; break;
+    case 'h1': insert = `\n# ${sel || 'Heading 1'}\n`; break;
+    case 'h2': insert = `\n## ${sel || 'Heading 2'}\n`; break;
+    case 'h3': insert = `\n### ${sel || 'Heading 3'}\n`; break;
+    case 'ul': insert = `\n- ${sel || 'item'}\n`; break;
+    case 'ol': insert = `\n1. ${sel || 'item'}\n`; break;
+    case 'task': insert = `\n- [ ] ${sel || 'task'}\n`; break;
+    case 'quote': insert = `\n> ${sel || 'quote'}\n`; break;
+    case 'code': insert = sel.includes('\n') ? insert : `\`${sel || 'code'}\``; cursorOffset = sel ? 0 : -1; break;
+    case 'codeblock': insert = `\n\`\`\`\n${sel || 'code'}\n\`\`\`\n`; break;
+    case 'link': insert = `[${sel || 'text'}](url)`; break;
+    case 'image': insert = `![${sel || 'alt'}](url)`; break;
+    case 'table': insert = `\n| Header | Header |\n|--------|--------|\n| Cell   | Cell   |\n`; break;
+    case 'hr': insert = `\n---\n`; break;
+  }
+
+  snapshot();
+  editor.value = before + insert + after;
+  const newPos = start + insert.length + cursorOffset;
+  editor.setSelectionRange(newPos, newPos);
+  snapshot();
+  scheduleRender();
+}
+
+// ─── File I/O ───
+function saveFile() {
+  const blob = new Blob([editor.value], { type: 'text/markdown;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filenameEl.value || 'untitled.md';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function openFileDialog() { fileInput.click(); }
+fileInput.addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  filenameEl.value = file.name;
+  const reader = new FileReader();
+  reader.onload = () => {
+    snapshot();
+    editor.value = reader.result;
+    snapshot();
+    render();
+  };
+  reader.readAsText(file);
+  fileInput.value = '';
+});
+
+// ─── HTML Export ───
+function exportHTML() {
+  const html = generateFullHTML();
+  document.getElementById('htmlOutput').value = html;
+  document.getElementById('htmlModal').classList.add('open');
+}
+
+function generateFullHTML() {
+  const title = md.utils.escapeHtml(filenameEl.value.replace(/\.\w+$/, ''));
+  const body = md.render(editor.value);
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${title}</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 800px; margin: 0 auto; padding: 2em; line-height: 1.7; color: #1a1a2e; }
+  pre { background: #f6f8fa; padding: 14px 18px; border-radius: 6px; overflow-x: auto; }
+  code { font-family: 'Fira Code', Menlo, Consolas, monospace; font-size: 0.9em; }
+  blockquote { border-left: 4px solid #4a76a8; padding: 0.4em 1em; margin: 0.8em 0; color: #555; background: #f6f8fa; }
+  table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid #d0d7de; padding: 8px 12px; } th { background: #f6f8fa; }
+  img { max-width: 100%; }
+  .task-list-item { list-style: none; }
+</style>
+</head>
+<body>
+${body}
+</body>
+</html>`;
+}
+
+function copyHtml() {
+  navigator.clipboard.writeText(document.getElementById('htmlOutput').value);
+}
+
+function downloadHtml() {
+  const blob = new Blob([document.getElementById('htmlOutput').value], { type: 'text/html;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (filenameEl.value || 'untitled').replace(/\.\w+$/, '') + '.html';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  closeModal('htmlModal');
+}
+
+// ─── Modals ───
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function showHelp() { document.getElementById('helpModal').classList.add('open'); }
+
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
+});
+
+// ─── Theme ───
+function toggleTheme() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const next = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  document.getElementById('themeBtn').textContent = next === 'dark' ? '\u2600' : '\u263D';
+  localStorage.setItem(STORAGE_THEME, next);
+  // Update mermaid theme
+  mermaid.initialize({ startOnLoad: false, theme: next === 'dark' ? 'dark' : 'default', securityLevel: 'loose' });
+  render();
+}
+
+(function initTheme() {
+  const saved = localStorage.getItem(STORAGE_THEME);
+  const prefer = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  const theme = saved || prefer;
+  document.documentElement.setAttribute('data-theme', theme);
+  document.getElementById('themeBtn').textContent = theme === 'dark' ? '\u2600' : '\u263D';
+})();
+
+// ─── LocalStorage persistence ───
+function schedSave(text) {
+  if (text === lastSaved) return;
+  lastSaved = text;
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ content: text, filename: filenameEl.value }));
+  } catch (_) {}
+}
+
+(function loadSaved() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const data = JSON.parse(raw);
+      if (data.content) editor.value = data.content;
+      if (data.filename) filenameEl.value = data.filename;
+    }
+  } catch (_) {}
+  if (!editor.value) {
+    editor.value = `# Welcome to StackEdit Offline Editor
+
+This is a **self-contained Markdown editor** you can use anywhere — just open this HTML file in your browser.
+
+## Features
+
+- **Live preview** with scroll sync
+- **Syntax highlighting** for code blocks
+- **KaTeX math**: $E = mc^2$ and display math:
+
+$$
+\\int_{-\\infty}^{\\infty} e^{-x^2} dx = \\sqrt{\\pi}
+$$
+
+- **Mermaid diagrams**:
+
+\`\`\`mermaid
+graph LR
+  A[Edit Markdown] --> B[Live Preview]
+  B --> C[Export HTML]
+  B --> D[Save .md]
+\`\`\`
+
+- **Task lists**:
+  - [x] Markdown editing
+  - [x] Live preview
+  - [x] Syntax highlighting
+  - [x] Math rendering
+  - [x] Diagram support
+  - [x] Dark mode
+  - [x] Local storage persistence
+
+## Code Example
+
+\`\`\`javascript
+function greet(name) {
+  return \`Hello, \${name}!\`;
+}
+console.log(greet('World'));
+\`\`\`
+
+## Table
+
+| Feature       | Status |
+|---------------|--------|
+| Bold / Italic | ✓      |
+| Code blocks   | ✓      |
+| Math (KaTeX)  | ✓      |
+| Mermaid        | ✓      |
+| Footnotes     | ✓      |
+| Export HTML    | ✓      |
+
+> **Tip:** Press \`?\` in the toolbar to see all keyboard shortcuts.
+`;
+  }
+  snapshot();
+  render();
+})();
+
+// ─── Divider drag ───
+let dragging = false;
+divider.addEventListener('mousedown', () => { dragging = true; divider.classList.add('active'); });
+document.addEventListener('mousemove', e => {
+  if (!dragging) return;
+  const panels = document.querySelector('.panels');
+  const rect = panels.getBoundingClientRect();
+  const pct = ((e.clientX - rect.left) / rect.width) * 100;
+  const clamped = Math.max(20, Math.min(80, pct));
+  document.getElementById('editorPanel').style.flex = `0 0 ${clamped}%`;
+  document.getElementById('previewPanel').style.flex = `0 0 ${100 - clamped}%`;
+});
+document.addEventListener('mouseup', () => { dragging = false; divider.classList.remove('active'); });
+
+// ─── Keyboard shortcuts ───
+editor.addEventListener('keydown', e => {
+  // Tab indent / Shift+Tab outdent
+  if (e.key === 'Tab') {
+    e.preventDefault();
+    const start = editor.selectionStart;
+    const end = editor.selectionEnd;
+    if (e.shiftKey) {
+      // outdent
+      const before = editor.value.substring(0, start);
+      const lineStart = before.lastIndexOf('\n') + 1;
+      const line = editor.value.substring(lineStart);
+      if (line.startsWith('  ')) {
+        editor.value = editor.value.substring(0, lineStart) + line.substring(2);
+        editor.setSelectionRange(Math.max(start - 2, lineStart), Math.max(end - 2, lineStart));
+      }
+    } else {
+      editor.value = editor.value.substring(0, start) + '  ' + editor.value.substring(end);
+      editor.setSelectionRange(start + 2, start + 2);
+    }
+    snapshot();
+    scheduleRender();
+    return;
+  }
+
+  // Ctrl/Cmd shortcuts
+  const mod = e.ctrlKey || e.metaKey;
+  if (!mod) return;
+
+  if (e.key === 'b') { e.preventDefault(); fmt('bold'); }
+  else if (e.key === 'i') { e.preventDefault(); fmt('italic'); }
+  else if (e.key === 'k') { e.preventDefault(); fmt('link'); }
+  else if (e.key === 's' && e.shiftKey) { e.preventDefault(); exportHTML(); }
+  else if (e.key === 's') { e.preventDefault(); saveFile(); }
+  else if (e.key === 'o') { e.preventDefault(); openFileDialog(); }
+  else if (e.key === 'C' && e.shiftKey) { e.preventDefault(); fmt('codeblock'); }
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+  }
+});
+
+// ─── Editor events ───
+let snapshotTimer = null;
+editor.addEventListener('input', () => {
+  scheduleRender();
+  clearTimeout(snapshotTimer);
+  snapshotTimer = setTimeout(snapshot, 400);
+});
+editor.addEventListener('click', updateCursor);
+editor.addEventListener('keyup', updateCursor);
+
+// ─── Scroll sync ───
+let syncLock = false;
+editor.addEventListener('scroll', () => {
+  if (syncLock) return;
+  syncLock = true;
+  const pct = editor.scrollTop / (editor.scrollHeight - editor.clientHeight || 1);
+  preview.scrollTop = pct * (preview.scrollHeight - preview.clientHeight);
+  requestAnimationFrame(() => { syncLock = false; });
+});
+preview.addEventListener('scroll', () => {
+  if (syncLock) return;
+  syncLock = true;
+  const pct = preview.scrollTop / (preview.scrollHeight - preview.clientHeight || 1);
+  editor.scrollTop = pct * (editor.scrollHeight - editor.clientHeight);
+  requestAnimationFrame(() => { syncLock = false; });
+});
+
+// ─── Drag & drop files ───
+editor.addEventListener('dragover', e => { e.preventDefault(); e.dataTransfer.dropEffect = 'copy'; });
+editor.addEventListener('drop', e => {
+  e.preventDefault();
+  const file = e.dataTransfer.files[0];
+  if (!file) return;
+  filenameEl.value = file.name;
+  const reader = new FileReader();
+  reader.onload = () => { snapshot(); editor.value = reader.result; snapshot(); render(); };
+  reader.readAsText(file);
+});
+</script>
+
+</body>
+</html>

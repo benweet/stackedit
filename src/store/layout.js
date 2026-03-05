@@ -136,15 +136,8 @@ function computeStyles(state, getters, layoutSettings = getters['data/layoutSett
     navigationBarRightButtonWidth -
     navigationBarSpinnerWidth;
   if (styles.showEditor) {
-    const syncLocations = getters['syncLocation/current'];
-    const publishLocations = getters['publishLocation/current'];
     styles.titleMaxWidth -= navigationBarEditButtonsWidth +
-      (navigationBarLocationWidth * (syncLocations.length + publishLocations.length)) +
-      (navigationBarSyncPublishButtonsWidth * 2) +
       navigationBarTitleMargin;
-    if (styles.titleMaxWidth + navigationBarEditButtonsWidth < minTitleMaxWidth) {
-      styles.hideLocations = true;
-    }
   }
   styles.titleMaxWidth = Math
     .max(minTitleMaxWidth, Math

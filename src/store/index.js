@@ -18,9 +18,6 @@ import queue from './queue';
 import syncedContent from './syncedContent';
 import userInfo from './userInfo';
 import workspace from './workspace';
-import locationTemplate from './locationTemplate';
-import emptyPublishLocation from '../data/empties/emptyPublishLocation';
-import emptySyncLocation from '../data/empties/emptySyncLocation';
 import constants from '../data/constants';
 
 Vue.use(Vuex);
@@ -41,10 +38,8 @@ const store = new Vuex.Store({
     layout,
     modal,
     notification,
-    publishLocation: locationTemplate(emptyPublishLocation),
     queue,
     syncedContent,
-    syncLocation: locationTemplate(emptySyncLocation),
     userInfo,
     workspace,
   },
@@ -60,9 +55,6 @@ const store = new Vuex.Store({
     },
     setOffline: (state, value) => {
       state.offline = value;
-    },
-    updateLastOfflineCheck: (state) => {
-      state.lastOfflineCheck = Date.now();
     },
     updateTimeCounter: (state) => {
       state.timeCounter += 1;
@@ -122,17 +114,6 @@ const store = new Vuex.Store({
           result[id] = `/${filePath}.md`;
         } else if (item.type === 'folder') {
           result[id] = pathsByItemId[id];
-        } else if (item.type === 'syncLocation' || item.type === 'publishLocation') {
-          // locations are stored as paths
-          const encodedItem = utils.encodeBase64(utils.serializeObject({
-            ...item,
-            id: undefined,
-            type: undefined,
-            fileId: undefined,
-            hash: undefined,
-          }), true);
-          const extension = item.type === 'syncLocation' ? 'sync' : 'publish';
-          result[id] = `${pathsByItemId[item.fileId]}.${encodedItem}.${extension}`;
         }
       });
       return result;
@@ -154,16 +135,7 @@ const store = new Vuex.Store({
       });
       return result;
     },
-    isSponsor: ({ light }, getters) => {
-      if (light) {
-        return true;
-      }
-      if (!getters['data/serverConf'].allowSponsorship) {
-        return true;
-      }
-      const sponsorToken = getters['workspace/sponsorToken'];
-      return sponsorToken ? sponsorToken.isSponsor : false;
-    },
+    isSponsor: () => true,
   },
   actions: {
     setOffline: ({ state, commit, dispatch }, value) => {

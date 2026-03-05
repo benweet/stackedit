@@ -363,10 +363,8 @@ const localDbSvc = {
       });
     }
 
-    // If app was last opened 7 days ago and synchronization is off
-    if (!store.getters['workspace/syncToken'] &&
-      (store.state.workspace.lastFocus + constants.cleanTrashAfter < Date.now())
-    ) {
+    // If app was last opened 7 days ago, clean trash
+    if (store.state.workspace.lastFocus + constants.cleanTrashAfter < Date.now()) {
       // Clean files
       store.getters['file/items']
         .filter(file => file.parentId === 'trash') // If file is in the trash

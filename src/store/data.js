@@ -11,7 +11,6 @@ import styledHtmlWithTocTemplate from '../data/templates/styledHtmlWithTocTempla
 import jekyllSiteTemplate from '../data/templates/jekyllSiteTemplate.html';
 import constants from '../data/constants';
 import features from '../data/features';
-import badgeSvc from '../services/badgeSvc';
 
 const itemTemplate = (id, data = {}) => ({
   id,
@@ -64,19 +63,18 @@ const patcher = id => ({ state, commit }, data) => {
 };
 
 // For layoutSettings
-const toggleLayoutSetting = (name, value, featureId, getters, dispatch) => {
+const toggleLayoutSetting = (name, value, getters, dispatch) => {
   const currentValue = getters.layoutSettings[name];
   const patch = {
     [name]: value === undefined ? !currentValue : !!value,
   };
   if (patch[name] !== currentValue) {
     dispatch('patchLayoutSettings', patch);
-    badgeSvc.addBadge(featureId);
   }
 };
 
-const layoutSettingsToggler = (propertyName, featureId) => ({ getters, dispatch }, value) =>
-  toggleLayoutSetting(propertyName, value, featureId, getters, dispatch);
+const layoutSettingsToggler = (propertyName) => ({ getters, dispatch }, value) =>
+  toggleLayoutSetting(propertyName, value, getters, dispatch);
 
 const notEnoughSpace = (layoutConstants, showGutter) =>
   document.body.clientWidth < layoutConstants.editorMinWidth +
@@ -100,15 +98,6 @@ const defaultTemplates = {
   jekyllSite: makeAdditionalTemplate('Jekyll site', jekyllSiteTemplate),
 };
 
-// For tokens
-const tokenAdder = providerId => ({ getters, dispatch }, token) => {
-  dispatch('patchTokensByType', {
-    [providerId]: {
-      ...getters[`${providerId}TokensBySub`],
-      [token.sub]: token,
-    },
-  });
-};
 
 export default {
   namespaced: true,
@@ -207,13 +196,6 @@ export default {
     },
     dataSyncDataById: getter('dataSyncData'),
     tokensByType: getter('tokens'),
-    googleTokensBySub: (state, { tokensByType }) => tokensByType.google || {},
-    couchdbTokensBySub: (state, { tokensByType }) => tokensByType.couchdb || {},
-    dropboxTokensBySub: (state, { tokensByType }) => tokensByType.dropbox || {},
-    githubTokensBySub: (state, { tokensByType }) => tokensByType.github || {},
-    gitlabTokensBySub: (state, { tokensByType }) => tokensByType.gitlab || {},
-    wordpressTokensBySub: (state, { tokensByType }) => tokensByType.wordpress || {},
-    zendeskTokensBySub: (state, { tokensByType }) => tokensByType.zendesk || {},
     badgeCreations: getter('badgeCreations'),
     badgeTree: (state, { badgeCreations }) => features
       .map(feature => feature.toBadge(badgeCreations)),
@@ -234,18 +216,18 @@ export default {
     setSettings: setter('settings'),
     patchLocalSettings: patcher('localSettings'),
     patchLayoutSettings: patcher('layoutSettings'),
-    toggleNavigationBar: layoutSettingsToggler('showNavigationBar', 'toggleNavigationBar'),
-    toggleEditor: layoutSettingsToggler('showEditor', 'toggleEditor'),
-    toggleSidePreview: layoutSettingsToggler('showSidePreview', 'toggleSidePreview'),
-    toggleStatusBar: layoutSettingsToggler('showStatusBar', 'toggleStatusBar'),
-    toggleScrollSync: layoutSettingsToggler('scrollSync', 'toggleScrollSync'),
-    toggleFocusMode: layoutSettingsToggler('focusMode', 'toggleFocusMode'),
+    toggleNavigationBar: layoutSettingsToggler('showNavigationBar'),
+    toggleEditor: layoutSettingsToggler('showEditor'),
+    toggleSidePreview: layoutSettingsToggler('showSidePreview'),
+    toggleStatusBar: layoutSettingsToggler('showStatusBar'),
+    toggleScrollSync: layoutSettingsToggler('scrollSync'),
+    toggleFocusMode: layoutSettingsToggler('focusMode'),
     toggleSideBar: ({ getters, dispatch, rootGetters }, value) => {
       // Reset side bar
       dispatch('setSideBarPanel');
 
       // Toggle it
-      toggleLayoutSetting('showSideBar', value, 'toggleSideBar', getters, dispatch);
+      toggleLayoutSetting('showSideBar', value, getters, dispatch);
 
       // Close explorer if not enough space
       if (getters.layoutSettings.showSideBar &&
@@ -258,7 +240,7 @@ export default {
     },
     toggleExplorer: ({ getters, dispatch, rootGetters }, value) => {
       // Toggle explorer
-      toggleLayoutSetting('showExplorer', value, 'toggleExplorer', getters, dispatch);
+      toggleLayoutSetting('showExplorer', value, getters, dispatch);
 
       // Close side bar if not enough space
       if (getters.layoutSettings.showExplorer &&
@@ -299,13 +281,6 @@ export default {
     patchSyncDataById: patcher('syncData'),
     patchDataSyncDataById: patcher('dataSyncData'),
     patchTokensByType: patcher('tokens'),
-    addGoogleToken: tokenAdder('google'),
-    addCouchdbToken: tokenAdder('couchdb'),
-    addDropboxToken: tokenAdder('dropbox'),
-    addGithubToken: tokenAdder('github'),
-    addGitlabToken: tokenAdder('gitlab'),
-    addWordpressToken: tokenAdder('wordpress'),
-    addZendeskToken: tokenAdder('zendesk'),
     patchBadgeCreations: patcher('badgeCreations'),
   },
 };

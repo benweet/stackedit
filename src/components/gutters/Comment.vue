@@ -2,13 +2,10 @@
   <div class="comment">
     <div class="comment__header flex flex--row flex--space-between flex--align-center">
       <div class="comment__user flex flex--row flex--align-center">
-        <div class="comment__user-image">
-          <user-image :user-id="comment.sub"></user-image>
-        </div>
         <button class="comment__remove-button button" v-title="'Remove comment'" @click="removeComment">
           <icon-delete></icon-delete>
         </button>
-        <user-name :user-id="comment.sub"></user-name>
+        <span class="user-name">Author</span>
       </div>
       <div class="comment__created">{{comment.created | formatTime}}</div>
     </div>
@@ -23,18 +20,11 @@
 
 <script>
 import { mapMutations } from 'vuex';
-import UserImage from '../UserImage';
-import UserName from '../UserName';
 import editorSvc from '../../services/editorSvc';
 import htmlSanitizer from '../../libs/htmlSanitizer';
 import store from '../../store';
-import badgeSvc from '../../services/badgeSvc';
 
 export default {
-  components: {
-    UserImage,
-    UserName,
-  },
   props: ['comment'],
   computed: {
     showReply() {
@@ -53,7 +43,6 @@ export default {
       try {
         await store.dispatch('modal/open', 'commentDeletion');
         store.dispatch('discussion/cleanCurrentFile', { filterComment: this.comment });
-        badgeSvc.addBadge('removeComment');
       } catch (e) {
         // Cancel
       }
